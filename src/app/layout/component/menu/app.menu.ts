@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -11,6 +11,7 @@ import { MenuItem } from 'primeng/api';
 })
 export class AppMenu {
     model: MenuItem[] = [];
+    router = inject(Router);
 
     ngOnInit() {
         this.model = [
@@ -51,7 +52,7 @@ export class AppMenu {
     }
 
     itemClick(item: MenuItem) {
-        console.log(item);
+        console.log(item.routerLink[0], this.router.url);
 
         // avoid processing disabled items
         // if (this.item.disabled) {
