@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { Access } from './access-denied/access';
 import { Login } from './login/login';
-import { Error } from './error';
+import { Error } from './error/error';
 
 export default [
     { path: 'access', component: Access },
