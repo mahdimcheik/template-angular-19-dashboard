@@ -17,10 +17,31 @@ import { MessageModule } from 'primeng/message';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { GenericMessageComponent } from '../../pages/uikit/generic-message/generic-message.component';
+import { MandatoryComponent } from '../../pages/uikit/mandatory/mandatory.component';
+import { RequiredAsteriskDirective } from '../../shared/directives/required-asterisk.directive';
 
 @NgModule({
     declarations: [LoginComponent, ForgotPasswordComponent, ChangePasswordComponent],
-    imports: [CommonModule, AuthRoutingModule, ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, ToastModule, MessageModule, ReactiveFormsModule, OverlayBadgeModule],
+    imports: [
+        CommonModule,
+        AuthRoutingModule,
+        ButtonModule,
+        CheckboxModule,
+        InputTextModule,
+        PasswordModule,
+        FormsModule,
+        RouterModule,
+        RippleModule,
+        AppFloatingConfigurator,
+        ToastModule,
+        MessageModule,
+        ReactiveFormsModule,
+        OverlayBadgeModule,
+        GenericMessageComponent,
+        MandatoryComponent,
+        RequiredAsteriskDirective
+    ],
     providers: [MessageService]
 })
 export class AuthModule {}
