@@ -9,13 +9,24 @@
                     <span class="text-muted-color font-medium">Connectez-vous</span>
                 </div>
 
-                <form [formGroup]="userForm" (ngSubmit)="submit()">
-                    <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                    <input pInputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-8" formControlName="email" />
+                <form [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
+                    <section class="mb-4">
+                        <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
+                        <input pInputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem]" formControlName="email" />
+                        <div class="error" *ngIf="form.submitted && userForm.controls['email'].errors">
+                            <p-message [hidden]="!userForm.controls['email'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            <p-message [hidden]="!userForm.controls['email'].errors['email']" severity="error" variant="simple" size="small" styleClass="mt-2">Le format est incorrect</p-message>
+                        </div>
+                    </section>
 
-                    <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Mot de passe</label>
-                    <p-password id="password1" formControlName="password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
-
+                    <section class="mb-4">
+                        <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Mot de passe</label>
+                        <p-password id="password1" formControlName="password" placeholder="Password" [toggleMask]="true" [fluid]="true" [feedback]="false"></p-password>
+                        <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
+                            <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe est requis</p-message>
+                            <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
+                        </div>
+                    </section>
                     <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                         <div class="flex items-center">
                             <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Créer un compte</span>
