@@ -5,27 +5,40 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { AccountConfirmationComponent } from './pages/account-confirmation/account-confirmation.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
+import { AccountCreatedSuccessfullyComponent } from './pages/account-created-successfully/account-created-successfully.component';
+import { AuthLayoutComponent } from './pages/auth-layout/auth-layout.component';
 
 const routes: Routes = [
     {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'forgot-password',
-        component: ForgotPasswordComponent
-    },
-    {
-        path: 'reset-password',
-        component: ChangePasswordComponent
-    },
-    {
-        path: 'email-confirmation-success',
-        component: AccountConfirmationComponent
-    },
-    {
-        path: 'inscription',
-        component: InscriptionComponent
+        path: '',
+        component: AuthLayoutComponent,
+        children: [
+            {
+                path: 'login',
+                component: LoginComponent
+            },
+            {
+                path: 'forgot-password',
+                component: ForgotPasswordComponent
+            },
+            {
+                path: 'reset-password',
+                component: ChangePasswordComponent
+            },
+            {
+                path: 'email-confirmation-success',
+                component: AccountConfirmationComponent
+            },
+            {
+                path: 'inscription',
+                component: InscriptionComponent
+            },
+
+            {
+                path: 'account-created-successfully',
+                component: AccountCreatedSuccessfullyComponent
+            }
+        ]
     }
 ];
 

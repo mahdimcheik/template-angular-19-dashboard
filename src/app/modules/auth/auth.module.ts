@@ -27,9 +27,11 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { DatePickerModule } from 'primeng/datepicker';
+import { AccountCreatedSuccessfullyComponent } from './pages/account-created-successfully/account-created-successfully.component';
+import { AuthLayoutComponent } from './pages/auth-layout/auth-layout.component';
 
 @NgModule({
-    declarations: [LoginComponent, ForgotPasswordComponent, ChangePasswordComponent, AccountConfirmationComponent, PasswordResetSuccessfullyComponent, InscriptionComponent],
+    declarations: [LoginComponent, ForgotPasswordComponent, ChangePasswordComponent, AccountConfirmationComponent, PasswordResetSuccessfullyComponent, InscriptionComponent, AccountCreatedSuccessfullyComponent, AuthLayoutComponent],
     imports: [
         CommonModule,
         AuthRoutingModule,

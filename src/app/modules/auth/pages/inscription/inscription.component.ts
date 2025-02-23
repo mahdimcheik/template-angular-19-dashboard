@@ -2,9 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { firstValueFrom, tap } from 'rxjs';
+import { catchError, firstValueFrom, tap } from 'rxjs';
 import { EnumGender, GenderDropDown, UserCreateDTO, UserLoginDTO } from '../../../../shared/models/user';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-inscription',
@@ -15,8 +16,10 @@ import { ageValidator, passwordStrengthValidator, passwordValidator } from '../.
 })
 export class InscriptionComponent implements OnInit {
     authService = inject(AuthService);
+    messageService = inject(MessageService);
     fb = inject(FormBuilder);
     router = inject(Router);
+    errorMessage = '';
 
     typesGenderList: GenderDropDown[] = [
         {
@@ -80,7 +83,16 @@ export class InscriptionComponent implements OnInit {
             .pipe(
                 tap((res) => {
                     console.log('res', res);
-                    this.router.navigateByUrl('auth/account-created');
+                    this.router.navigateByUrl('auth/account-created-successfully');
+                }),
+                catchError((err) => {
+                    this.errorMessage = err.error.message;
+                    this.messageService.add({
+                        summary: 'Erreur',
+                        detail: err.error.message,
+                        severity: 'error'
+                    });
+                    return err;
                 })
             )
             .subscribe();
