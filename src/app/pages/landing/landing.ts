@@ -6,10 +6,10 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { TopbarWidget } from './components/topbar-landing/topbarwidget.component';
 import { HeroWidget } from './components/herowidget/herowidget';
-import { FeaturesWidget } from './components/featureswidget';
-import { HighlightsWidget } from './components/highlightswidget';
-import { PricingWidget } from './components/pricingwidget';
-import { FooterWidget } from './components/footerwidget';
+import { FeaturesWidget } from './components/features/featureswidget';
+import { HighlightsWidget } from './components/highlight/highlightswidget';
+import { PricingWidget } from './components/pricing/pricingwidget';
+import { FooterWidget } from './components/footerwidget/footerwidget';
 
 @Component({
     selector: 'app-landing',
