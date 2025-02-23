@@ -3,3 +3,12 @@
 @use './assets/layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
+
+* {
+    // user-select: none; /* Prevents text selection */
+    caret-color: transparent;
+}
+// prevent selection caret from being visible
+input {
+    caret-color: auto;
+}
