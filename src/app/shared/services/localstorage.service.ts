@@ -31,5 +31,10 @@ export class LocalstorageService {
     setRefreshToken(token: string) {
         localStorage.setItem('refreshToken', token);
     }
+    reset() {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+    }
     constructor() {}
 }
