@@ -20,9 +20,11 @@ import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { GenericMessageComponent } from '../../pages/uikit/generic-message/generic-message.component';
 import { MandatoryComponent } from '../../pages/uikit/mandatory/mandatory.component';
 import { RequiredAsteriskDirective } from '../../shared/directives/required-asterisk.directive';
+import { AccountConfirmationComponent } from './pages/account-confirmation/account-confirmation.component';
+import { PasswordResetSuccessfullyComponent } from './pages/password-reset-successfully/password-reset-successfully.component';
 
 @NgModule({
-    declarations: [LoginComponent, ForgotPasswordComponent, ChangePasswordComponent],
+    declarations: [LoginComponent, ForgotPasswordComponent, ChangePasswordComponent, AccountConfirmationComponent, PasswordResetSuccessfullyComponent],
     imports: [
         CommonModule,
         AuthRoutingModule,
