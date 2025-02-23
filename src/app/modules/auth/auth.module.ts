@@ -22,9 +22,14 @@ import { MandatoryComponent } from '../../pages/uikit/mandatory/mandatory.compon
 import { RequiredAsteriskDirective } from '../../shared/directives/required-asterisk.directive';
 import { AccountConfirmationComponent } from './pages/account-confirmation/account-confirmation.component';
 import { PasswordResetSuccessfullyComponent } from './pages/password-reset-successfully/password-reset-successfully.component';
+import { FluidModule } from 'primeng/fluid';
+import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
+import { InscriptionComponent } from './pages/inscription/inscription.component';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @NgModule({
-    declarations: [LoginComponent, ForgotPasswordComponent, ChangePasswordComponent, AccountConfirmationComponent, PasswordResetSuccessfullyComponent],
+    declarations: [LoginComponent, ForgotPasswordComponent, ChangePasswordComponent, AccountConfirmationComponent, PasswordResetSuccessfullyComponent, InscriptionComponent],
     imports: [
         CommonModule,
         AuthRoutingModule,
@@ -42,7 +47,11 @@ import { PasswordResetSuccessfullyComponent } from './pages/password-reset-succe
         OverlayBadgeModule,
         GenericMessageComponent,
         MandatoryComponent,
-        RequiredAsteriskDirective
+        RequiredAsteriskDirective,
+        FluidModule,
+        SelectModule,
+        TextareaModule,
+        DatePickerModule
     ],
     providers: [MessageService]
 })

@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { AccountConfirmationComponent } from './pages/account-confirmation/account-confirmation.component';
+import { InscriptionComponent } from './pages/inscription/inscription.component';
 
 const routes: Routes = [
     {
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
         path: 'success-account-confirmation',
         component: AccountConfirmationComponent
+    },
+    {
+        path: 'inscription',
+        component: InscriptionComponent
     }
 ];
 
