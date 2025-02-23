@@ -54,7 +54,7 @@ export class InscriptionComponent {
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
             phoneNumber: [''],
-            dateOfBirth: [new Date(), [Validators.required, ageValidator]],
+            dateOfBirth: [new Date('1986-04-21'), [Validators.required, ageValidator]],
             gender: [this.selectedGender, [Validators.required]],
             title: [''],
             description: ['']

@@ -4,14 +4,15 @@
     <div class="flex flex-col items-center justify-center">
         <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
             <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
-                <div class="text-center mb-8">
+                <div class="text-center">
                     <img src="https://tutor.berlin/images/logos/878dc2a9-ae9e-4749-a9f6-72522672c989-small.png" alt="logo" class="mb-8 w-16 shrink-0 mx-auto" />
                     <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Créez votre compte</div>
                     <span class="text-muted-color font-medium">Renseignez vos coordonnées</span>
                 </div>
-                <generic-message message="Les champs marqués par * sont obligatoires." severity="error" styleclass="mt-2 mb-2"></generic-message>
-                <generic-message message="Le mot de passe doit contenir au moins 8 caractères, dont un chiffre, une majuscule, une minuscule et un caractère spécial." severity="info" styleclass="mt-2"></generic-message>
-
+                <section class="card flex flex-col w-full mb-0">
+                    <generic-message message="Les champs marqués par * sont obligatoires." severity="error" styleclass="mt-2 "></generic-message>
+                    <generic-message message="Le mot de passe doit contenir au moins 8 caractères, dont un chiffre, une majuscule, une minuscule et un caractère spécial." severity="info" styleclass="mt-1"></generic-message>
+                </section>
                 <p-fluid>
                     <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
                         <div class="card flex flex-col gap-6 w-full">
@@ -20,36 +21,57 @@
                                 <div class="flex flex-wrap gap-2 w-full">
                                     <label for="firstname" RequiredAsterisk>Prénom</label>
                                     <input pInputText id="firstname" type="text" formControlName="firstName" />
+                                    <div class="error" *ngIf="form.submitted && userForm.controls['firstName'].errors">
+                                        <p-message [hidden]="!userForm.controls['firstName'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                    </div>
                                 </div>
                                 <div class="flex flex-wrap gap-2 w-full">
                                     <label for="lastname" RequiredAsterisk>Nom</label>
                                     <input pInputText id="lastname" type="text" formControlName="lastName" />
+                                    <div class="error" *ngIf="form.submitted && userForm.controls['lastName'].errors">
+                                        <p-message [hidden]="!userForm.controls['lastName'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex flex-col md:flex-row gap-6">
                                 <div class="flex flex-wrap gap-2 w-full">
                                     <label for="password" RequiredAsterisk>Mot de passe</label>
-                                    <input pInputText id="password" type="text" formControlName="password" />
+                                    <input pInputText id="password" type="password" formControlName="password" />
+                                    <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
+                                        <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe est requis</p-message>
+                                        <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
+                                    </div>
                                 </div>
                                 <div class="flex flex-wrap gap-2 w-full">
                                     <label for="confirmPassword" RequiredAsterisk>Confirmation</label>
-                                    <input pInputText id="confirmPassword" type="text" formControlName="confirmPassword" />
+                                    <input pInputText id="confirmPassword" type="password" formControlName="confirmPassword" />
+                                    <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
+                                        <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe est requis</p-message>
+                                        <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
+                                    </div>
+                                    <div class="error" *ngIf="form.submitted && userForm.errors?.['passwordDifference']">
+                                        <p-message severity="error" variant="simple" size="small" styleClass="mt-2">Les mots de passe sont différents</p-message>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="flex flex-col md:flex-row gap-6">
                                 <div class="flex flex-wrap gap-2 w-full">
-                                    <label for="phoneNumber" RequiredAsterisk>Téléphone</label>
+                                    <label for="phoneNumber">Téléphone</label>
                                     <input pInputText id="phoneNumber" type="text" formControlName="phoneNumber" />
                                 </div>
                                 <div class="flex flex-wrap gap-2 w-full">
-                                    <label for="title" RequiredAsterisk>Titre</label>
+                                    <label for="title">Titre</label>
                                     <input pInputText id="title" type="text" formControlName="title" />
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-2">
-                                <label for="email">Email</label>
+                                <label for="email" RequiredAsterisk>Email</label>
                                 <input pInputText type="email" id="email" rows="4" formControlName="email" />
+                                <div class="error" *ngIf="form.submitted && userForm.controls['email'].errors">
+                                    <p-message [hidden]="!userForm.controls['email'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                    <p-message [hidden]="!userForm.controls['email'].errors['email']" severity="error" variant="simple" size="small" styleClass="mt-2">Le format n'est pas conforme</p-message>
+                                </div>
                             </div>
 
                             <div class="flex flex-wrap gap-2">
@@ -63,9 +85,12 @@
                                     <p-select id="state" formControlName="gender" [options]="typesGenderList" optionLabel="name" placeholder="Select One" class="w-full"></p-select>
                                 </div>
                                 <div class="flex flex-wrap gap-2 w-full">
-                                    <label for="zip" RequiredAsterisk>Age</label>
-                                    <p-datepicker [showIcon]="true" [showButtonBar]="true" class="w-full"></p-datepicker>
+                                    <label for="zip" RequiredAsterisk>Date de naissance (jj/mm/aaaa)</label>
+                                    <p-datepicker [showIcon]="true" [showButtonBar]="true" class="w-full" formControlName="dateOfBirth"></p-datepicker>
                                 </div>
+                            </div>
+                            <div class="col-span-12 mt-8 text-center">
+                                <p-button label="Inscription" type="submit" severity="success" />
                             </div>
                         </div>
                     </form>
