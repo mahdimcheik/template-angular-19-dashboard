@@ -7,6 +7,7 @@ import { AccountConfirmationComponent } from './pages/account-confirmation/accou
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { AccountCreatedSuccessfullyComponent } from './pages/account-created-successfully/account-created-successfully.component';
 import { AuthLayoutComponent } from './pages/auth-layout/auth-layout.component';
+import { canNotLoginGuard } from '../../shared/guards/can-login.guard';
 
 const routes: Routes = [
     {

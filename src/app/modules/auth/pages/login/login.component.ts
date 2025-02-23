@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,9 +12,13 @@ import { UserLoginDTO } from '../../../../shared/models/user';
     styleUrl: './login.component.scss',
     providers: [AuthService]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     private authService = inject(AuthService);
     private router = inject(Router);
+
+    ngOnInit(): void {
+        console.log('LoginComponent initialized', this.authService.userConnected());
+    }
 
     userForm = new FormGroup({
         email: new FormControl<string>('', [Validators.email, Validators.required]),

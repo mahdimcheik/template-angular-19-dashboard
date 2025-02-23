@@ -59,6 +59,7 @@ export class AuthService {
                         }
                     ).refreshToken
                 );
+                var toto = this.userConnected();
                 this.localStorageService.setUser(this.userConnected());
                 this.localStorageService.setToken(this.token());
                 this.localStorageService.setRefreshToken(this.refreshAccessToken() ?? '');
@@ -68,17 +69,18 @@ export class AuthService {
                     summary: 'Bienvenu ! ',
                     detail: res.message ?? 'Youpi!!!'
                 });
+                /* // sse to delete or not ?
                 const eventSource = new EventSource(`${environment.BACK_URL}/sse/${this.userConnected().id}`);
 
                 eventSource.onmessage = (event) => {
                     console.log('event', event);
                     this.userConnected.set(JSON.parse(event.data));
                 };
-
+                */
                 if (this.userConnected().roles.includes('Admin')) {
-                    this.router.navigateByUrl('teacher/dashboard');
+                    this.router.navigateByUrl('/');
                 } else {
-                    this.router.navigateByUrl('profile/me');
+                    this.router.navigateByUrl('/');
                 }
             })
         );

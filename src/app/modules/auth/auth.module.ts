@@ -57,4 +57,6 @@ import { AuthLayoutComponent } from './pages/auth-layout/auth-layout.component';
     ],
     providers: [MessageService]
 })
-export class AuthModule {}
+export class AuthModule {
+    constructor() {}
+}
