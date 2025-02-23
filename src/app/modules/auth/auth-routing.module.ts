@@ -16,11 +16,11 @@ const routes: Routes = [
         component: ForgotPasswordComponent
     },
     {
-        path: 'change-password',
+        path: 'reset-password',
         component: ChangePasswordComponent
     },
     {
-        path: 'success-account-confirmation',
+        path: 'email-confirmation-success',
         component: AccountConfirmationComponent
     },
     {
