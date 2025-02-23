@@ -18,6 +18,10 @@ export const appRoutes: Routes = [
             {
                 path: 'reservation',
                 loadChildren: () => import('./app/modules/reservation/reservation.module').then((m) => m.ReservationModule)
+            },
+            {
+                path: 'profile',
+                loadChildren: () => import('./app/modules/profile/profile.module').then((m) => m.ProfileModule)
             }
         ]
     },
