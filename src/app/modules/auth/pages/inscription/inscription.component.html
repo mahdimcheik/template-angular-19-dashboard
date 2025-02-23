@@ -87,6 +87,10 @@
                                 <div class="flex flex-wrap gap-2 w-full">
                                     <label for="zip" RequiredAsterisk>Date de naissance (jj/mm/aaaa)</label>
                                     <p-datepicker [showIcon]="true" [showButtonBar]="true" class="w-full" formControlName="dateOfBirth"></p-datepicker>
+                                    <div class="error" *ngIf="form.submitted && userForm.controls['dateOfBirth'].errors">
+                                        <p-message [hidden]="!userForm.controls['dateOfBirth'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                        <p-message [hidden]="!userForm.controls['dateOfBirth'].errors['underage']" severity="error" variant="simple" size="small" styleClass="mt-2">{{ userForm.controls['dateOfBirth'].errors['underage'] }}</p-message>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-span-12 mt-8 text-center">

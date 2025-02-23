@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { ageValidator, passwordStrengthValidator, passwordValidator } from '../.
     styleUrl: './inscription.component.scss',
     providers: [AuthService]
 })
-export class InscriptionComponent {
+export class InscriptionComponent implements OnInit {
     authService = inject(AuthService);
     fb = inject(FormBuilder);
     router = inject(Router);
@@ -49,18 +49,24 @@ export class InscriptionComponent {
     userForm = this.fb.group(
         {
             email: ['', [Validators.email, Validators.required]],
-            password: ['', [Validators.required, Validators.minLength(8), passwordStrengthValidator]],
+            password: ['', [Validators.required, Validators.minLength(8), passwordStrengthValidator()]],
             confirmPassword: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
             phoneNumber: [''],
-            dateOfBirth: [new Date('1986-04-21'), [Validators.required, ageValidator]],
+            dateOfBirth: [new Date('1986-04-21'), [Validators.required, ageValidator()]],
             gender: [this.selectedGender, [Validators.required]],
             title: [''],
             description: ['']
         },
         { validators: [passwordValidator('password', 'confirmPassword')] }
     );
+
+    ngOnInit() {
+        // this.userForm.controls['dateOfBirth'].valueChanges.subscribe((value) => {
+        //     console.log('Date of Birth Control Value:', value);
+        // });
+    }
 
     submit() {
         const newUser = {
