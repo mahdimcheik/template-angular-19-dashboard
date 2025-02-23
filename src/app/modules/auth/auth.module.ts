@@ -14,10 +14,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
 @NgModule({
-    declarations: [LoginComponent],
-    imports: [CommonModule, AuthRoutingModule, ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, ToastModule, MessageModule, ReactiveFormsModule],
+    declarations: [LoginComponent, ForgotPasswordComponent, ChangePasswordComponent],
+    imports: [CommonModule, AuthRoutingModule, ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, ToastModule, MessageModule, ReactiveFormsModule, OverlayBadgeModule],
     providers: [MessageService]
 })
 export class AuthModule {}
