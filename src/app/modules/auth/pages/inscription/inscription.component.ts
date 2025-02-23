@@ -12,7 +12,7 @@ import { MessageService } from 'primeng/api';
     standalone: false,
     templateUrl: './inscription.component.html',
     styleUrl: './inscription.component.scss',
-    providers: [AuthService]
+    providers: []
 })
 export class InscriptionComponent implements OnInit {
     authService = inject(AuthService);

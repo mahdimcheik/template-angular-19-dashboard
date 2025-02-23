@@ -36,10 +36,12 @@
                     <i class="pi pi-inbox"></i>
                     <span>Messages</span>
                 </button>
-                <button type="button" class="layout-topbar-action">
-                    <i class="pi pi-user"></i>
+                <button type="button" class="layout-topbar-action" (click)="menu.toggle($event)">
+                    <i *ngIf="!user().email" class="pi pi-user"></i>
+                    <p-avatar *ngIf="user().email" [image]="user().imgUrl"></p-avatar>
                     <span>Profile</span>
                 </button>
+                <p-menu #menu [model]="userItems()" [popup]="true"></p-menu>
             </div>
         </div>
     </div>

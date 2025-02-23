@@ -29,7 +29,7 @@ export class AuthService {
 
     router = inject(Router);
 
-    userConnected = signal({} as UserResponseDTO);
+    userConnected = signal({ imgUrl: '123' } as UserResponseDTO);
     userToDisplay = signal({} as UserResponseDTO);
     teacherDetails = signal({} as UserResponseDTO);
     refreshAccessToken = signal<string | null>(null);
@@ -59,7 +59,6 @@ export class AuthService {
                         }
                     ).refreshToken
                 );
-                var toto = this.userConnected();
                 this.localStorageService.setUser(this.userConnected());
                 this.localStorageService.setToken(this.token());
                 this.localStorageService.setRefreshToken(this.refreshAccessToken() ?? '');
@@ -77,6 +76,7 @@ export class AuthService {
                     this.userConnected.set(JSON.parse(event.data));
                 };
                 */
+
                 if (this.userConnected().roles.includes('Admin')) {
                     this.router.navigateByUrl('/');
                 } else {
@@ -120,7 +120,7 @@ export class AuthService {
             summary: 'Au revoir ! ',
             detail: 'vous êtes déconnecté'
         });
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl('/');
     }
 
     getprofile(): Observable<ResponseDTO> {
@@ -161,9 +161,10 @@ export class AuthService {
     }
 
     reset(): void {
-        this.localStorageService.setUser({} as UserResponseDTO);
+        // this.localStorageService.setUser({} as UserResponseDTO);
+        this.localStorageService.reset();
         this.userConnected.set({} as UserResponseDTO);
-        this.localStorageService.setToken('');
+        // this.localStorageService.setToken('');
         this.token.set('');
     }
 

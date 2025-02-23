@@ -10,12 +10,14 @@ import { UserLoginDTO } from '../../../../shared/models/user';
     standalone: false,
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss',
-    providers: [AuthService]
+    providers: []
 })
 export class ForgotPasswordComponent {
     authService = inject(AuthService);
     canChange = signal(false);
     message = signal('');
+
+    constructor() {}
 
     userForm = new FormGroup({
         email: new FormControl<string>('', [Validators.email, Validators.required])

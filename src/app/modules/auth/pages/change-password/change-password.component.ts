@@ -10,7 +10,7 @@ import { UserChangePasswordDTO } from '../../../../shared/models/user';
     standalone: false,
     templateUrl: './change-password.component.html',
     styleUrl: './change-password.component.scss',
-    providers: [AuthService]
+    providers: []
 })
 export class ChangePasswordComponent {
     visible: boolean = false;

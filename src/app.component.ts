@@ -16,15 +16,5 @@ export class AppComponent implements OnInit {
     localStorageService = inject(LocalstorageService);
     authService = inject(AuthService);
     router = inject(Router);
-    ngOnInit(): void {
-        try {
-            const user = this.localStorageService.getUser();
-            if (user !== null && user !== undefined && user.email !== '') {
-                this.authService.userConnected.set(user);
-            }
-        } catch (e) {
-            console.log('AppComponent error', e);
-            this.router.navigateByUrl('/');
-        }
-    }
+    ngOnInit(): void {}
 }
