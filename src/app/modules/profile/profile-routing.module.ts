@@ -7,7 +7,13 @@ import { ProfileComponent } from './pages/profile/profile.component';
 const routes: Routes = [
     {
         path: '',
-        component: ProfileComponent
+        component: ProfileComponent,
+        children: [
+            {
+                path: 'profile',
+                component: ProfileComponent
+            }
+        ]
     }
 ];
 

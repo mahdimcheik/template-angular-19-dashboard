@@ -1,0 +1,26 @@
+<div class="flex flex-col-reverse md:flex-row justify-between items-center card">
+    <div class="font-semibold text-xl mb-4">part where i put some personnal data</div>
+    <div class="flex flex-col md:flex-row items-center">
+        <div class="border border-surface rounded-border m-2 p-4 max-w-3xs md:max-w-xs w-full md:w-auto">
+            <div class="mb-4">
+                <div class="relative mx-auto">
+                    <img src="https://coenterprises.com.au/wp-content/uploads/2018/02/male-placeholder-image.jpeg" class="w-full md:max-w-xs rounded-border" />
+                    <div class="absolute bg-black/70 rounded-border" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }">
+                        <p-tag value="*" severity="info" />
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4 font-medium">User Name</div>
+            <div class="flex justify-between items-center md:w-1/2">
+                <div class="mt-0 font-semibold text-xl">{{ '$' + '15' }}</div>
+                <span>
+                    <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
+                    <p-button icon="pi pi-shopping-cart" styleClass="ml-2" />
+                </span>
+            </div>
+        </div>
+        <div class="flex-1 m-2 p-4">
+            <!-- Add your items here -->
+        </div>
+    </div>
+</div>

@@ -4,10 +4,50 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { SelectModule } from 'primeng/select';
 import { FluidModule } from 'primeng/fluid';
+import { FormsModule } from '@angular/forms';
+import { AccordionModule } from 'primeng/accordion';
+import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
+import { FieldsetModule } from 'primeng/fieldset';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { MenuModule } from 'primeng/menu';
+import { PanelModule } from 'primeng/panel';
+import { RippleModule } from 'primeng/ripple';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { SplitterModule } from 'primeng/splitter';
+import { TabsModule } from 'primeng/tabs';
+import { ToolbarModule } from 'primeng/toolbar';
+import { PersonnalInfosComponent } from './components/personnal-infos/personnal-infos.component';
+import { ImageModule } from 'primeng/image';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
-    declarations: [ProfileComponent],
-    imports: [CommonModule, ProfileRoutingModule, FluidModule, SelectModule]
+    declarations: [ProfileComponent, PersonnalInfosComponent],
+    imports: [
+        CommonModule,
+        ProfileRoutingModule,
+        FluidModule,
+        SelectModule,
+        FormsModule,
+        ToolbarModule,
+        TabsModule,
+        SplitterModule,
+        SplitButtonModule,
+        RippleModule,
+        PanelModule,
+        MenuModule,
+        InputTextModule,
+        InputIconModule,
+        IconFieldModule,
+        FieldsetModule,
+        DividerModule,
+        ButtonModule,
+        AccordionModule,
+        ImageModule,
+        TagModule
+    ]
 })
 export class ProfileModule {
     constructor() {}
