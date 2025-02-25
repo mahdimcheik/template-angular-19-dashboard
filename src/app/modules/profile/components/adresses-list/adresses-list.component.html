@@ -1,3 +1,8 @@
-<div class="card">
+<div class="card mt-4">
+    <div class="flex gap-4">
+        <h3>Vos adresses</h3>
+        <p-button icon="pi pi-plus"></p-button>
+    </div>
+
     <app-adress *ngFor="let adress of adresses()" [adress]="adress"></app-adress>
 </div>

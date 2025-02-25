@@ -29,9 +29,11 @@ import { OrderListModule } from 'primeng/orderlist';
 import { PickListModule } from 'primeng/picklist';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { AdressComponent } from './components/adress/adress.component';
+import { FormationComponent } from './components/formation/formation.component';
+import { FormationsListComponent } from './components/formations-list/formations-list.component';
 
 @NgModule({
-    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent],
+    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,

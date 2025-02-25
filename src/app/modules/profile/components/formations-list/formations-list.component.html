@@ -1,0 +1,8 @@
+<div class="card mt-4">
+    <div class="flex gap-4">
+        <h3>Vos formations</h3>
+        <p-button icon="pi pi-plus"></p-button>
+    </div>
+
+    <app-formation *ngFor="let formation of formations()" [formation]="formation"></app-formation>
+</div>
