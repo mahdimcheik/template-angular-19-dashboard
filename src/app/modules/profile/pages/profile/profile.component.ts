@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { UserResponseDTO } from '../../../../shared/models/user';
 
 @Component({
     selector: 'app-profile',
@@ -27,4 +28,17 @@ export class ProfileComponent {
             icon: 'pi pi-home'
         }
     ];
+
+    userToDisplay: UserResponseDTO = {
+        id: '1',
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'email@email.com',
+        imgUrl: 'https://images.freeimages.com/365/images/previews/85b/psd-universal-blue-web-user-icon-53242.jpg',
+        dateOfBirth: new Date('1986-04-21'),
+        gender: 0,
+        lastLogginAt: new Date(),
+        emailConfirmed: true,
+        roles: ['Student', 'Teacher']
+    };
 }

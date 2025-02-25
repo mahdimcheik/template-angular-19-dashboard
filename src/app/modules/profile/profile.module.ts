@@ -22,9 +22,16 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { PersonnalInfosComponent } from './components/personnal-infos/personnal-infos.component';
 import { ImageModule } from 'primeng/image';
 import { TagModule } from 'primeng/tag';
+import { DobToAgePipe } from '../../shared/pipes/dob-to-age.pipe';
+import { AdressesListComponent } from './components/adresses-list/adresses-list.component';
+import { DataViewModule } from 'primeng/dataview';
+import { OrderListModule } from 'primeng/orderlist';
+import { PickListModule } from 'primeng/picklist';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { AdressComponent } from './components/adress/adress.component';
 
 @NgModule({
-    declarations: [ProfileComponent, PersonnalInfosComponent],
+    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,
@@ -46,7 +53,12 @@ import { TagModule } from 'primeng/tag';
         ButtonModule,
         AccordionModule,
         ImageModule,
-        TagModule
+        TagModule,
+        DobToAgePipe,
+        DataViewModule,
+        OrderListModule,
+        PickListModule,
+        SelectButtonModule
     ]
 })
 export class ProfileModule {
