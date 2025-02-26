@@ -5,4 +5,4 @@
     </div>
     <app-adress *ngFor="let adress of adresses()" [adress]="adress"></app-adress>
 </div>
-<app-modal-add-or-edit-address [visibleRight]="visibleRight" (onClose)="close()"></app-modal-add-or-edit-address>
+<app-modal-add-or-edit-address *ngIf="visibleRight()" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight" (onClose)="close()"></app-modal-add-or-edit-address>

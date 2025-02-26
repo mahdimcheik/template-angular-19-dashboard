@@ -33,12 +33,24 @@ export class AdressesListComponent {
         }
     ]);
 
-    visibleRight = false;
+    adresseTochange: AdresseDTO = {
+        id: '1',
+        street: 'Rue de la paix',
+        city: 'Paris',
+        postalCode: '75000',
+        country: 'France',
+        streetNumber: 1,
+        streetLine2: 'Bâtiment A',
+        state: 'Ile-de-France',
+        addressType: 0
+    };
+
+    visibleRight = signal<boolean>(false);
 
     close() {
-        this.visibleRight = false;
+        this.visibleRight.set(false);
     }
     open() {
-        this.visibleRight = true;
+        this.visibleRight.set(true);
     }
 }

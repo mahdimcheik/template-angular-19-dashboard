@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { AdresseDTO } from '../../../../shared/models/adresse';
 
 @Component({
@@ -10,4 +10,12 @@ import { AdresseDTO } from '../../../../shared/models/adresse';
 })
 export class AdressComponent {
     adress = input.required<AdresseDTO>();
+    visibleRight = signal<boolean>(false);
+
+    close() {
+        this.visibleRight.set(false);
+    }
+    open() {
+        this.visibleRight.set(true);
+    }
 }
