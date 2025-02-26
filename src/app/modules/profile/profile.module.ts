@@ -31,9 +31,14 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { AdressComponent } from './components/adress/adress.component';
 import { FormationComponent } from './components/formation/formation.component';
 import { FormationsListComponent } from './components/formations-list/formations-list.component';
+import { ModalAddOrEditAddressComponent } from './components/modal-add-or-edit-address/modal-add-or-edit-address.component';
+import { DrawerModule } from 'primeng/drawer';
+import { PopoverModule } from 'primeng/popover';
+import { MessageModule } from 'primeng/message';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent],
+    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent, ModalAddOrEditAddressComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,
@@ -60,7 +65,11 @@ import { FormationsListComponent } from './components/formations-list/formations
         DataViewModule,
         OrderListModule,
         PickListModule,
-        SelectButtonModule
+        SelectButtonModule,
+        DrawerModule,
+        PopoverModule,
+        MessageModule,
+        ReactiveFormsModule
     ]
 })
 export class ProfileModule {

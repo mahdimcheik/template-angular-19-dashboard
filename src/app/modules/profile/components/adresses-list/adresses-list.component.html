@@ -1,8 +1,8 @@
 <div class="card mt-4">
     <div class="flex gap-4">
         <h3>Vos adresses</h3>
-        <p-button icon="pi pi-plus"></p-button>
+        <p-button icon="pi pi-plus" (onClick)="open()"></p-button>
     </div>
-
     <app-adress *ngFor="let adress of adresses()" [adress]="adress"></app-adress>
 </div>
+<app-modal-add-or-edit-address [visibleRight]="visibleRight" (onClose)="close()"></app-modal-add-or-edit-address>

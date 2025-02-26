@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { AdresseDTO } from '../../../../shared/models/adresse';
 
 @Component({
@@ -32,4 +32,13 @@ export class AdressesListComponent {
             addressType: 0
         }
     ]);
+
+    visibleRight = false;
+
+    close() {
+        this.visibleRight = false;
+    }
+    open() {
+        this.visibleRight = true;
+    }
 }
