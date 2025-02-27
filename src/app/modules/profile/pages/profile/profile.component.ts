@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { UserResponseDTO } from '../../../../shared/models/user';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
     selector: 'app-profile',
@@ -9,7 +10,10 @@ import { UserResponseDTO } from '../../../../shared/models/user';
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.scss'
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
+    authService = inject(AuthService);
+    user = this.authService.userConnected;
+    ngOnInit(): void {}
     items: MenuItem[] = [
         {
             label: 'Save',

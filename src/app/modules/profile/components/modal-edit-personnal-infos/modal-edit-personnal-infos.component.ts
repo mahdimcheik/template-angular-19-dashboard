@@ -3,6 +3,7 @@ import { firstValueFrom } from 'rxjs';
 import { EnumGender, GenderDropDown, UserResponseDTO, UserUpdateDTO } from '../../../../shared/models/user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../../shared/services/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-modal-edit-personnal-infos',
@@ -16,12 +17,14 @@ export class ModalEditPersonnalInfosComponent {
     visible = model<boolean>(false);
     title = input<string>('');
     selectedGender!: GenderDropDown;
+    uploadedFiles: any[] = [];
 
     file?: File;
     fileName?: string;
 
     authService = inject(AuthService);
     fb = inject(FormBuilder);
+    messageService = inject(MessageService);
 
     typesGenderList = [
         {
@@ -62,7 +65,7 @@ export class ModalEditPersonnalInfosComponent {
     }
     async submit() {
         const newUser = {
-            ...this.user,
+            ...this.user(),
             firstName: this.userForm.value['firstName'],
             lastName: this.userForm.value['lastName'],
             dateOfBirth: this.userForm.value['dateOfBirth'],
@@ -87,5 +90,18 @@ export class ModalEditPersonnalInfosComponent {
     receiveFile(event: { file: File; fileName: string }) {
         this.file = event.file;
         this.fileName = event.fileName;
+    }
+
+    onUpload(event: any) {
+        for (const file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+        this.receiveFile({ file: event.files[0], fileName: event.files[0].name });
+
+        this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Image téléversée' });
+    }
+
+    onBasicUpload() {
+        this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Image téléversée' });
     }
 }

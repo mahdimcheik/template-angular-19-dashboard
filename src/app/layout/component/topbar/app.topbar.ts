@@ -28,7 +28,7 @@ export class AppTopbar {
                 {
                     label: `${this.user().firstName} ${this.user().lastName}`,
                     icon: 'pi pi-user',
-                    command: () => this.router.navigateByUrl('profile/me')
+                    command: () => this.router.navigateByUrl('profile')
                 },
                 {
                     label: 'Déconnexion',

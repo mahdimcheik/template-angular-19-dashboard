@@ -42,6 +42,7 @@ import { ModalEditPersonnalInfosComponent } from './components/modal-edit-person
 import { GenericMessageComponent } from '../../pages/uikit/generic-message/generic-message.component';
 import { TextareaModule } from 'primeng/textarea';
 import { RequiredAsteriskDirective } from '../../shared/directives/required-asterisk.directive';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @NgModule({
     declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent, ModalAddOrEditAddressComponent, ModalEditOrAddFormationComponent, ModalEditPersonnalInfosComponent],
@@ -79,7 +80,8 @@ import { RequiredAsteriskDirective } from '../../shared/directives/required-aste
         DatePickerModule,
         GenericMessageComponent,
         TextareaModule,
-        RequiredAsteriskDirective
+        RequiredAsteriskDirective,
+        FileUploadModule
     ]
 })
 export class ProfileModule {
