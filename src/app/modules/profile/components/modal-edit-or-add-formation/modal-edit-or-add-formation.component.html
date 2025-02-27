@@ -1,0 +1,72 @@
+<p-drawer [(visible)]="visibleRight" position="right" closable="true" [modal]="true" (onHide)="close()" class="bg-black" styleClass="!w-full md:!w-100 lg:!w-[50rem] md:!mb-0 lg:!mb-0">
+    <div class="flex flex-col items-center justify-center">
+        <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
+            <div class="text-center">
+                <img src="https://tutor.berlin/images/logos/878dc2a9-ae9e-4749-a9f6-72522672c989-small.png" alt="logo" class="mb-8 w-16 shrink-0 mx-auto" />
+                <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Editer votre compte</div>
+                <span class="text-muted-color font-medium">Renseignez vos coordonnées</span>
+            </div>
+
+            <p-fluid>
+                <section class="flex flex-col w-full mb-0"></section>
+                <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
+                    <div class="card flex flex-col gap-6 w-full">
+                        <div class="font-semibold text-xl">{{ title }}</div>
+
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="title" RequiredAsterisk>Intitulé</label>
+                            <input pInputText id="title" type="text" formControlName="title" />
+                            <div class="error" *ngIf="form.submitted && userForm.controls['title'].errors">
+                                <p-message [hidden]="!userForm.controls['title'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="company" RequiredAsterisk>Ecole / Institut</label>
+                            <input pInputText id="company" type="text" formControlName="company" />
+                            <div class="error" *ngIf="form.submitted && userForm.controls['company'].errors">
+                                <p-message [hidden]="!userForm.controls['company'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="city" RequiredAsterisk>Ville</label>
+                                <input pInputText id="city" type="text" formControlName="city" />
+                                <div class="error" *ngIf="form.submitted && userForm.controls['city'].errors">
+                                    <p-message [hidden]="!userForm.controls['city'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="country" RequiredAsterisk>Pays</label>
+                                <input pInputText id="country" type="text" formControlName="country" />
+                                <div class="error" *ngIf="form.submitted && userForm.controls['country'].errors">
+                                    <p-message [hidden]="!userForm.controls['country'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="startAt" RequiredAsterisk>Début (jj/mm/aaaa)</label>
+                            <p-datepicker [showIcon]="true" [showButtonBar]="true" class="w-full" formControlName="startAt"></p-datepicker>
+                            <div class="error" *ngIf="form.submitted && userForm.controls['startAt'].errors">
+                                <p-message [hidden]="!userForm.controls['startAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="endAt" RequiredAsterisk>Fin (jj/mm/aaaa)</label>
+                            <p-datepicker [showIcon]="true" [showButtonBar]="true" class="w-full" formControlName="endAt"></p-datepicker>
+                            <div class="error" *ngIf="form.submitted && userForm.controls['endAt'].errors">
+                                <p-message [hidden]="!userForm.controls['endAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            </div>
+                        </div>
+                        <div class="col-span-12 mt-8 text-center flex justify-center gap-4">
+                            <p-button label="Annuler" type="submit" severity="danger" styleClass="min-w-[100px]" type="button" />
+                            <p-button label="Inscription" type="submit" severity="success" styleClass="min-w-[100px]" />
+                        </div>
+                    </div>
+                </form>
+            </p-fluid>
+        </div>
+    </div>
+</p-drawer>

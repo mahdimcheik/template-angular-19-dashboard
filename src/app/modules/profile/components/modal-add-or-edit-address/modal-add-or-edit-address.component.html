@@ -58,8 +58,9 @@
                                 <p-select id="addressType" formControlName="addressType" [options]="typesAdresseList" optionLabel="name" placeholder="Votre choix" class="w-full"></p-select>
                             </div>
                         </div>
-                        <div class="col-span-12 mt-8 text-center">
-                            <p-button label="Inscription" type="submit" severity="success" />
+                        <div class="col-span-12 mt-8 text-center flex justify-center gap-4">
+                            <p-button label="Annuler" type="submit" severity="danger" styleClass="min-w-[100px]" />
+                            <p-button label="Inscription" type="submit" severity="success" styleClass="min-w-[100px]" />
                         </div>
                     </div>
                 </form>

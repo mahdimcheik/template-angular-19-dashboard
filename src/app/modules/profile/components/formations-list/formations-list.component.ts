@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { FormationResponseDTO } from '../../../../shared/models/formation';
 
 @Component({
@@ -9,6 +9,7 @@ import { FormationResponseDTO } from '../../../../shared/models/formation';
     styleUrl: './formations-list.component.scss'
 })
 export class FormationsListComponent {
+    visibleRight = signal<boolean>(false);
     formations = input<FormationResponseDTO[]>([
         {
             id: '1',
@@ -29,4 +30,22 @@ export class FormationsListComponent {
             country: 'France'
         }
     ]);
+
+    formationToEdit: FormationResponseDTO = {
+        id: '1',
+        title: 'Master en informatique',
+        company: 'Université de Paris',
+        startAt: new Date(),
+        endAt: new Date(),
+        city: 'Bordeaux',
+        country: 'France'
+    };
+
+    close() {
+        this.visibleRight.set(false);
+    }
+
+    open() {
+        this.visibleRight.set(true);
+    }
 }

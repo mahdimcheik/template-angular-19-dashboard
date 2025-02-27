@@ -10,4 +10,12 @@ import { FormationResponseDTO } from '../../../../shared/models/formation';
 })
 export class FormationComponent {
     formation = input.required<FormationResponseDTO>();
+    visibleRight = signal<boolean>(false);
+    close() {
+        this.visibleRight.set(false);
+    }
+
+    open() {
+        this.visibleRight.set(true);
+    }
 }

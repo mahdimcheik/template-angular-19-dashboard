@@ -1,8 +1,9 @@
 <div class="card mt-4">
     <div class="flex gap-4">
         <h3>Vos formations</h3>
-        <p-button icon="pi pi-plus"></p-button>
+        <p-button icon="pi pi-plus" (onClick)="open()"></p-button>
     </div>
 
     <app-formation *ngFor="let formation of formations()" [formation]="formation"></app-formation>
 </div>
+<app-modal-edit-or-add-formation (onClose)="close()" *ngIf="visibleRight()" [formationToEdit]="formationToEdit" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight"></app-modal-edit-or-add-formation>

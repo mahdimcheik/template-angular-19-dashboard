@@ -36,9 +36,11 @@ import { DrawerModule } from 'primeng/drawer';
 import { PopoverModule } from 'primeng/popover';
 import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DatePickerModule } from 'primeng/datepicker';
+import { ModalEditOrAddFormationComponent } from './components/modal-edit-or-add-formation/modal-edit-or-add-formation.component';
 
 @NgModule({
-    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent, ModalAddOrEditAddressComponent],
+    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent, ModalAddOrEditAddressComponent, ModalEditOrAddFormationComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,
@@ -69,7 +71,8 @@ import { ReactiveFormsModule } from '@angular/forms';
         DrawerModule,
         PopoverModule,
         MessageModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DatePickerModule
     ]
 })
 export class ProfileModule {

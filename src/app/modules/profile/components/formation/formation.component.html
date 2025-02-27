@@ -9,7 +9,9 @@
     </div>
 
     <div class="flex flex-row gap-4 items-center h-auto pr-2">
-        <p-button icon="pi pi-trash" severity="danger" [outlined]="true"></p-button>
-        <p-button icon="pi pi-pencil" severity="info" [outlined]="true"></p-button>
+        <p-button icon="pi pi-trash" severity="danger" [outlined]="true" type="button"></p-button>
+        <p-button icon="pi pi-pencil" severity="info" [outlined]="true" (onClick)="open()"></p-button>
     </div>
 </div>
+
+<app-modal-edit-or-add-formation (onClose)="close()" *ngIf="visibleRight()" [formationToEdit]="formation()" [updateOrAdd]="'update'" [(visibleRight)]="visibleRight"></app-modal-edit-or-add-formation>
