@@ -1,0 +1,58 @@
+<p-drawer [(visible)]="visible" position="right" closable="true" [modal]="true" (onHide)="cancel()" class="bg-black" styleClass="!w-full md:!w-100 lg:!w-[50rem] md:!mb-0 lg:!mb-0">
+    <div class="flex flex-col items-center justify-center">
+        <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
+            <div class="text-center">
+                <img src="https://tutor.berlin/images/logos/878dc2a9-ae9e-4749-a9f6-72522672c989-small.png" alt="logo" class="mb-8 w-16 shrink-0 mx-auto" />
+                <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Editer votre compte</div>
+                <span class="text-muted-color font-medium">Renseignez vos coordonnées</span>
+            </div>
+
+            <p-fluid>
+                <section class="flex flex-col w-full mb-0">
+                    <generic-message message="Les champs marqués par * sont obligatoires." severity="error" styleclass="mt-2 "></generic-message>
+                </section>
+                <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
+                    <div class="card flex flex-col gap-6 w-full">
+                        <div class="font-semibold text-xl">Editer votre profil</div>
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="firstname" RequiredAsterisk>Prénom</label>
+                                <input pInputText id="firstname" type="text" formControlName="firstName" />
+                                <div class="error" *ngIf="form.submitted && userForm.controls['firstName'].errors">
+                                    <p-message [hidden]="!userForm.controls['firstName'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="lastname" RequiredAsterisk>Nom</label>
+                                <input pInputText id="lastname" type="text" formControlName="lastName" />
+                                <div class="error" *ngIf="form.submitted && userForm.controls['lastName'].errors">
+                                    <p-message [hidden]="!userForm.controls['lastName'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="title">Titre</label>
+                                <input pInputText id="title" type="text" formControlName="title" />
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="state" RequiredAsterisk>Genre</label>
+                                <p-select id="state" formControlName="gender" [options]="typesGenderList" optionLabel="name" placeholder="Select One" class="w-full"></p-select>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap flex-col gap-2 w-full">
+                            <label for="description">Description</label>
+                            <textarea pTextarea id="description" rows="4" formControlName="description"></textarea>
+                        </div>
+
+                        <div class="col-span-12 mt-8 text-center flex justify-center gap-4">
+                            <p-button label="Annuler" type="submit" severity="danger" styleClass="min-w-[100px]" type="button" />
+                            <p-button label="Oui, éditer" type="submit" severity="success" styleClass="min-w-[100px]" />
+                        </div>
+                    </div>
+                </form>
+            </p-fluid>
+        </div>
+    </div>
+</p-drawer>

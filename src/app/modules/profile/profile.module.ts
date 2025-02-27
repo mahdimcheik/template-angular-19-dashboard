@@ -38,9 +38,13 @@ import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ModalEditOrAddFormationComponent } from './components/modal-edit-or-add-formation/modal-edit-or-add-formation.component';
+import { ModalEditPersonnalInfosComponent } from './components/modal-edit-personnal-infos/modal-edit-personnal-infos.component';
+import { GenericMessageComponent } from '../../pages/uikit/generic-message/generic-message.component';
+import { TextareaModule } from 'primeng/textarea';
+import { RequiredAsteriskDirective } from '../../shared/directives/required-asterisk.directive';
 
 @NgModule({
-    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent, ModalAddOrEditAddressComponent, ModalEditOrAddFormationComponent],
+    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent, ModalAddOrEditAddressComponent, ModalEditOrAddFormationComponent, ModalEditPersonnalInfosComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,
@@ -72,7 +76,10 @@ import { ModalEditOrAddFormationComponent } from './components/modal-edit-or-add
         PopoverModule,
         MessageModule,
         ReactiveFormsModule,
-        DatePickerModule
+        DatePickerModule,
+        GenericMessageComponent,
+        TextareaModule,
+        RequiredAsteriskDirective
     ]
 })
 export class ProfileModule {
