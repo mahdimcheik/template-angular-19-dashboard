@@ -38,7 +38,7 @@
                 </button>
                 <button type="button" class="layout-topbar-action" (click)="menu.toggle($event)">
                     <i *ngIf="!user().email" class="pi pi-user"></i>
-                    <p-avatar *ngIf="user().email" [image]="user().imgUrl"></p-avatar>
+                    <p-avatar *ngIf="user().email" [image]="user().imgUrl" shape="circle"></p-avatar>
                     <span>Profile</span>
                 </button>
                 <p-menu #menu [model]="userItems()" [popup]="true"></p-menu>

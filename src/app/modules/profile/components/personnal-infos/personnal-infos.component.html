@@ -21,13 +21,10 @@
         </div>
     </div>
     <div class="flex flex-col md:flex-row items-center">
-        <div class="border border-surface rounded-border pb-2">
+        <div class="border border-surface rounded-border pb-2 pt-4">
             <div>
-                <div class="relative mx-auto">
-                    <img [src]="userToDisplay().imgUrl" class="max-w-3xs md:w-[200px] md:max-w-xs rounded-border" />
-                    <!-- <div class="absolute bg-black/70 rounded-border" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }">
-                        <p-tag value="*" severity="info" />
-                    </div> -->
+                <div class="relative mx-auto flex items-center justify-center">
+                    <p-image [src]="userToDisplay().imgUrl" alt="Image" [preview]="true" class="max-w-3xs md:w-[200px] md:max-w-xs rounded-border" />
                 </div>
             </div>
             <div class="font-bold mt-4 flex flex-col justify-between items-center">{{ fullName() | titlecase }}</div>

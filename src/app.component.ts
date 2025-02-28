@@ -16,5 +16,11 @@ export class AppComponent implements OnInit {
     localStorageService = inject(LocalstorageService);
     authService = inject(AuthService);
     router = inject(Router);
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        try {
+            this.authService.getprofile();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

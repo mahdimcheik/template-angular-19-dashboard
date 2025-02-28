@@ -173,6 +173,7 @@ export class AuthService {
             tap((res) => {
                 this.userConnected.set(res.data);
                 this.userToDisplay.set(res.data);
+                this.localStorageService.setUser(res.data);
             })
         );
     }

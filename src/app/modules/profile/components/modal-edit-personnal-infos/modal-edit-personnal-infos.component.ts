@@ -81,8 +81,10 @@ export class ModalEditPersonnalInfosComponent {
         await firstValueFrom(this.authService.updatePersonnalInfos(newUser as unknown as UserUpdateDTO));
 
         this.onValidate.emit();
+        this.visible.set(false);
     }
     cancel() {
+        this.visible.set(false);
         this.onValidate.emit();
     }
     genderChosen() {}
