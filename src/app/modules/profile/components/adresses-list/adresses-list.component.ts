@@ -1,5 +1,8 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { AdresseDTO } from '../../../../shared/models/adresse';
+import { firstValueFrom } from 'rxjs';
+import { AdresseService } from '../../../../shared/services/adresse.service';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
     selector: 'app-adresses-list',
@@ -8,42 +11,12 @@ import { AdresseDTO } from '../../../../shared/models/adresse';
     styleUrl: './adresses-list.component.scss'
 })
 export class AdressesListComponent {
-    adresses = input<AdresseDTO[]>([
-        {
-            id: '1',
-            street: 'Rue de la paix',
-            city: 'Paris',
-            postalCode: '75000',
-            country: 'France',
-            streetNumber: 1,
-            streetLine2: 'Bâtiment A',
-            state: 'Ile-de-France',
-            addressType: 0
-        },
-        {
-            id: '2',
-            street: 'Rue de la paix',
-            city: 'Paris',
-            postalCode: '75000',
-            country: 'France',
-            streetNumber: 1,
-            streetLine2: 'Bâtiment A',
-            state: 'Ile-de-France',
-            addressType: 0
-        }
-    ]);
-
-    adresseTochange: AdresseDTO = {
-        id: '1',
-        street: 'Rue de la paix',
-        city: 'Paris',
-        postalCode: '75000',
-        country: 'France',
-        streetNumber: 1,
-        streetLine2: 'Bâtiment A',
-        state: 'Ile-de-France',
-        addressType: 0
-    };
+    addressService = inject(AdresseService);
+    userConnected = inject(AuthService).userConnected;
+    addresses = this.addressService.listAddresses;
+    async ngOnInit() {
+        await firstValueFrom(this.addressService.getAllAddresses(this.userConnected().id));
+    }
 
     visibleRight = signal<boolean>(false);
 

@@ -15,7 +15,7 @@
                         <div class="flex flex-col md:flex-row gap-6">
                             <div class="flex flex-wrap gap-2 w-full">
                                 <label for="streetNumber" RequiredAsterisk>N° de rue</label>
-                                <input pInputText id="streetNumber" type="text" formControlName="streetNumber" />
+                                <input pInputText id="streetNumber" type="number" formControlName="streetNumber" />
                                 <div class="error" *ngIf="form.submitted && userForm.controls['streetNumber'].errors">
                                     <p-message [hidden]="!userForm.controls['streetNumber'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
                                 </div>
@@ -59,8 +59,8 @@
                             </div>
                         </div>
                         <div class="col-span-12 mt-8 text-center flex justify-center gap-4">
-                            <p-button label="Annuler" type="submit" severity="danger" styleClass="min-w-[100px]" />
-                            <p-button label="Inscription" type="submit" severity="success" styleClass="min-w-[100px]" />
+                            <p-button label="Annuler" type="button" severity="danger" styleClass="min-w-[100px]" (onClick)="close()" />
+                            <p-button [label]="updateOrAdd() == 'update' ? 'Editer' : 'Ajouter'" type="submit" severity="success" styleClass="min-w-[100px]" />
                         </div>
                     </div>
                 </form>

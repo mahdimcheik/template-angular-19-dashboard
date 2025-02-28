@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { AddressDropDown, AddressTypeEnum, AdresseDTO } from '../../../../shared/models/adresse';
+import { firstValueFrom } from 'rxjs';
+import { AdresseService } from '../../../../shared/services/adresse.service';
 
 @Component({
     selector: 'app-modal-add-or-edit-address',
@@ -21,6 +23,7 @@ export class ModalAddOrEditAddressComponent implements OnInit {
     title!: string;
 
     messageService = inject(MessageService);
+    adresseService = inject(AdresseService);
     fb = inject(FormBuilder);
     userForm!: FormGroup;
 
@@ -72,22 +75,41 @@ export class ModalAddOrEditAddressComponent implements OnInit {
 
             this.userForm = this.fb.group({
                 street: ['', [Validators.required]],
-                streetNumber: ['', [Validators.required]],
-                streetLine2: [''],
-                postalCode: ['', [Validators.required]],
-                city: ['', [Validators.required]],
+                streetNumber: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(5)]],
+                streetLine2: ['', [Validators.required, Validators.maxLength(40)]],
+                postalCode: ['', [Validators.required, Validators.maxLength(5)]],
+                city: ['', [Validators.required, Validators.maxLength(25)]],
                 addressType: [this.selectedType],
-                country: ['France'],
+                country: ['France', [Validators.required, Validators.maxLength(25)]],
                 state: ['']
             });
         }
     }
 
     close() {
+        this.visibleRight.set(false);
         this.onClose.emit(false);
     }
 
-    submit() {
-        console.log(this.userForm.value);
+    async submit() {
+        this.visibleRight.set(false);
+        if (this.updateOrAdd() == 'update') {
+            const newAdresse = {
+                ...this.userForm.value,
+                addressType: this.userForm.value['addressType'].value,
+                id: this.adresseTochange().id
+            };
+
+            this.actionEmitter.emit();
+            await firstValueFrom(this.adresseService.updateAddresse(newAdresse));
+        } else if (this.updateOrAdd() == 'add') {
+            const newAdresse = {
+                ...this.userForm.value,
+                addressType: this.userForm.value['addressType'].value
+            };
+
+            this.actionEmitter.emit();
+            await firstValueFrom(this.adresseService.addAddresse(newAdresse));
+        }
     }
 }

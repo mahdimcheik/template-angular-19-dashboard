@@ -61,8 +61,8 @@
                             </div>
                         </div>
                         <div class="col-span-12 mt-8 text-center flex justify-center gap-4">
-                            <p-button label="Annuler" type="submit" severity="danger" styleClass="min-w-[100px]" type="button" />
-                            <p-button label="Inscription" type="submit" severity="success" styleClass="min-w-[100px]" />
+                            <p-button label="Annuler" type="button" severity="danger" styleClass="min-w-[100px]" type="button" (onClick)="close()" />
+                            <p-button [label]="updateOrAdd() == 'update' ? 'Editer' : 'Ajouter'" type="submit" severity="success" styleClass="min-w-[100px]" />
                         </div>
                     </div>
                 </form>

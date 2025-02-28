@@ -1,0 +1,18 @@
+<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" [header]="header()" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="inventoryStatus" class="block font-bold mb-3">{{ title() }}</label>
+
+                <p>
+                    {{ question() }}
+                </p>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Annuler" icon="pi pi-times" text (onClick)="close()" />
+        <p-button label="Supprimer" icon="pi pi-check" (onClick)="confirm()" />
+    </ng-template>
+</p-dialog>

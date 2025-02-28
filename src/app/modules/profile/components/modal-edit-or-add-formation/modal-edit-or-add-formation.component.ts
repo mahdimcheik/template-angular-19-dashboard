@@ -2,6 +2,8 @@ import { Component, inject, input, model, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { FormationResponseDTO } from '../../../../shared/models/formation';
+import { firstValueFrom } from 'rxjs';
+import { FormationService } from '../../../../shared/services/formation.service';
 
 @Component({
     selector: 'app-modal-edit-or-add-formation',
@@ -14,6 +16,7 @@ export class ModalEditOrAddFormationComponent implements OnInit {
     visibleRight = model<boolean>(false);
     onClose = output<boolean>();
     formationToEdit = input<FormationResponseDTO>({} as FormationResponseDTO);
+    formationService = inject(FormationService);
     updateOrAdd = input<'update' | 'add'>('update');
     actionEmitter = output<void>();
     title!: string;
@@ -51,10 +54,25 @@ export class ModalEditOrAddFormationComponent implements OnInit {
     }
 
     close() {
+        this.visibleRight.set(false);
         this.onClose.emit(false);
     }
 
-    submit() {
-        console.log(this.userForm.value);
+    async submit() {
+        if (this.updateOrAdd() == 'update') {
+            const newFormation = {
+                ...this.userForm.value
+            };
+            newFormation.id = this.formationToEdit().id;
+
+            await firstValueFrom(this.formationService.updateFormation(newFormation));
+        } else if (this.updateOrAdd() == 'add') {
+            const newFormation = {
+                ...this.userForm.value
+            };
+
+            await firstValueFrom(this.formationService.addFormation(newFormation));
+        }
+        this.visibleRight.set(false);
     }
 }

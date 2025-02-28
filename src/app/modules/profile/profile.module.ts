@@ -43,9 +43,22 @@ import { GenericMessageComponent } from '../../pages/uikit/generic-message/gener
 import { TextareaModule } from 'primeng/textarea';
 import { RequiredAsteriskDirective } from '../../shared/directives/required-asterisk.directive';
 import { FileUploadModule } from 'primeng/fileupload';
+import { ModalConfirmDeleteComponent } from './components/modal-confirm-delete/modal-confirm-delete.component';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
-    declarations: [ProfileComponent, PersonnalInfosComponent, AdressesListComponent, AdressComponent, FormationComponent, FormationsListComponent, ModalAddOrEditAddressComponent, ModalEditOrAddFormationComponent, ModalEditPersonnalInfosComponent],
+    declarations: [
+        ProfileComponent,
+        PersonnalInfosComponent,
+        AdressesListComponent,
+        AdressComponent,
+        FormationComponent,
+        FormationsListComponent,
+        ModalAddOrEditAddressComponent,
+        ModalEditOrAddFormationComponent,
+        ModalEditPersonnalInfosComponent,
+        ModalConfirmDeleteComponent
+    ],
     imports: [
         CommonModule,
         ProfileRoutingModule,
@@ -81,7 +94,8 @@ import { FileUploadModule } from 'primeng/fileupload';
         GenericMessageComponent,
         TextareaModule,
         RequiredAsteriskDirective,
-        FileUploadModule
+        FileUploadModule,
+        DialogModule
     ]
 })
 export class ProfileModule {
