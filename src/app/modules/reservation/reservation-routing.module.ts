@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Page1Component } from './pages/page1/page1.component';
-import { Page2Component } from './pages/page2/page2.component';
 import { CalendarForTeacherComponent } from './pages/calendar-for-teacher/calendar-for-teacher.component';
+import { CalendarForStudentComponent } from './pages/calendar-for-student/calendar-for-student.component';
 
 const routes: Routes = [
     {
         path: 'calendar-for-teacher',
         component: CalendarForTeacherComponent
+    },
+    {
+        path: 'calendar-for-student',
+        component: CalendarForStudentComponent
     }
 ];
 

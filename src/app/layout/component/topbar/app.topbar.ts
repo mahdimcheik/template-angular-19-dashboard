@@ -52,6 +52,17 @@ export class AppTopbar {
         }
     });
 
+    calendarLink = computed(() => {
+        if (this.user().email) {
+            if (this.user().roles.includes('admin')) {
+                return 'reservation/calendar-for-teacher';
+            } else {
+                return 'reservation/calendar-for-student';
+            }
+        }
+        return '';
+    });
+
     constructor(public layoutService: LayoutService) {}
 
     toggleDarkMode() {

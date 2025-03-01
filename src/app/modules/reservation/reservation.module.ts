@@ -33,11 +33,12 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ModalEditAppointmentComponent } from './components/modal-edit-appointment/modal-edit-appointment.component';
+import { CalendarForStudentComponent } from './pages/calendar-for-student/calendar-for-student.component';
 
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
-    declarations: [CalendarForTeacherComponent, ModalDetailsAppointmentForTeacherComponent, ModalCreateAppointmentComponent, ModalEditAppointmentComponent],
+    declarations: [CalendarForTeacherComponent, ModalDetailsAppointmentForTeacherComponent, ModalCreateAppointmentComponent, ModalEditAppointmentComponent, CalendarForStudentComponent],
     imports: [
         CommonModule,
         ReservationRoutingModule,

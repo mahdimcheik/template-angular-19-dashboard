@@ -85,7 +85,10 @@ export class SlotService {
                 if (slots == null || slots.length == 0) return [];
                 return slots.map((slot) => this.convertSlotResponseToEventInput(slot));
             }),
-            tap((res) => this.visibleEvents.set(res))
+            tap((res) => {
+                this.visibleEvents.set(res);
+                console.log('events : ', res);
+            })
         );
     }
 
