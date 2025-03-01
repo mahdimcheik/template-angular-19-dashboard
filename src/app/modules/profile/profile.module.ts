@@ -28,7 +28,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { OrderListModule } from 'primeng/orderlist';
 import { PickListModule } from 'primeng/picklist';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { AdressComponent } from './components/adress/adress.component';
+import { AdressComponent } from './components/address/address.component';
 import { FormationComponent } from './components/formation/formation.component';
 import { FormationsListComponent } from './components/formations-list/formations-list.component';
 import { ModalAddOrEditAddressComponent } from './components/modal-add-or-edit-address/modal-add-or-edit-address.component';

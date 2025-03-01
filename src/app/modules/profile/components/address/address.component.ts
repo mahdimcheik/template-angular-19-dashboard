@@ -4,14 +4,14 @@ import { AdresseService } from '../../../../shared/services/adresse.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-    selector: 'app-adress',
+    selector: 'app-address',
     standalone: false,
 
-    templateUrl: './adress.component.html',
-    styleUrl: './adress.component.scss'
+    templateUrl: './address.component.html',
+    styleUrl: './address.component.scss'
 })
 export class AdressComponent {
-    adress = input.required<AdresseDTO>();
+    address = input.required<AdresseDTO>();
     visibleRight = signal<boolean>(false);
     visibleModalDelete = model<boolean>(false);
     addressService = inject(AdresseService);
@@ -23,7 +23,7 @@ export class AdressComponent {
         this.visibleRight.set(true);
     }
     async deleteAddress() {
-        await firstValueFrom(this.addressService.deleteAddresse(this.adress().id));
+        await firstValueFrom(this.addressService.deleteAddresse(this.address().id));
         this.visibleModalDelete.set(false);
     }
 }

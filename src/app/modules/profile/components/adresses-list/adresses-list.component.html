@@ -3,6 +3,6 @@
         <h3>Vos adresses</h3>
         <p-button icon="pi pi-plus" (onClick)="open()"></p-button>
     </div>
-    <app-adress *ngFor="let adress of addresses()" [adress]="adress"></app-adress>
+    <app-address *ngFor="let address of addresses()" [address]="address"></app-address>
 </div>
 <app-modal-add-or-edit-address *ngIf="visibleRight()" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight" (onClose)="close()"></app-modal-add-or-edit-address>
