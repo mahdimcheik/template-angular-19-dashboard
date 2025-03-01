@@ -55,11 +55,5 @@
     </ng-template>
 </full-calendar>
 
-<app-modal-details-appointment-for-teacher
-    *ngIf="isVisibleModalDelete"
-    [appoitment]="selectedAppoitment"
-    [newSlot]="selectedSlot"
-    [isCreateModal]="isModalCreate"
-    [visible]="isVisibleModalDelete"
-    (actionEmitter)="onDeleteAppointmentReservation($event)"
-></app-modal-details-appointment-for-teacher>
+<app-modal-create-appointment *ngIf="showCreateAppointmentModal()" [(visible)]="showCreateAppointmentModal" [appointment]="selectedSlot()" (onSubmitted)="loadSlot()"> </app-modal-create-appointment>
+<app-modal-edit-appointment *ngIf="showEditAppointmentModal()" [(visible)]="showEditAppointmentModal" [appointment]="selectedAppoitment()" (onSubmitted)="loadSlot()"> </app-modal-edit-appointment>

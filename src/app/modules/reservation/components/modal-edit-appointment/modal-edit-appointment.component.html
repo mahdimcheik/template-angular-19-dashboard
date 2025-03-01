@@ -1,0 +1,60 @@
+<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" header="Edition" [modal]="true">
+    <ng-template #content>
+        <p-fluid>
+            <section class="flex flex-col w-full mb-0"></section>
+            <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
+                <div class="card flex flex-col gap-6 w-full">
+                    <span class="font-semibold text-xl">Editer un créneau</span>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="startAt" RequiredAsterisk>De</label>
+                            <p-datepicker formControlName="startAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
+                                <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                    <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                                </ng-template>
+                            </p-datepicker>
+                            <div class="error" *ngIf="form.submitted && userForm.controls['startAt'].errors">
+                                <p-message [hidden]="!userForm.controls['startAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="endAt" RequiredAsterisk>À</label>
+                            <p-datepicker formControlName="endAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
+                                <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                    <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                                </ng-template>
+                            </p-datepicker>
+                            <div class="error" *ngIf="form.submitted && userForm.controls['endAt'].errors">
+                                <p-message [hidden]="!userForm.controls['endAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="font-semibold text-xl">Category</span>
+
+                    <div class="grid grid-cols-12 gap-4">
+                        <div class="col-span-6">
+                            <label for="price" class="block font-bold mb-3" RequiredAsterisk>Prix (€)</label>
+                            <p-inputnumber id="price" mode="currency" currency="EUR" locale="fr-FR" fluid formControlName="price" />
+                            <div class="error" *ngIf="form.submitted && userForm.controls['price'].errors">
+                                <p-message [hidden]="!userForm.controls['price'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            </div>
+                        </div>
+                        <div class="col-span-6">
+                            <label for="quantity" class="block font-bold mb-3">Réduction (%)</label>
+                            <p-inputnumber id="quantity" fluid formControlName="reduction" />
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-2 mt-4">
+                        <p-button label="Annuler" type="button" icon="pi pi-times" text (onClick)="close()" />
+                        <p-button label="Editer" type="submit" icon="pi pi-check" />
+                    </div>
+                </div>
+            </form>
+        </p-fluid>
+    </ng-template>
+
+    <!-- <ng-template #footer>
+        <p-button label="Annuler" type="button" icon="pi pi-times" text (onClick)="close()" />
+        <p-button label="Supprimer" type="submit" icon="pi pi-check"/>
+    </ng-template> -->
+</p-dialog>

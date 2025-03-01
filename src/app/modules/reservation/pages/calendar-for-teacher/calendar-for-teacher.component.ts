@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
@@ -13,18 +13,19 @@ import interactionPlugin, { EventResizeDoneArg, EventResizeStopArg } from '@full
 @Component({
     selector: 'app-calendar-for-teacher',
     standalone: false,
-
     templateUrl: './calendar-for-teacher.component.html',
     styleUrl: './calendar-for-teacher.component.scss'
 })
-export class CalendarForTeacherComponent implements OnInit, AfterViewInit {
+export class CalendarForTeacherComponent implements AfterViewInit {
     slotService = inject(SlotService);
     visibleEvents = this.slotService.visibleEvents; // signal
     userConnected = inject(AuthService).userConnected; // signal
 
     isVisibleModalCreate: boolean = false;
     isVisibleModalUpdate: boolean = false;
-    isVisibleModalDelete: boolean = false;
+
+    showCreateAppointmentModal = signal<boolean>(false);
+    showEditAppointmentModal = signal<boolean>(false);
 
     @ViewChild('calendar')
     calendarComponent!: FullCalendarComponent;
@@ -33,42 +34,35 @@ export class CalendarForTeacherComponent implements OnInit, AfterViewInit {
     dateStart!: string;
     dateEnd!: string;
     currentDate!: Date;
-    selectedSlot: EventInput = { start: new Date(), end: new Date() }; // empty slot selected pas un appoitment
-    selectedAppoitment: EventInput = { start: new Date(), end: new Date() }; // evenement déjà créé
-    isModalCreate: boolean = false;
+    selectedSlot = signal<EventInput>({ start: new Date(), end: new Date() }); //  EventInput = { start: new Date(), end: new Date() }; // empty slot selected pas un appoitment
+    selectedAppoitment = signal<EventInput>({ start: new Date(), end: new Date() }); // evenement déjà créé
 
     canDrop = (dropInfo: any, draggedEvent: any) => {
         const now = new Date();
         return dropInfo.start >= now && draggedEvent.start >= now;
     };
     onEventClick = (eventClickArg: EventClickArg) => {
-        this.isModalCreate = false;
-        this.selectedAppoitment = eventClickArg.event as EventInput;
-        this.selectedSlot = eventClickArg.event as EventInput;
-        // if (this.selectedAppoitment?.start! < new Date()) return;
-        this.slotService.selectedEvent.set(this.selectedAppoitment);
-        this.isVisibleModalDelete = true;
+        this.selectedAppoitment.set(eventClickArg.event as EventInput);
+        this.showEditAppointmentModal.set(true);
+        this.selectedSlot.set(eventClickArg.event as EventInput);
+        // console.log('selected slot ', eventClickArg.event);
+        // this.slotService.selectedEvent.set(this.selectedAppoitment);
+        // this.showCreateAppointmentModal.set(true);
     };
     onResize = (eventResizeArg: EventResizeDoneArg) => {
-        this.isModalCreate = false;
-        this.selectedAppoitment = eventResizeArg.oldEvent as EventInput;
-        this.selectedSlot = eventResizeArg.event as EventInput;
-        this.isVisibleModalDelete = true;
-        // this.isVisibleModalUpdate = true;
+        this.selectedAppoitment.set(eventResizeArg.oldEvent as EventInput);
+        this.selectedSlot.set(eventResizeArg.event as EventInput);
     };
     onDrop = (eventDropArg: EventDropArg) => {
-        this.isModalCreate = false;
-        this.selectedSlot = {
+        this.selectedSlot.set({
             start: eventDropArg.event.start as Date,
             end: eventDropArg.event.end as Date
-        };
-        this.selectedAppoitment = eventDropArg.oldEvent as EventInput;
-        this.isVisibleModalDelete = true;
-        // this.isVisibleModalUpdate = true;
+        });
+        this.selectedAppoitment.set(eventDropArg.oldEvent as EventInput);
     };
     onDateSelect = (selectionInfo: DateSelectArg) => {
-        this.selectedSlot = { start: selectionInfo.start, end: selectionInfo.end };
-        this.showCreateModal();
+        this.selectedSlot.set({ start: selectionInfo.start, end: selectionInfo.end });
+        this.showCreateAppointmentModal.set(true);
     };
     canStartDrag = (selectionInfo: any) => {
         return selectionInfo.start > new Date();
@@ -134,18 +128,6 @@ export class CalendarForTeacherComponent implements OnInit, AfterViewInit {
         eventColor: '#0000'
     };
 
-    showCreateModal() {
-        // this.isVisibleModalCreate = true;
-        this.isModalCreate = true;
-        this.isVisibleModalDelete = true;
-    }
-    hideCreateModal() {
-        // this.isVisibleModalCreate = false;
-        this.isModalCreate = false;
-        this.isVisibleModalDelete = false;
-    }
-    async ngOnInit(): Promise<void> {}
-
     ngAfterViewInit(): void {
         const calendarApi = this.calendarComponent.getApi();
         this.dateStart = calendarApi.view.currentStart.toUTCString();
@@ -186,17 +168,10 @@ export class CalendarForTeacherComponent implements OnInit, AfterViewInit {
         this.calendarComponent.getApi().changeView('timeGridDay');
         this.updateViewDates();
     }
-
     onDeleteAppointmentReservation(shouldRelaod: boolean = false) {
-        this.isVisibleModalCreate = false;
-        this.isVisibleModalUpdate = false;
-        this.isVisibleModalDelete = false;
         shouldRelaod && this.loadSlot();
     }
     onUpdateAppointment(shouldRelaod: boolean = false) {
-        this.isVisibleModalCreate = false;
-        this.isVisibleModalUpdate = false;
-        this.isVisibleModalDelete = false;
         shouldRelaod && this.loadSlot();
     }
 }
