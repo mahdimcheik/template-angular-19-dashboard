@@ -1,0 +1,66 @@
+<p-dialog [style]="{ width: '30rem' }" [(visible)]="visible" [modal]="true" [draggable]="false" [resizable]="false" (onHide)="actionEmitter.emit()">
+    <div class="modal">
+        <div class="details-appointment">
+            <h2 class="details-header">
+                {{ appoitment.extendedProps?.['studentId'] ? 'Détails de la réservation' : 'Détails du créneau' }}
+            </h2>
+            <h3 class="details-student-name" *ngIf="appoitment.extendedProps?.['slot']?.['studentId']">
+                Prévue pour :
+                {{ appoitment.extendedProps?.['slot']?.['studentFirstName'] | titlecase }}
+                {{ appoitment.extendedProps?.['slot']?.['studentLastName'] | titlecase }}
+            </h3>
+            <div class="detailts-content">
+                <h3>Date : {{ start | date: 'EEEE, d MMMM y' }}</h3>
+                <div class="dat-from-to">
+                    <h4>De : {{ start | date: 'HH:mm' }} à : {{ end | date: 'HH:mm' }}</h4>
+                </div>
+                <div class="details-description text-truncate" *ngIf="appoitment.extendedProps?.['slot']?.['studentId']">
+                    <h3>{{ appoitment.extendedProps?.['subject'] }}</h3>
+                    {{ appoitment.extendedProps?.['description'] }}
+                </div>
+                <p-button
+                    *ngIf="appoitment.extendedProps?.['slot']?.['studentId']"
+                    class="details-contact"
+                    [label]="' Contacter ' + appoitment.extendedProps?.['slot']?.['studentFirstName']"
+                    icon="pi pi-phone"
+                    iconPos="right"
+                    (onClick)="cancel()"
+                    severity="info"
+                    ><img class="img-contact mr-2" [src]="appoitment.extendedProps?.['slot']?.['studentImgUrl']"
+                /></p-button>
+            </div>
+        </div>
+
+        <div class="appointment-edition" *ngIf="!appoitment.extendedProps?.['slot']?.['studentId']">
+            <div class="price">
+                <h3>Prix (€):</h3>
+                <input type="number" class="pl-2" pinput [(ngModel)]="price" variant="filled" [disabled]="isInThePast" />
+                <p class="error" *ngIf="price < 0 || price > 200">Attention, prix anormal</p>
+            </div>
+            <div class="reduction">
+                <h3>Réduction (%):</h3>
+                <input type="number" pinput class="pl-2" [(ngModel)]="reduction" [disabled]="isInThePast" />
+                <p class="error" *ngIf="reduction < 0 || reduction > 100">Attention, réduction anormale (0-100%)</p>
+            </div>
+            <p-button *ngIf="!isCreateModal && !isInThePast" [disabled]="price < 0 || price > 200 || reduction < 0 || reduction > 100" styleClass="btn-save" severity="success" label="Mettre à jour" (onClick)="update()"></p-button>
+        </div>
+        <footer>
+            <h2 *ngIf="!isInThePast">
+                {{ isCreateModal ? 'Ouvrir un créneau' : appoitment.extendedProps?.['studentId'] ? 'Résilier la résérvation' : 'Supprimer ce créneau' }}
+            </h2>
+            <div class="control" autofocus>
+                <p-button [style]="{ minWidth: '130px' }" label="Annuler" icon="pi pi-times" (onClick)="cancel(false)" severity="danger"></p-button>
+                <p-button
+                    *ngIf="!isInThePast"
+                    autofocus="true"
+                    [style]="{ minWidth: '130px' }"
+                    [label]="isCreateModal ? 'Oui, créer' : !appoitment.extendedProps?.['studentId'] ? 'Oui, supprimer' : 'Oui, résilier'"
+                    icon="pi pi-check"
+                    (onClick)="validate()"
+                    [disabled]="price < 0 || price > 200 || reduction < 0 || reduction > 100"
+                    severity="success"
+                ></p-button>
+            </div>
+        </footer>
+    </div>
+</p-dialog>

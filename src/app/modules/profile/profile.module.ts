@@ -45,6 +45,7 @@ import { RequiredAsteriskDirective } from '../../shared/directives/required-aste
 import { FileUploadModule } from 'primeng/fileupload';
 import { ModalConfirmDeleteComponent } from './components/modal-confirm-delete/modal-confirm-delete.component';
 import { DialogModule } from 'primeng/dialog';
+import { AdresseImagePipe } from '../../shared/pipes/adresse-type.pipe';
 
 @NgModule({
     declarations: [
@@ -95,7 +96,8 @@ import { DialogModule } from 'primeng/dialog';
         TextareaModule,
         RequiredAsteriskDirective,
         FileUploadModule,
-        DialogModule
+        DialogModule,
+        AdresseImagePipe
     ]
 })
 export class ProfileModule {

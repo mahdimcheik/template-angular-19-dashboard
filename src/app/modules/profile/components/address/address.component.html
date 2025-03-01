@@ -1,6 +1,6 @@
 <div class="flex flex-row justify-between md:items-center flex-1 gap-6 border-t border-surface pt-4 pb-2">
-    <div class="flex flex-row justify-between items-center gap-2">
-        <img src="https://www.citypng.com/public/uploads/preview/address-location-map-black-icon-symbol-download-png-701751694974706zcvtdkajtm.png" alt="adress" class="w-16 h-16 rounded" />
+    <div class="flex flex-row justify-between items-center gap-4">
+        <img [src]="address().addressType | adresseImage" alt="adress" class="w-16 h-16 rounded" />
         <div>
             <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ address().streetNumber }} {{ address().street }} </span>
             <div class="text-lg font-medium">{{ address().streetLine2 }}</div>

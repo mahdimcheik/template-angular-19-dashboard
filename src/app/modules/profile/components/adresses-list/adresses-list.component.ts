@@ -14,6 +14,7 @@ export class AdressesListComponent {
     addressService = inject(AdresseService);
     userConnected = inject(AuthService).userConnected;
     addresses = this.addressService.listAddresses;
+
     async ngOnInit() {
         await firstValueFrom(this.addressService.getAllAddresses(this.userConnected().id));
     }
@@ -23,6 +24,7 @@ export class AdressesListComponent {
     close() {
         this.visibleRight.set(false);
     }
+
     open() {
         this.visibleRight.set(true);
     }
