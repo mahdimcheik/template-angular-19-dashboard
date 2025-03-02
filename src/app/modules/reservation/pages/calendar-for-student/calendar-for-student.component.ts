@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventContentArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { FullCalendarComponent } from '@fullcalendar/angular';
@@ -40,12 +40,12 @@ export class CalendarForStudentComponent implements OnInit, AfterViewInit {
     @ViewChild('calendar')
     calendarComponent!: FullCalendarComponent;
     events: EventInput[] = [];
-    displayModal: boolean = false;
     dateStart!: string;
     dateEnd!: string;
     currentDate!: Date;
     selectedSlot: EventInput = { start: new Date(), end: new Date() }; // empty slot selected pas un appoitment
     selectedAppoitment: EventInput = { start: new Date(), end: new Date() }; // evenement déjà créé
+    visibleModalBookUnbook = signal<boolean>(false);
 
     canDrop = (dropInfo: any, draggedEvent: any) => {
         return false;
@@ -53,7 +53,7 @@ export class CalendarForStudentComponent implements OnInit, AfterViewInit {
     onEventClick = (eventClickArg: EventClickArg) => {
         this.selectedAppoitment = eventClickArg.event as EventInput;
         this.slotService.selectedEvent.set(this.selectedAppoitment);
-        this.isVisibleModalBookDelete = true;
+        this.visibleModalBookUnbook.set(true);
     };
     onResize = (eventResizeArg: EventResizeDoneArg) => {};
     onDrop = (eventDropArg: EventDropArg) => {};
@@ -122,9 +122,6 @@ export class CalendarForStudentComponent implements OnInit, AfterViewInit {
         eventColor: '#0000'
     };
 
-    hideCreateModal() {
-        this.isVisibleModalBookDelete = false;
-    }
     async ngOnInit(): Promise<void> {
         // this.loadSlot();
     }
