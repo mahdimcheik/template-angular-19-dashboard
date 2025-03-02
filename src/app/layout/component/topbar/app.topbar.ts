@@ -54,11 +54,14 @@ export class AppTopbar {
 
     calendarLink = computed(() => {
         if (this.user().email) {
-            if (this.user().roles.includes('Admin')) {
-                return 'reservation/calendar-for-teacher';
-            } else {
-                return 'reservation/calendar-for-student';
+            if (this.user()?.roles) {
+                if (this.user()?.roles.includes('Admin')) {
+                    return 'reservation/calendar-for-teacher';
+                } else {
+                    return 'reservation/calendar-for-student';
+                }
             }
+            return 'reservation/calendar-for-student';
         }
         return '';
     });

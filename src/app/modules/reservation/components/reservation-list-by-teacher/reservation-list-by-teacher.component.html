@@ -1,1 +1,68 @@
-<p>reservation-list-by-teacher works!</p>
+<p-table
+    #dt
+    [value]="reservations()"
+    [rows]="10"
+    [paginator]="true"
+    [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="selectedReservation"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="De {first} à {last} de {totalRecords} réservations"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 30]"
+>
+    <!-- <ng-template #caption>
+        <div class="flex items-center justify-between">
+            <h5 class="m-0">Manage Products</h5>
+            <p-iconfield>
+                <p-inputicon styleClass="pi pi-search" />
+                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
+            </p-iconfield>
+        </div>
+    </ng-template> -->
+    <ng-template #header>
+        <tr>
+            <th pSortableColumn="name" style="min-width: 16rem">
+                Nom
+                <p-sortIcon field="name" />
+            </th>
+            <th>Image</th>
+            <th pSortableColumn="price" style="min-width: 8rem">
+                Prix
+                <p-sortIcon field="price" />
+            </th>
+            <th pSortableColumn="reduction" style="min-width: 8rem">
+                Réduction
+                <p-sortIcon field="reduction" />
+            </th>
+            <th pSortableColumn="date" style="min-width: 8rem">
+                Date
+                <p-sortIcon field="date" />
+            </th>
+            <th style="min-width: 12rem"></th>
+        </tr>
+    </ng-template>
+    <ng-template #body let-reservation>
+        <tr>
+            <td style="min-width: 16rem" class="text-xl font-bold">{{ reservation.studentFirstName }} {{ reservation.studentLastName }}</td>
+            <td>
+                <img [src]="reservation.studentImgUrl" style="width: 64px" class="rounded" />
+            </td>
+            <td>{{ reservation.price | currency: 'EUR' }}</td>
+            <td>{{ reservation.reduction }}%</td>
+            <td>
+                <div class="flex flex-col gap-1">
+                    <span>
+                        {{ reservation.startAt | date }}
+                    </span>
+                    <span class="font-semibold">{{ reservation.startAt | date: 'H:mm' }} à {{ reservation.endAt | date: 'H:mm' }}</span>
+                </div>
+            </td>
+            <td>
+                <p-button class="m-4" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" />
+                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" />
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

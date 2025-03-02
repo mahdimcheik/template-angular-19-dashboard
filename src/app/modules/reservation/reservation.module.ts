@@ -38,11 +38,26 @@ import { ModalBookOrUnbookComponent } from './components/modal-book-or-unbook/mo
 import { InputTextModule } from 'primeng/inputtext';
 import { ReservationLineByTeacherComponent } from './components/reservation-line-by-teacher/reservation-line-by-teacher.component';
 import { ReservationListByTeacherComponent } from './components/reservation-list-by-teacher/reservation-list-by-teacher.component';
+import { ToastModule } from 'primeng/toast';
+import { RatingModule } from 'primeng/rating';
+import { TagModule } from 'primeng/tag';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
-    declarations: [CalendarForTeacherComponent, ModalDetailsAppointmentForTeacherComponent, ModalCreateAppointmentComponent, ModalEditAppointmentComponent, CalendarForStudentComponent, ModalBookOrUnbookComponent, ReservationLineByTeacherComponent, ReservationListByTeacherComponent],
+    declarations: [
+        CalendarForTeacherComponent,
+        ModalDetailsAppointmentForTeacherComponent,
+        ModalCreateAppointmentComponent,
+        ModalEditAppointmentComponent,
+        CalendarForStudentComponent,
+        ModalBookOrUnbookComponent,
+        ReservationLineByTeacherComponent,
+        ReservationListByTeacherComponent
+    ],
     imports: [
         CommonModule,
         ReservationRoutingModule,
@@ -77,7 +92,21 @@ registerLocaleData(localeFr, 'fr');
         DialogModule,
         RadioButtonModule,
         InputNumberModule,
-        InputTextModule
+        InputTextModule,
+        RippleModule,
+        ToastModule,
+        ToolbarModule,
+        RatingModule,
+        InputTextModule,
+        TextareaModule,
+        SelectModule,
+        RadioButtonModule,
+        InputNumberModule,
+        DialogModule,
+        TagModule,
+        InputIconModule,
+        IconFieldModule,
+        ConfirmDialogModule
     ]
 })
 export class ReservationModule {}

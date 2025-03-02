@@ -3,13 +3,14 @@ import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable, of, switchMap, tap } from 'rxjs';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { ResponseDTO } from '../models/user';
-import { BookingCreateDTO, SlotCreateDTO, SlotResponseDTO, SlotUpdateDTO } from '../models/slot';
+import { BookingCreateDTO, QueryPanigation, ReservationResponseDTO, SlotCreateDTO, SlotResponseDTO, SlotUpdateDTO } from '../models/slot';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SlotService {
     visibleEvents = signal([] as EventInput[]);
+    reservations = signal([] as ReservationResponseDTO[]);
     selectedEvent = signal({} as EventInput);
     start = signal(new Date());
     end = signal(new Date());
@@ -119,19 +120,37 @@ export class SlotService {
             end: new Date(slot.endAt),
             title: slot.subject ?? 'Rendez-vous',
             extendedProps: {
-                // price: slot.price,
-                // reduction: slot.reduction,
-                // discountedPrice: slot.discountedPrice,
-                // id: slot.id,
-                // studentFirstName: slot.studentFirstName,
-                // studentLastName: slot.studentLastName,
-                // studentImgUrl: slot.studentImgUrl,
-                // studentId: slot.studentId,
-                // typeHelp: slot.typeHelp,
-                // subject: slot.subject,
-                // description: slot.description,
                 slot: slot
             }
         };
+    }
+
+    // get reservations
+    getReservationsByStudent(query: QueryPanigation): Observable<EventInput[]> {
+        return this.http.post<ResponseDTO>(`https://localhost:7113/slot/reservations-student`, query).pipe(
+            map((res) => {
+                var reservations = res.data as ReservationResponseDTO[];
+                if (reservations == null || reservations.length == 0) return [];
+                return reservations;
+            }),
+            tap((res) => {
+                this.reservations.set(res);
+                console.log('reservations : ', res);
+            })
+        );
+    }
+
+    getReservationsByTeacher(query: QueryPanigation): Observable<EventInput[]> {
+        return this.http.post<ResponseDTO>(`https://localhost:7113/slot/reservations-teacher`, query).pipe(
+            map((res) => {
+                var reservations = res.data as ReservationResponseDTO[];
+                if (reservations == null || reservations.length == 0) return [];
+                return reservations;
+            }),
+            tap((res) => {
+                this.reservations.set(res);
+                console.log('reservations teacher : ', res);
+            })
+        );
     }
 }

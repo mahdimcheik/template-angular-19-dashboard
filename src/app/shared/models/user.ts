@@ -66,5 +66,6 @@ export type UserLoginDTO = {
 export type ResponseDTO = {
     message: string;
     status: number;
-    data: any;
+    data?: any;
+    count?: number;
 };
