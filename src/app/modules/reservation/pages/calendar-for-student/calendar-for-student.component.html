@@ -12,26 +12,25 @@
 </div>
 <full-calendar [options]="calendarOptions" #calendar [events]="visibleEvents()">
     <ng-template #eventContent let-arg class="custom-event">
-        <div [ngClass]="['custom-event', arg.event.extendedProps?.studentId ? 'booked' : 'available']">
-            <b *ngIf="arg.event.title && arg.event.title !== 'No title'" class="event-title">
+        <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available']">
+            <b *ngIf="arg.event.title" class="event-title">
                 {{ arg.event.title }}
             </b>
 
-            <div class="event-image" *ngIf="arg.event.extendedProps?.imgUrl">
-                <img [src]="arg.event.extendedProps.imgUrl" width="50" height="50" />
-            </div>
-
-            <ng-container *ngIf="arg.event.extendedProps?.studentId; else availableSlot">
+            <ng-container *ngIf="arg.event.extendedProps?.slot?.studentId; else availableSlot">
+                <!-- <div class="event-image" *ngIf="arg.event.extendedProps?.slot?.studentImgUrl">
+                    <img [src]="arg.event.extendedProps?.slot?.studentImgUrl" width="50" height="50" />
+                </div> -->
                 <div class="slot-content">
-                    <img [src]="arg.event.extendedProps.studentImgUrl" width="24" height="24" />
+                    <img [src]="arg.event.extendedProps.slot.studentImgUrl" width="24" height="24" />
                     <span class="student-name">
-                        {{ arg.event.extendedProps.studentFirstName }}
-                        {{ arg.event.extendedProps.studentLastName }}
+                        {{ arg.event.extendedProps?.slot?.studentFirstName }}
+                        {{ arg.event.extendedProps?.slot?.studentLastName }}
                     </span>
                 </div>
                 <div class="event-type">
                     <span>Type : </span>
-                    <span>{{ arg.event.extendedProps?.typeHelp | helpType }}</span>
+                    <span>{{ arg.event.extendedProps?.slot?.typeHelp | helpType }}</span>
                 </div>
             </ng-container>
 
@@ -55,4 +54,4 @@
     </ng-template>
 </full-calendar>
 
-<app-modal-book-or-unbook [appointment]="selectedAppoitment" [(visible)]="visibleModalBookUnbook"></app-modal-book-or-unbook>
+<app-modal-book-or-unbook [appointment]="selectedAppoitment" [(visible)]="visibleModalBookUnbook" (onBooking)="loadSlot()"></app-modal-book-or-unbook>

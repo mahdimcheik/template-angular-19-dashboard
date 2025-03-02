@@ -5,6 +5,7 @@ import { SlotService } from '../../../../shared/services/slot.service';
 import { firstValueFrom } from 'rxjs';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { Title } from '@angular/platform-browser';
+import { BookingCreateDTO } from '../../../../shared/models/slot';
 
 type TypeHelpType = {
     id: number;
@@ -21,15 +22,19 @@ type TypeHelpType = {
 export class ModalBookOrUnbookComponent implements OnInit {
     visible = model<boolean>(false);
     appointment = input.required<EventInput>();
+    onBooking = output();
     userForm!: FormGroup;
     title: string = '';
     description: string = '';
-    type: number = 0;
+    typeHelpTransformInstance: HelpTypePipe = new HelpTypePipe();
 
     fb = inject(FormBuilder);
     slotService = inject(SlotService);
 
-    typeHelpTransformInstance: HelpTypePipe = new HelpTypePipe();
+    type = {
+        id: 0,
+        value: this.typeHelpTransformInstance.transform(0)
+    };
     typesHelp = [
         {
             id: 0,
@@ -47,9 +52,10 @@ export class ModalBookOrUnbookComponent implements OnInit {
 
     ngOnInit(): void {
         this.userForm = this.fb.group({
+            id: [this.appointment().id],
             typeHelp: [this.type, Validators.required],
-            description: [this.description, Validators.required],
-            title: [this.title, Validators.required]
+            description: [this.description],
+            subject: [this.title, Validators.required]
         });
     }
     close() {
@@ -58,6 +64,17 @@ export class ModalBookOrUnbookComponent implements OnInit {
 
     async submit() {
         try {
+            console.log('appointment', this.appointment());
+
+            const newBooking: BookingCreateDTO = {
+                slotId: this.appointment().extendedProps?.['slot']?.['id'],
+                typeHelp: this.userForm.value.typeHelp.id,
+                description: this.userForm.value.description,
+                subject: this.userForm.value.subject
+            };
+            console.log('newBooking', newBooking);
+            await firstValueFrom(this.slotService.bookSlot(newBooking));
+            this.onBooking.emit();
             this.close();
         } catch (e) {
             console.error(e);

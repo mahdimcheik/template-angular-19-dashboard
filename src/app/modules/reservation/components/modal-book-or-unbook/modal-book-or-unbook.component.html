@@ -3,18 +3,18 @@
         <p-fluid>
             <section class="flex flex-col w-full mb-0"></section>
             <form [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
-                <div class="card flex flex-col gap-6 w-full">
-                    <span class="font-semibold text-xl">Réserver ce créneau</span>
-                    <label>Le {{ appointment().extendedProps?.['slot']?.['startAt'] | date: 'dd/MM/yyyy' }}</label>
+                <div class="card flex flex-col gap-4 w-full">
+                    <h2 class="font-semibold text-xxl">Réserver ce créneau</h2>
+                    <h3 class="font-semibold text-xl">Le {{ appointment().extendedProps?.['slot']?.['startAt'] | date: 'd MMMM' }}</h3>
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full justify-between">
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2 w-full">
                                 <label for="endAt" RequiredAsterisk>De</label>
-                                <input pInputText id="title" type="text" [value]="appointment().extendedProps?.['slot']?.['startAt'] | date: 'hh:mm'" disabled />
+                                <input pInputText id="title" type="text" [value]="appointment().extendedProps?.['slot']?.['startAt'] | date: 'H:mm'" disabled />
                             </div>
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2 w-full">
                                 <label for="endAt" RequiredAsterisk>À</label>
-                                <input pInputText id="title" type="text" [value]="appointment().extendedProps?.['slot']?.['endAt'] | date: 'hh:mm'" disabled />
+                                <input pInputText id="title" type="text" [value]="appointment().extendedProps?.['slot']?.['endAt'] | date: 'H:mm'" disabled />
                             </div>
                         </div>
                     </div>
@@ -22,23 +22,26 @@
 
                     <div class="flex flex-col gap-2">
                         <div class="flex flex-wrap gap-2 w-full">
-                            <label for="title">Titre</label>
-                            <input pInputText id="title" type="text" formControlName="title" />
+                            <label for="subject">Titre</label>
+                            <input pInputText id="subject" type="text" formControlName="subject" />
+                            <div class="error" *ngIf="form.submitted && userForm.controls['subject'].errors">
+                                <p-message [hidden]="!userForm.controls['subject'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            </div>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full">
                             <label for="state" RequiredAsterisk>Type</label>
-                            <p-select id="state" formControlName="type" [options]="typesHelp" optionLabel="value" placeholder="Votre choix" class="w-full"></p-select>
+                            <p-select id="state" formControlName="typeHelp" [options]="typesHelp" optionLabel="value" placeholder="Votre choix" class="w-full"></p-select>
                         </div>
                     </div>
 
                     <div class="flex flex-wrap flex-col gap-2 w-full">
                         <label for="description">Description</label>
-                        <textarea pTextarea id="description" rows="4" formControlName="description"></textarea>
+                        <textarea pTextarea id="description" rows="4" formControlName="description" placeholder="Plus d'informations à fournir au professeur"></textarea>
                     </div>
 
                     <div class="flex justify-end gap-2 mt-4">
                         <p-button label="Annuler" type="button" icon="pi pi-times" text (onClick)="close()" />
-                        <p-button label="Créer" type="submit" icon="pi pi-check" />
+                        <p-button label="Réserver" type="submit" icon="pi pi-check" />
                     </div>
                 </div>
             </form>
