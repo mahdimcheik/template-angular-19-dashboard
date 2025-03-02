@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { firstValueFrom } from 'rxjs';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { Title } from '@angular/platform-browser';
-import { BookingCreateDTO } from '../../../../shared/models/slot';
+import { BookingCreateDTO, SlotResponseDTO } from '../../../../shared/models/slot';
 
 type TypeHelpType = {
     id: number;
@@ -22,6 +22,7 @@ type TypeHelpType = {
 export class ModalBookOrUnbookComponent implements OnInit {
     visible = model<boolean>(false);
     appointment = input.required<EventInput>();
+    slotDetailed = computed<SlotResponseDTO>(() => this.appointment().extendedProps?.['slot'] as SlotResponseDTO);
     onBooking = output();
     userForm!: FormGroup;
     title: string = '';
@@ -79,5 +80,10 @@ export class ModalBookOrUnbookComponent implements OnInit {
         } catch (e) {
             console.error(e);
         }
+    }
+    async unbook() {
+        this.close(); // fermer le modal
+        await firstValueFrom(this.slotService.unbookReservationByStudent(this.appointment().extendedProps?.['slot']?.['id'])); // unbook
+        this.onBooking.emit(); // refresh
     }
 }

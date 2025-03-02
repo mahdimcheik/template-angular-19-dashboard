@@ -54,7 +54,7 @@ export class AppTopbar {
 
     calendarLink = computed(() => {
         if (this.user().email) {
-            if (this.user().roles.includes('admin')) {
+            if (this.user().roles.includes('Admin')) {
                 return 'reservation/calendar-for-teacher';
             } else {
                 return 'reservation/calendar-for-student';

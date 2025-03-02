@@ -3,44 +3,26 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 8px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
     text-align: center;
     transition: all 0.3s ease-in-out;
-    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 100px;
     max-width: 200px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    font-size: 14px;
+    height: 100%;
 
     &.booked {
-        background: #ffe6e6; // Light red background
-        border: 2px solid #d32f2f;
-        color: #b71c1c;
-        font-weight: bold;
-
-        .student-name {
-            font-size: 15px;
-            font-weight: bold;
-            color: #b71c1c;
-        }
-
-        .event-type {
-            color: #880e4f;
-            font-size: 13px;
-        }
+        background: #ffebee; // Light red background
+        border: 1px solid #d32f2f;
+        color: #d32f2f;
     }
 
     &.available {
         background: #e8f5e9; // Light green background
-        border: 2px solid #2e7d32;
-        color: #1b5e20;
-        font-weight: bold;
-
-        .availability-info {
-            color: #1b5e20;
-            font-size: 14px;
-        }
+        border: 1px solid #2e7d32;
+        color: #2e7d32;
     }
 
     .event-title {
@@ -62,19 +44,17 @@
     .slot-content {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         margin-top: 6px;
 
         img {
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
             border: 2px solid #aaa;
         }
 
         .student-name {
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 500;
             color: #333;
         }
     }
@@ -83,7 +63,11 @@
         font-size: 12px;
         font-weight: bold;
         color: #555;
-        margin-top: 6px;
+        margin-top: 4px;
+
+        span {
+            color: #1976d2;
+        }
     }
 
     .availability-info {
@@ -122,8 +106,8 @@
 // Mobile responsiveness
 @media (max-width: 600px) {
     .custom-event {
-        min-width: 90px;
-        max-width: 140px;
+        min-width: 80px;
+        max-width: 150px;
         padding: 6px;
 
         .slot-content {

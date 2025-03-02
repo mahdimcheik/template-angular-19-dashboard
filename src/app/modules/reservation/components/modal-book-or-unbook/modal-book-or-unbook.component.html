@@ -4,44 +4,65 @@
             <section class="flex flex-col w-full mb-0"></section>
             <form [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
                 <div class="card flex flex-col gap-4 w-full">
-                    <h2 class="font-semibold text-xxl">Réserver ce créneau</h2>
-                    <h3 class="font-semibold text-xl">Le {{ appointment().extendedProps?.['slot']?.['startAt'] | date: 'd MMMM' }}</h3>
+                    <h2 class="font-semibold text-xxl">{{ !slotDetailed().studentId ? 'Réserver ce créneau' : 'Supprimer cette réservation' }}</h2>
+                    <h3 class="font-semibold text-xl">Le {{ appointment().start?.toString() | date: 'd MMMM' }}</h3>
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full justify-between">
                             <div class="flex flex-col gap-2 w-full">
                                 <label for="endAt" RequiredAsterisk>De</label>
-                                <input pInputText id="title" type="text" [value]="appointment().extendedProps?.['slot']?.['startAt'] | date: 'H:mm'" disabled />
+                                <input pInputText id="title" type="text" [value]="appointment().start?.toString() | date: 'H:mm'" disabled />
                             </div>
                             <div class="flex flex-col gap-2 w-full">
                                 <label for="endAt" RequiredAsterisk>À</label>
-                                <input pInputText id="title" type="text" [value]="appointment().extendedProps?.['slot']?.['endAt'] | date: 'H:mm'" disabled />
+                                <input pInputText id="title" type="text" [value]="appointment().end?.toString() | date: 'H:mm'" disabled />
                             </div>
                         </div>
                     </div>
-                    <span class="font-semibold text-xl">Sujet</span>
-
-                    <div class="flex flex-col gap-2">
-                        <div class="flex flex-wrap gap-2 w-full">
-                            <label for="subject">Titre</label>
-                            <input pInputText id="subject" type="text" formControlName="subject" />
-                            <div class="error" *ngIf="form.submitted && userForm.controls['subject'].errors">
-                                <p-message [hidden]="!userForm.controls['subject'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                    <!-- cas où le créneau est réservé -->
+                    <div *ngIf="slotDetailed()?.['studentId']" class="flex flex-col gap-2">
+                        <div class="flex flex-col flex-wrap w-full">
+                            <h3 class="font-semibold text-xl">Détails de réservation</h3>
+                            <p>
+                                Pour <span [style.color]="'var(--primary-color)'" class="font-bold">{{ slotDetailed().studentFirstName }} {{ slotDetailed().studentLastName }} </span>
+                            </p>
+                            <div class="m-2 flex flex-col gap-2">
+                                <p-message class="text mb-2">{{ slotDetailed().subject }}</p-message>
+                                <p-message severity="success">{{ slotDetailed().description }}</p-message>
+                                <!-- <p-message severity="info">{{ appointment().extendedProps?.['slot']?.typeHelp | helpType }} </p-message> -->
                             </div>
                         </div>
-                        <div class="flex flex-wrap gap-2 w-full">
-                            <label for="state" RequiredAsterisk>Type</label>
-                            <p-select id="state" formControlName="typeHelp" [options]="typesHelp" optionLabel="value" placeholder="Votre choix" class="w-full"></p-select>
+                        <div class="flex justify-end gap-2 mt-4">
+                            <p-button label="Abondonner" type="button" icon="pi pi-times" text (onClick)="close()" />
+                            <p-button label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap flex-col gap-2 w-full">
-                        <label for="description">Description</label>
-                        <textarea pTextarea id="description" rows="4" formControlName="description" placeholder="Plus d'informations à fournir au professeur"></textarea>
-                    </div>
+                    <div *ngIf="!slotDetailed()?.['studentId']">
+                        <span class="font-semibold text-xl">Sujet</span>
 
-                    <div class="flex justify-end gap-2 mt-4">
-                        <p-button label="Annuler" type="button" icon="pi pi-times" text (onClick)="close()" />
-                        <p-button label="Réserver" type="submit" icon="pi pi-check" />
+                        <div class="flex flex-col gap-2">
+                            <div class="flex flex-wrap gap-2 w-full md:justify-between">
+                                <label for="subject">Titre</label>
+                                <input pInputText id="subject" type="text" formControlName="subject" />
+                                <div class="error" *ngIf="form.submitted && userForm.controls['subject'].errors">
+                                    <p-message [hidden]="!userForm.controls['subject'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="state" RequiredAsterisk>Type</label>
+                                <p-select id="state" formControlName="typeHelp" [options]="typesHelp" optionLabel="value" placeholder="Votre choix" class="w-full"></p-select>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap flex-col gap-2 w-full">
+                            <label for="description">Description</label>
+                            <textarea pTextarea id="description" rows="4" formControlName="description" placeholder="Plus d'informations à fournir au professeur"></textarea>
+                        </div>
+
+                        <div class="flex justify-end gap-2 mt-4">
+                            <p-button label="Annuler" type="button" icon="pi pi-times" text (onClick)="close()" />
+                            <p-button label="Réserver" type="submit" icon="pi pi-check" />
+                        </div>
                     </div>
                 </div>
             </form>
