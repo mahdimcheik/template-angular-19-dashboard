@@ -36,11 +36,13 @@ import { ModalEditAppointmentComponent } from './components/modal-edit-appointme
 import { CalendarForStudentComponent } from './pages/calendar-for-student/calendar-for-student.component';
 import { ModalBookOrUnbookComponent } from './components/modal-book-or-unbook/modal-book-or-unbook.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { ReservationLineByTeacherComponent } from './components/reservation-line-by-teacher/reservation-line-by-teacher.component';
+import { ReservationListByTeacherComponent } from './components/reservation-list-by-teacher/reservation-list-by-teacher.component';
 
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
-    declarations: [CalendarForTeacherComponent, ModalDetailsAppointmentForTeacherComponent, ModalCreateAppointmentComponent, ModalEditAppointmentComponent, CalendarForStudentComponent, ModalBookOrUnbookComponent],
+    declarations: [CalendarForTeacherComponent, ModalDetailsAppointmentForTeacherComponent, ModalCreateAppointmentComponent, ModalEditAppointmentComponent, CalendarForStudentComponent, ModalBookOrUnbookComponent, ReservationLineByTeacherComponent, ReservationListByTeacherComponent],
     imports: [
         CommonModule,
         ReservationRoutingModule,
