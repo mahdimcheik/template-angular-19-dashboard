@@ -3,24 +3,14 @@
     [value]="reservations()"
     [rows]="10"
     [paginator]="true"
-    [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+    [globalFilterFields]="['name', 'date']"
     [tableStyle]="{ 'min-width': '75rem' }"
-    [(selection)]="selectedReservation"
     [rowHover]="true"
     dataKey="id"
     currentPageReportTemplate="De {first} à {last} de {totalRecords} réservations"
     [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 20, 30]"
+    [rowsPerPageOptions]="[10]"
 >
-    <!-- <ng-template #caption>
-        <div class="flex items-center justify-between">
-            <h5 class="m-0">Manage Products</h5>
-            <p-iconfield>
-                <p-inputicon styleClass="pi pi-search" />
-                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." />
-            </p-iconfield>
-        </div>
-    </ng-template> -->
     <ng-template #header>
         <tr>
             <th pSortableColumn="name" style="min-width: 16rem">
@@ -30,11 +20,11 @@
             <th>Image</th>
             <th pSortableColumn="price" style="min-width: 8rem">
                 Prix
-                <p-sortIcon field="price" />
+                <!-- <p-sortIcon field="price" /> -->
             </th>
             <th pSortableColumn="reduction" style="min-width: 8rem">
                 Réduction
-                <p-sortIcon field="reduction" />
+                <!-- <p-sortIcon field="reduction" /> -->
             </th>
             <th pSortableColumn="date" style="min-width: 8rem">
                 Date

@@ -55,6 +55,8 @@ export type QueryPanigation = {
     studentId?: string;
     fromDate?: Date;
     toDate?: Date;
+    orderByName?: number;
+    orderByDate?: number;
 };
 
 export type ReservationResponseDTO = {

@@ -126,7 +126,7 @@ export class SlotService {
     }
 
     // get reservations
-    getReservationsByStudent(query: QueryPanigation): Observable<EventInput[]> {
+    getReservationsByStudent(query: QueryPanigation): Observable<ReservationResponseDTO[]> {
         return this.http.post<ResponseDTO>(`https://localhost:7113/slot/reservations-student`, query).pipe(
             map((res) => {
                 var reservations = res.data as ReservationResponseDTO[];
@@ -134,7 +134,7 @@ export class SlotService {
                 return reservations;
             }),
             tap((res) => {
-                this.reservations.set(res);
+                this.reservations.set([...res]);
                 console.log('reservations : ', res);
             })
         );
