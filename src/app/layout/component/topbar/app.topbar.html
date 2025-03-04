@@ -36,12 +36,12 @@
                     <i class="pi pi-inbox"></i>
                     <span>Messages</span>
                 </button>
-                <button type="button" class="layout-topbar-action" (click)="menu.toggle($event)">
+                <button type="button" class="layout-topbar-action" (click)="router.navigate(['/profile'])">
                     <i *ngIf="!user().email" class="pi pi-user"></i>
                     <p-avatar *ngIf="user().email" [image]="user().imgUrl" shape="circle"></p-avatar>
                     <span>Profile</span>
                 </button>
-                <p-menu #menu [model]="userItems()" [popup]="true"></p-menu>
+                <!-- <p-menu #menu [model]="userItems()" [popup]="true"></p-menu> -->
             </div>
         </div>
     </div>

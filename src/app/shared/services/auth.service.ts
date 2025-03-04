@@ -120,7 +120,7 @@ export class AuthService {
             summary: 'Au revoir ! ',
             detail: 'vous êtes déconnecté'
         });
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/auth/login');
     }
 
     getprofile(): Observable<ResponseDTO> {

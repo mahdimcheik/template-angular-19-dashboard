@@ -6,6 +6,7 @@
     [globalFilterFields]="['name', 'date']"
     [tableStyle]="{ 'min-width': '75rem' }"
     [rowHover]="true"
+    [totalRecords]="totalReservations()"
     dataKey="id"
     currentPageReportTemplate="De {first} à {last} de {totalRecords} réservations"
     [showCurrentPageReport]="true"

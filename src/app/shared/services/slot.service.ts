@@ -11,6 +11,7 @@ import { BookingCreateDTO, QueryPanigation, ReservationResponseDTO, SlotCreateDT
 export class SlotService {
     visibleEvents = signal([] as EventInput[]);
     reservations = signal([] as ReservationResponseDTO[]);
+    totalReservations = signal(0);
     selectedEvent = signal({} as EventInput);
     start = signal(new Date());
     end = signal(new Date());
@@ -83,6 +84,7 @@ export class SlotService {
         return this.http.get<ResponseDTO>(`https://localhost:7113/slot/student?fromDate=${fromDate}&toDate=${toDate}`).pipe(
             map((res) => {
                 var slots = res.data as SlotResponseDTO[];
+                this.totalReservations.set(res.count ?? 0);
                 if (slots == null || slots.length == 0) return [];
                 return slots.map((slot) => this.convertSlotResponseToEventInput(slot));
             }),
@@ -134,7 +136,7 @@ export class SlotService {
                 return reservations;
             }),
             tap((res) => {
-                this.reservations.set([...res]);
+                this.reservations.set(res);
                 console.log('reservations : ', res);
             })
         );

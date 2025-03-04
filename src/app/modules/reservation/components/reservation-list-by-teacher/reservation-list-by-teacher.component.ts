@@ -18,6 +18,7 @@ export class ReservationListByTeacherComponent implements OnInit {
     @ViewChild('pname') pname!: any;
     slotService = inject(SlotService);
     reservations = this.slotService.reservations;
+    totalReservations = this.slotService.totalReservations;
     private cdr = inject(ChangeDetectorRef);
     selectedReservation!: ReservationResponseDTO;
 
