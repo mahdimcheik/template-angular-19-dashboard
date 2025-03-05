@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild, ChangeDetectorRef, computed, input, signal } from '@angular/core';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { QueryPanigation, ReservationResponseDTO } from '../../../../shared/models/slot';
 import { delay, firstValueFrom } from 'rxjs';
@@ -15,50 +15,49 @@ import { Table } from 'primeng/table';
 })
 export class ReservationListByTeacherComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
-    @ViewChild('pname') pname!: any;
     slotService = inject(SlotService);
-    reservations = this.slotService.reservations;
-    totalReservations = this.slotService.totalReservations;
-    private cdr = inject(ChangeDetectorRef);
+    reservations = signal<ReservationResponseDTO[]>([] as ReservationResponseDTO[]);
+    totalReservations = signal(0);
     selectedReservation!: ReservationResponseDTO;
+    dateNow = computed(() => new Date());
+    upComing = input<boolean>();
+    first = 0; // premier element
+    rows = 10; // reservations par page
+    query: QueryPanigation = {
+        start: 0,
+        perPage: 10
+    };
 
-    async ngOnInit() {
-        const query: QueryPanigation = {
+    ngOnInit() {
+        this.query = {
             start: 0,
-            perPage: 10
+            perPage: 10,
+            orderByDate: 1,
+            orderByName: 1
         };
-        await firstValueFrom(this.slotService.getReservationsByStudent(query));
-        await firstValueFrom(this.slotService.getReservationsByTeacher(query));
-    }
-    customSort(event: any) {
-        console.log('Event on sort :', event);
+        if (this.upComing() == true) {
+            this.query.fromDate = new Date();
+        } else if (this.upComing() == false) {
+            this.query.toDate = new Date();
+        }
+        console.log('query ', this.query, this.upComing());
+
+        this.slotService.getReservationsByTeacher(this.query).subscribe((res) => {
+            this.reservations.set(res.data);
+            console.log('reservations ', res.data);
+
+            this.totalReservations.set(res.count ?? 0);
+        });
     }
 
-    onSort($event: any) {
-        console.log('Event on sort :', $event);
-        let query: QueryPanigation = {
-            start: 0,
-            perPage: 10
-        };
-        if ($event.field === 'date') {
-            query = {
-                start: 0,
-                perPage: 10,
-                orderByDate: $event.order
-            };
-            this.slotService.getReservationsByStudent(query).subscribe((x) => {
-                this.reservations.set(x);
-                this.cdr.detectChanges();
-            });
-            this.slotService.getReservationsByStudent(query).subscribe((x) => this.reservations.set([...x]));
-        }
-        if ($event.field === 'name') {
-            query = {
-                start: 0,
-                perPage: 10,
-                orderByName: $event.order
-            };
-            this.slotService.getReservationsByStudent(query).subscribe(() => this.cdr.detectChanges());
-        }
+    async loadReservations($event: any) {
+        this.query.start = $event.first;
+        this.query.perPage = $event.rows;
+
+        console.log('query ', this.query, $event);
+        this.slotService.getReservationsByTeacher(this.query).subscribe((res) => {
+            this.reservations.set(res.data);
+            this.totalReservations.set(res.count ?? 0);
+        });
     }
 }

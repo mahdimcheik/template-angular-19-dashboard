@@ -25,6 +25,7 @@ export class AppMenu {
             { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
 
             { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
+            { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/reservation/teacher'] },
             { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
             { label: 'Button', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/uikit/button'] },
             { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },

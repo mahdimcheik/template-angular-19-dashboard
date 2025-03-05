@@ -1,22 +1,10 @@
-<p-table
-    #dt
-    [value]="reservations()"
-    [rows]="10"
-    [paginator]="true"
-    [globalFilterFields]="['name', 'date']"
-    [tableStyle]="{ 'min-width': '75rem' }"
-    [rowHover]="true"
-    [totalRecords]="totalReservations()"
-    dataKey="id"
-    currentPageReportTemplate="De {first} à {last} de {totalRecords} réservations"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10]"
->
+<!-- [paginator]="true" -->
+<p-table #dt [value]="reservations()" [rows]="10" [globalFilterFields]="['name', 'date']" [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" [totalRecords]="totalReservations()" dataKey="id" [rowsPerPageOptions]="[10]">
     <ng-template #header>
         <tr>
             <th pSortableColumn="name" style="min-width: 16rem">
                 Nom
-                <p-sortIcon field="name" />
+                <!-- <p-sortIcon field="name" /> -->
             </th>
             <th>Image</th>
             <th pSortableColumn="price" style="min-width: 8rem">
@@ -29,7 +17,7 @@
             </th>
             <th pSortableColumn="date" style="min-width: 8rem">
                 Date
-                <p-sortIcon field="date" />
+                <!-- <p-sortIcon field="date" /> -->
             </th>
             <th style="min-width: 12rem"></th>
         </tr>
@@ -51,9 +39,10 @@
                 </div>
             </td>
             <td>
-                <p-button class="m-4" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" />
+                <p-button class="m-4" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" *ngIf="reservation.startAt < dateNow()" />
                 <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" />
             </td>
         </tr>
     </ng-template>
 </p-table>
+<p-paginator (onPageChange)="loadReservations($event)" [first]="first" [rows]="rows" [totalRecords]="totalReservations()" [rowsPerPageOptions]="[10]" />

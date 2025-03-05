@@ -1,1 +1,18 @@
-<p>reservation-line-by-teacher works!</p>
+<td style="min-width: 16rem" class="text-xl font-bold">{{ reservation().studentFirstName }} {{ reservation().studentLastName }}</td>
+<td>
+    <img [src]="reservation().studentImgUrl" style="width: 64px" class="rounded" />
+</td>
+<td>{{ reservation().price | currency: 'EUR' }}</td>
+<td>{{ reservation().reduction }}%</td>
+<td>
+    <div class="flex flex-col gap-1">
+        <span>
+            {{ reservation().startAt | date }}
+        </span>
+        <span class="font-semibold">{{ reservation().startAt | date: 'H:mm' }} à {{ reservation().endAt | date: 'H:mm' }}</span>
+    </div>
+</td>
+<td>
+    <p-button class="m-4" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" disabled="true" />
+    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" />
+</td>

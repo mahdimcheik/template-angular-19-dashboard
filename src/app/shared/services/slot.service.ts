@@ -142,17 +142,7 @@ export class SlotService {
         );
     }
 
-    getReservationsByTeacher(query: QueryPanigation): Observable<EventInput[]> {
-        return this.http.post<ResponseDTO>(`https://localhost:7113/slot/reservations-teacher`, query).pipe(
-            map((res) => {
-                var reservations = res.data as ReservationResponseDTO[];
-                if (reservations == null || reservations.length == 0) return [];
-                return reservations;
-            }),
-            tap((res) => {
-                this.reservations.set(res);
-                console.log('reservations teacher : ', res);
-            })
-        );
+    getReservationsByTeacher(query: QueryPanigation): Observable<ResponseDTO> {
+        return this.http.post<ResponseDTO>(`https://localhost:7113/slot/reservations-teacher`, query);
     }
 }
