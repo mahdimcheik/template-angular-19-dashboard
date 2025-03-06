@@ -31,7 +31,7 @@
                 </div>
                 <div class="event-type">
                     <span>Type : </span>
-                    <span>{{ arg.event.extendedProps?.typeHelp | helpType }}</span>
+                    <span>{{ arg.event.extendedProps?.slot?.typeHelp | helpType }}</span>
                 </div>
             </ng-container>
 
@@ -55,5 +55,13 @@
     </ng-template>
 </full-calendar>
 
-<app-modal-create-appointment *ngIf="showCreateAppointmentModal()" [(visible)]="showCreateAppointmentModal" [appointment]="selectedSlot()" (onSubmitted)="loadSlot()"> </app-modal-create-appointment>
-<app-modal-edit-appointment *ngIf="showEditAppointmentModal()" [(visible)]="showEditAppointmentModal" [appointment]="selectedAppoitment()" (onSubmitted)="loadSlot()"> </app-modal-edit-appointment>
+<app-modal-create-appointment
+    (onSubmitted)="loadSlot()"
+    [isCreatingModal]="isCreatingAppointment"
+    *ngIf="showCreateAppointmentModal()"
+    [(visible)]="showCreateAppointmentModal"
+    [selectedSlot]="selectedSlot()"
+    [appointment]="selectedAppoitment()"
+    (onSubmitted)="loadSlot()"
+>
+</app-modal-create-appointment>

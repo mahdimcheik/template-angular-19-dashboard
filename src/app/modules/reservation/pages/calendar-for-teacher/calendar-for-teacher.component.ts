@@ -29,42 +29,80 @@ export class CalendarForTeacherComponent implements AfterViewInit {
 
     @ViewChild('calendar')
     calendarComponent!: FullCalendarComponent;
-    events: EventInput[] = [];
     displayModal: boolean = false;
     dateStart!: string;
     dateEnd!: string;
     currentDate!: Date;
+    isCreatingAppointment: boolean = true;
     selectedSlot = signal<EventInput>({ start: new Date(), end: new Date() }); //  EventInput = { start: new Date(), end: new Date() }; // empty slot selected pas un appoitment
     selectedAppoitment = signal<EventInput>({ start: new Date(), end: new Date() }); // evenement déjà créé
 
     canDrop = (dropInfo: any, draggedEvent: any) => {
+        var toto = dropInfo as EventInput;
+
+        // if (this.selectedAppoitment().extendedProps?.['slot']?.['studentId'] != null) {
+        //     return false;
+        // }
         const now = new Date();
         return dropInfo.start >= now && draggedEvent.start >= now;
     };
+    /// click sur un appointment, déjà créé
+    // je vérifie si le créneau est déjà pris, et je le remet à jour
     onEventClick = (eventClickArg: EventClickArg) => {
-        this.selectedAppoitment.set(eventClickArg.event as EventInput);
-        this.showEditAppointmentModal.set(true);
-        this.selectedSlot.set(eventClickArg.event as EventInput);
-        // console.log('selected slot ', eventClickArg.event);
-        // this.slotService.selectedEvent.set(this.selectedAppoitment);
-        // this.showCreateAppointmentModal.set(true);
+        this.slotService.getSlotById(eventClickArg.event.extendedProps?.['slot']?.['id']).subscribe((res) => {
+            this.selectedSlot.set(eventClickArg.event as EventInput);
+            this.visibleEvents.set(this.visibleEvents().filter((x) => x.extendedProps?.['slot']?.['id'] !== eventClickArg.event.extendedProps?.['slot']?.['id']));
+            this.visibleEvents.set([...this.visibleEvents(), res]);
+            this.isCreatingAppointment = res.extendedProps?.['slot']?.['id'] == null;
+            this.selectedAppoitment.set(res);
+            this.showCreateAppointmentModal.set(true);
+        });
     };
     onResize = (eventResizeArg: EventResizeDoneArg) => {
         this.selectedAppoitment.set(eventResizeArg.oldEvent as EventInput);
         this.selectedSlot.set(eventResizeArg.event as EventInput);
+
+        this.slotService.getSlotById(eventResizeArg.oldEvent.extendedProps?.['slot']?.['id']).subscribe((res) => {
+            this.selectedSlot.set({
+                start: eventResizeArg.event.start as Date,
+                end: eventResizeArg.event.end as Date
+            });
+
+            if (eventResizeArg.event.extendedProps?.['slot']?.['studentId'] != null) {
+                this.visibleEvents.set(this.visibleEvents().filter((x) => x.extendedProps?.['slot']?.['id'] !== eventResizeArg.oldEvent.extendedProps?.['slot']?.['id']));
+                this.visibleEvents.set([...this.visibleEvents(), res]);
+                return;
+            }
+            this.isCreatingAppointment = false;
+            this.selectedAppoitment.set(res);
+            this.showCreateAppointmentModal.set(true);
+        });
     };
     onDrop = (eventDropArg: EventDropArg) => {
-        this.selectedSlot.set({
-            start: eventDropArg.event.start as Date,
-            end: eventDropArg.event.end as Date
+        this.slotService.getSlotById(eventDropArg.oldEvent.extendedProps?.['slot']?.['id']).subscribe((res) => {
+            this.selectedSlot.set({
+                start: eventDropArg.event.start as Date,
+                end: eventDropArg.event.end as Date
+            });
+
+            if (eventDropArg.event.extendedProps?.['slot']?.['studentId'] != null) {
+                this.visibleEvents.set(this.visibleEvents().filter((x) => x.extendedProps?.['slot']?.['id'] !== eventDropArg.oldEvent.extendedProps?.['slot']?.['id']));
+                this.visibleEvents.set([...this.visibleEvents(), res]);
+                return;
+            }
+            this.isCreatingAppointment = false;
+            this.selectedAppoitment.set(res);
+            this.showCreateAppointmentModal.set(true);
         });
-        this.selectedAppoitment.set(eventDropArg.oldEvent as EventInput);
     };
+
     onDateSelect = (selectionInfo: DateSelectArg) => {
         this.selectedSlot.set({ start: selectionInfo.start, end: selectionInfo.end });
+        this.isCreatingAppointment = true;
         this.showCreateAppointmentModal.set(true);
     };
     canStartDrag = (selectionInfo: any) => {
+        if (selectionInfo.event.extendedProps?.['slot']?.['studentId'] != null) return false;
         return selectionInfo.start > new Date();
     };
 
@@ -124,7 +162,6 @@ export class CalendarForTeacherComponent implements AfterViewInit {
         eventAllow: this.canDrop, // can drop ?
         eventDrop: this.onDrop, // drop
 
-        events: this.events,
         eventColor: '#0000'
     };
 

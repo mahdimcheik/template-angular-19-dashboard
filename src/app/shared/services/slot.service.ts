@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { map, Observable, of, switchMap, tap } from 'rxjs';
+import { identity, map, Observable, of, switchMap, tap } from 'rxjs';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { ResponseDTO } from '../models/user';
 import { BookingCreateDTO, QueryPanigation, ReservationResponseDTO, SlotCreateDTO, SlotResponseDTO, SlotUpdateDTO } from '../models/slot';
@@ -18,6 +18,10 @@ export class SlotService {
     private http = inject(HttpClient);
 
     constructor() {}
+
+    getSlotById(slotId: string): Observable<EventInput> {
+        return this.http.get<ResponseDTO>(`https://localhost:7113/slot/slotid/${slotId}`).pipe(map((res) => this.convertSlotResponseToEventInput(res.data as SlotResponseDTO)));
+    }
 
     getSlotByCreator(userId: string, fromDate: string, toDate: string): Observable<EventInput[]> {
         return this.http.get<ResponseDTO>(`https://localhost:7113/slot?userId=${userId}&fromDate=${fromDate}&toDate=${toDate}`).pipe(
@@ -121,6 +125,7 @@ export class SlotService {
             start: new Date(slot.startAt),
             end: new Date(slot.endAt),
             title: slot.subject ?? 'Rendez-vous',
+            id: slot.id,
             extendedProps: {
                 slot: slot
             }
