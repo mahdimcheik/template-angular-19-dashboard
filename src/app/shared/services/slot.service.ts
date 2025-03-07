@@ -67,7 +67,7 @@ export class SlotService {
     }
 
     unbookReservationByTeacher(slotId: string): Observable<ResponseDTO> {
-        return this.http.delete<ResponseDTO>(`https://localhost:7113/slot/unbook?slotId=${slotId}`).pipe(
+        return this.http.delete<ResponseDTO>(`https://localhost:7113/booking/unbook?slotId=${slotId}`).pipe(
             tap(() => {
                 let relatedAppointmentIndex = this.visibleEvents().findIndex((x) => x.extendedProps?.['id'] == slotId);
 
@@ -100,11 +100,11 @@ export class SlotService {
     }
 
     bookSlot(newBooking: BookingCreateDTO): Observable<ResponseDTO> {
-        return this.http.post<ResponseDTO>(`https://localhost:7113/slot/book`, newBooking);
+        return this.http.post<ResponseDTO>(`https://localhost:7113/booking/book`, newBooking);
     }
 
     unbookReservationByStudent(slotId: string): Observable<ResponseDTO> {
-        return this.http.delete<ResponseDTO>(`https://localhost:7113/slot/student/unbook?slotId=${slotId}`);
+        return this.http.delete<ResponseDTO>(`https://localhost:7113/booking/student/unbook?slotId=${slotId}`);
     }
     // extensions
     convertSlotResponseToEventInput(slot: SlotResponseDTO) {
@@ -121,7 +121,7 @@ export class SlotService {
 
     // get reservations
     getReservationsByStudent(query: QueryPanigation): Observable<ReservationResponseDTO[]> {
-        return this.http.post<ResponseDTO>(`https://localhost:7113/slot/reservations-student`, query).pipe(
+        return this.http.post<ResponseDTO>(`https://localhost:7113/booking/reservations-student`, query).pipe(
             map((res) => {
                 var reservations = res.data as ReservationResponseDTO[];
                 if (reservations == null || reservations.length == 0) return [];
@@ -135,6 +135,6 @@ export class SlotService {
     }
 
     getReservationsByTeacher(query: QueryPanigation): Observable<ResponseDTO> {
-        return this.http.post<ResponseDTO>(`https://localhost:7113/slot/reservations-teacher`, query);
+        return this.http.post<ResponseDTO>(`https://localhost:7113/booking/reservations-teacher`, query);
     }
 }

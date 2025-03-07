@@ -40,13 +40,13 @@
                     <div class="pricing">
                         <span
                             [ngClass]="{
-                                'original-price': arg.event.extendedProps.slot.price !== arg.event.extendedProps.discountedPrice,
-                                'unique-price': arg.event.extendedProps.slot.price === arg.event.extendedProps.discountedPrice
+                                'original-price': arg.event.extendedProps?.slot?.price !== arg.event.extendedProps?.slot?.discountedPrice,
+                                'unique-price': arg.event.extendedProps?.slot?.price === arg.event.extendedProps?.slot?.discountedPrice
                             }"
                         >
-                            {{ arg.event.extendedProps.slot.price }} €
+                            {{ arg.event.extendedProps?.slot?.price }} €
                         </span>
-                        <span class="new-price" *ngIf="arg.event.extendedProps.slot.price !== arg.event.extendedProps.slot.discountedPrice"> {{ arg.event.extendedProps.slot.discountedPrice }} € </span>
+                        <span class="new-price" *ngIf="arg.event.extendedProps?.slot?.price !== arg.event.extendedProps?.slot?.discountedPrice"> {{ arg.event.extendedProps?.slot?.discountedPrice }} € </span>
                     </div>
                 </div>
             </ng-template>
