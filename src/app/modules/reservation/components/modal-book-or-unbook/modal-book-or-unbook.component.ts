@@ -23,11 +23,18 @@ export class ModalBookOrUnbookComponent implements OnInit {
     visible = model<boolean>(false);
     appointment = input.required<EventInput>();
     slotDetailed = computed<SlotResponseDTO>(() => this.appointment().extendedProps?.['slot'] as SlotResponseDTO);
+    passedReservation = computed(() => this.appointment().extendedProps?.['slot']?.studentId !== null && new Date(this.appointment().extendedProps?.['slot']?.startAt) < new Date());
     onBooking = output();
     userForm!: FormGroup;
     title: string = '';
     description: string = '';
     typeHelpTransformInstance: HelpTypePipe = new HelpTypePipe();
+    getDialogHeader = computed(() => {
+        if (this.appointment().extendedProps?.['slot']?.studentId === null) {
+            return 'Réservation';
+        }
+        return new Date(this.appointment().extendedProps?.['slot']?.startAt) < new Date() ? 'Détails' : 'Suppression';
+    });
 
     fb = inject(FormBuilder);
     slotService = inject(SlotService);
@@ -58,6 +65,8 @@ export class ModalBookOrUnbookComponent implements OnInit {
             description: [this.description],
             subject: [this.title, Validators.required]
         });
+
+        console.log('detail', this.slotDetailed());
     }
     close() {
         this.visible.set(false);

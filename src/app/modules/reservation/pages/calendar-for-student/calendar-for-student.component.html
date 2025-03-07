@@ -54,6 +54,6 @@
     </ng-template>
 </full-calendar>
 
-<app-modal-book-or-unbook [appointment]="selectedAppoitment" [(visible)]="visibleModalBookUnbook" (onBooking)="loadSlot()"></app-modal-book-or-unbook>
+<app-modal-book-or-unbook [appointment]="selectedAppoitment" [(visible)]="visibleModalBookUnbook" (onBooking)="loadSlot()" *ngIf="visibleModalBookUnbook()"></app-modal-book-or-unbook>
 
 <app-reservation-list-by-teacher></app-reservation-list-by-teacher>

@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" header="Création" [modal]="true">
+<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" [header]="getDialogHeader()" [modal]="true">
     <ng-template #content>
         <p-fluid>
             <section class="flex flex-col w-full mb-0"></section>
@@ -22,18 +22,17 @@
                     <div *ngIf="slotDetailed()?.['studentId']" class="flex flex-col gap-2">
                         <div class="flex flex-col flex-wrap w-full">
                             <h3 class="font-semibold text-xl">Détails de réservation</h3>
-                            <p>
-                                Pour <span [style.color]="'var(--primary-color)'" class="font-bold">{{ slotDetailed().studentFirstName }} {{ slotDetailed().studentLastName }} </span>
-                            </p>
+
                             <div class="m-2 flex flex-col gap-2">
+                                <div class="font-semibold text-xl">Sujet : {{ slotDetailed().typeHelp ?? 0 | helpType }}</div>
                                 <p-message class="text mb-2">{{ slotDetailed().subject }}</p-message>
-                                <p-message severity="success">{{ slotDetailed().description }}</p-message>
+                                <p-message severity="success" styleClass="min-h-[100px]">{{ slotDetailed().description == '' || slotDetailed().description == null ? 'Sans description' : slotDetailed().description }}</p-message>
                                 <!-- <p-message severity="info">{{ appointment().extendedProps?.['slot']?.typeHelp | helpType }} </p-message> -->
                             </div>
                         </div>
                         <div class="flex justify-end gap-2 mt-4">
-                            <p-button label="Abondonner" type="button" icon="pi pi-times" text (onClick)="close()" />
-                            <p-button label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
+                            <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
+                            <p-button *ngIf="!passedReservation()" label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
                         </div>
                     </div>
 

@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="font-semibold text-xl">Sujet : {{ appointment().extendedProps?.['slot']?.['type'] | helpType }}</div>
+                    <div class="font-semibold text-xl">Sujet : {{ appointment().extendedProps?.['slot']?.['typeHelp'] ?? 0 | helpType }}</div>
                     <p class="font-semibold text-l border rounded-md p-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p>
                 </div>
 
