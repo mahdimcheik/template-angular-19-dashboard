@@ -21,6 +21,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     studentFullName = computed(() => {
         return '' + this.appointment().extendedProps?.['slot']?.['studentFirstName'] + ' ' + this.appointment().extendedProps?.['slot']?.['studentLastName'];
     });
+    passedReservation = signal<boolean>(false);
     price: number = 15;
     reduction: number = 0;
     userForm!: FormGroup;
@@ -45,6 +46,11 @@ export class ModalCreateAppointmentComponent implements OnInit {
                 reduction: [this.appointment().extendedProps?.['slot']?.reduction, [Validators.required]],
                 type: [this.appointment().extendedProps?.['slot']?.type, [Validators.required]]
             });
+        }
+        console.log('this.appointment', this.appointment().extendedProps);
+
+        if (this.appointment().extendedProps?.['slot']?.['studentId'] != null && new Date(this.appointment().extendedProps?.['slot']?.['startAt']) < new Date()) {
+            this.passedReservation.set(true);
         }
     }
     close() {

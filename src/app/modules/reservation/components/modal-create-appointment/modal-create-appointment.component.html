@@ -3,29 +3,36 @@
         <p-fluid>
             <section class="card flex flex-col gap-6 w-full" *ngIf="appointment().extendedProps?.['slot']?.['studentId']">
                 <span class="font-semibold text-xl">Détail de réservation</span>
-                <div class="flex flex-col flex-wrap gap-2 w-full">
-                    <div>
-                        <span>Pour</span>
-                        <h4 class="ml-2 text-primary inline">{{ studentFullName() | titlecase }}</h4>
-                    </div>
-                    <div>
-                        <span>Le</span>
-                        <h5 class="ml-2 text-primary inline">{{ appointment().extendedProps?.['slot']?.['startAt'] | date: 'd MMMM y' }}</h5>
-                    </div>
-                    <p-datepicker formControlName="startAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
-                        <ng-template #inputicon let-clickCallBack="clickCallBack">
-                            <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
-                        </ng-template>
-                    </p-datepicker>
-                    <div class="error" *ngIf="form.submitted && userForm.controls['startAt'].errors">
-                        <p-message [hidden]="!userForm.controls['startAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                <div class="flex flex-col flex-wrap w-full">
+                    <h4 class="ml-2 flex flex-wrap justify-center gap-2">
+                        Pour <span class="ml-2 text-primary">{{ studentFullName() | titlecase }}</span>
+                    </h4>
+                    <div class="flex flex-wrap justify-center gap-2 w-full">
+                        <h5 class="inline">
+                            Le <span class="text-primary"> {{ appointment().extendedProps?.['slot']?.['startAt'] | date: 'd MMMM y à HH:mm' }}</span>
+                        </h5>
                     </div>
                 </div>
+                <div>
+                    <div class="font-semibold text-xl">Sujet : {{ appointment().extendedProps?.['slot']?.['type'] | helpType }}</div>
+                    <p class="font-semibold text-l border rounded-md p-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p>
+                </div>
+
+                <div>
+                    <div class="font-semibold text-xl">Description</div>
+                    <p class="font-semibold text-l border rounded-md p-2 min-h-[100px]">
+                        {{ appointment().extendedProps?.['slot']?.['description'] == '' || appointment().extendedProps?.['slot']?.['description'] == null ? 'Sans description' : appointment().extendedProps?.['slot']?.['description'] }}
+                    </p>
+                </div>
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
+                    <p-button [label]="'Annuler'" icon="pi pi-check" *ngIf="!passedReservation()" />
+                </div>
             </section>
-            <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
+            <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm" *ngIf="!appointment().extendedProps?.['slot']?.['studentId']">
                 <div class="card flex flex-col gap-6 w-full">
                     <span class="font-semibold text-xl">Créer un créneau</span>
-                    <!-- <div class="flex flex-col md:flex-row gap-6"> -->
                     <div class="flex flex-col flex-wrap gap-2 w-full">
                         <label for="startAt" RequiredAsterisk>De</label>
                         <p-datepicker formControlName="startAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">

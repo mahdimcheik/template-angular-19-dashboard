@@ -102,7 +102,7 @@ export class CalendarForTeacherComponent implements AfterViewInit {
         this.showCreateAppointmentModal.set(true);
     };
     canStartDrag = (selectionInfo: any) => {
-        if (selectionInfo.event.extendedProps?.['slot']?.['studentId'] != null) return false;
+        if (selectionInfo.event?.extendedProps?.['slot']?.['studentId'] != null) return false;
         return selectionInfo.start > new Date();
     };
 
