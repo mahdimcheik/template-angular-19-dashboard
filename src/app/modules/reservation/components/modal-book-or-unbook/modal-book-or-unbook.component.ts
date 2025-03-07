@@ -91,8 +91,8 @@ export class ModalBookOrUnbookComponent implements OnInit {
         }
     }
     async unbook() {
-        this.close(); // fermer le modal
         await firstValueFrom(this.slotService.unbookReservationByStudent(this.appointment().extendedProps?.['slot']?.['id'])); // unbook
         this.onBooking.emit(); // refresh
+        this.close(); // fermer le modal
     }
 }

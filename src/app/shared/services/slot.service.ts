@@ -104,20 +104,7 @@ export class SlotService {
     }
 
     unbookReservationByStudent(slotId: string): Observable<ResponseDTO> {
-        return this.http.delete<ResponseDTO>(`https://localhost:7113/slot/student/unbook?slotId=${slotId}`).pipe(
-            tap(() => {
-                let relatedAppointmentIndex = this.visibleEvents().findIndex((x) => x.extendedProps?.['id'] == slotId);
-
-                if (relatedAppointmentIndex != null) {
-                    this.visibleEvents()[relatedAppointmentIndex] = {
-                        ...this.visibleEvents()[relatedAppointmentIndex],
-                        extendedProps: { id: slotId }
-                    } as EventInput;
-                }
-
-                this.visibleEvents.set([...this.visibleEvents()]);
-            })
-        );
+        return this.http.delete<ResponseDTO>(`https://localhost:7113/slot/student/unbook?slotId=${slotId}`);
     }
     // extensions
     convertSlotResponseToEventInput(slot: SlotResponseDTO) {
