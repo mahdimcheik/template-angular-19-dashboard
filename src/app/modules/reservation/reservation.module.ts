@@ -44,6 +44,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ReservationsTeacherComponent } from './pages/reservations-teacher/reservations-teacher.component';
+import { CardItemOrderComponent } from './components/card-item-order/card-item-order.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -56,7 +57,8 @@ registerLocaleData(localeFr, 'fr');
         ModalBookOrUnbookComponent,
         ReservationLineByTeacherComponent,
         ReservationListByTeacherComponent,
-        ReservationsTeacherComponent
+        ReservationsTeacherComponent,
+        CardItemOrderComponent
     ],
     imports: [
         CommonModule,

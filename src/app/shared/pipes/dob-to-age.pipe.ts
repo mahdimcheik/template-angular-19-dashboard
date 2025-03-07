@@ -16,7 +16,6 @@ export class DobToAgePipe implements PipeTransform {
         if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-
         return age;
     }
 }

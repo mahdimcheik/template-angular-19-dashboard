@@ -43,6 +43,7 @@ export class ModalBookOrUnbookComponent implements OnInit {
         id: 0,
         value: this.typeHelpTransformInstance.transform(0)
     };
+
     typesHelp = [
         {
             id: 0,
@@ -68,6 +69,7 @@ export class ModalBookOrUnbookComponent implements OnInit {
 
         console.log('detail', this.slotDetailed());
     }
+
     close() {
         this.visible.set(false);
     }
@@ -90,6 +92,7 @@ export class ModalBookOrUnbookComponent implements OnInit {
             console.error(e);
         }
     }
+
     async unbook() {
         await firstValueFrom(this.slotService.unbookReservationByStudent(this.appointment().extendedProps?.['slot']?.['id'])); // unbook
         this.onBooking.emit(); // refresh
