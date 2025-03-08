@@ -9,16 +9,21 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
+import { TagModule } from 'primeng/tag';
+import { BadgeModule } from 'primeng/badge';
+import { OrderService } from '../../../shared/services/order.service';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, AvatarModule, MenuModule, MenubarModule],
+    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, AvatarModule, MenuModule, MenubarModule, TagModule, BadgeModule],
     templateUrl: './app.topbar.html'
 })
 export class AppTopbar {
     items!: MenuItem[];
     authService = inject(AuthService);
+    orderService = inject(OrderService);
+    currentOrder = this.orderService.currentOrder;
     router = inject(Router);
     user = this.authService.userConnected;
 

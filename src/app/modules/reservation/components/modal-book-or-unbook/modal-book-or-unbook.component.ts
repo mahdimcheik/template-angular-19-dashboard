@@ -2,10 +2,11 @@ import { AfterViewInit, Component, computed, inject, input, model, OnInit, outpu
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { SlotService } from '../../../../shared/services/slot.service';
-import { firstValueFrom } from 'rxjs';
+import { finalize, firstValueFrom, switchMap } from 'rxjs';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { Title } from '@angular/platform-browser';
 import { BookingCreateDTO, SlotResponseDTO } from '../../../../shared/models/slot';
+import { OrderService } from '../../../../shared/services/order.service';
 
 type TypeHelpType = {
     id: number;
@@ -38,6 +39,7 @@ export class ModalBookOrUnbookComponent implements OnInit {
 
     fb = inject(FormBuilder);
     slotService = inject(SlotService);
+    orderService = inject(OrderService);
 
     type = {
         id: 0,
@@ -74,7 +76,7 @@ export class ModalBookOrUnbookComponent implements OnInit {
         this.visible.set(false);
     }
 
-    async submit() {
+    submit() {
         try {
             console.log('appointment', this.appointment());
 
@@ -84,18 +86,35 @@ export class ModalBookOrUnbookComponent implements OnInit {
                 description: this.userForm.value.description,
                 subject: this.userForm.value.subject
             };
-            console.log('newBooking', newBooking);
-            await firstValueFrom(this.slotService.bookSlot(newBooking));
-            this.onBooking.emit();
-            this.close();
+            this.slotService
+                .bookSlot(newBooking)
+                .pipe(
+                    switchMap((x) => {
+                        return this.orderService.getCurrentOrder();
+                    })
+                )
+                .subscribe((res) => {
+                    console.log(res);
+                    this.onBooking.emit();
+                    this.close();
+                });
         } catch (e) {
             console.error(e);
         }
     }
 
-    async unbook() {
-        await firstValueFrom(this.slotService.unbookReservationByStudent(this.appointment().extendedProps?.['slot']?.['id'])); // unbook
-        this.onBooking.emit(); // refresh
-        this.close(); // fermer le modal
+    unbook() {
+        this.slotService
+            .unbookReservationByStudent(this.appointment().extendedProps?.['slot']?.['id'])
+            .pipe(
+                switchMap((x) => {
+                    return this.orderService.getCurrentOrder();
+                }),
+                finalize(() => {
+                    this.onBooking.emit();
+                    this.close();
+                })
+            )
+            .subscribe();
     }
 }

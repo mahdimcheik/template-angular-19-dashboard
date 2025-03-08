@@ -30,16 +30,18 @@
             <div class="layout-topbar-menu-content">
                 <button type="button" class="layout-topbar-action" [routerLink]="[calendarLink()]">
                     <i class="pi pi-calendar"></i>
-                    <span>Calendar</span>
+                    <span>Réservations</span>
                 </button>
-                <button type="button" class="layout-topbar-action" *ngIf="user().email" [routerLink]="['/reservation/orders-student']">
-                    <i class="pi pi-shopping-cart"></i>
-                    <span>Messages</span>
-                </button>
+                <p-button type="button" class="layout-topbar-action h-[50px]" *ngIf="user().email" [routerLink]="['/reservation/orders-student']">
+                    <i class="pi pi-shopping-cart relative" style="font-size: 1.75rem">
+                        <p-badge class="absolute bottom-[5px] left-[3px]" [value]="currentOrder().bookings.length" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
+                    </i>
+                    <span>Commandes</span>
+                </p-button>
                 <button type="button" class="layout-topbar-action" (click)="router.navigate(['/profile'])">
                     <i *ngIf="!user().email" class="pi pi-user"></i>
                     <p-avatar *ngIf="user().email" [image]="user().imgUrl" shape="circle"></p-avatar>
-                    <span>Profile</span>
+                    <span>Profil</span>
                 </button>
                 <!-- <p-menu #menu [model]="userItems()" [popup]="true"></p-menu> -->
             </div>
