@@ -24,6 +24,10 @@ export class AppTopbar {
     authService = inject(AuthService);
     orderService = inject(OrderService);
     currentOrder = this.orderService.currentOrder;
+    numberBooking = computed(() => {
+        if (!this.currentOrder().bookings || this.currentOrder().bookings.length == 0) return '';
+        return '' + this.currentOrder().bookings.length;
+    });
     router = inject(Router);
     user = this.authService.userConnected;
 

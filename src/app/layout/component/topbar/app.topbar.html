@@ -34,7 +34,7 @@
                 </button>
                 <p-button type="button" class="layout-topbar-action h-[50px]" *ngIf="user().email" [routerLink]="['/reservation/orders-student']">
                     <i class="pi pi-shopping-cart relative" style="font-size: 1.75rem">
-                        <p-badge class="absolute bottom-[5px] left-[3px]" [value]="currentOrder().bookings.length" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
+                        <p-badge class="absolute bottom-[5px] left-[3px]" [value]="numberBooking()" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
                     </i>
                     <span>Commandes</span>
                 </p-button>
