@@ -1,19 +1,25 @@
-<div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4" [ngClass]="'border-t border-surface'">
-    <div class="md:w-40 relative">
-        <img class="block xl:block mx-auto rounded w-full" src="https://cdn.pixabay.com/photo/2025/02/26/09/58/bird-9432600_1280.jpg" />
-        <!-- <div class="absolute bg-black/70 rounded-border" [style]="{ left: '4px', top: '4px' }">
-            <p-tag [value]="item.inventoryStatus" [severity]="getSeverity(item)"></p-tag>
-        </div> -->
+<div class="card !m-0 !p-0">
+    <div class="flex sm:flex-row sm:items-center p-6 gap-4 justify-between">
+        <span>Terminée</span>
+        <div class="flex flex-col">
+            <span class="text-sm text-surface-500 dark:text-surface-400">Passée le 25 jan 2024</span>
+            <span class="text-lg font-semibold">Numéro : 154258745</span>
+        </div>
     </div>
-    <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
-        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
-            <div>
-                <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ booking().typeHelp ?? 0 | helpType }} </span>
-                <div class="text-lg font-medium mt-2">{{ booking().startAt | date: 'dd MM à H:mm' }}</div>
+    <div class="flex flex-col justify-center md:flex-row md:items-center md:justify-between w-full" [ngClass]="'border-t border-surface'">
+        <div class="flex flex-col items-center justify-center gap-2 md:flex-row md:p-2 pt-2">
+            <img class="block xl:block mx-auto rounded md:w-40" src="https://cdn.pixabay.com/photo/2025/02/26/09/58/bird-9432600_1280.jpg" />
+            <div class="w-full card">
+                <div class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ booking().typeHelp | helpType }}</div>
+                <div class="text-lg font-medium mt-2">Le {{ booking().startAt | date: 'dd MMMM à H:mm' }}</div>
             </div>
         </div>
-        <div class="flex flex-col md:items-end gap-8">
-            <span class="text-xl font-semibold">$ {{ booking().price }}</span>
+        <div class="card flex flex-col md:items-end gap-8 border-t md:border-t-0">
+            <span class="text-xl font-semibold">{{ booking().price }}€</span>
+            <div class="flex gap-2">
+                <p-button icon="pi pi-trash" label="Supprimer"></p-button>
+                <p-button icon="pi pi-pencil" label="Modifier"></p-button>
+            </div>
         </div>
     </div>
 </div>

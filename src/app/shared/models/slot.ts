@@ -59,7 +59,7 @@ export type QueryPanigation = {
     orderByDate?: number;
 };
 
-export type ReservationResponseDTO = {
+export type BookingResponseDTO = {
     id: string;
     subject: string;
     description: string;

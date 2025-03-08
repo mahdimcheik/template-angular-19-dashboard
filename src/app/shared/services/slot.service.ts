@@ -3,14 +3,14 @@ import { inject, Injectable, signal } from '@angular/core';
 import { identity, map, Observable, of, switchMap, tap } from 'rxjs';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { ResponseDTO } from '../models/user';
-import { BookingCreateDTO, QueryPanigation, ReservationResponseDTO, SlotCreateDTO, SlotResponseDTO, SlotUpdateDTO } from '../models/slot';
+import { BookingCreateDTO, QueryPanigation, BookingResponseDTO, SlotCreateDTO, SlotResponseDTO, SlotUpdateDTO } from '../models/slot';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SlotService {
     visibleEvents = signal([] as EventInput[]);
-    reservations = signal([] as ReservationResponseDTO[]);
+    bookings = signal([] as BookingResponseDTO[]);
     totalReservations = signal(0);
     selectedEvent = signal({} as EventInput);
     start = signal(new Date());
@@ -120,15 +120,15 @@ export class SlotService {
     }
 
     // get reservations
-    getReservationsByStudent(query: QueryPanigation): Observable<ReservationResponseDTO[]> {
+    getReservationsByStudent(query: QueryPanigation): Observable<BookingResponseDTO[]> {
         return this.http.post<ResponseDTO>(`https://localhost:7113/booking/reservations-student`, query).pipe(
             map((res) => {
-                var reservations = res.data as ReservationResponseDTO[];
+                var reservations = res.data as BookingResponseDTO[];
                 if (reservations == null || reservations.length == 0) return [];
                 return reservations;
             }),
             tap((res) => {
-                this.reservations.set(res);
+                this.bookings.set(res);
                 console.log('reservations : ', res);
             })
         );

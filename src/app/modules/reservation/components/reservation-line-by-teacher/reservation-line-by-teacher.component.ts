@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { ReservationResponseDTO } from '../../../../shared/models/slot';
+import { BookingResponseDTO } from '../../../../shared/models/slot';
 
 @Component({
     selector: 'app-reservation-line-by-teacher',
@@ -9,5 +9,5 @@ import { ReservationResponseDTO } from '../../../../shared/models/slot';
     styleUrl: './reservation-line-by-teacher.component.scss'
 })
 export class ReservationLineByTeacherComponent {
-    reservation = input.required<ReservationResponseDTO>();
+    reservation = input.required<BookingResponseDTO>();
 }

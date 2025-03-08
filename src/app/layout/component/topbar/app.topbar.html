@@ -32,8 +32,8 @@
                     <i class="pi pi-calendar"></i>
                     <span>Calendar</span>
                 </button>
-                <button type="button" class="layout-topbar-action">
-                    <i class="pi pi-inbox"></i>
+                <button type="button" class="layout-topbar-action" *ngIf="user().email" [routerLink]="['/reservation/orders-student']">
+                    <i class="pi pi-shopping-cart"></i>
                     <span>Messages</span>
                 </button>
                 <button type="button" class="layout-topbar-action" (click)="router.navigate(['/profile'])">

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild, ChangeDetectorRef, computed, input, signal } from '@angular/core';
 import { SlotService } from '../../../../shared/services/slot.service';
-import { QueryPanigation, ReservationResponseDTO } from '../../../../shared/models/slot';
+import { QueryPanigation, BookingResponseDTO } from '../../../../shared/models/slot';
 import { delay, firstValueFrom } from 'rxjs';
 import { SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -16,9 +16,9 @@ import { Table } from 'primeng/table';
 export class ReservationListByTeacherComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
     slotService = inject(SlotService);
-    reservations = signal<ReservationResponseDTO[]>([] as ReservationResponseDTO[]);
+    reservations = signal<BookingResponseDTO[]>([] as BookingResponseDTO[]);
     totalReservations = signal(0);
-    selectedReservation!: ReservationResponseDTO;
+    selectedReservation!: BookingResponseDTO;
     dateNow = computed(() => new Date());
     upComing = input<boolean>();
     first = 0; // premier element

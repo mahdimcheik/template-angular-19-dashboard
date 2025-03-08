@@ -132,11 +132,7 @@ export class AuthService {
             return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/my-informations`).pipe(
                 tap((res) => {
                     this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
-                    // this.token.set(
-                    //   (res.data as { token: string; user: UserResponseDTO }).token
-                    // );
                     this.localStorageService.setUser(this.userConnected());
-                    // this.localStorageService.setToken(this.token());
                 })
             );
         }

@@ -69,6 +69,7 @@
     }
 }
 .active-route {
-    background-color: var(--p-surface-200);
+    background-color: var(--primary-color);
+    color: var(--primary-contrast-color);
     border-radius: var(--content-border-radius);
 }

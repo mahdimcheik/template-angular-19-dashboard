@@ -1,5 +1,5 @@
-import { Component, input, OnInit } from '@angular/core';
-import { BookingCreateDTO, SlotResponseDTO } from '../../../../shared/models/slot';
+import { Component, input, OnInit, signal } from '@angular/core';
+import { BookingCreateDTO, BookingResponseDTO, SlotResponseDTO } from '../../../../shared/models/slot';
 
 @Component({
     selector: 'app-card-item-order',
@@ -9,5 +9,5 @@ import { BookingCreateDTO, SlotResponseDTO } from '../../../../shared/models/slo
     styleUrl: './card-item-order.component.scss'
 })
 export class CardItemOrderComponent {
-    booking = input.required<SlotResponseDTO>();
+    booking = input.required<BookingResponseDTO>();
 }
