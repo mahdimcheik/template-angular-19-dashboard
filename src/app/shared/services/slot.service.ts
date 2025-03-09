@@ -59,11 +59,7 @@ export class SlotService {
     }
 
     deleteSlotByCreator(slotId: string): Observable<ResponseDTO> {
-        return this.http.delete<ResponseDTO>(`https://localhost:7113/slot?slotId=${slotId}`).pipe(
-            tap(() => {
-                this.visibleEvents.set([...this.visibleEvents().filter((x) => x.extendedProps?.['id'] != slotId)]);
-            })
-        );
+        return this.http.delete<ResponseDTO>(`https://localhost:7113/slot?slotId=${slotId}`);
     }
 
     unbookReservationByTeacher(slotId: string): Observable<ResponseDTO> {

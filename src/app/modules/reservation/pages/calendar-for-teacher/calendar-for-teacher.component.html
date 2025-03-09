@@ -56,12 +56,11 @@
 </full-calendar>
 
 <app-modal-create-appointment
-    (onSubmitted)="loadSlot()"
+    (onSubmitted)="onModalSubmit()"
     [isCreatingModal]="isCreatingAppointment"
     *ngIf="showCreateAppointmentModal()"
     [(visible)]="showCreateAppointmentModal"
     [selectedSlot]="selectedSlot()"
     [appointment]="selectedAppoitment()"
-    (onSubmitted)="loadSlot()"
 >
 </app-modal-create-appointment>

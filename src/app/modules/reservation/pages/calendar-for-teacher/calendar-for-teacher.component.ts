@@ -95,9 +95,10 @@ export class CalendarForTeacherComponent implements AfterViewInit {
             this.showCreateAppointmentModal.set(true);
         });
     };
-
+    // click sur un slot vide, je crée un appoitment
     onDateSelect = (selectionInfo: DateSelectArg) => {
         this.selectedSlot.set({ start: selectionInfo.start, end: selectionInfo.end });
+        this.selectedAppoitment.set({});
         this.isCreatingAppointment = true;
         this.showCreateAppointmentModal.set(true);
     };
@@ -205,10 +206,7 @@ export class CalendarForTeacherComponent implements AfterViewInit {
         this.calendarComponent.getApi().changeView('timeGridDay');
         this.updateViewDates();
     }
-    onDeleteAppointmentReservation(shouldRelaod: boolean = false) {
-        shouldRelaod && this.loadSlot();
-    }
-    onUpdateAppointment(shouldRelaod: boolean = false) {
-        shouldRelaod && this.loadSlot();
+    onModalSubmit() {
+        this.loadSlot();
     }
 }

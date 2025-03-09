@@ -2,8 +2,9 @@ import { AfterViewInit, Component, computed, inject, input, model, OnInit, outpu
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { SlotService } from '../../../../shared/services/slot.service';
-import { firstValueFrom } from 'rxjs';
+import { catchError, finalize, firstValueFrom } from 'rxjs';
 import { SlotCreateDTO, SlotUpdateDTO } from '../../../../shared/models/slot';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-modal-create-appointment',
@@ -28,6 +29,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
 
     fb = inject(FormBuilder);
     slotService = inject(SlotService);
+    messageService = inject(MessageService);
 
     async ngOnInit() {
         if (this.isCreatingModal()) {
@@ -57,35 +59,72 @@ export class ModalCreateAppointmentComponent implements OnInit {
         this.onSubmitted.emit();
         this.visible.set(false);
     }
-    async submit() {
-        try {
-            if (this.isCreatingModal()) {
-                const newAppointment: SlotCreateDTO = {
-                    startAt: this.userForm.value.startAt as Date,
-                    endAt: this.userForm.value.endAt as Date,
-                    price: this.userForm.value.price,
-                    reduction: this.userForm.value.reduction,
-                    type: this.userForm.value.type,
-                    createdAt: new Date()
-                };
-                await firstValueFrom(this.slotService.addSlotByCreator(newAppointment));
-            } else {
-                const updatedAppointment: SlotUpdateDTO = {
-                    id: this.appointment().extendedProps?.['slot']?.id,
-                    startAt: this.selectedSlot().start as Date,
-                    endAt: this.selectedSlot().end as Date,
-                    price: this.userForm.value.price,
-                    reduction: this.userForm.value.reduction,
-                    type: this.userForm.value.type,
-                    createdAt: new Date()
-                };
-                await firstValueFrom(this.slotService.updateSlotByCreator(updatedAppointment));
-            }
-        } catch (e) {
-            console.error(e);
-        } finally {
-            this.onSubmitted.emit();
-            this.close();
+    submit() {
+        if (this.isCreatingModal()) {
+            const newAppointment: SlotCreateDTO = {
+                startAt: this.userForm.value.startAt as Date,
+                endAt: this.userForm.value.endAt as Date,
+                price: this.userForm.value.price,
+                reduction: this.userForm.value.reduction,
+                type: this.userForm.value.type,
+                createdAt: new Date()
+            };
+            this.slotService
+                .addSlotByCreator(newAppointment)
+                .pipe(
+                    catchError((err) => {
+                        console.error(err);
+                        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la création du créneau' });
+                        return [];
+                    })
+                )
+                .subscribe(() => {
+                    this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Créneau créé avec succès' });
+                    // this.onSubmitted.emit();
+                    this.close();
+                });
+        } else {
+            const updatedAppointment: SlotUpdateDTO = {
+                id: this.appointment().extendedProps?.['slot']?.id,
+                startAt: this.selectedSlot().start as Date,
+                endAt: this.selectedSlot().end as Date,
+                price: this.userForm.value.price,
+                reduction: this.userForm.value.reduction,
+                type: this.userForm.value.type,
+                createdAt: new Date()
+            };
+            this.slotService
+                .updateSlotByCreator(updatedAppointment)
+                .pipe(
+                    catchError((err) => {
+                        console.error(err);
+                        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la création du créneau' });
+                        return [];
+                    })
+                )
+                .subscribe(() => {
+                    this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Créneau créé avec succès' });
+                    // this.onSubmitted.emit();
+                    this.close();
+                });
         }
+    }
+
+    deleteSlot() {
+        this.slotService
+            .deleteSlotByCreator(this.appointment().extendedProps?.['slot']?.id)
+            .pipe(
+                catchError((err) => {
+                    console.error(err);
+                    this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la suppression du créneau' });
+                    return [];
+                }),
+                finalize(() => {
+                    this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Créneau supprimé avec succès' });
+                    // this.onSubmitted.emit();
+                    this.close();
+                })
+            )
+            .subscribe();
     }
 }
