@@ -46,6 +46,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ReservationsTeacherComponent } from './pages/reservations-teacher/reservations-teacher.component';
 import { CardItemOrderComponent } from './components/card-item-order/card-item-order.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { OrderStatusPipe } from '../../shared/pipes/order-status.pipe';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -110,7 +111,8 @@ registerLocaleData(localeFr, 'fr');
         TagModule,
         InputIconModule,
         IconFieldModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        OrderStatusPipe
     ]
 })
 export class ReservationModule {}

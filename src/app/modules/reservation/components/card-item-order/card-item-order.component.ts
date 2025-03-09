@@ -10,4 +10,6 @@ import { BookingCreateDTO, BookingResponseDTO, SlotResponseDTO } from '../../../
 })
 export class CardItemOrderComponent {
     booking = input.required<BookingResponseDTO>();
+    orderNumber = input.required<string>();
+    orderStatus = input.required<number>();
 }

@@ -19,6 +19,6 @@
         </p-toolbar>
     </div>
     <div class="w-full flex flex-col gap-2" *ngIf="currentOrder() && currentOrder().bookings">
-        <app-card-item-order *ngFor="let booking of currentOrder().bookings" [booking]="booking"></app-card-item-order>
+        <app-card-item-order *ngFor="let booking of currentOrder().bookings" [booking]="booking" [orderNumber]="currentOrder().orderNumber" [orderStatus]="currentOrder().status"></app-card-item-order>
     </div>
 </div>
