@@ -14,7 +14,7 @@ import { MessageService } from 'primeng/api';
     styleUrl: './inscription.component.scss',
     providers: []
 })
-export class InscriptionComponent implements OnInit {
+export class InscriptionComponent {
     authService = inject(AuthService);
     messageService = inject(MessageService);
     fb = inject(FormBuilder);
@@ -65,36 +65,29 @@ export class InscriptionComponent implements OnInit {
         { validators: [passwordValidator('password', 'confirmPassword')] }
     );
 
-    ngOnInit() {
-        // this.userForm.controls['dateOfBirth'].valueChanges.subscribe((value) => {
-        //     console.log('Date of Birth Control Value:', value);
-        // });
-    }
-
-    submit() {
+    async submit() {
         const newUser = {
             ...this.userForm.value,
             gender: this.userForm.value['gender']?.value
         } as UserCreateDTO;
         console.log('new user ', newUser);
 
-        this.authService
-            .register(newUser)
-            .pipe(
-                tap((res) => {
-                    console.log('res', res);
-                    this.router.navigateByUrl('auth/account-created-successfully');
-                }),
-                catchError((err) => {
-                    this.errorMessage = err.error.message;
-                    this.messageService.add({
-                        summary: 'Erreur',
-                        detail: err.error.message,
-                        severity: 'error'
-                    });
-                    return err;
-                })
-            )
-            .subscribe();
+        try {
+            await firstValueFrom(
+                this.authService.register(newUser).pipe(
+                    tap((res) => {
+                        console.log('res', res);
+                        this.router.navigateByUrl('auth/account-created-successfully');
+                    })
+                )
+            );
+        } catch (err) {
+            console.error(err);
+            this.messageService.add({
+                summary: 'Erreur',
+                detail: (err as any).error.message,
+                severity: 'error'
+            });
+        }
     }
 }

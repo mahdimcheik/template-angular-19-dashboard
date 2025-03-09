@@ -13,7 +13,10 @@ import { LayoutService } from './app/layout/service/layout.service';
     standalone: true,
     imports: [RouterModule, ToastModule],
     providers: [MessageService],
-    template: `<router-outlet></router-outlet> `
+    template: `
+        <p-toast></p-toast>
+        <router-outlet></router-outlet>
+    `
 })
 export class AppComponent implements OnInit {
     localStorageService = inject(LocalstorageService);

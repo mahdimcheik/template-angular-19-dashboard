@@ -13,9 +13,9 @@
 <full-calendar [options]="calendarOptions" #calendar [events]="visibleEvents()">
     <ng-template #eventContent let-arg class="custom-event">
         <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available']">
-            <b *ngIf="!!arg.event.title" class="event-title">
+            <!-- <p *ngIf="!!arg.event.title" class="event-title">
                 {{ arg.event.title }}
-            </b>
+            </p> -->
 
             <div class="event-image" *ngIf="arg.event.extendedProps?.slot?.imgUrl">
                 <img [src]="arg.event.extendedProps?.slot?.imgUrl" width="50" height="50" />

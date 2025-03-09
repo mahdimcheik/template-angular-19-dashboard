@@ -22,7 +22,7 @@ import { ToastModule } from 'primeng/toast';
             <app-footer></app-footer>
         </div>
         <div class="layout-mask animate-fadein"></div>
-        <p-toast></p-toast>
+        <!-- <p-toast></p-toast> -->
     </div> `
 })
 export class AppLayout {

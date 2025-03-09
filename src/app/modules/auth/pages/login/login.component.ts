@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
 import { UserLoginDTO, UserResponseDTO } from '../../../../shared/models/user';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +15,8 @@ import { UserLoginDTO, UserResponseDTO } from '../../../../shared/models/user';
 })
 export class LoginComponent implements OnInit {
     private authService = inject(AuthService);
-
+    private messageService = inject(MessageService);
+    private router = inject(Router);
     ngOnInit(): void {
         console.log('LoginComponent initialized', this.authService.userConnected());
     }
@@ -25,6 +27,26 @@ export class LoginComponent implements OnInit {
     });
 
     submit() {
-        this.authService.login(this.userForm.value as UserLoginDTO).subscribe();
+        this.authService
+            .login(this.userForm.value as UserLoginDTO)
+            .pipe(
+                catchError((err) => {
+                    console.error(err);
+                    this.messageService.add({
+                        summary: 'Erreur',
+                        detail: (err as any).error.message,
+                        severity: 'error'
+                    });
+                    throw err;
+                })
+            )
+            .subscribe(() => {
+                this.messageService.add({
+                    summary: 'Connexion réussie',
+                    detail: `Bienvenue `,
+                    severity: 'success'
+                });
+                this.router.navigateByUrl('/');
+            });
     }
 }

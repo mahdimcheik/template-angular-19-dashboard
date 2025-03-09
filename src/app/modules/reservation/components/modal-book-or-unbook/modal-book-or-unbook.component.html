@@ -51,12 +51,15 @@
                     <div *ngIf="!slotDetailed()?.['studentId']">
                         <div class="flex flex-col gap-2">
                             <span class="font-semibold text-xl">Sujet</span>
-                            <div class="flex flex-wrap gap-2 w-full md:justify-between">
+                            <div class="flex flex-col gap-2 w-full md:justify-between">
                                 <input pInputText id="subject" type="text" formControlName="subject" />
                                 <p-message severity="info" variant="simple" size="small">64 caractères autorisés</p-message>
 
                                 <div class="error" *ngIf="form.submitted && userForm.controls['subject'].errors">
-                                    <p-message [hidden]="!userForm.controls['subject'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                    <p-message [hidden]="!userForm.controls['subject'].errors['required']" severity="error" variant="simple" size="small">Ce champs est requis</p-message>
+                                    <p-message [hidden]="!userForm.controls['subject'].errors['maxlength']" severity="error" variant="simple" size="small"
+                                        >Le titre a {{ userForm.controls['subject'].errors['maxlength']?.['actualLength'] }} caractères</p-message
+                                    >
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-2 w-full mt-2">

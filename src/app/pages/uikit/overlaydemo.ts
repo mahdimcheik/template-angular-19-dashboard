@@ -54,7 +54,7 @@ import { Product, ProductService } from '../service/product.service';
                             </ng-template>
                         </p-table>
                     </p-popover>
-                    <p-toast />
+                    <!-- <p-toast /> -->
                 </div>
             </div>
 

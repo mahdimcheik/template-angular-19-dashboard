@@ -21,7 +21,7 @@ import { ToastModule } from 'primeng/toast';
                         <p-button (click)="showInfoViaToast()" label="Info" severity="info" />
                         <p-button (click)="showWarnViaToast()" label="Warn" severity="warn" />
                         <p-button (click)="showErrorViaToast()" label="Error" severity="danger" />
-                        <p-toast />
+                        <!-- <p-toast /> -->
                     </div>
 
                     <div class="font-semibold text-xl mt-4 mb-4">Inline</div>

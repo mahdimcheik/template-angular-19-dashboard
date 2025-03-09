@@ -25,7 +25,7 @@ export interface PageEvent {
 export class AuthService {
     private http: HttpClient = inject(HttpClient);
     private localStorageService = inject(LocalstorageService);
-    private messageService = inject(MessageService);
+    // private messageService = inject(MessageService);
 
     router = inject(Router);
 
@@ -63,11 +63,11 @@ export class AuthService {
                 this.localStorageService.setToken(this.token());
                 this.localStorageService.setRefreshToken(this.refreshAccessToken() ?? '');
 
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Bienvenu ! ',
-                    detail: res.message ?? 'Youpi!!!'
-                });
+                // this.messageService.add({
+                //     severity: 'success',
+                //     summary: 'Bienvenu ! ',
+                //     detail: res.message ?? 'Youpi!!!'
+                // });
                 /* // sse to delete or not ?
                 const eventSource = new EventSource(`${environment.BACK_URL}/sse/${this.userConnected().id}`);
 
@@ -77,11 +77,11 @@ export class AuthService {
                 };
                 */
 
-                if (this.userConnected().roles.includes('Admin')) {
-                    this.router.navigateByUrl('/');
-                } else {
-                    this.router.navigateByUrl('/');
-                }
+                // if (this.userConnected().roles.includes('Admin')) {
+                //     this.router.navigateByUrl('/');
+                // } else {
+                //     this.router.navigateByUrl('/');
+                // }
             })
         );
     }
@@ -115,11 +115,11 @@ export class AuthService {
 
     logout(): void {
         this.reset();
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Au revoir ! ',
-            detail: 'vous êtes déconnecté'
-        });
+        // this.messageService.add({
+        //     severity: 'success',
+        //     summary: 'Au revoir ! ',
+        //     detail: 'vous êtes déconnecté'
+        // });
         this.router.navigateByUrl('/auth/login');
     }
 
