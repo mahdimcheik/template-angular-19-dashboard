@@ -9,6 +9,7 @@ import Nora from '@primeng/themes/nora';
 import { PrimeNG } from 'primeng/config';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { LayoutService } from '../service/layout.service';
+import { LocalstorageService } from '../../shared/services/localstorage.service';
 
 const presets = {
     Aura,
@@ -98,6 +99,7 @@ export class AppConfigurator {
     config: PrimeNG = inject(PrimeNG);
 
     layoutService: LayoutService = inject(LayoutService);
+    localstorageService = inject(LocalstorageService);
 
     platformId = inject(PLATFORM_ID);
 
@@ -418,6 +420,7 @@ export class AppConfigurator {
             this.layoutService.layoutConfig.update((state) => ({ ...state, surface: color.name }));
         }
         this.applyTheme(type, color);
+        this.localstorageService.setLayoutConfig(this.layoutService.layoutConfig());
 
         event.stopPropagation();
     }
@@ -428,6 +431,7 @@ export class AppConfigurator {
         } else if (type === 'surface') {
             updateSurfacePalette(color.palette);
         }
+        this.localstorageService.setLayoutConfig(this.layoutService.layoutConfig());
     }
 
     onPresetChange(event: any) {
@@ -439,5 +443,6 @@ export class AppConfigurator {
 
     onMenuModeChange(event: string) {
         this.layoutService.layoutConfig.update((prev) => ({ ...prev, menuMode: event }));
+        this.localstorageService.setLayoutConfig(this.layoutService.layoutConfig());
     }
 }

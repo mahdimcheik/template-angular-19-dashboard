@@ -6,6 +6,7 @@ import { LocalstorageService } from './app/shared/services/localstorage.service'
 import { AuthService } from './app/shared/services/auth.service';
 import { catchError, of, switchMap } from 'rxjs';
 import { OrderService } from './app/shared/services/order.service';
+import { LayoutService } from './app/layout/service/layout.service';
 
 @Component({
     selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
     localStorageService = inject(LocalstorageService);
     authService = inject(AuthService);
     orderService = inject(OrderService);
+    layoutService = inject(LayoutService);
     router = inject(Router);
     ngOnInit(): void {
         try {
@@ -36,5 +38,12 @@ export class AppComponent implements OnInit {
         } catch (error) {
             console.log(error);
         }
+
+        // try {
+        //     const layoutconfig = this.localStorageService.getLayoutConfig();
+        //     if (layoutconfig) {
+        //         this.layoutService.layoutConfig.update((state) => ({ ...state, ...layoutconfig }));
+        //     }
+        // } catch (error) {}
     }
 }

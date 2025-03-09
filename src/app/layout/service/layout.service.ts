@@ -1,5 +1,6 @@
-import { Injectable, effect, signal, computed } from '@angular/core';
+import { Injectable, effect, signal, computed, inject } from '@angular/core';
 import { Subject } from 'rxjs';
+import { LocalstorageService } from '../../shared/services/localstorage.service';
 
 export interface layoutConfig {
     preset?: string;
@@ -42,6 +43,8 @@ export class LayoutService {
         menuHoverActive: false
     };
 
+    localStorageService = inject(LocalstorageService);
+
     layoutConfig = signal<layoutConfig>(this._config);
 
     layoutState = signal<LayoutState>(this._state);
@@ -79,6 +82,10 @@ export class LayoutService {
     private initialized = false;
 
     constructor() {
+        const layoutLS = this.localStorageService.getLayoutConfig();
+        this._config = { ...layoutLS };
+        this.layoutConfig.set({ ...this.layoutConfig(), ...layoutLS });
+
         effect(() => {
             const config = this.layoutConfig();
             if (config) {
@@ -164,8 +171,16 @@ export class LayoutService {
     }
 
     onConfigUpdate() {
-        this._config = { ...this.layoutConfig() };
-        this.configUpdate.next(this.layoutConfig());
+        const layoutLS = this.localStorageService.getLayoutConfig();
+        console.log('layoutLS', layoutLS);
+
+        if (layoutLS) {
+            this._config = { ...layoutLS };
+            this.configUpdate.next(layoutLS);
+        } else {
+            this._config = { ...this.layoutConfig() };
+            this.configUpdate.next(this.layoutConfig());
+        }
     }
 
     onMenuStateChange(event: MenuChangeEvent) {

@@ -12,11 +12,12 @@ import { MenubarModule } from 'primeng/menubar';
 import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
 import { OrderService } from '../../../shared/services/order.service';
+import { LocalstorageService } from '../../../shared/services/localstorage.service';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, AvatarModule, MenuModule, MenubarModule, TagModule, BadgeModule],
+    imports: [RouterModule, CommonModule, StyleClassModule, AvatarModule, MenuModule, MenubarModule, TagModule, BadgeModule],
     templateUrl: './app.topbar.html'
 })
 export class AppTopbar {
@@ -30,6 +31,7 @@ export class AppTopbar {
     });
     router = inject(Router);
     user = this.authService.userConnected;
+    localStorageService = inject(LocalstorageService);
 
     userItems = computed(() => {
         if (this.user().email) {
@@ -79,5 +81,6 @@ export class AppTopbar {
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
+        this.localStorageService.setLayoutConfig(this.layoutService.layoutConfig());
     }
 }
