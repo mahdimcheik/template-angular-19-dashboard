@@ -5,10 +5,18 @@
             <span class="layout-menuitem-text">{{ item.label }}</span>
         </button>
     </li>
-    <li>
-        <button class="menu-link" (click)="deconnect()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
-            <i [ngClass]="deconnecionItem.icon" class="layout-menuitem-icon"></i>
-            <span class="layout-menuitem-text">{{ deconnecionItem.label }}</span>
-        </button>
-    </li>
+    <div class="last-items">
+        <li>
+            <button class="menu-link" [routerLink]="'/settings'" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
+                <i [ngClass]="settingsItem.icon" class="layout-menuitem-icon"></i>
+                <span class="layout-menuitem-text">{{ settingsItem.label }}</span>
+            </button>
+        </li>
+        <li>
+            <button class="menu-link" (click)="deconnect()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
+                <i [ngClass]="deconnecionItem.icon" class="layout-menuitem-icon"></i>
+                <span class="layout-menuitem-text">{{ deconnecionItem.label }}</span>
+            </button>
+        </li>
+    </div>
 </ul>

@@ -25,7 +25,10 @@
     flex-direction: column;
     gap: 0.5rem;
     height: 100%;
-    li:last-of-type {
+    // li:last-of-type {
+    //     margin-top: auto;
+    // }
+    .last-items {
         margin-top: auto;
     }
 }

@@ -5,6 +5,7 @@ import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 import { canNotLoginGuard } from './app/shared/guards/can-login.guard';
+import { SettingsComponent } from './app/pages/settings/settings.component';
 
 export const appRoutes: Routes = [
     {
@@ -15,6 +16,7 @@ export const appRoutes: Routes = [
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
+            { path: 'settings', component: SettingsComponent },
             {
                 path: 'reservation',
                 loadChildren: () => import('./app/modules/reservation/reservation.module').then((m) => m.ReservationModule)
