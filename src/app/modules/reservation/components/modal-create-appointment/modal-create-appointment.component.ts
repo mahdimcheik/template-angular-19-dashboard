@@ -49,7 +49,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
                 type: [this.appointment().extendedProps?.['slot']?.type, [Validators.required]]
             });
         }
-        console.log('this.appointment', this.appointment().extendedProps);
 
         if (this.appointment().extendedProps?.['slot']?.['studentId'] != null && new Date(this.appointment().extendedProps?.['slot']?.['startAt']) < new Date()) {
             this.passedReservation.set(true);
@@ -104,7 +103,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
                 )
                 .subscribe(() => {
                     this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Créneau créé avec succès' });
-                    // this.onSubmitted.emit();
                     this.close();
                 });
         }
@@ -121,7 +119,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
                 }),
                 finalize(() => {
                     this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Créneau supprimé avec succès' });
-                    // this.onSubmitted.emit();
                     this.close();
                 })
             )
