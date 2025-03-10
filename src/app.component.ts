@@ -7,13 +7,17 @@ import { AuthService } from './app/shared/services/auth.service';
 import { catchError, of, switchMap } from 'rxjs';
 import { OrderService } from './app/shared/services/order.service';
 import { LayoutService } from './app/layout/service/layout.service';
+import { AppConfigurator } from './app/layout/component/app.configurator';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule, ToastModule],
+    imports: [RouterModule, ToastModule, AppConfigurator],
     providers: [MessageService],
     template: `
+        <div class="hidden">
+            <app-configurator></app-configurator>
+        </div>
         <p-toast></p-toast>
         <router-outlet></router-outlet>
     `
