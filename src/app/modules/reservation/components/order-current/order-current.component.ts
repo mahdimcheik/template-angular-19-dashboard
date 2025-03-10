@@ -1,5 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { OrderResponseDTO } from '../../../../shared/models/order';
+import { OrderService } from '../../../../shared/services/order.service';
+import { PaymentsService } from '../../../../shared/services/payments.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-order-current',
@@ -9,5 +12,18 @@ import { OrderResponseDTO } from '../../../../shared/models/order';
     styleUrl: './order-current.component.scss'
 })
 export class OrderCurrentComponent {
+    paymentsService = inject(PaymentsService);
+    orderService = inject(OrderService);
+    router = inject(Router);
     currentOrder = input.required<OrderResponseDTO>();
+
+    getcheckout() {
+        this.paymentsService
+            .getcheckout(this.orderService.currentOrder().id)
+            .pipe()
+            .subscribe((checkoutResponse) => {
+                // this.router.navigate([checkoutResponse.url]);
+                window.location.href = checkoutResponse.url;
+            });
+    }
 }

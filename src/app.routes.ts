@@ -6,6 +6,7 @@ import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 import { canNotLoginGuard } from './app/shared/guards/can-login.guard';
 import { SettingsComponent } from './app/pages/settings/settings.component';
+import { PaymentSuccessComponent } from './app/pages/payment-success/payment-success.component';
 
 export const appRoutes: Routes = [
     {
@@ -24,6 +25,10 @@ export const appRoutes: Routes = [
             {
                 path: 'profile',
                 loadChildren: () => import('./app/modules/profile/profile.module').then((m) => m.ProfileModule)
+            },
+            {
+                path: 'success',
+                component: PaymentSuccessComponent
             }
         ]
     },

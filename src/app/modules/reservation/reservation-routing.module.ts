@@ -4,6 +4,7 @@ import { CalendarForTeacherComponent } from './pages/calendar-for-teacher/calend
 import { CalendarForStudentComponent } from './pages/calendar-for-student/calendar-for-student.component';
 import { ReservationsTeacherComponent } from './pages/reservations-teacher/reservations-teacher.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { PaymentSuccessComponent } from '../../pages/payment-success/payment-success.component';
 
 const routes: Routes = [
     {

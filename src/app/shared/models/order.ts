@@ -7,6 +7,9 @@ export type OrderResponseDTO = {
     createdAt: Date;
     status: EnumOrderStatus;
     paymentMethod: number;
+    totalDiscountedPrice: number;
+    totalOriginalPrice: number;
+    totalReduction: number;
     bookings: BookingResponseDTO[];
 };
 export enum EnumOrderStatus {
@@ -14,3 +17,14 @@ export enum EnumOrderStatus {
     paid = 1,
     canceled = 2
 }
+
+export type CheckoutRequest = {
+    orderId: string;
+    amout?: number;
+    itemName?: string;
+};
+
+export type CheckoutResponse = {
+    sessionId: string;
+    url: string;
+};
