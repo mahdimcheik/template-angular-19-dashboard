@@ -32,7 +32,7 @@ export const appRoutes: Routes = [
         canActivate: [canNotLoginGuard],
         loadChildren: () => import('./app/modules/auth/auth.module').then((m) => m.AuthModule)
     },
-    { path: 'landing', component: Landing },
+    { path: 'home', component: Landing },
     { path: 'notfound', component: Notfound },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
     { path: '**', redirectTo: '/notfound' }

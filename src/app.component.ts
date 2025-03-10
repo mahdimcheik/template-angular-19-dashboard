@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
                     }),
                     catchError((error) => {
                         console.log(error);
+                        this.router.navigateByUrl('/home');
                         return of();
                     })
                 )

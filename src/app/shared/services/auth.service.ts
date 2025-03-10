@@ -115,12 +115,7 @@ export class AuthService {
 
     logout(): void {
         this.reset();
-        // this.messageService.add({
-        //     severity: 'success',
-        //     summary: 'Au revoir ! ',
-        //     detail: 'vous êtes déconnecté'
-        // });
-        this.router.navigateByUrl('/auth/login');
+        this.router.navigateByUrl('/home');
     }
 
     getprofile(): Observable<ResponseDTO> {
@@ -128,16 +123,19 @@ export class AuthService {
         this.userConnected.set(this.localStorageService.getUser());
         this.token.set(this.localStorageService.getToken());
 
-        if (this.token()) {
-            return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/my-informations`).pipe(
-                tap((res) => {
-                    this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
-                    this.localStorageService.setUser(this.userConnected());
-                })
-            );
-        }
+        return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/my-informations`).pipe(
+            tap((res) => {
+                this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
+                this.localStorageService.setUser(this.userConnected());
+            }),
+            catchError((error) => {
+                this.logout();
+                this.router.navigateByUrl('/home');
+                return of();
+            })
+        );
 
-        return of().pipe(tap(() => this.reset()));
+        // return of().pipe(tap(() => this.reset()));
     }
 
     getprofileById(userId: string): Observable<ResponseDTO> {
