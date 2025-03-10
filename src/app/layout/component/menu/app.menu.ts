@@ -27,8 +27,9 @@ export class AppMenu {
     ngOnInit() {
         this.model = [
             { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-            { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
+            // { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
             { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/reservation/teacher'] },
+            { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/reservation/calendar-for-student'] }
             // { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
             // { label: 'Button', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/uikit/button'] },
             // { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
@@ -44,36 +45,36 @@ export class AppMenu {
             // { label: 'Timeline', icon: 'pi pi-fw pi-calendar', routerLink: ['/uikit/timeline'] },
             // { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] },
 
-            {
-                label: 'Login',
-                icon: 'pi pi-fw pi-sign-in',
-                routerLink: ['/auth/login']
-            },
-            {
-                label: 'Error',
-                icon: 'pi pi-fw pi-times-circle',
-                routerLink: ['/auth/error']
-            },
-            {
-                label: 'Access Denied',
-                icon: 'pi pi-fw pi-lock',
-                routerLink: ['/auth/access']
-            },
-            {
-                label: 'Crud',
-                icon: 'pi pi-fw pi-pencil',
-                routerLink: ['/pages/crud']
-            },
-            {
-                label: 'Not Found',
-                icon: 'pi pi-fw pi-exclamation-circle',
-                routerLink: ['/pages/notfound']
-            },
-            {
-                label: 'Empty',
-                icon: 'pi pi-fw pi-circle-off',
-                routerLink: ['/pages/empty']
-            }
+            // {
+            //     label: 'Login',
+            //     icon: 'pi pi-fw pi-sign-in',
+            //     routerLink: ['/auth/login']
+            // },
+            // {
+            //     label: 'Error',
+            //     icon: 'pi pi-fw pi-times-circle',
+            //     routerLink: ['/auth/error']
+            // },
+            // {
+            //     label: 'Access Denied',
+            //     icon: 'pi pi-fw pi-lock',
+            //     routerLink: ['/auth/access']
+            // },
+            // {
+            //     label: 'Crud',
+            //     icon: 'pi pi-fw pi-pencil',
+            //     routerLink: ['/pages/crud']
+            // },
+            // {
+            //     label: 'Not Found',
+            //     icon: 'pi pi-fw pi-exclamation-circle',
+            //     routerLink: ['/pages/notfound']
+            // },
+            // {
+            //     label: 'Empty',
+            //     icon: 'pi pi-fw pi-circle-off',
+            //     routerLink: ['/pages/empty']
+            // }
         ];
     }
 
