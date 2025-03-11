@@ -17,7 +17,7 @@ export class PaymentsService {
     constructor() {}
 
     getcheckout(orderId: string): Observable<CheckoutResponse> {
-        return this.http.post<ResponseDTO>('https://localhost:7113/api/payments/create-checkout-session', { orderId: orderId } as CheckoutRequest).pipe(
+        return this.http.post<ResponseDTO>('https://localhost:7113/payments/create-checkout-session', { orderId: orderId } as CheckoutRequest).pipe(
             catchError((err) => {
                 console.error('Error getting checkout', err);
                 return throwError(() => err);
