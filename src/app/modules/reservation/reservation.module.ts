@@ -48,6 +48,7 @@ import { CardItemOrderComponent } from './components/card-item-order/card-item-o
 import { OrdersComponent } from './pages/orders/orders.component';
 import { OrderStatusPipe } from '../../shared/pipes/order-status.pipe';
 import { OrderCurrentComponent } from './components/order-current/order-current.component';
+import { PaymentSuccessComponent } from './components/payment-success/payment-success.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -63,7 +64,8 @@ registerLocaleData(localeFr, 'fr');
         ReservationsTeacherComponent,
         CardItemOrderComponent,
         OrdersComponent,
-        OrderCurrentComponent
+        OrderCurrentComponent,
+        PaymentSuccessComponent
     ],
     imports: [
         CommonModule,

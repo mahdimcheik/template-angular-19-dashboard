@@ -6,7 +6,7 @@ import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 import { canNotLoginGuard } from './app/shared/guards/can-login.guard';
 import { SettingsComponent } from './app/pages/settings/settings.component';
-import { PaymentSuccessComponent } from './app/pages/payment-success/payment-success.component';
+import { PaymentSuccessComponent } from './app/modules/reservation/components/payment-success/payment-success.component';
 
 export const appRoutes: Routes = [
     {
