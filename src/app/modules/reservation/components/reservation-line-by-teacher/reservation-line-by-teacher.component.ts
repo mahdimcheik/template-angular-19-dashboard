@@ -1,9 +1,11 @@
 import { Component, input } from '@angular/core';
 import { BookingResponseDTO } from '../../../../shared/models/slot';
+import { ButtonModule } from 'primeng/button';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-reservation-line-by-teacher',
-    standalone: false,
+    imports: [ButtonModule, DatePipe, CurrencyPipe],
 
     templateUrl: './reservation-line-by-teacher.component.html',
     styleUrl: './reservation-line-by-teacher.component.scss'

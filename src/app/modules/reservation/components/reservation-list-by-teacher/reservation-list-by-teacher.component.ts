@@ -3,11 +3,14 @@ import { SlotService } from '../../../../shared/services/slot.service';
 import { QueryPanigation, BookingResponseDTO } from '../../../../shared/models/slot';
 import { delay, firstValueFrom } from 'rxjs';
 import { SortEvent } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
     selector: 'app-reservation-list-by-teacher',
-    standalone: false,
+    imports: [ButtonModule, DatePipe, TableModule, CurrencyPipe, PaginatorModule],
 
     templateUrl: './reservation-list-by-teacher.component.html',
     styleUrl: './reservation-list-by-teacher.component.scss',

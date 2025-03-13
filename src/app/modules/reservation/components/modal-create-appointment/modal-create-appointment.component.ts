@@ -1,14 +1,23 @@
 import { AfterViewInit, Component, computed, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { catchError, finalize, firstValueFrom } from 'rxjs';
 import { SlotCreateDTO, SlotUpdateDTO } from '../../../../shared/models/slot';
 import { MessageService } from 'primeng/api';
+import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { ButtonModule } from 'primeng/button';
+import { FluidModule } from 'primeng/fluid';
+import { SelectModule } from 'primeng/select';
+import { CommonModule } from '@angular/common';
+import { DialogModule } from 'primeng/dialog';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
     selector: 'app-modal-create-appointment',
-    standalone: false,
+    imports: [HelpTypePipe, InputTextModule, MessageModule, ButtonModule, DatePickerModule, FluidModule, SelectModule, CommonModule, ReactiveFormsModule, DialogModule],
 
     templateUrl: './modal-create-appointment.component.html',
     styleUrl: './modal-create-appointment.component.scss'

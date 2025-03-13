@@ -12,8 +12,6 @@ import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { FieldsetModule } from 'primeng/fieldset';
 import { HelpTypePipe } from '../../shared/pipes/help-type.pipe';
-import { ModalDetailsAppointmentForTeacherComponent } from './components/modal-details-appointment-for-teacher/modal-details-appointment-for-teacher.component';
-import { ModalCreateAppointmentComponent } from './components/modal-create-appointment/modal-create-appointment.component';
 import { FluidModule } from 'primeng/fluid';
 import { SelectModule } from 'primeng/select';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -33,7 +31,6 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarForStudentComponent } from './pages/calendar-for-student/calendar-for-student.component';
-import { ModalBookOrUnbookComponent } from './components/modal-book-or-unbook/modal-book-or-unbook.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ReservationLineByTeacherComponent } from './components/reservation-line-by-teacher/reservation-line-by-teacher.component';
 import { ReservationListByTeacherComponent } from './components/reservation-list-by-teacher/reservation-list-by-teacher.component';
@@ -44,38 +41,20 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ReservationsTeacherComponent } from './pages/reservations-teacher/reservations-teacher.component';
-import { CardItemOrderComponent } from './components/card-item-order/card-item-order.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { OrderStatusPipe } from '../../shared/pipes/order-status.pipe';
-import { OrderCurrentComponent } from './components/order-current/order-current.component';
-import { PaymentSuccessComponent } from './components/payment-success/payment-success.component';
 
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
-    declarations: [
-        CalendarForTeacherComponent,
-        ModalDetailsAppointmentForTeacherComponent,
-        ModalCreateAppointmentComponent,
-        CalendarForStudentComponent,
-        ModalBookOrUnbookComponent,
-        ReservationLineByTeacherComponent,
-        ReservationListByTeacherComponent,
-        ReservationsTeacherComponent,
-        CardItemOrderComponent,
-        OrdersComponent,
-        OrderCurrentComponent,
-        PaymentSuccessComponent
-    ],
+    declarations: [],
     imports: [
         CommonModule,
         ReservationRoutingModule,
         HelpTypePipe,
-        CommonModule,
         FullCalendarModule,
         ButtonModule,
         DialogModule,
-        FormsModule,
         TableModule,
         PaginatorModule,
         FieldsetModule,
@@ -106,7 +85,6 @@ registerLocaleData(localeFr, 'fr');
         ToastModule,
         ToolbarModule,
         RatingModule,
-        InputTextModule,
         TextareaModule,
         SelectModule,
         RadioButtonModule,

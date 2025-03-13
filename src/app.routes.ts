@@ -20,7 +20,7 @@ export const appRoutes: Routes = [
             { path: 'settings', component: SettingsComponent },
             {
                 path: 'reservation',
-                loadChildren: () => import('./app/modules/reservation/reservation.module').then((m) => m.ReservationModule)
+                loadChildren: () => import('./app/modules/reservation/reservation.routes')
             },
             {
                 path: 'profile',

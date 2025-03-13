@@ -1,9 +1,13 @@
 import { Component, input, OnInit, signal } from '@angular/core';
 import { BookingCreateDTO, BookingResponseDTO, SlotResponseDTO } from '../../../../shared/models/slot';
+import { OrderStatusPipe } from '../../../../shared/pipes/order-status.pipe';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
+import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 
 @Component({
     selector: 'app-card-item-order',
-    standalone: false,
+    imports: [OrderStatusPipe, ButtonModule, CommonModule, HelpTypePipe],
 
     templateUrl: './card-item-order.component.html',
     styleUrl: './card-item-order.component.scss'

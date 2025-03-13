@@ -4,15 +4,20 @@ import { AuthService } from '../../../../shared/services/auth.service';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import { EventContentArg } from '@fullcalendar/core/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { FullCalendarComponent } from '@fullcalendar/angular';
+import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import frLocale from '@fullcalendar/core/locales/fr';
 import interactionPlugin, { EventResizeDoneArg, EventResizeStopArg } from '@fullcalendar/interaction';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
+import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
+import { ModalCreateAppointmentComponent } from '../../components/modal-create-appointment/modal-create-appointment.component';
 
 @Component({
     selector: 'app-calendar-for-teacher',
-    standalone: false,
+    imports: [ButtonModule, FullCalendarModule, CommonModule, HelpTypePipe, ModalCreateAppointmentComponent],
+
     templateUrl: './calendar-for-teacher.component.html',
     styleUrl: './calendar-for-teacher.component.scss'
 })

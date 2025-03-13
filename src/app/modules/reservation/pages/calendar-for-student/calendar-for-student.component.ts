@@ -1,13 +1,17 @@
 import { AfterViewInit, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventContentArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { FullCalendarComponent } from '@fullcalendar/angular';
+import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import frLocale from '@fullcalendar/core/locales/fr';
 import interactionPlugin, { EventResizeDoneArg, EventResizeStopArg } from '@fullcalendar/interaction';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { AuthService } from '../../../../shared/services/auth.service';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
+import { ModalBookOrUnbookComponent } from '../../components/modal-book-or-unbook/modal-book-or-unbook.component';
 
 type MinimalEvent = {
     start: Date;
@@ -26,7 +30,8 @@ type CustomEvent = {
 
 @Component({
     selector: 'app-calendar-for-student',
-    standalone: false,
+    imports: [ButtonModule, FullCalendarModule, CommonModule, HelpTypePipe, ModalBookOrUnbookComponent],
+
     templateUrl: './calendar-for-student.component.html',
     styleUrl: './calendar-for-student.component.scss'
 })

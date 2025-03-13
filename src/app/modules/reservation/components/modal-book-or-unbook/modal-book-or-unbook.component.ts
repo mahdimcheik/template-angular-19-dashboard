@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, computed, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { finalize, firstValueFrom, switchMap } from 'rxjs';
@@ -7,6 +7,13 @@ import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { Title } from '@angular/platform-browser';
 import { BookingCreateDTO, SlotResponseDTO } from '../../../../shared/models/slot';
 import { OrderService } from '../../../../shared/services/order.service';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { ButtonModule } from 'primeng/button';
+import { FluidModule } from 'primeng/fluid';
+import { CommonModule } from '@angular/common';
+import { DialogModule } from 'primeng/dialog';
+import { SelectModule } from 'primeng/select';
 
 type TypeHelpType = {
     id: number;
@@ -15,7 +22,7 @@ type TypeHelpType = {
 
 @Component({
     selector: 'app-modal-book-or-unbook',
-    standalone: false,
+    imports: [HelpTypePipe, InputTextModule, MessageModule, ButtonModule, FluidModule, SelectModule, CommonModule, ReactiveFormsModule, DialogModule],
 
     templateUrl: './modal-book-or-unbook.component.html',
     styleUrl: './modal-book-or-unbook.component.scss'
