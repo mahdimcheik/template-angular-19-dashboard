@@ -9,3 +9,11 @@ export const isAdminOnlyGuard: CanActivateFn = (route, state) => {
     }
     return false;
 };
+
+export const isStudentOnlyGuard: CanActivateFn = (route, state) => {
+    var auth = inject(AuthService);
+    if (!!auth.userConnected().email && auth.userConnected().roles.includes('Student')) {
+        return true;
+    }
+    return false;
+};

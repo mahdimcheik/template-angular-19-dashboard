@@ -14,6 +14,7 @@ import { FluidModule } from 'primeng/fluid';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
 
 type TypeHelpType = {
     id: number;
@@ -22,7 +23,7 @@ type TypeHelpType = {
 
 @Component({
     selector: 'app-modal-book-or-unbook',
-    imports: [HelpTypePipe, InputTextModule, MessageModule, ButtonModule, FluidModule, SelectModule, CommonModule, ReactiveFormsModule, DialogModule],
+    imports: [HelpTypePipe, InputTextModule, TextareaModule, MessageModule, ButtonModule, FluidModule, SelectModule, CommonModule, ReactiveFormsModule, DialogModule],
 
     templateUrl: './modal-book-or-unbook.component.html',
     styleUrl: './modal-book-or-unbook.component.scss'

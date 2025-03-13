@@ -22,3 +22,9 @@ export const canNotRegisterGuard: CanActivateFn = (route, state) => {
     if (authService.userConnected().email) return false;
     return true;
 };
+
+export const isConnectedGuard: CanActivateFn = (route, state) => {
+    let authService = inject(AuthService);
+    if (authService.userConnected().email) return true;
+    return false;
+};
