@@ -1,7 +1,17 @@
 <ul class="layout-menu">
-    <a class="min-h-8 pt-4 pb-4 flex justify-center" routerLink="/home">
-        <img [src]="layoutService.layoutConfig().darkTheme ? 'assets/latestWhite.svg' : 'assets/latestBlack.svg'" alt="logo" width="100" />
-    </a>
+    <li>
+        <div class="min-h-8 pt-4 pb-4">
+            <div class="flex gap-4 items-center">
+                <button (click)="layoutService.onMenuToggle()" class="flex justify-center items-center ml-4">
+                    <i class="layout-menuitem-icon pi pi-bars" style="font-size: 18px"></i>
+                </button>
+
+                <a routerLink="/home">
+                    <img [src]="layoutService.layoutConfig().darkTheme ? 'assets/latestWhite.svg' : 'assets/latestBlack.svg'" alt="logo" width="100" />
+                </a>
+            </div>
+        </div>
+    </li>
     <li *ngFor="let item of model; let i = index">
         <button *ngIf="item.routerLink && item.visible !== false" class="menu-link" (click)="item.command" [routerLink]="item.routerLink[0]" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
             <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>

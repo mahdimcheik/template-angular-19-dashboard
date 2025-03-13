@@ -4,11 +4,12 @@ import { Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../shared/services/auth.service';
 import { LayoutService } from '../../service/layout.service';
+import { Button, ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'app-menu',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, ButtonModule],
     templateUrl: './app.menu.html'
 })
 export class AppMenu {

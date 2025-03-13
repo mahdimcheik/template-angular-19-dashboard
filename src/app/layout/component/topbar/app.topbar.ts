@@ -32,6 +32,7 @@ export class AppTopbar {
     });
     router = inject(Router);
     user = this.authService.userConnected;
+    isAdmin = computed(() => this.user().roles?.includes('Admin') ?? false);
     localStorageService = inject(LocalstorageService);
 
     userItems = computed(() => {
