@@ -1,8 +1,8 @@
-<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" header="Création" [modal]="true">
+<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" [header]="isCreatingModal() ? 'Créer un créneau' : appointment().extendedProps?.['slot']?.['studentId'] ? 'Supprimer une réservation' : 'Editer un créneau'" [modal]="true">
     <ng-template #content>
         <p-fluid>
             <section class="card flex flex-col gap-6 w-full" *ngIf="appointment().extendedProps?.['slot']?.['studentId']">
-                <span class="font-semibold text-xl">Détail de réservation</span>
+                <span class="font-semibold text-xl">Détails de la réservation</span>
                 <div class="flex flex-col flex-wrap w-full">
                     <h4 class="ml-2 flex flex-wrap justify-center gap-2">
                         Pour <span class="ml-2 text-primary">{{ studentFullName() | titlecase }}</span>
@@ -29,12 +29,12 @@
 
                 <div class="flex justify-end gap-2 mt-4">
                     <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
-                    <p-button [label]="'Annuler'" icon="pi pi-check" *ngIf="!passedReservation()" />
+                    <p-button [label]="'Supprimer'" icon="pi pi-check" *ngIf="!passedReservation()" />
                 </div>
             </section>
             <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm" *ngIf="!appointment().extendedProps?.['slot']?.['studentId']">
                 <div class="card flex flex-col gap-6 w-full">
-                    <span class="font-semibold text-xl">Créer un créneau</span>
+                    <span class="font-semibold text-xl">Détails du créneau</span>
                     <div class="flex flex-col flex-wrap gap-2 w-full">
                         <label for="startAt" RequiredAsterisk>De</label>
                         <p-datepicker formControlName="startAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <!-- </div> -->
-                    <span class="font-semibold text-xl">Category</span>
+                    <span class="font-semibold text-xl">Categorie</span>
 
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-6">

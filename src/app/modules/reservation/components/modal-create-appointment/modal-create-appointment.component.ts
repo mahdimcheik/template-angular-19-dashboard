@@ -14,10 +14,11 @@ import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
     selector: 'app-modal-create-appointment',
-    imports: [HelpTypePipe, InputTextModule, MessageModule, ButtonModule, DatePickerModule, FluidModule, SelectModule, CommonModule, ReactiveFormsModule, DialogModule],
+    imports: [HelpTypePipe, InputTextModule, InputNumberModule, MessageModule, ButtonModule, DatePickerModule, FluidModule, SelectModule, CommonModule, ReactiveFormsModule, DialogModule],
 
     templateUrl: './modal-create-appointment.component.html',
     styleUrl: './modal-create-appointment.component.scss'

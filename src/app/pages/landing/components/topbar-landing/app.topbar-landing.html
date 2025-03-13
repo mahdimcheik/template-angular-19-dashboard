@@ -1,6 +1,8 @@
-<a class="flex items-center" href="#">
-    <img src="https://tutor.berlin/images/logos/878dc2a9-ae9e-4749-a9f6-72522672c989-small.png" alt="logo" class="w-16 shrink-0" />
-    <span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal mr-20">Skill Hive</span>
+<a class="flex items-center mr-4" routerLink="/home">
+    <img [src]="layoutService.layoutConfig().darkTheme ? 'assets/latestWhite.svg' : 'assets/latestBlack.svg'" alt="logo" width="100" />
+
+    <!-- <img src="https://tutor.berlin/images/logos/878dc2a9-ae9e-4749-a9f6-72522672c989-small.png" alt="logo" class="w-16 shrink-0" /> -->
+    <!-- <span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal mr-20">Skill Hive</span> -->
 </a>
 
 <a pButton [text]="true" severity="secondary" [rounded]="true" pRipple class="lg:!hidden" pStyleClass="@next" enterClass="hidden" leaveToClass="hidden" [hideOnOutsideClick]="true">

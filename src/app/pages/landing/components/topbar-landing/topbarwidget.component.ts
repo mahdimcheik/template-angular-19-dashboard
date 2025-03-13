@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { StyleClassModule } from 'primeng/styleclass';
 import { Router, RouterModule } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
+import { LayoutService } from '../../../../layout/service/layout.service';
 
 @Component({
     selector: 'topbar-widget',
@@ -10,5 +11,6 @@ import { ButtonModule } from 'primeng/button';
     templateUrl: './app.topbar-landing.html'
 })
 export class TopbarWidget {
+    layoutService = inject(LayoutService);
     constructor(public router: Router) {}
 }
