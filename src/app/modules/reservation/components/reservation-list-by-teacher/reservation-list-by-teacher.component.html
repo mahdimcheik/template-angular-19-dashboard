@@ -1,8 +1,8 @@
 <!-- [paginator]="true" -->
-<p-table #dt [value]="reservations()" [rows]="10" [globalFilterFields]="['name', 'date']" [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" [totalRecords]="totalReservations()" dataKey="id" [rowsPerPageOptions]="[10]">
+<p-table #dt [value]="reservations()" [rows]="10" [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" [totalRecords]="totalReservations()" dataKey="id" [rowsPerPageOptions]="[10]">
     <ng-template #header>
-        <tr>
-            <th pSortableColumn="name" style="min-width: 16rem">
+        <tr class="pl-6">
+            <th pSortableColumn="name" style="min-width: 16rem" class="!pl-8">
                 Nom
                 <!-- <p-sortIcon field="name" /> -->
             </th>
@@ -19,12 +19,12 @@
                 Date
                 <!-- <p-sortIcon field="date" /> -->
             </th>
-            <th style="min-width: 12rem"></th>
+            <th style="min-width: 12rem" class="flex justify-center gap-2 !p-8">Action</th>
         </tr>
     </ng-template>
     <ng-template #body let-reservation>
         <tr>
-            <td style="min-width: 16rem" class="text-xl font-bold">{{ reservation.studentFirstName }} {{ reservation.studentLastName }}</td>
+            <td style="min-width: 16rem" class="text-xl font-bold !pl-8">{{ reservation.studentFirstName }} {{ reservation.studentLastName }}</td>
             <td>
                 <img [src]="reservation.studentImgUrl" style="width: 64px" class="rounded" />
             </td>
@@ -38,7 +38,7 @@
                     <span class="font-semibold">{{ reservation.startAt | date: 'H:mm' }} à {{ reservation.endAt | date: 'H:mm' }}</span>
                 </div>
             </td>
-            <td>
+            <td class="flex justify-center gap-2 !p-8">
                 <p-button class="m-4" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" *ngIf="reservation.startAt < dateNow()" />
                 <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" />
             </td>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../shared/services/auth.service';
+import { LayoutService } from '../../service/layout.service';
 
 @Component({
     selector: 'app-menu',
@@ -14,19 +15,20 @@ export class AppMenu {
     model: MenuItem[] = [];
     router = inject(Router);
     authService = inject(AuthService);
+    layoutService = inject(LayoutService);
 
     deconnecionItem = {
         label: 'Déconnexion',
         icon: 'pi pi-fw pi-sign-out'
     };
     settingsItem = {
-        label: 'Settings',
+        label: 'Paramètres',
         icon: 'pi pi-cog'
     };
 
     ngOnInit() {
         this.model = [
-            { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+            { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
             // { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
             { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/reservation/teacher'] },
             { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/reservation/calendar-for-student'] }

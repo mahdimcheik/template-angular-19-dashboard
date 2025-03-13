@@ -1,5 +1,7 @@
 <ul class="layout-menu">
-    <div class="min-h-8"></div>
+    <div class="min-h-8 pt-4 pb-4 flex justify-center">
+        <img [src]="layoutService.layoutConfig().darkTheme ? 'assets/newWhite.svg' : 'assets/newBlack.svg'" alt="logo" width="140" />
+    </div>
     <li *ngFor="let item of model; let i = index">
         <button *ngIf="item.routerLink && item.visible !== false" class="menu-link" (click)="item.command" [routerLink]="item.routerLink[0]" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
             <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>

@@ -24,6 +24,7 @@ export class AppTopbar {
     items!: MenuItem[];
     authService = inject(AuthService);
     orderService = inject(OrderService);
+    layoutService = inject(LayoutService);
     currentOrder = this.orderService.currentOrder;
     numberBooking = computed(() => {
         if (!this.currentOrder().bookings || this.currentOrder().bookings.length == 0) return '';
@@ -76,8 +77,6 @@ export class AppTopbar {
         }
         return '';
     });
-
-    constructor(public layoutService: LayoutService) {}
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
