@@ -1,14 +1,20 @@
 import { Component, inject, input, model, OnInit, output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { FormationResponseDTO } from '../../../../shared/models/formation';
 import { firstValueFrom } from 'rxjs';
 import { FormationService } from '../../../../shared/services/formation.service';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
+import { MessageModule } from 'primeng/message';
+import { DrawerModule } from 'primeng/drawer';
+import { FluidModule } from 'primeng/fluid';
+import { DatePickerModule } from 'primeng/datepicker';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-modal-edit-or-add-formation',
-    standalone: false,
-
+    imports: [ButtonModule, CommonModule, ReactiveFormsModule, MessageModule, DrawerModule, FluidModule, DatePickerModule, InputTextModule],
     templateUrl: './modal-edit-or-add-formation.component.html',
     styleUrl: './modal-edit-or-add-formation.component.scss'
 })

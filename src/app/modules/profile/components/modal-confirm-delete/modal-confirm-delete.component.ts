@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, input, model, output } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
     selector: 'app-modal-confirm-delete',
-    standalone: false,
+    imports: [CommonModule, ButtonModule, DialogModule],
 
     templateUrl: './modal-confirm-delete.component.html',
     styleUrl: './modal-confirm-delete.component.scss'

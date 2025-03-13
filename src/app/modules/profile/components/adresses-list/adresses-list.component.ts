@@ -3,10 +3,14 @@ import { AdresseDTO } from '../../../../shared/models/adresse';
 import { firstValueFrom } from 'rxjs';
 import { AdresseService } from '../../../../shared/services/adresse.service';
 import { AuthService } from '../../../../shared/services/auth.service';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { AdressComponent } from '../address/address.component';
+import { ModalAddOrEditAddressComponent } from '../modal-add-or-edit-address/modal-add-or-edit-address.component';
 
 @Component({
     selector: 'app-adresses-list',
-    standalone: false,
+    imports: [CommonModule, ButtonModule, AdressComponent, ModalAddOrEditAddressComponent],
     templateUrl: './adresses-list.component.html',
     styleUrl: './adresses-list.component.scss'
 })

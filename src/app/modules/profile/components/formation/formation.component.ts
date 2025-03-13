@@ -2,10 +2,14 @@ import { Component, computed, inject, input, OnInit, signal } from '@angular/cor
 import { FormationResponseDTO } from '../../../../shared/models/formation';
 import { FormationService } from '../../../../shared/services/formation.service';
 import { firstValueFrom } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
+import { ModalEditOrAddFormationComponent } from '../modal-edit-or-add-formation/modal-edit-or-add-formation.component';
 
 @Component({
     selector: 'app-formation',
-    standalone: false,
+    imports: [CommonModule, ButtonModule, ModalConfirmDeleteComponent, ModalEditOrAddFormationComponent],
 
     templateUrl: './formation.component.html',
     styleUrl: './formation.component.scss'

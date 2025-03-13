@@ -2,10 +2,16 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { UserResponseDTO } from '../../../../shared/models/user';
 import { AuthService } from '../../../../shared/services/auth.service';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { DividerClasses, DividerModule } from 'primeng/divider';
+import { AdressesListComponent } from '../../components/adresses-list/adresses-list.component';
+import { FormationsListComponent } from '../../components/formations-list/formations-list.component';
+import { PersonnalInfosComponent } from '../../components/personnal-infos/personnal-infos.component';
 
 @Component({
     selector: 'app-profile',
-    standalone: false,
+    imports: [CommonModule, ButtonModule, DividerModule, AdressesListComponent, FormationsListComponent, PersonnalInfosComponent],
 
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.scss'

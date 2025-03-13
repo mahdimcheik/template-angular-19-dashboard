@@ -2,11 +2,15 @@ import { Component, inject, input, model, signal } from '@angular/core';
 import { AdresseDTO } from '../../../../shared/models/adresse';
 import { AdresseService } from '../../../../shared/services/adresse.service';
 import { firstValueFrom } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { AdresseImagePipe } from '../../../../shared/pipes/adresse-type.pipe';
+import { ModalAddOrEditAddressComponent } from '../modal-add-or-edit-address/modal-add-or-edit-address.component';
+import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 
 @Component({
     selector: 'app-address',
-    standalone: false,
-
+    imports: [CommonModule, ButtonModule, AdresseImagePipe, ModalAddOrEditAddressComponent, ModalConfirmDeleteComponent],
     templateUrl: './address.component.html',
     styleUrl: './address.component.scss'
 })

@@ -24,7 +24,7 @@ export const appRoutes: Routes = [
             },
             {
                 path: 'profile',
-                loadChildren: () => import('./app/modules/profile/profile.module').then((m) => m.ProfileModule)
+                loadChildren: () => import('./app/modules/profile/profile.routes')
             },
             {
                 path: 'success',

@@ -1,15 +1,25 @@
 import { Component, inject, input, model, OnInit, output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { AddressDropDown, AddressTypeEnum, AdresseDTO } from '../../../../shared/models/adresse';
 import { firstValueFrom } from 'rxjs';
 import { AdresseService } from '../../../../shared/services/adresse.service';
+import { DialogModule } from 'primeng/dialog';
+import { MessageModule } from 'primeng/message';
+import { DatePickerModule } from 'primeng/datepicker';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputIconModule } from 'primeng/inputicon';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
+import { FluidModule } from 'primeng/fluid';
+import { DrawerModule } from 'primeng/drawer';
 
 @Component({
     selector: 'app-modal-add-or-edit-address',
-    standalone: false,
-
+    imports: [CommonModule, FormsModule, FluidModule, DrawerModule, DialogModule, SelectModule, ButtonModule, SelectButtonModule, MessageModule, ReactiveFormsModule, DatePickerModule, InputTextModule, InputIconModule],
     templateUrl: './modal-add-or-edit-address.component.html',
     styleUrl: './modal-add-or-edit-address.component.scss'
 })

@@ -1,13 +1,24 @@
 import { Component, inject, input, model, output } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { EnumGender, GenderDropDown, UserResponseDTO, UserUpdateDTO } from '../../../../shared/models/user';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { MessageService } from 'primeng/api';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { DrawerModule } from 'primeng/drawer';
+import { FluidModule } from 'primeng/fluid';
+import { GenericMessageComponent } from '../../../../pages/uikit/generic-message/generic-message.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { MessageModule } from 'primeng/message';
+import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-modal-edit-personnal-infos',
-    standalone: false,
+    imports: [CommonModule, ButtonModule, DrawerModule, MessageModule, TextareaModule, InputTextModule, SelectModule, FluidModule, GenericMessageComponent, FormsModule, ReactiveFormsModule, FileUploadModule],
+
     templateUrl: './modal-edit-personnal-infos.component.html',
     styleUrl: './modal-edit-personnal-infos.component.scss'
 })
