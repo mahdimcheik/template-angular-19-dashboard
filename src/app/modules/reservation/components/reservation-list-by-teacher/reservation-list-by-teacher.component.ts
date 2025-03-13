@@ -5,12 +5,12 @@ import { delay, firstValueFrom } from 'rxjs';
 import { SortEvent } from 'primeng/api';
 import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
     selector: 'app-reservation-list-by-teacher',
-    imports: [ButtonModule, DatePipe, TableModule, CurrencyPipe, PaginatorModule],
+    imports: [ButtonModule, DatePipe, TableModule, CurrencyPipe, PaginatorModule, CommonModule],
 
     templateUrl: './reservation-list-by-teacher.component.html',
     styleUrl: './reservation-list-by-teacher.component.scss',
