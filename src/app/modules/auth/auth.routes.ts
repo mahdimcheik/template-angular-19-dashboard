@@ -1,15 +1,13 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
+import { AuthLayoutComponent } from './pages/auth-layout/auth-layout.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { AccountConfirmationComponent } from './pages/account-confirmation/account-confirmation.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { AccountCreatedSuccessfullyComponent } from './pages/account-created-successfully/account-created-successfully.component';
-import { AuthLayoutComponent } from './pages/auth-layout/auth-layout.component';
-import { canNotLoginGuard } from '../../shared/guards/can-login.guard';
 
-const routes: Routes = [
+export default [
     {
         path: '',
         component: AuthLayoutComponent,
@@ -41,10 +39,4 @@ const routes: Routes = [
             }
         ]
     }
-];
-
-@NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
-})
-export class AuthRoutingModule {}
+] as Routes;

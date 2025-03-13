@@ -1,13 +1,17 @@
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { firstValueFrom, tap } from 'rxjs';
 import { UserLoginDTO } from '../../../../shared/models/user';
+import { ButtonModule } from 'primeng/button';
+import { FluidModule } from 'primeng/fluid';
+import { CommonModule } from '@angular/common';
+import { MessageModule } from 'primeng/message';
 
 @Component({
     selector: 'app-forgot-password',
-    standalone: false,
+    imports: [FluidModule, ButtonModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss',
     providers: []

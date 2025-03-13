@@ -1,14 +1,20 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
 import { UserLoginDTO, UserResponseDTO } from '../../../../shared/models/user';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { FluidModule } from 'primeng/fluid';
+import { CommonModule } from '@angular/common';
+import { MessageModule } from 'primeng/message';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-login',
-    standalone: false,
+    imports: [FluidModule, ButtonModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, PasswordModule, InputTextModule],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss',
     providers: []

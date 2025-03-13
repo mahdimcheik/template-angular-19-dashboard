@@ -1,13 +1,22 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { delay, firstValueFrom, tap } from 'rxjs';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { UserChangePasswordDTO } from '../../../../shared/models/user';
+import { ButtonModule } from 'primeng/button';
+import { FluidModule } from 'primeng/fluid';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { SelectModule } from 'primeng/select';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { RequiredAsteriskDirective } from '../../../../shared/directives/required-asterisk.directive';
+import { CommonModule } from '@angular/common';
 @Component({
     selector: 'app-change-password',
-    standalone: false,
+    imports: [FluidModule, ButtonModule, CommonModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule],
     templateUrl: './change-password.component.html',
     styleUrl: './change-password.component.scss',
     providers: []
