@@ -22,7 +22,7 @@ import { FooterWidget } from './components/footerwidget/footerwidget';
                 <hero-widget />
                 <features-widget />
                 <highlights-widget />
-                <pricing-widget />
+                <!-- <pricing-widget /> -->
                 <footer-widget />
             </div>
         </div>

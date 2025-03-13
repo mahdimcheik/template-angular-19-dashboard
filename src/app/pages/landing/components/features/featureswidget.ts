@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LayoutService } from '../../../../layout/service/layout.service';
 
 @Component({
     selector: 'features-widget',
@@ -7,4 +8,6 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule],
     templateUrl: './app.featureswidget.html'
 })
-export class FeaturesWidget {}
+export class FeaturesWidget {
+    layoutService = inject(LayoutService);
+}
