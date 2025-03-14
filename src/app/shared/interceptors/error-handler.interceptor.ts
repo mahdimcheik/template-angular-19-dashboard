@@ -30,13 +30,6 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
                     }),
                     switchMap((newTokens) => {
                         console.log('newTokens', newTokens);
-                        // authService.token.set(newTokens.data.accessToken);
-                        // authService.refreshAccessToken.set(newTokens.refreshToken);
-
-                        // localStorageService.setToken(newTokens.accessToken);
-                        // localStorageService.setRefreshToken(newTokens.refreshToken);
-
-                        // Update the Authorization header with the new access token
                         const clonedRequest = req.clone({
                             setHeaders: {
                                 Authorization: `Bearer ${newTokens.data.accessToken}`

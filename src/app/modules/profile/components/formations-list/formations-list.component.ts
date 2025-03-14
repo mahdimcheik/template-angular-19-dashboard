@@ -32,8 +32,8 @@ export class FormationsListComponent implements OnInit {
         country: 'France'
     };
 
-    async ngOnInit() {
-        await firstValueFrom(this.formationService.getFormations(this.userConnected().id));
+    ngOnInit() {
+        this.formationService.getFormations(this.userConnected().id).subscribe();
     }
 
     close() {

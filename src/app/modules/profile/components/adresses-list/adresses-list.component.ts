@@ -19,8 +19,8 @@ export class AdressesListComponent {
     userConnected = inject(AuthService).userConnected;
     addresses = this.addressService.listAddresses;
 
-    async ngOnInit() {
-        await firstValueFrom(this.addressService.getAllAddresses(this.userConnected().id));
+    ngOnInit() {
+        this.addressService.getAllAddresses(this.userConnected().id).subscribe();
     }
 
     visibleRight = signal<boolean>(false);

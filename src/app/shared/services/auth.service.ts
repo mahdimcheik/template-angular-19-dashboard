@@ -99,10 +99,10 @@ export class AuthService {
 
                     // Update tokens in localStorage
                     this.localStorageService.setToken(tokens.data.accessToken);
-                    this.localStorageService.setRefreshToken(tokens.data.refreshToken);
+                    // this.localStorageService.setRefreshToken(tokens.data.refreshToken);
 
                     // Update the access token in memory
-                    this.refreshAccessToken.set(tokens.data.accessToken);
+                    // this.refreshAccessToken.set(tokens.data.refreshToken);
                     this.token.set(tokens.data.accessToken);
                     console.log('new token from interceptor', this.token());
                 }),
