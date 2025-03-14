@@ -34,13 +34,12 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
                         return next(clonedRequest);
                     }),
                     catchError((refreshErr) => {
-                        // If refresh token fails, log out the user
                         messageService.add({
                             severity: 'error',
                             summary: 'Session Expired',
                             detail: 'Please log in again.'
                         });
-                        authService.logout();
+                        authService.reset();
 
                         return throwError(() => refreshErr);
                     })

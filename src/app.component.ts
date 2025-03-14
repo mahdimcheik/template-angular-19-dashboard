@@ -37,8 +37,8 @@ export class AppComponent implements OnInit {
                         return this.orderService.getCurrentOrder();
                     }),
                     catchError((error) => {
-                        console.log(error);
-                        this.router.navigateByUrl('/home');
+                        console.log('error after switch map', error);
+                        // this.router.navigateByUrl('/home');
                         return of();
                     })
                 )

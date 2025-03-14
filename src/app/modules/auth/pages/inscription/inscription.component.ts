@@ -13,10 +13,11 @@ import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
     selector: 'app-inscription',
-    imports: [FluidModule, ButtonModule, InputTextModule, DatePickerModule, SelectModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
+    imports: [FluidModule, ButtonModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
 
     templateUrl: './inscription.component.html',
     styleUrl: './inscription.component.scss',

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,12 +16,12 @@ import { RequiredAsteriskDirective } from '../../../../shared/directives/require
 import { CommonModule } from '@angular/common';
 @Component({
     selector: 'app-change-password',
-    imports: [FluidModule, ButtonModule, CommonModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule],
+    imports: [FluidModule, ButtonModule, CommonModule, PasswordModule, InputTextModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule],
     templateUrl: './change-password.component.html',
     styleUrl: './change-password.component.scss',
     providers: []
 })
-export class ChangePasswordComponent {
+export class ChangePasswordComponent implements OnInit {
     visible: boolean = false;
     private authService = inject(AuthService);
     private activatedRoute = inject(ActivatedRoute);
@@ -38,8 +38,8 @@ export class ChangePasswordComponent {
     );
 
     ngOnInit(): void {
-        let userId = this.activatedRoute.snapshot.queryParams['userId'];
-        let resetToken = this.activatedRoute.snapshot.queryParams['resetToken'];
+        let userId = this.activatedRoute.snapshot.queryParams['userId'] ?? '';
+        let resetToken = this.activatedRoute.snapshot.queryParams['resetToken'] ?? '';
         this.userForm.setValue({
             userId: userId,
             resetToken: resetToken,

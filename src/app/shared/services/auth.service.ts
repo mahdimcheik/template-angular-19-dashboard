@@ -28,6 +28,7 @@ export class AuthService {
     // private messageService = inject(MessageService);
 
     router = inject(Router);
+    messageService = inject(MessageService);
 
     userConnected = signal({ imgUrl: '123' } as UserResponseDTO);
     userToDisplay = signal({} as UserResponseDTO);
@@ -129,13 +130,10 @@ export class AuthService {
                 this.localStorageService.setUser(this.userConnected());
             }),
             catchError((error) => {
-                this.logout();
-                this.router.navigateByUrl('/home');
+                this.reset();
                 return of();
             })
         );
-
-        // return of().pipe(tap(() => this.reset()));
     }
 
     getprofileById(userId: string): Observable<ResponseDTO> {

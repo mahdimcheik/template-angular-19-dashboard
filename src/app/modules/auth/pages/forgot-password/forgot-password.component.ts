@@ -8,10 +8,11 @@ import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
+import { InputText } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-forgot-password',
-    imports: [FluidModule, ButtonModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
+    imports: [FluidModule, ButtonModule, InputText, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss',
     providers: []

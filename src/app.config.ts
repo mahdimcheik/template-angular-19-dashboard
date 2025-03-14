@@ -12,7 +12,7 @@ import { MessageService } from 'primeng/api';
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
-        provideHttpClient(withInterceptors([TokenInterceptor, errorHandlerInterceptor])),
+        provideHttpClient(withInterceptors([TokenInterceptor])), // errorHandlerInterceptor
         MessageService,
         { provide: LOCALE_ID, useValue: 'fr-FR' },
         provideAnimationsAsync(),
