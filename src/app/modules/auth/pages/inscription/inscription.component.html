@@ -5,7 +5,7 @@
 
             <p-fluid class="flex justify-center">
                 <form [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm" class="w-full sm:w-4/5 mt-8 md:w-3/5">
-                    <div class="font-semibold text-xl">Inscription</div>
+                    <div class="font-semibold text-xl">Champs obligatoires</div>
                     <div class="flex flex-col gap-2 w-full mt-2">
                         <label for="firstname" RequiredAsterisk>Prénom</label>
                         <input pInputText id="firstname" type="text" formControlName="firstName" />
@@ -21,6 +21,14 @@
                         </div>
                     </div>
                     <div class="flex flex-col gap-2 w-full mt-2">
+                        <label for="email" RequiredAsterisk>Email</label>
+                        <input pInputText type="email" id="email" rows="4" formControlName="email" />
+                        <div class="error" *ngIf="form.submitted && userForm.controls['email'].errors">
+                            <p-message [hidden]="!userForm.controls['email'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                            <p-message [hidden]="!userForm.controls['email'].errors['email']" severity="error" variant="simple" size="small" styleClass="mt-2">Le format n'est pas conforme</p-message>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2 w-full mt-2">
                         <label for="password" RequiredAsterisk>Mot de passe</label>
                         <input pInputText id="password" type="password" formControlName="password" />
                         <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
@@ -32,36 +40,12 @@
                         <label for="confirmPassword" RequiredAsterisk>Confirmation</label>
                         <input pInputText id="confirmPassword" type="password" formControlName="confirmPassword" />
                         <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
-                            <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe est requis</p-message>
+                            <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">La confirmation du mot de passe est requise</p-message>
                             <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
                         </div>
                         <div class="error" *ngIf="form.submitted && userForm.errors?.['passwordDifference']">
                             <p-message severity="error" variant="simple" size="small" styleClass="mt-2">Les mots de passe sont différents</p-message>
                         </div>
-                    </div>
-                    <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="phoneNumber">Téléphone</label>
-                        <input pInputText id="phoneNumber" type="text" formControlName="phoneNumber" />
-                    </div>
-                    <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="title">Titre</label>
-                        <input pInputText id="title" type="text" formControlName="title" />
-                    </div>
-                    <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="email" RequiredAsterisk>Email</label>
-                        <input pInputText type="email" id="email" rows="4" formControlName="email" />
-                        <div class="error" *ngIf="form.submitted && userForm.controls['email'].errors">
-                            <p-message [hidden]="!userForm.controls['email'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
-                            <p-message [hidden]="!userForm.controls['email'].errors['email']" severity="error" variant="simple" size="small" styleClass="mt-2">Le format n'est pas conforme</p-message>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="description">Description</label>
-                        <textarea pTextarea id="description" rows="4" formControlName="password"></textarea>
-                    </div>
-                    <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="state" RequiredAsterisk>Genre</label>
-                        <p-select id="state" formControlName="gender" [options]="typesGenderList" optionLabel="name" placeholder="Select One" class="w-full" styleClass="w-full"></p-select>
                     </div>
                     <div class="flex flex-col gap-2 w-full mt-2">
                         <label for="zip" RequiredAsterisk>Date de naissance (jj/mm/aaaa)</label>
@@ -71,6 +55,28 @@
                             <p-message [hidden]="!userForm.controls['dateOfBirth'].errors['underage']" severity="error" variant="simple" size="small" styleClass="mt-2">{{ userForm.controls['dateOfBirth'].errors['underage'] }}</p-message>
                         </div>
                     </div>
+                    <div class="font-semibold text-xl mt-4 mb-2">Champs optionnels</div>
+                    <p-panel #panel [header]="panel.collapsed ? 'Ouvrir' : 'Cacher'" [toggleable]="true" [collapsed]="true">
+                        <div class="flex flex-col gap-2 w-full mt-2">
+                            <label for="phoneNumber">Téléphone</label>
+                            <input pInputText id="phoneNumber" type="text" formControlName="phoneNumber" />
+                        </div>
+                        <div class="flex flex-col gap-2 w-full mt-2">
+                            <label for="title">Titre</label>
+                            <input pInputText id="title" type="text" formControlName="title" />
+                        </div>
+
+                        <div class="flex flex-col gap-2 w-full mt-2">
+                            <label for="description">Description</label>
+                            <textarea pTextarea id="description" rows="4" formControlName="password"></textarea>
+                        </div>
+                        <div class="flex flex-col gap-2 w-full mt-2">
+                            <label for="state" RequiredAsterisk>Genre</label>
+                            <p-select id="state" formControlName="gender" [options]="typesGenderList" optionLabel="name" placeholder="Select One" class="w-full" styleClass="w-full"></p-select>
+                        </div>
+                    </p-panel>
+                    <p-message [text]="errorMessage" severity="error" styleClass="mb-4 mt-4" *ngIf="errorRegistration"></p-message>
+
                     <div class="col-span-12 mt-8 text-center">
                         <p-button label="Inscription" type="submit" severity="success" />
                     </div>

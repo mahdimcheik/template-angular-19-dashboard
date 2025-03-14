@@ -14,10 +14,11 @@ import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
+import { PanelModule } from 'primeng/panel';
 
 @Component({
     selector: 'app-inscription',
-    imports: [FluidModule, ButtonModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
+    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
 
     templateUrl: './inscription.component.html',
     styleUrl: './inscription.component.scss',
@@ -29,6 +30,7 @@ export class InscriptionComponent {
     fb = inject(FormBuilder);
     router = inject(Router);
     errorMessage = '';
+    errorRegistration = false;
 
     typesGenderList: GenderDropDown[] = [
         {
@@ -79,7 +81,6 @@ export class InscriptionComponent {
             ...this.userForm.value,
             gender: this.userForm.value['gender']?.value
         } as UserCreateDTO;
-        console.log('new user ', newUser);
 
         try {
             await firstValueFrom(
@@ -97,6 +98,8 @@ export class InscriptionComponent {
                 detail: (err as any).error.message,
                 severity: 'error'
             });
+            this.errorMessage = (err as any).error.message;
+            this.errorRegistration = true;
         }
     }
 }
