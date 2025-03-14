@@ -39,6 +39,6 @@ export class ForgotPasswordComponent {
                     }
                 })
             )
-            .subscribe();
+            .subscribe(() => {});
     }
 }
