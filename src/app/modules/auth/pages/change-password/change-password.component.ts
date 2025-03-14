@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { ActivatedRoute, Router } from '@angular/router';
-import { delay, firstValueFrom, tap } from 'rxjs';
+import { delay, finalize, firstValueFrom, tap } from 'rxjs';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { UserChangePasswordDTO } from '../../../../shared/models/user';
 import { ButtonModule } from 'primeng/button';
@@ -26,6 +26,7 @@ export class ChangePasswordComponent implements OnInit {
     private authService = inject(AuthService);
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
+    isLoading = false;
 
     userForm = new FormGroup(
         {
@@ -49,11 +50,16 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     async submit() {
+        this.isLoading = true;
         await firstValueFrom(
             this.authService.resetPassword(this.userForm.value as UserChangePasswordDTO).pipe(
-                delay(1000),
                 tap((res) => {
                     this.router.navigateByUrl('/');
+                }),
+                finalize(() => {
+                    setTimeout(() => {
+                        this.isLoading = false;
+                    }, 200);
                 })
             )
         );
