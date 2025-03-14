@@ -89,7 +89,7 @@ export class AuthService {
     refreshToken() {
         // Call your backend refresh token endpoint
         return this.http
-            .post<{ accessToken: string; refreshToken: string }>(`${environment.BACK_URL}/Users/refresh-token`, {
+            .post<ResponseDTO>(`${environment.BACK_URL}/Users/refresh-token`, {
                 refreshToken: this.localStorageService.getRefreshToken(),
                 token: this.localStorageService.getToken()
             })
@@ -98,12 +98,12 @@ export class AuthService {
                     console.log('response refresh token', tokens);
 
                     // Update tokens in localStorage
-                    this.localStorageService.setToken(tokens.accessToken);
-                    this.localStorageService.setRefreshToken(tokens.refreshToken);
+                    this.localStorageService.setToken(tokens.data.accessToken);
+                    this.localStorageService.setRefreshToken(tokens.data.refreshToken);
 
                     // Update the access token in memory
-                    this.refreshAccessToken.set(tokens.accessToken);
-                    this.token.set(tokens.accessToken);
+                    this.refreshAccessToken.set(tokens.data.accessToken);
+                    this.token.set(tokens.data.accessToken);
                     console.log('new token from interceptor', this.token());
                 }),
                 catchError((err) => {

@@ -6,27 +6,40 @@ import { catchError, switchMap, throwError } from 'rxjs';
 import { of } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../services/auth.service';
+import { LocalstorageService } from '../services/localstorage.service';
 
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
     const messageService = inject(MessageService);
     const authService = inject(AuthService);
+    const localStorageService = inject(LocalstorageService);
 
     return next(req).pipe(
         catchError((err: any) => {
             // Handle 401 Unauthorized error
-            console.log('newTokens', err);
+            console.log('newTokens err', err);
 
             if (err.status === 401) {
                 return authService.refreshToken().pipe(
+                    catchError((refreshErr) => {
+                        messageService.add({
+                            severity: 'error',
+                            summary: 'Session Expired',
+                            detail: 'Please log in again.'
+                        });
+                        return throwError(() => refreshErr);
+                    }),
                     switchMap((newTokens) => {
                         console.log('newTokens', newTokens);
-                        authService.token.set(newTokens.accessToken);
-                        authService.refreshAccessToken.set(newTokens.refreshToken);
+                        // authService.token.set(newTokens.data.accessToken);
+                        // authService.refreshAccessToken.set(newTokens.refreshToken);
+
+                        // localStorageService.setToken(newTokens.accessToken);
+                        // localStorageService.setRefreshToken(newTokens.refreshToken);
 
                         // Update the Authorization header with the new access token
                         const clonedRequest = req.clone({
                             setHeaders: {
-                                Authorization: `Bearer ${newTokens.accessToken}`
+                                Authorization: `Bearer ${newTokens.data.accessToken}`
                             }
                         });
 
@@ -39,8 +52,6 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
                             summary: 'Session Expired',
                             detail: 'Please log in again.'
                         });
-                        authService.reset();
-
                         return throwError(() => refreshErr);
                     })
                 );

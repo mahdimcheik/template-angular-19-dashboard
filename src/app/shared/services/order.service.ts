@@ -16,7 +16,6 @@ export class OrderService {
         return this.http.get<ResponseDTO>(`https://localhost:7113/order/student/current`).pipe(
             tap((res) => {
                 this.currentOrder.set(res?.data as OrderResponseDTO);
-                console.log('current order in service ', res.data);
             })
         );
     }

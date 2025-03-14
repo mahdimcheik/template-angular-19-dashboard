@@ -29,29 +29,16 @@ export class AppComponent implements OnInit {
     layoutService = inject(LayoutService);
     router = inject(Router);
     ngOnInit(): void {
-        try {
-            this.authService
-                .getprofile()
-                .pipe(
-                    switchMap((res) => {
-                        return this.orderService.getCurrentOrder();
-                    }),
-                    catchError((error) => {
-                        console.log('error after switch map', error);
-                        // this.router.navigateByUrl('/home');
-                        return of();
-                    })
-                )
-                .subscribe();
-        } catch (error) {
-            console.log(error);
-        }
-
-        // try {
-        //     const layoutconfig = this.localStorageService.getLayoutConfig();
-        //     if (layoutconfig) {
-        //         this.layoutService.layoutConfig.update((state) => ({ ...state, ...layoutconfig }));
-        //     }
-        // } catch (error) {}
+        this.authService
+            .getprofile()
+            .pipe(
+                switchMap((res) => {
+                    return this.orderService.getCurrentOrder();
+                }),
+                catchError((error) => {
+                    return of();
+                })
+            )
+            .subscribe();
     }
 }
