@@ -13,7 +13,6 @@ import { AppConfigurator } from './app/layout/component/app.configurator';
     selector: 'app-root',
     standalone: true,
     imports: [RouterModule, ToastModule, AppConfigurator],
-    providers: [MessageService],
     template: `
         <div class="hidden">
             <app-configurator></app-configurator>

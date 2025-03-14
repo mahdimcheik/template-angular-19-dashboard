@@ -15,47 +15,40 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(req).pipe(
         catchError((err: any) => {
-            // Handle 401 Unauthorized error
-            console.log('newTokens err', err);
-
+            // cas où le rejet est dû à un token expiré
             if (err.status === 401) {
                 return authService.refreshToken().pipe(
                     catchError((refreshErr) => {
-                        messageService.add({
-                            severity: 'error',
-                            summary: 'Session Expired',
-                            detail: 'Please log in again.'
-                        });
+                        // messageService.add({
+                        //     severity: 'error',
+                        //     summary: 'Token expiré',
+                        //     detail: 'Essayer de vous reconnecter.'
+                        // });
                         return throwError(() => refreshErr);
                     }),
                     switchMap((newTokens) => {
-                        console.log('newTokens', newTokens);
                         const clonedRequest = req.clone({
                             setHeaders: {
                                 Authorization: `Bearer ${newTokens.data.accessToken}`
                             }
                         });
 
-                        // Retry the original request with the updated token
+                        // relancer l'ancienne requette avec le nouveau token
                         return next(clonedRequest);
                     }),
+                    // si le refresh token a échoué
                     catchError((refreshErr) => {
-                        messageService.add({
-                            severity: 'error',
-                            summary: 'Session Expired',
-                            detail: 'Please log in again.'
-                        });
                         return throwError(() => refreshErr);
                     })
                 );
             }
 
-            // For other errors, show a generic error message
-            messageService.add({
-                severity: 'error',
-                summary: 'Attention ! ',
-                detail: err.error?.message ?? 'Erreur coté serveur'
-            });
+            // Pour les autres erreurs
+            // messageService.add({
+            //     severity: 'error',
+            //     summary: 'Attention ! ',
+            //     detail: err.error?.message ?? 'Erreur coté serveur'
+            // });
 
             return throwError(() => err);
         })

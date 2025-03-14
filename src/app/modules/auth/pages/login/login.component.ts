@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
     private authService = inject(AuthService);
     private messageService = inject(MessageService);
     private router = inject(Router);
+    badCredentials = false;
     ngOnInit(): void {
         console.log('LoginComponent initialized', this.authService.userConnected());
     }
@@ -43,6 +44,7 @@ export class LoginComponent implements OnInit {
                         detail: (err as any).error.message,
                         severity: 'error'
                     });
+                    this.badCredentials = true;
                     throw err;
                 })
             )
@@ -52,6 +54,7 @@ export class LoginComponent implements OnInit {
                     detail: `Bienvenue `,
                     severity: 'success'
                 });
+
                 this.router.navigateByUrl('/');
             });
     }

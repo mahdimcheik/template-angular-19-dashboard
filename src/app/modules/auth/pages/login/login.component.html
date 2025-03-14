@@ -1,7 +1,7 @@
 <div class="min-h-screen flex flex-wrap justify-center">
     <div class="w-full lg:w-1/2 p-6 left-side scrollbar-off">
         <div class="mt-12 flex flex-col items-center w-full">
-            <h1 class="text-2xl xl:text-3xl font-extrabold">Inscription</h1>
+            <h1 class="text-2xl xl:text-3xl font-extrabold">Connexion</h1>
 
             <p-fluid class="flex justify-center">
                 <form [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm" class="w-full sm:w-4/5 mt-8 md:w-3/5">
@@ -16,10 +16,10 @@
 
                     <section class="flex flex-col gap-2 w-full mt-2">
                         <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2" RequiredAsterisk>Mot de passe</label>
-                        <p-password id="password1" formControlName="password" placeholder="Password" [toggleMask]="true" [fluid]="true" [feedback]="false"></p-password>
+                        <p-password id="password1" formControlName="password" placeholder="Mot de passe" [toggleMask]="true" [fluid]="true" [feedback]="false"></p-password>
                         <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
                             <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe est requis</p-message>
-                            <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
+                            <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="warn" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
                         </div>
                     </section>
                     <div class="flex items-center justify-between mt-2 mb-8 gap-8">
@@ -28,6 +28,7 @@
                         </div>
                         <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" [routerLink]="'/auth/forgot-password'">Mot de passe oublié?</span>
                     </div>
+                    <p-message text="Mauvais identifiant!!!" severity="error" styleClass="mb-4" *ngIf="badCredentials"></p-message>
                     <p-button label="Connexion" styleClass="w-full" type="submit"></p-button>
                 </form>
             </p-fluid>
