@@ -2,13 +2,14 @@ import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { firstValueFrom, tap } from 'rxjs';
+import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
 import { UserLoginDTO } from '../../../../shared/models/user';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
 import { InputText } from 'primeng/inputtext';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-forgot-password',
@@ -19,8 +20,11 @@ import { InputText } from 'primeng/inputtext';
 })
 export class ForgotPasswordComponent {
     authService = inject(AuthService);
-    canChange = signal(false);
-    message = signal('');
+    messageService = inject(MessageService);
+    router = inject(Router);
+    message = '';
+    errorRegistration = false;
+    isLoading = false;
 
     constructor() {}
 
@@ -29,16 +33,26 @@ export class ForgotPasswordComponent {
     });
 
     submit() {
+        this.isLoading = true;
         this.authService
             .forgotPassword(this.userForm.value as { email: string })
             .pipe(
-                tap((res) => {
-                    if (res.status === 200) {
-                        this.canChange.set(true);
-                        this.message.set(res.message);
-                    }
+                catchError((err) => {
+                    this.errorRegistration = true;
+                    this.message = (err as any).error.message;
+                    return err;
+                }),
+                finalize(() => {
+                    setTimeout(() => {
+                        this.isLoading = false;
+                    }, 500);
                 })
             )
-            .subscribe(() => {});
+            .subscribe(() => {
+                this.errorRegistration = false;
+                this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Un email vous a été envoyé pour réinitialiser votre mot de passe' });
+                this.message = 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
+                this.router.navigateByUrl('/home');
+            });
     }
 }
