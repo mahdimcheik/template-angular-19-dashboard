@@ -78,7 +78,7 @@
                     <p-message [text]="errorMessage" severity="error" styleClass="mb-4 mt-4" *ngIf="errorRegistration"></p-message>
 
                     <div class="col-span-12 mt-8 text-center">
-                        <p-button label="Inscription" type="submit" severity="success" />
+                        <p-button label="Inscription" type="submit" severity="success" [loading]="isLoading" />
                     </div>
                 </form>
             </p-fluid>

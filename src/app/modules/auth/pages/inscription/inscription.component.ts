@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { catchError, firstValueFrom, tap } from 'rxjs';
+import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
 import { EnumGender, GenderDropDown, UserCreateDTO, UserLoginDTO } from '../../../../shared/models/user';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { MessageService } from 'primeng/api';
@@ -31,6 +31,7 @@ export class InscriptionComponent {
     router = inject(Router);
     errorMessage = '';
     errorRegistration = false;
+    isLoading = false;
 
     typesGenderList: GenderDropDown[] = [
         {
@@ -77,6 +78,7 @@ export class InscriptionComponent {
     );
 
     async submit() {
+        this.isLoading = true;
         const newUser = {
             ...this.userForm.value,
             gender: this.userForm.value['gender']?.value
@@ -88,6 +90,11 @@ export class InscriptionComponent {
                     tap((res) => {
                         console.log('res', res);
                         this.router.navigateByUrl('auth/account-created-successfully');
+                    }),
+                    finalize(() => {
+                        setTimeout(() => {
+                            this.isLoading = false;
+                        }, 200);
                     })
                 )
             );
