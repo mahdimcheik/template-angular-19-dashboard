@@ -21,8 +21,8 @@ import { TeacherPublicProfileComponent } from '../../modules/profile/pages/teach
             <div id="home" class="landing-wrapper overflow-hidden">
                 <topbar-widget class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static" />
                 <hero-widget />
-                <div class="text-center py-6 px-6 lg:px-20 mt-8 mx-0 lg:mx-20">
-                    <div id="profile" class="py-6 mt-8 ">
+                <div id="profile" class="text-center py-6 px-6 lg:px-20 mt-8 mx-0 lg:mx-20">
+                    <div class="py-6 mt-8 ">
                         <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">Qui je suis?</div>
                         <app-teacher-public-profile />
                     </div>

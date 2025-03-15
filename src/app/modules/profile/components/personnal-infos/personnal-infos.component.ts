@@ -17,6 +17,7 @@ import { ModalEditPersonnalInfosComponent } from '../modal-edit-personnal-infos/
 })
 export class PersonnalInfosComponent {
     userToDisplay = input.required<UserResponseDTO>();
+    canEdit = input<boolean>(true);
     isVisibleModalEditPerso = signal<boolean>(false);
 
     authService = inject(AuthService);
