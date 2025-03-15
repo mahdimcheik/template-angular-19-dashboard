@@ -3,7 +3,7 @@ import { Documentation } from './documentation/documentation';
 import { Crud } from './crud/crud';
 import { Empty } from './empty/empty';
 import { SettingsComponent } from './settings/settings.component';
-import { TeacherPublicProfileComponent } from '../modules/profile/pages/teacher-public-profile/teacher-public-profile.component';
+import { TeacherPublicProfileComponent } from './landing/sub-pages/teacher-public-profile/teacher-public-profile.component';
 
 export default [
     { path: 'documentation', component: Documentation },
