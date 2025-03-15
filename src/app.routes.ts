@@ -7,6 +7,7 @@ import { Notfound } from './app/pages/notfound/notfound';
 import { canNotLoginGuard } from './app/shared/guards/can-login.guard';
 import { SettingsComponent } from './app/pages/settings/settings.component';
 import { PaymentSuccessComponent } from './app/modules/reservation/components/payment-success/payment-success.component';
+import { TeacherPublicProfileComponent } from './app/modules/profile/pages/teacher-public-profile/teacher-public-profile.component';
 
 export const appRoutes: Routes = [
     {
@@ -39,5 +40,6 @@ export const appRoutes: Routes = [
     { path: 'home', component: Landing },
     { path: 'notfound', component: Notfound },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
+
     { path: '**', redirectTo: '/notfound' }
 ];

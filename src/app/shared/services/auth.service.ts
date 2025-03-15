@@ -140,8 +140,8 @@ export class AuthService {
         return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/public-informations?userId=${userId}`);
     }
 
-    getTeacherProfile(userId: string): Observable<ResponseDTO> {
-        return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/public-informations?userId=${environment.TEACHER_ID}`).pipe(tap((res) => this.teacherDetails.set(res.data)));
+    getTeacherProfile(): Observable<ResponseDTO> {
+        return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/public-informations?userId=teacher`).pipe(tap((res) => this.teacherDetails.set(res.data)));
     }
 
     forgotPassword(input: { email: string }): Observable<ResponseDTO> {
