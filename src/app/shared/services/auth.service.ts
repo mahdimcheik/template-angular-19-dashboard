@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit, inject, signal } from '@angular/core';
 import { ResponseDTO, UserChangePasswordDTO, UserCreateDTO, UserLoginDTO, UserResponseDTO, UserUpdateDTO } from '../models/user';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { LocalstorageService } from './localstorage.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
+import { SSEService } from './sse.service';
 
 type ResponseRegister = {
     succeeded: boolean;
@@ -29,6 +30,7 @@ export class AuthService {
 
     router = inject(Router);
     messageService = inject(MessageService);
+    SseService = inject(SSEService);
 
     userConnected = signal({ imgUrl: '123' } as UserResponseDTO);
     userToDisplay = signal({} as UserResponseDTO);
@@ -63,6 +65,8 @@ export class AuthService {
                 this.localStorageService.setUser(this.userConnected());
                 this.localStorageService.setToken(this.token());
                 this.localStorageService.setRefreshToken(this.refreshAccessToken() ?? '');
+
+                this.SseService.subscribe(this.userConnected().id);
 
                 // this.messageService.add({
                 //     severity: 'success',
@@ -128,6 +132,7 @@ export class AuthService {
             tap((res) => {
                 this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
                 this.localStorageService.setUser(this.userConnected());
+                this.SseService.subscribe(this.userConnected().id);
             }),
             catchError((error) => {
                 this.reset();
