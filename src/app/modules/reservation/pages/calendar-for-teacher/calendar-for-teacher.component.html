@@ -10,51 +10,52 @@
         <p-button (onClick)="next()" class="control-btn" icon="pi pi-angle-right"> </p-button>
     </div>
 </div>
-<full-calendar [options]="calendarOptions" #calendar [events]="visibleEvents()">
-    <ng-template #eventContent let-arg class="custom-event">
-        <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available']">
-            <!-- <p *ngIf="!!arg.event.title" class="event-title">
+<div class="card">
+    <full-calendar [options]="calendarOptions" #calendar [events]="visibleEvents()">
+        <ng-template #eventContent let-arg class="custom-event">
+            <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available']">
+                <!-- <p *ngIf="!!arg.event.title" class="event-title">
                 {{ arg.event.title }}
             </p> -->
 
-            <div class="event-image" *ngIf="arg.event.extendedProps?.slot?.imgUrl">
-                <img [src]="arg.event.extendedProps?.slot?.imgUrl" width="50" height="50" />
-            </div>
-
-            <ng-container *ngIf="arg.event.extendedProps?.slot?.['studentId']; else availableSlot">
-                <div class="slot-content">
-                    <img [src]="arg.event.extendedProps?.slot?.studentImgUrl" width="24" height="24" />
-                    <span class="student-name">
-                        {{ arg.event.extendedProps?.slot?.studentFirstName }}
-                        {{ arg.event.extendedProps?.slot?.studentLastName }}
-                    </span>
+                <div class="event-image" *ngIf="arg.event.extendedProps?.slot?.imgUrl">
+                    <img [src]="arg.event.extendedProps?.slot?.imgUrl" width="50" height="50" />
                 </div>
-                <div class="event-type">
-                    <span>Type : </span>
-                    <span>{{ arg.event.extendedProps?.slot?.typeHelp | helpType }}</span>
-                </div>
-            </ng-container>
 
-            <ng-template #availableSlot>
-                <div class="availability-info">
-                    <span>Créneau disponible</span>
-                    <div class="pricing">
-                        <span
-                            [ngClass]="{
-                                'original-price': arg.event.extendedProps?.slot?.price !== arg.event.extendedProps?.slot?.discountedPrice,
-                                'unique-price': arg.event.extendedProps?.slot?.price === arg.event.extendedProps?.slot?.discountedPrice
-                            }"
-                        >
-                            {{ arg.event.extendedProps?.slot?.price }} €
+                <ng-container *ngIf="arg.event.extendedProps?.slot?.['studentId']; else availableSlot">
+                    <div class="slot-content">
+                        <img [src]="arg.event.extendedProps?.slot?.studentImgUrl" width="24" height="24" />
+                        <span class="student-name">
+                            {{ arg.event.extendedProps?.slot?.studentFirstName }}
+                            {{ arg.event.extendedProps?.slot?.studentLastName }}
                         </span>
-                        <span class="new-price" *ngIf="arg.event.extendedProps?.slot?.price !== arg.event.extendedProps?.slot?.discountedPrice"> {{ arg.event.extendedProps?.slot?.discountedPrice }} € </span>
                     </div>
-                </div>
-            </ng-template>
-        </div>
-    </ng-template>
-</full-calendar>
+                    <div class="event-type">
+                        <span>Type : </span>
+                        <span>{{ arg.event.extendedProps?.slot?.typeHelp | helpType }}</span>
+                    </div>
+                </ng-container>
 
+                <ng-template #availableSlot>
+                    <div class="availability-info">
+                        <span>Créneau disponible</span>
+                        <div class="pricing">
+                            <span
+                                [ngClass]="{
+                                    'original-price': arg.event.extendedProps?.slot?.price !== arg.event.extendedProps?.slot?.discountedPrice,
+                                    'unique-price': arg.event.extendedProps?.slot?.price === arg.event.extendedProps?.slot?.discountedPrice
+                                }"
+                            >
+                                {{ arg.event.extendedProps?.slot?.price }} €
+                            </span>
+                            <span class="new-price" *ngIf="arg.event.extendedProps?.slot?.price !== arg.event.extendedProps?.slot?.discountedPrice"> {{ arg.event.extendedProps?.slot?.discountedPrice }} € </span>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </ng-template>
+    </full-calendar>
+</div>
 <app-modal-create-appointment
     (onSubmitted)="onModalSubmit()"
     [isCreatingModal]="isCreatingAppointment"
