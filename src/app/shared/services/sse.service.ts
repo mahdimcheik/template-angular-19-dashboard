@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,18 +11,20 @@ export class SSEService {
 
     constructor() {}
 
-    public subscribe(userId: string) {
-        this.eventSource = new EventSource(`https://localhost:7113/sse/${userId}`);
+    public subscribeSSE(email: string, token: string) {
+        if (email != '' && email != null && email != undefined) {
+            this.eventSource = new EventSource(`https://localhost:7113/sse/${email}/${token}`);
 
-        this.eventSource.onopen = (ev) => {
-            console.log('first ', ev);
-            this.wizzMessage.set('opened');
-        };
-        this.eventSource.onerror = (ev) => {
-            console.log(ev);
-            return null;
-        };
-        this.eventSource.onmessage = (ev) => this.onMessageRecieved(ev);
+            this.eventSource.onopen = (ev) => {
+                console.log('first ', ev);
+                this.wizzMessage.set('opened');
+            };
+            this.eventSource.onerror = (ev) => {
+                console.log(ev);
+                return null;
+            };
+            this.eventSource.onmessage = (ev) => this.onMessageRecieved(ev);
+        }
     }
 
     public onMessageRecieved(ev: MessageEvent<any>) {

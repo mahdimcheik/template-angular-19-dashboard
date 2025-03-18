@@ -66,7 +66,7 @@ export class AuthService {
                 this.localStorageService.setToken(this.token());
                 this.localStorageService.setRefreshToken(this.refreshAccessToken() ?? '');
 
-                this.SseService.subscribe(this.userConnected().id);
+                this.SseService.subscribeSSE(this.userConnected().email, this.token());
 
                 // this.messageService.add({
                 //     severity: 'success',
@@ -132,7 +132,7 @@ export class AuthService {
             tap((res) => {
                 this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
                 this.localStorageService.setUser(this.userConnected());
-                this.SseService.subscribe(this.userConnected().id);
+                this.SseService.subscribeSSE(this.userConnected().email, this.token());
             }),
             catchError((error) => {
                 this.reset();
