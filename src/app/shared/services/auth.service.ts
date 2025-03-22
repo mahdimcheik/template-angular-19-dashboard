@@ -124,7 +124,6 @@ export class AuthService {
     }
 
     getprofile(): Observable<ResponseDTO> {
-        // set user from localstoarage
         this.userConnected.set(this.localStorageService.getUser());
         this.token.set(this.localStorageService.getToken());
 
