@@ -4,11 +4,11 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { UserResponseDTO } from '../../../../shared/models/user';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { ProfileComponent } from '../../../../modules/profile/pages/profile/profile.component';
+import { ImageModule } from 'primeng/image';
 
 @Component({
     selector: 'app-teacher-public-profile',
-    imports: [CommonModule, ButtonModule, DividerModule, ProfileComponent, ProfileComponent],
+    imports: [CommonModule, ButtonModule, DividerModule, ImageModule],
     templateUrl: './teacher-public-profile.component.html',
     styleUrl: './teacher-public-profile.component.scss'
 })
