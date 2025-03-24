@@ -12,13 +12,13 @@ export class AdminService {
     http = inject(HttpClient);
 
     getAllStudents() {
-        return this.http.get<ResponseDTO>('https://localhost:7113/admin/all-students').pipe(
+        return this.http.get<UserResponseDTO[]>('https://localhost:7113/admin/all-students').pipe(
             catchError((err) => {
                 console.error(err);
                 return throwError(() => err);
             }),
             tap((res) => {
-                this.allStudents.set(res.data);
+                this.allStudents.set(res);
             })
         );
     }

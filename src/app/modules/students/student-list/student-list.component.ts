@@ -26,6 +26,9 @@ export class StudentListComponent {
     students = this.adminService.allStudents;
 
     ngOnInit() {
-        this.adminService.getAllStudents().subscribe((res) => console.log(res));
+        this.adminService.getAllStudents().subscribe((res) => {
+            this.students.set(res);
+            console.log('Students: ', this.students());
+        });
     }
 }
