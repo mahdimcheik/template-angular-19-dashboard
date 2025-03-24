@@ -1,0 +1,14 @@
+<p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+    <ng-template #header>
+        <img alt="Card" class="w-full" [src]="student().imgUrl" />
+    </ng-template>
+    <ng-template #title> {{ student().firstName | titlecase }} {{ student().lastName.toUpperCase() }}</ng-template>
+    <ng-template #subtitle> {{ student().title | titlecase }}</ng-template>
+    <p>
+        <ng-template #footer>
+            <div class="flex gap-4 mt-1">
+                <p-button label="Cancel" severity="secondary" class="w-full" [outlined]="true" styleClass="w-full" />
+                <p-button label="Save" class="w-full" styleClass="w-full" />
+            </div>
+        </ng-template></p
+></p-card>

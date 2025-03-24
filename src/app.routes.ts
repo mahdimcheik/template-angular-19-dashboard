@@ -9,6 +9,7 @@ import { SettingsComponent } from './app/pages/settings/settings.component';
 import { PaymentSuccessComponent } from './app/modules/reservation/components/payment-success/payment-success.component';
 import { TeacherPublicProfileComponent } from './app/pages/landing/sub-pages/teacher-public-profile/teacher-public-profile.component';
 import { MainComponent } from './app/pages/landing/sub-pages/main/main.component';
+import { StudentListComponent } from './app/modules/students/student-list/student-list.component';
 
 export const appRoutes: Routes = [
     {
@@ -31,6 +32,10 @@ export const appRoutes: Routes = [
             {
                 path: 'success',
                 component: PaymentSuccessComponent
+            },
+            {
+                path: 'students-list',
+                component: StudentListComponent
             }
         ]
     },
