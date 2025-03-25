@@ -29,7 +29,7 @@ export class StudentListComponent {
     countUsers = signal(0);
 
     first = 0;
-    rows = 2;
+    rows = 10;
 
     ngOnInit() {
         this.adminService.getAllStudents(this.first, this.rows).subscribe((res) => {
