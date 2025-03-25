@@ -34,7 +34,7 @@ export class AppMenu {
                 { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
                 { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/reservation/teacher'] },
                 { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/reservation/calendar-for-teacher'] },
-                // { label: 'Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/reservation/orders-student'] },
+                { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/students-list'] },
                 { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/profile'] }
             ];
         } else {

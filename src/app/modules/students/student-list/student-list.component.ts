@@ -12,7 +12,7 @@ import { AdminService } from '../../../shared/services/admin.service';
 
 @Component({
     selector: 'app-student-list',
-    imports: [CommonModule, DataViewModule, FormsModule, SelectButtonModule, PickListModule, OrderListModule, TagModule, ButtonModule, StudentCardComponent],
+    imports: [CommonModule, DataViewModule, FormsModule, SelectButtonModule, PickListModule, OrderListModule, TagModule, ButtonModule],
 
     templateUrl: './student-list.component.html',
     styleUrl: './student-list.component.scss'
