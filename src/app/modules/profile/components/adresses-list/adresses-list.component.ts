@@ -18,6 +18,7 @@ export class AdressesListComponent {
     addressService = inject(AdresseService);
     userConnected = inject(AuthService).userConnected;
     addresses = this.addressService.listAddresses;
+    canEdit = input<boolean>(true);
 
     ngOnInit() {
         this.addressService.getAllAddresses(this.userConnected().id).subscribe();

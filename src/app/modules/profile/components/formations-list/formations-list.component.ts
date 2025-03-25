@@ -21,16 +21,7 @@ export class FormationsListComponent implements OnInit {
     userConnected = inject(AuthService).userConnected;
 
     formations = this.formationService.listFormations;
-
-    formationToEdit: FormationResponseDTO = {
-        id: '1',
-        title: 'Master en informatique',
-        company: 'Université de Paris',
-        startAt: new Date(),
-        endAt: new Date(),
-        city: 'Bordeaux',
-        country: 'France'
-    };
+    canEdit = input<boolean>(true);
 
     ngOnInit() {
         this.formationService.getFormations(this.userConnected().id).subscribe();

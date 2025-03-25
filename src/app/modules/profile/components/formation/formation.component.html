@@ -9,8 +9,8 @@
     </div>
 
     <div class="flex flex-row gap-4 items-center h-auto pr-2">
-        <p-button icon="pi pi-trash" severity="danger" [outlined]="true" type="button" (onClick)="visibleModalDelete.set(true)"></p-button>
-        <p-button icon="pi pi-pencil" severity="info" [outlined]="true" (onClick)="open()"></p-button>
+        <p-button icon="pi pi-trash" severity="danger" [outlined]="true" type="button" (onClick)="visibleModalDelete.set(true)" *ngIf="canEdit()"></p-button>
+        <p-button icon="pi pi-pencil" severity="info" [outlined]="true" (onClick)="open()" *ngIf="canEdit()"></p-button>
     </div>
 </div>
 

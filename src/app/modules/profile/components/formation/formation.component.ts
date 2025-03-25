@@ -19,6 +19,8 @@ export class FormationComponent {
     visibleRight = signal<boolean>(false);
     visibleModalDelete = signal<boolean>(false);
     formationService = inject(FormationService);
+    canEdit = input<boolean>(true);
+
     close() {
         this.visibleRight.set(false);
     }
