@@ -15,17 +15,12 @@ import { ModalEditOrAddFormationComponent } from '../modal-edit-or-add-formation
     templateUrl: './formations-list.component.html',
     styleUrl: './formations-list.component.scss'
 })
-export class FormationsListComponent implements OnInit {
+export class FormationsListComponent {
     visibleRight = signal<boolean>(false);
     formationService = inject(FormationService);
-    userConnected = inject(AuthService).userConnected;
 
-    formations = this.formationService.listFormations;
+    formations = input.required<FormationResponseDTO[]>();
     canEdit = input<boolean>(true);
-
-    ngOnInit() {
-        this.formationService.getFormations(this.userConnected().id).subscribe();
-    }
 
     close() {
         this.visibleRight.set(false);

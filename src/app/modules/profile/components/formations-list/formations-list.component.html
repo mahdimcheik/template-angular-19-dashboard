@@ -4,6 +4,6 @@
         <p-button icon="pi pi-plus" (onClick)="open()" *ngIf="canEdit()"></p-button>
     </div>
 
-    <app-formation *ngFor="let formation of formations()" [formation]="formation"></app-formation>
+    <app-formation *ngFor="let formation of formations()" [formation]="formation" [canEdit]="canEdit()"></app-formation>
 </div>
 <app-modal-edit-or-add-formation (onClose)="close()" *ngIf="visibleRight()" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight"></app-modal-edit-or-add-formation>

@@ -35,7 +35,7 @@ export class AppMenu {
                 { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/reservation/teacher'] },
                 { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/reservation/calendar-for-teacher'] },
                 { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/students-list'] },
-                { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/profile'] }
+                { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/profile/me'] }
             ];
         } else {
             this.model = [
@@ -43,7 +43,7 @@ export class AppMenu {
                 { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/reservation/teacher'] },
                 { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/reservation/calendar-for-student'] },
                 { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/reservation/orders-student'] },
-                { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/profile'] }
+                { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/profile/me'] }
             ];
         }
     }
