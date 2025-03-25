@@ -7,18 +7,13 @@ import { catchError, map, tap, throwError } from 'rxjs';
     providedIn: 'root'
 })
 export class AdminService {
-    allStudents = signal<UserResponseDTO[]>([]);
-
     http = inject(HttpClient);
 
-    getAllStudents() {
-        return this.http.get<UserResponseDTO[]>('https://localhost:7113/admin/all-students').pipe(
+    getAllStudents(start: number, perPage: number) {
+        return this.http.post<ResponseDTO>('https://localhost:7113/admin/all-students', { start, perPage }).pipe(
             catchError((err) => {
                 console.error(err);
                 return throwError(() => err);
-            }),
-            tap((res) => {
-                this.allStudents.set(res);
             })
         );
     }

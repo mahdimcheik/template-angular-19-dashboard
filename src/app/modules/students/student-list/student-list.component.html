@@ -72,3 +72,4 @@
         </p-dataview>
     </div>
 </div>
+<p-paginator (onPageChange)="loadReservations($event)" [first]="first" [rows]="rows" [totalRecords]="countUsers()" />
