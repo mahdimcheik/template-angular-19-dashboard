@@ -24,9 +24,9 @@ export interface PageEvent {
     providedIn: 'root'
 })
 export class AuthService {
+    baseUrl = environment.BACK_URL;
     private http: HttpClient = inject(HttpClient);
     private localStorageService = inject(LocalstorageService);
-    // private messageService = inject(MessageService);
 
     router = inject(Router);
     messageService = inject(MessageService);
@@ -165,7 +165,7 @@ export class AuthService {
     }
 
     updatePersonnalInfos(userUpdated: UserUpdateDTO): Observable<ResponseDTO> {
-        return this.http.patch<ResponseDTO>(`https://localhost:7113/users/update`, userUpdated).pipe(
+        return this.http.patch<ResponseDTO>(`${this.baseUrl}/users/update`, userUpdated).pipe(
             tap((res) => {
                 this.userConnected.set(res.data);
                 this.userToDisplay.set(res.data);
@@ -179,7 +179,7 @@ export class AuthService {
             const formData = new FormData();
             formData.append('file', file);
             const headers = new HttpHeaders();
-            return this.http.post<ResponseDTO>(`https://localhost:7113/users/upload-avatar`, formData, {
+            return this.http.post<ResponseDTO>(`${this.baseUrl}/users/upload-avatar`, formData, {
                 headers: headers
             });
         } else return of();

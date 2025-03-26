@@ -5,19 +5,20 @@ import { CheckoutRequest, CheckoutResponse } from '../models/order';
 import { OrderService } from './order.service';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ResponseDTO } from '../models/user';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PaymentsService {
+    baseUrl = environment.BACK_URL;
+
     slotService = inject(SlotService);
     orderService = inject(OrderService);
     http = inject(HttpClient);
 
-    constructor() {}
-
     getcheckout(orderId: string): Observable<CheckoutResponse> {
-        return this.http.post<ResponseDTO>('https://localhost:7113/payments/create-checkout-session', { orderId: orderId } as CheckoutRequest).pipe(
+        return this.http.post<ResponseDTO>(`${this.baseUrl}/payments/create-checkout-session`, { orderId: orderId } as CheckoutRequest).pipe(
             catchError((err) => {
                 console.error('Error getting checkout', err);
                 return throwError(() => err);

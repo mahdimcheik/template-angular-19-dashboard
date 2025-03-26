@@ -1,11 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SSEService {
-    private sseEndpoint = 'https://localhost:7113/sse';
+    baseUrl = environment.BACK_URL;
+
     private eventSource!: EventSource;
     wizzMessage = signal('');
 
@@ -13,7 +15,7 @@ export class SSEService {
 
     public subscribeSSE(email: string, token: string) {
         if (email != '' && email != null && email != undefined) {
-            this.eventSource = new EventSource(`https://localhost:7113/sse/${email}/${token}`);
+            this.eventSource = new EventSource(`${this.baseUrl}/sse/${email}/${token}`);
 
             this.eventSource.onopen = (ev) => {
                 console.log('first ', ev);
