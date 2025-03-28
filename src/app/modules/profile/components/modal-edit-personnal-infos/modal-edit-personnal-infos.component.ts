@@ -14,6 +14,7 @@ import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
+import { LayoutService } from '../../../../layout/service/layout.service';
 
 @Component({
     selector: 'app-modal-edit-personnal-infos',
@@ -34,6 +35,8 @@ export class ModalEditPersonnalInfosComponent {
     fileName?: string;
 
     authService = inject(AuthService);
+    layoutService = inject(LayoutService);
+
     fb = inject(FormBuilder);
     messageService = inject(MessageService);
 

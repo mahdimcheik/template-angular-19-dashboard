@@ -11,6 +11,7 @@ import { DrawerModule } from 'primeng/drawer';
 import { FluidModule } from 'primeng/fluid';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
+import { LayoutService } from '../../../../layout/service/layout.service';
 
 @Component({
     selector: 'app-modal-edit-or-add-formation',
@@ -28,6 +29,8 @@ export class ModalEditOrAddFormationComponent implements OnInit {
     title!: string;
 
     messageService = inject(MessageService);
+    layoutService = inject(LayoutService);
+
     fb = inject(FormBuilder);
     userForm!: FormGroup;
 

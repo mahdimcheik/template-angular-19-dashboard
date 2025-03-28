@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { FluidModule } from 'primeng/fluid';
 import { DrawerModule } from 'primeng/drawer';
+import { LayoutService } from '../../../../layout/service/layout.service';
 
 @Component({
     selector: 'app-modal-add-or-edit-address',
@@ -34,6 +35,7 @@ export class ModalAddOrEditAddressComponent implements OnInit {
 
     messageService = inject(MessageService);
     adresseService = inject(AdresseService);
+    layoutService = inject(LayoutService);
     fb = inject(FormBuilder);
     userForm!: FormGroup;
 
