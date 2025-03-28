@@ -29,8 +29,15 @@
             </a>
         </li>
     </ul>
-    <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2" *ngIf="!authService.userConnected().email">
-        <button pButton pRipple label="Connexion" routerLink="/auth/login" [rounded]="true" [text]="true"></button>
-        <button pButton pRipple label="Inscription" routerLink="/auth/inscription" [rounded]="true"></button>
+    <div class="flex items-center gap-4">
+        <div class="layout-config-menu">
+            <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
+                <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
+            </button>
+        </div>
+        <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2" *ngIf="!authService.userConnected().email">
+            <button pButton pRipple label="Connexion" routerLink="/auth/login" [rounded]="true" [text]="true"></button>
+            <button pButton pRipple label="Inscription" routerLink="/auth/inscription" [rounded]="true"></button>
+        </div>
     </div>
 </div>

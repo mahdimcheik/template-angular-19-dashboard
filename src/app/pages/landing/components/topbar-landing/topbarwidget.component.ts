@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { LayoutService } from '../../../../layout/service/layout.service';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { LocalstorageService } from '../../../../shared/services/localstorage.service';
 
 @Component({
     selector: 'topbar-widget',
@@ -15,5 +16,10 @@ import { CommonModule } from '@angular/common';
 export class TopbarWidget {
     layoutService = inject(LayoutService);
     authService = inject(AuthService);
-    constructor(public router: Router) {}
+    localStorageService = inject(LocalstorageService);
+
+    toggleDarkMode() {
+        this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
+        this.localStorageService.setLayoutConfig(this.layoutService.layoutConfig());
+    }
 }

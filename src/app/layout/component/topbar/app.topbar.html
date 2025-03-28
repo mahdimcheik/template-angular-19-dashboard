@@ -31,7 +31,7 @@
                     </i>
                     <span>Commandes</span>
                 </p-button>
-                <button type="button" class="layout-topbar-action" (click)="router.navigate(['/profile'])">
+                <button type="button" class="layout-topbar-action" (click)="router.navigate(['/profile/me'])">
                     <i *ngIf="!user().email" class="pi pi-user"></i>
                     <p-avatar *ngIf="user().email" [image]="user().imgUrl" shape="circle"></p-avatar>
                     <span>Profil</span>
