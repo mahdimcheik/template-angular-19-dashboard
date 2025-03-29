@@ -7,7 +7,7 @@ import { LayoutService } from '../../layout/service/layout.service';
 @Component({
     selector: 'app-notfound',
     standalone: true,
-    imports: [RouterModule, AppFloatingConfigurator, ButtonModule],
+    imports: [RouterModule, ButtonModule],
     templateUrl: './app.notfound.html'
 })
 export class Notfound {
