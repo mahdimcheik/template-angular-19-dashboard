@@ -72,4 +72,4 @@
         </p-dataview>
     </div>
 </div>
-<p-paginator (onPageChange)="loadStudentsList($event)" [first]="first" [rows]="rows" [totalRecords]="countUsers()" />
+<p-paginator (onPageChange)="loadStudentsList($event)" [first]="first" [rows]="rows" [totalRecords]="count" [showCurrentPageReport]="true" [showJumpToPageDropdown]="false" currentPageReportTemplate="Élèves {first} à {last}, total : {totalRecords}" />

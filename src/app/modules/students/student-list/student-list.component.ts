@@ -27,7 +27,7 @@ export class StudentListComponent {
     router = inject(Router);
     adminService = inject(AdminService);
     students = signal<UserResponseDTO[]>([]);
-    countUsers = signal(0);
+    count = 0;
 
     first = 0;
     rows = 10;
@@ -35,13 +35,12 @@ export class StudentListComponent {
     ngOnInit() {
         this.adminService.getAllStudents(this.first, this.rows).subscribe((res) => {
             this.students.set(res.data);
-            this.countUsers.set(res.count ?? 0);
+            this.count = res.count ?? 0;
         });
     }
     loadStudentsList(e: any) {
         this.adminService.getAllStudents(e.first, this.rows).subscribe((res) => {
             this.students.set(res.data);
-            this.countUsers.set(res.count ?? 0);
         });
     }
 
