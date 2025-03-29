@@ -32,7 +32,7 @@
                                 <div class="flex flex-col md:items-end gap-8">
                                     <div class="flex flex-row-reverse md:flex-row gap-2">
                                         <p-button icon="pi pi-phone" label="Contacter" styleClass="flex-auto md:flex-initial whitespace-nowrap" [outlined]="true"></p-button>
-                                        <p-button icon="pi pi-user" label="Voir profil" styleClass="flex-auto md:flex-initial whitespace-nowrap"></p-button>
+                                        <p-button icon="pi pi-user" label="Voir profil" styleClass="flex-auto md:flex-initial whitespace-nowrap" (onClick)="showProfil(item.id)"></p-button>
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="flex flex-col gap-6 mt-6">
                                     <div class="flex gap-2">
-                                        <p-button icon="pi pi-user" label="Voir profil" class="flex-auto whitespace-nowrap" styleClass="w-full"></p-button>
+                                        <p-button icon="pi pi-user" label="Voir profil" class="flex-auto whitespace-nowrap" styleClass="w-full" (onClick)="showProfil(item.id)"></p-button>
                                         <p-button icon="pi pi-phone" label="Contacter" class="flex-auto whitespace-nowrap" styleClass="w-full" [outlined]="true"></p-button>
                                     </div>
                                 </div>
@@ -72,4 +72,4 @@
         </p-dataview>
     </div>
 </div>
-<p-paginator (onPageChange)="loadReservations($event)" [first]="first" [rows]="rows" [totalRecords]="countUsers()" />
+<p-paginator (onPageChange)="loadStudentsList($event)" [first]="first" [rows]="rows" [totalRecords]="countUsers()" />

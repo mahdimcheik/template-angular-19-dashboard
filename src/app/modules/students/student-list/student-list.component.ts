@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { AdminService } from '../../../shared/services/admin.service';
 import { PaginatorModule } from 'primeng/paginator';
 import { UserResponseDTO } from '../../../shared/models/user';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-student-list',
@@ -23,8 +24,8 @@ export class StudentListComponent {
 
     options = ['list', 'grid'];
 
+    router = inject(Router);
     adminService = inject(AdminService);
-
     students = signal<UserResponseDTO[]>([]);
     countUsers = signal(0);
 
@@ -37,10 +38,14 @@ export class StudentListComponent {
             this.countUsers.set(res.count ?? 0);
         });
     }
-    loadReservations(e: any) {
+    loadStudentsList(e: any) {
         this.adminService.getAllStudents(e.first, this.rows).subscribe((res) => {
             this.students.set(res.data);
             this.countUsers.set(res.count ?? 0);
         });
+    }
+
+    showProfil(id: string) {
+        this.router.navigateByUrl(`/profile/${id}`);
     }
 }
