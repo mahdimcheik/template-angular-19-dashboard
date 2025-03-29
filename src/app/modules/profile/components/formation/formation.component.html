@@ -1,10 +1,10 @@
 <div class="flex flex-row justify-between md:items-center flex-1 gap-6 border-t border-surface pt-4 pb-2">
     <div class="flex flex-row justify-between items-center gap-2">
-        <img src="https://www.citypng.com/public/uploads/preview/address-location-map-black-icon-symbol-download-png-701751694974706zcvtdkajtm.png" alt="adress" class="w-16 h-16 rounded" />
+        <img src="https://www.citypng.com/public/uploads/preview/address-location-map-black-icon-symbol-download-png-701751694974706zcvtdkajtm.png" alt="adress" class="w-16 h-16 rounded formation-image" />
         <div>
             <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ formation().title | titlecase }} </span>
-            <div class="text-lg font-medium">{{ formation().company | titlecase }}</div>
-            <div class="text-lg font-bold">{{ formation().startAt | date: 'MM/yyyy' }}-{{ formation().endAt | date: 'MM/yyyy' }} {{ formation().city | uppercase }}</div>
+            <div class="text-sm font-medium">{{ formation().company | titlecase }}</div>
+            <div class="text-sm font-bold">{{ formation().startAt | date: 'MM/yyyy' }}-{{ formation().endAt | date: 'MM/yyyy' }} {{ formation().city | uppercase }}</div>
         </div>
     </div>
 
