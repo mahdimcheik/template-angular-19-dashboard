@@ -19,11 +19,6 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
             if (err.status === 401) {
                 return authService.refreshToken().pipe(
                     catchError((refreshErr) => {
-                        // messageService.add({
-                        //     severity: 'error',
-                        //     summary: 'Token expiré',
-                        //     detail: 'Essayer de vous reconnecter.'
-                        // });
                         return throwError(() => refreshErr);
                     }),
                     switchMap((newTokens) => {

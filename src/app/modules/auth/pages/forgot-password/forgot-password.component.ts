@@ -26,8 +26,6 @@ export class ForgotPasswordComponent {
     errorRegistration = false;
     isLoading = false;
 
-    constructor() {}
-
     userForm = new FormGroup({
         email: new FormControl<string>('', [Validators.email, Validators.required])
     });

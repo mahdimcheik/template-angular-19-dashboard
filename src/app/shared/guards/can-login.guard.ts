@@ -13,7 +13,6 @@ export const canNotLoginGuard: CanActivateFn = (route, state) => {
             return false;
         }
     }
-    // authService.logout();
     return true;
 };
 

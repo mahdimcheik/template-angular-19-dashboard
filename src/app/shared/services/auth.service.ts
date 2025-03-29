@@ -112,7 +112,7 @@ export class AuthService {
                 }),
                 catchError((err) => {
                     // Handle refresh token errors
-                    this.logout();
+                    this.reset();
                     throw err;
                 })
             );
@@ -164,7 +164,6 @@ export class AuthService {
         // this.localStorageService.setUser({} as UserResponseDTO);
         this.localStorageService.reset();
         this.userConnected.set({} as UserResponseDTO);
-        // this.localStorageService.setToken('');
         this.token.set('');
     }
 
