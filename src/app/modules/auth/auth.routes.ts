@@ -40,7 +40,6 @@ export default [
             {
                 path: 'account-created-successfully',
                 component: AccountCreatedSuccessfullyComponent
-                // canActivate: [canNotLoginGuard]
             }
         ]
     }

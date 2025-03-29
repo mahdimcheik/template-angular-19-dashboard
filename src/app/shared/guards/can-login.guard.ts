@@ -4,8 +4,8 @@ import { AuthService } from '../services/auth.service';
 import { LocalstorageService } from '../services/localstorage.service';
 
 export const canNotLoginGuard: CanActivateFn = (route, state) => {
-    let authService = inject(AuthService);
-    let localStorageService = inject(LocalstorageService);
+    const authService = inject(AuthService);
+    const localStorageService = inject(LocalstorageService);
     if (authService.userConnected().email) {
         return false;
     } else {
@@ -17,13 +17,15 @@ export const canNotLoginGuard: CanActivateFn = (route, state) => {
 };
 
 export const canNotRegisterGuard: CanActivateFn = (route, state) => {
-    let authService = inject(AuthService);
+    const authService = inject(AuthService);
     if (authService.userConnected().email) return false;
     return true;
 };
 
 export const isConnectedGuard: CanActivateFn = (route, state) => {
-    let authService = inject(AuthService);
+    const authService = inject(AuthService);
+    const router = inject(Router);
     if (authService.userConnected().email) return true;
+    router.navigateByUrl('/auth/login');
     return false;
 };

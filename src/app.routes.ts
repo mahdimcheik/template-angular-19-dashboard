@@ -7,11 +7,13 @@ import { Notfound } from './app/pages/notfound/notfound';
 import { SettingsComponent } from './app/pages/settings/settings.component';
 import { PaymentSuccessComponent } from './app/modules/reservation/components/payment-success/payment-success.component';
 import { StudentListComponent } from './app/modules/students/student-list/student-list.component';
+import { isConnectedGuard } from './app/shared/guards/can-login.guard';
 
 export const appRoutes: Routes = [
     {
         path: '',
         component: AppLayout,
+        canActivate: [isConnectedGuard],
         children: [
             { path: '', component: Dashboard },
             { path: 'documentation', component: Documentation },
