@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormationResponseDTO } from '../../../../shared/models/formation';
 import { AdresseService } from '../../../../shared/services/adresse.service';
 import { AdresseDTO } from '../../../../shared/models/adresse';
+import { UserResponseDTO } from '../../../../shared/models/user';
 
 @Component({
     selector: 'app-profile',
@@ -27,7 +28,7 @@ export class ProfileComponent implements OnInit {
     formations: FormationResponseDTO[] = [];
     addresses: AdresseDTO[] = [];
 
-    user = this.authService.userConnected;
+    user = signal<UserResponseDTO>({} as UserResponseDTO);
     canEdit = false;
 
     ngOnInit(): void {
@@ -36,6 +37,7 @@ export class ProfileComponent implements OnInit {
 
             if (userId === 'me') {
                 this.canEdit = true;
+                this.user.set(this.authService.userConnected());
                 this.formationService.getFormations(this.user().id).subscribe((res) => {
                     this.formations = res.data;
                 });
@@ -45,6 +47,11 @@ export class ProfileComponent implements OnInit {
                 });
             } else {
                 this.canEdit = false;
+
+                this.authService.getPublicProfile(userId).subscribe((res) => {
+                    this.user.set(res.data);
+                });
+
                 this.formationService.getFormations(userId).subscribe((res) => {
                     this.formations = res.data;
                 });
