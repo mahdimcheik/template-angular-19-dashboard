@@ -1,8 +1,6 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { AdresseDTO } from '../../../../shared/models/adresse';
-import { firstValueFrom } from 'rxjs';
 import { AdresseService } from '../../../../shared/services/adresse.service';
-import { AuthService } from '../../../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { AdressComponent } from '../address/address.component';
@@ -16,13 +14,8 @@ import { ModalAddOrEditAddressComponent } from '../modal-add-or-edit-address/mod
 })
 export class AdressesListComponent {
     addressService = inject(AdresseService);
-    userConnected = inject(AuthService).userConnected;
-    addresses = this.addressService.listAddresses;
+    addresses = input.required<AdresseDTO[]>();
     canEdit = input<boolean>(true);
-
-    ngOnInit() {
-        this.addressService.getAllAddresses(this.userConnected().id).subscribe();
-    }
 
     visibleRight = signal<boolean>(false);
 

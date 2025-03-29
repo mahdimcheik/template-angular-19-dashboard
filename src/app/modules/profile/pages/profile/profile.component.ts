@@ -9,6 +9,8 @@ import { PersonnalInfosComponent } from '../../components/personnal-infos/person
 import { FormationService } from '../../../../shared/services/formation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormationResponseDTO } from '../../../../shared/models/formation';
+import { AdresseService } from '../../../../shared/services/adresse.service';
+import { AdresseDTO } from '../../../../shared/models/adresse';
 
 @Component({
     selector: 'app-profile',
@@ -21,7 +23,10 @@ export class ProfileComponent implements OnInit {
     route = inject(ActivatedRoute);
     authService = inject(AuthService);
     formationService = inject(FormationService);
+    addressService = inject(AdresseService);
     formations: FormationResponseDTO[] = [];
+    addresses: AdresseDTO[] = [];
+
     user = this.authService.userConnected;
     canEdit = false;
 
@@ -33,12 +38,19 @@ export class ProfileComponent implements OnInit {
                 this.canEdit = true;
                 this.formationService.getFormations(this.user().id).subscribe((res) => {
                     this.formations = res.data;
-                    console.log('formations ', this.formations);
+                });
+
+                this.addressService.getAllAddresses(this.user().id).subscribe((res) => {
+                    this.addresses = res.data;
                 });
             } else {
                 this.canEdit = false;
                 this.formationService.getFormations(userId).subscribe((res) => {
                     this.formations = res.data;
+                });
+
+                this.addressService.getAllAddresses(userId).subscribe((res) => {
+                    this.addresses = res.data;
                 });
             }
         });
