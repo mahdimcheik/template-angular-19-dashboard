@@ -29,3 +29,13 @@ html {
 .first:hover {
     transform: scale(1.5);
 }
+
+// full calendar style
+.fc {
+    min-height: 500px;
+    height: calc(100vh - 235px) !important;
+    max-height: 800px;
+
+    width: 100%;
+    overflow: hidden !important;
+}

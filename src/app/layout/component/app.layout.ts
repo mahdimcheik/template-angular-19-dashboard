@@ -11,7 +11,7 @@ import { ToastModule } from 'primeng/toast';
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, AppFooter, ToastModule],
+    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, ToastModule], //AppFooter,
     template: `<div class="layout-wrapper" [ngClass]="containerClass">
         <app-topbar></app-topbar>
         <app-sidebar></app-sidebar>
@@ -19,7 +19,7 @@ import { ToastModule } from 'primeng/toast';
             <div class="layout-main">
                 <router-outlet></router-outlet>
             </div>
-            <app-footer></app-footer>
+            <!-- <app-footer></app-footer> -->
         </div>
         <div class="layout-mask animate-fadein"></div>
         <!-- <p-toast></p-toast> -->

@@ -120,3 +120,15 @@
         }
     }
 }
+
+.calendar {
+    flex-grow: 1;
+    padding: 0 !important   ;
+    height: calc(100vh - 235px) !important;
+    overflow-y: auto !important;
+}
+@media (max-width: 600px) {
+    .calendar {
+        height: calc(100vh - 200px) !important;
+    }
+}
