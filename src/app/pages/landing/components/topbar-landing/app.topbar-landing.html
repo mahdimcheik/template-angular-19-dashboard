@@ -30,7 +30,7 @@
         </li>
     </ul>
     <div class="flex flex-row items-center gap-4 justify-center">
-        <p-button type="button" (click)="toggleDarkMode()" outlined="true" [icon]="layoutService.isDarkTheme()?  'pi pi-moon' : 'pi pi-sun'" class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2"> </p-button>
+        <p-button type="button" (onClick)="toggleDarkMode()" outlined="true" [icon]="layoutService.isDarkTheme()?  'pi pi-moon' : 'pi pi-sun'" class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2"> </p-button>
         <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2" *ngIf="!authService.userConnected().email">
             <button pButton pRipple label="Connexion" routerLink="/auth/login" [rounded]="true" [text]="true"></button>
             <button pButton pRipple label="Inscription" routerLink="/auth/inscription" [rounded]="true"></button>
