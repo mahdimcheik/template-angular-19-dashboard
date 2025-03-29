@@ -13,8 +13,8 @@
                 <span>Accueil</span>
             </a>
         </li>
-        <li>
-            <a routerLink="/" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl" *ngIf="authService.userConnected().email">
+        <li *ngIf="authService.userConnected().email">
+            <a routerLink="/" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                 <span>Tableau de bord</span>
             </a>
         </li>
@@ -29,12 +29,8 @@
             </a>
         </li>
     </ul>
-    <div class="flex items-center gap-4">
-        <div class="layout-config-menu">
-            <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
-                <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
-            </button>
-        </div>
+    <div class="flex flex-row items-center gap-4 justify-center">
+        <p-button type="button" (click)="toggleDarkMode()" outlined="true" [icon]="layoutService.isDarkTheme()?  'pi pi-moon' : 'pi pi-sun'" class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2"> </p-button>
         <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2" *ngIf="!authService.userConnected().email">
             <button pButton pRipple label="Connexion" routerLink="/auth/login" [rounded]="true" [text]="true"></button>
             <button pButton pRipple label="Inscription" routerLink="/auth/inscription" [rounded]="true"></button>
