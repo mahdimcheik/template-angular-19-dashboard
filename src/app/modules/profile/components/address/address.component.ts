@@ -19,6 +19,7 @@ export class AdressComponent {
     visibleRight = signal<boolean>(false);
     visibleModalDelete = model<boolean>(false);
     addressService = inject(AdresseService);
+    canEdit = input<boolean>(true);
 
     close() {
         this.visibleRight.set(false);
