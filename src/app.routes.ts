@@ -4,11 +4,8 @@ import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
-import { canNotLoginGuard } from './app/shared/guards/can-login.guard';
 import { SettingsComponent } from './app/pages/settings/settings.component';
 import { PaymentSuccessComponent } from './app/modules/reservation/components/payment-success/payment-success.component';
-import { TeacherPublicProfileComponent } from './app/pages/landing/sub-pages/teacher-public-profile/teacher-public-profile.component';
-import { MainComponent } from './app/pages/landing/sub-pages/main/main.component';
 import { StudentListComponent } from './app/modules/students/student-list/student-list.component';
 
 export const appRoutes: Routes = [
@@ -17,7 +14,6 @@ export const appRoutes: Routes = [
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },
-            { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
             { path: 'settings', component: SettingsComponent },

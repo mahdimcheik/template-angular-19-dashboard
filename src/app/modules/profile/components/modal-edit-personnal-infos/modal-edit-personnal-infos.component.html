@@ -10,7 +10,7 @@
 
         <p-fluid>
             <section class="flex flex-col w-full mb-0">
-                <generic-message message="Les champs marqués par * sont obligatoires." severity="error" styleclass="mt-2 "></generic-message>
+                <p-message message="Les champs marqués par * sont obligatoires." severity="error" styleclass="mt-2 "></p-message>
             </section>
             <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
                 <div class="card flex flex-col gap-6 w-full">

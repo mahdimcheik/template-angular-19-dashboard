@@ -9,8 +9,8 @@
     text-align: center;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-width: 100px;
-    max-width: 200px;
+    min-width: 50px;
+    min-width: 100%;
     height: 100%;
 
     &.booked {
@@ -106,8 +106,7 @@
 // Mobile responsiveness
 @media (max-width: 600px) {
     .custom-event {
-        min-width: 80px;
-        max-width: 150px;
+        max-width: 100%;
         padding: 6px;
 
         .slot-content {

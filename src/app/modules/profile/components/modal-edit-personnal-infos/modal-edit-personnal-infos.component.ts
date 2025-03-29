@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { FluidModule } from 'primeng/fluid';
-import { GenericMessageComponent } from '../../../../pages/uikit/generic-message/generic-message.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
@@ -18,7 +17,7 @@ import { LayoutService } from '../../../../layout/service/layout.service';
 
 @Component({
     selector: 'app-modal-edit-personnal-infos',
-    imports: [CommonModule, ButtonModule, DrawerModule, MessageModule, TextareaModule, InputTextModule, SelectModule, FluidModule, GenericMessageComponent, FormsModule, ReactiveFormsModule, FileUploadModule],
+    imports: [CommonModule, ButtonModule, DrawerModule, MessageModule, TextareaModule, InputTextModule, SelectModule, FluidModule, FormsModule, ReactiveFormsModule, FileUploadModule],
 
     templateUrl: './modal-edit-personnal-infos.component.html',
     styleUrl: './modal-edit-personnal-infos.component.scss'
