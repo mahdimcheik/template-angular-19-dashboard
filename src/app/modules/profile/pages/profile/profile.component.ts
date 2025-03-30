@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
     addresses: AdresseDTO[] = [];
 
     user = signal<UserResponseDTO>({} as UserResponseDTO);
+
     canEdit = false;
 
     ngOnInit(): void {
@@ -37,7 +38,7 @@ export class ProfileComponent implements OnInit {
 
             if (userId === 'me') {
                 this.canEdit = true;
-                this.user.set(this.authService.userConnected());
+                this.user = this.authService.userConnected;
                 this.formationService.getFormations(this.user().id).subscribe((res) => {
                     this.formations = res.data;
                 });
@@ -47,7 +48,7 @@ export class ProfileComponent implements OnInit {
                 });
             } else {
                 this.canEdit = false;
-
+                this.user = this.authService.userToDisplay;
                 this.authService.getPublicProfile(userId).subscribe((res) => {
                     this.user.set(res.data);
                 });
@@ -61,9 +62,5 @@ export class ProfileComponent implements OnInit {
                 });
             }
         });
-    }
-
-    reloadUser() {
-        this.user.set(this.authService.userConnected());
     }
 }

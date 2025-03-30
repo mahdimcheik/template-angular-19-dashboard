@@ -28,7 +28,4 @@ export class PersonnalInfosComponent {
     open() {
         this.isVisibleModalEditPerso.set(true);
     }
-    reloadProfile() {
-        this.onValidate.emit();
-    }
 }

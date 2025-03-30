@@ -45,6 +45,6 @@ export class StudentListComponent {
     }
 
     showProfil(id: string) {
-        this.router.navigateByUrl(`/profile/${id}`);
+        this.router.navigateByUrl(`dashboard/profile/${id}`);
     }
 }

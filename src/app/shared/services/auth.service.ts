@@ -32,13 +32,15 @@ export class AuthService {
     messageService = inject(MessageService);
     SseService = inject(SSEService);
 
-    userConnected = signal({ imgUrl: '123' } as UserResponseDTO);
+    // pour la page profile
+    userConnected = signal({} as UserResponseDTO);
     userToDisplay = signal({} as UserResponseDTO);
+
+    // pour la page qui je suis ?
     teacherDetails = signal({} as UserResponseDTO);
+
     refreshAccessToken = signal<string | null>(null);
     token = signal<string>('');
-
-    constructor() {}
 
     getUsers(first: number, rows: number): Observable<ResponseDTO> {
         return this.http.get<ResponseDTO>(`${environment.BACK_URL}/Users/all?first=${first}&rows=${rows}`);
@@ -90,6 +92,7 @@ export class AuthService {
             })
         );
     }
+
     refreshToken() {
         // Call your backend refresh token endpoint
         return this.http

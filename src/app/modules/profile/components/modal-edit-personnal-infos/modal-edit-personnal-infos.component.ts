@@ -91,7 +91,7 @@ export class ModalEditPersonnalInfosComponent {
             await firstValueFrom(this.authService.updateAvatar(this.file));
         }
 
-        await firstValueFrom(this.authService.updatePersonnalInfos(newUser as unknown as UserUpdateDTO));
+        await firstValueFrom(this.authService.updatePersonnalInfos(newUser as UserUpdateDTO));
 
         this.onValidate.emit();
         this.visible.set(false);
