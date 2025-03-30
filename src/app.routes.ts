@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './app/layout/component/app.layout';
-import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
@@ -8,6 +7,7 @@ import { SettingsComponent } from './app/pages/settings/settings.component';
 import { PaymentSuccessComponent } from './app/modules/reservation/components/payment-success/payment-success.component';
 import { StudentListComponent } from './app/modules/students/student-list/student-list.component';
 import { isConnectedGuard } from './app/shared/guards/can-login.guard';
+import { Dashboard } from './app/modules/dashboard/dashboard';
 
 export const appRoutes: Routes = [
     {
