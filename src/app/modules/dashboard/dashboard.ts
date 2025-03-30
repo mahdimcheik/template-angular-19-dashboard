@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { NotificationsWidget } from './components/notificationswidget';
 import { StatsWidget } from './components/statswidget';
 import { NotificationService } from '../../shared/services/notification.service';
+import { NotificationApp } from '../../shared/models/notification';
 
 @Component({
     selector: 'app-dashboard',
@@ -14,6 +15,7 @@ export class Dashboard implements OnInit {
     isread: boolean | undefined = undefined;
 
     private notificationService = inject(NotificationService);
+    notifications: NotificationApp[] = [];
 
     ngOnInit(): void {
         // const filter = {
@@ -23,6 +25,7 @@ export class Dashboard implements OnInit {
         // };
         this.notificationService.getNotificationsByUserId({ perPage: 10, offset: 0 }).subscribe((response: any) => {
             console.log(response);
+            this.notifications = response.data?.items;
         });
     }
 }

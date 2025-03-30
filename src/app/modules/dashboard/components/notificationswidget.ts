@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { NotifcationComponent } from './notifcation/notifcation.component';
+import { CommonModule } from '@angular/common';
+import { NotificationApp } from '../../../shared/models/notification';
 
 @Component({
     standalone: true,
     selector: 'app-notifications-widget',
-    imports: [ButtonModule, MenuModule],
+    imports: [ButtonModule, MenuModule, NotifcationComponent, CommonModule],
     template: `<div class="card">
         <div class="flex items-center justify-between mb-6">
             <div class="font-semibold text-xl">Notifications</div>
@@ -13,6 +16,10 @@ import { MenuModule } from 'primeng/menu';
                 <button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text p-button-plain" (click)="menu.toggle($event)"></button>
                 <p-menu #menu [popup]="true" [model]="items"></p-menu>
             </div> -->
+        </div>
+
+        <div>
+            <app-notifcation *ngFor="let notif of notifications()" [notification]="notif"></app-notifcation>
         </div>
 
         <span class="block text-muted-color font-medium mb-4">Aujourd'hui</span>
@@ -100,6 +107,7 @@ import { MenuModule } from 'primeng/menu';
     </div>`
 })
 export class NotificationsWidget {
+    notifications = input.required<NotificationApp[]>();
     items = [
         { label: 'Add New', icon: 'pi pi-fw pi-plus' },
         { label: 'Remove', icon: 'pi pi-fw pi-trash' }
