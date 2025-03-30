@@ -62,4 +62,8 @@ export class ProfileComponent implements OnInit {
             }
         });
     }
+
+    reloadUser() {
+        this.user.set(this.authService.userConnected());
+    }
 }

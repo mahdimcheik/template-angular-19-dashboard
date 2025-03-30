@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, Input, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, input, Input, output, signal, WritableSignal } from '@angular/core';
 import { UserResponseDTO } from '../../../../shared/models/user';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ export class PersonnalInfosComponent {
     userToDisplay = input.required<UserResponseDTO>();
     canEdit = input<boolean>(true);
     isVisibleModalEditPerso = signal<boolean>(false);
+    onValidate = output<void>();
 
     authService = inject(AuthService);
 
@@ -26,5 +27,8 @@ export class PersonnalInfosComponent {
 
     open() {
         this.isVisibleModalEditPerso.set(true);
+    }
+    reloadProfile() {
+        this.onValidate.emit();
     }
 }
