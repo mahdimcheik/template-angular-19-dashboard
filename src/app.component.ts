@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationStart, Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { LocalstorageService } from './app/shared/services/localstorage.service';
@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
     orderService = inject(OrderService);
     layoutService = inject(LayoutService);
     router = inject(Router);
+
     ngOnInit(): void {
         this.authService
             .getprofile()
