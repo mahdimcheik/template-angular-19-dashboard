@@ -12,6 +12,11 @@ import { isConnectedGuard } from './app/shared/guards/can-login.guard';
 export const appRoutes: Routes = [
     {
         path: '',
+        component: Landing,
+        loadChildren: () => import('./app/pages/landing/landing.routes')
+    },
+    {
+        path: 'dashboard',
         component: AppLayout,
         canActivate: [isConnectedGuard],
         children: [
@@ -40,11 +45,6 @@ export const appRoutes: Routes = [
     {
         path: 'auth',
         loadChildren: () => import('./app/modules/auth/auth.routes')
-    },
-    {
-        path: 'home',
-        component: Landing,
-        loadChildren: () => import('./app/pages/landing/landing.routes')
     },
 
     { path: 'notfound', component: Notfound },

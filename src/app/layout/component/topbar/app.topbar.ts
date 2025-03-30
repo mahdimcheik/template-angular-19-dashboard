@@ -69,12 +69,12 @@ export class AppTopbar {
         if (this.user().email) {
             if (this.user()?.roles) {
                 if (this.user()?.roles.includes('Admin')) {
-                    return 'reservation/calendar-for-teacher';
+                    return '/dashboard/reservation/calendar-for-teacher';
                 } else {
-                    return 'reservation/calendar-for-student';
+                    return '/dashboard/reservation/calendar-for-student';
                 }
             }
-            return 'reservation/calendar-for-student';
+            return '/dashboard/reservation/calendar-for-student';
         }
         return '';
     });

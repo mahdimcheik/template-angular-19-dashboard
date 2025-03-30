@@ -1,4 +1,4 @@
-<a class="flex items-center mr-4" routerLink="/home">
+<a class="flex items-center mr-4" routerLink="/">
     <img [src]="layoutService.layoutConfig().darkTheme ? 'assets/latestWhite.svg' : 'assets/latestBlack.svg'" alt="logo" width="100" />
 </a>
 
@@ -9,22 +9,22 @@
 <div class="items-center bg-surface-0 dark:bg-surface-900 grow justify-between hidden lg:flex absolute lg:static w-full left-0 top-full px-12 lg:px-0 z-20 rounded-border">
     <ul class="list-none p-0 m-0 flex lg:items-center select-none flex-col lg:flex-row cursor-pointer gap-8">
         <li>
-            <a routerLink="/home" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
+            <a routerLink="/" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                 <span>Accueil</span>
             </a>
         </li>
         <li *ngIf="authService.userConnected().email">
-            <a routerLink="/" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
+            <a routerLink="/dashboard" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                 <span>Tableau de bord</span>
             </a>
         </li>
         <li>
-            <a routerLink="/home/teacher" fragment="profile" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
+            <a routerLink="/teacher" fragment="profile" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                 <span>Qui je suis</span>
             </a>
         </li>
         <li>
-            <a routerLink="/home" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
+            <a routerLink="/" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                 <span>Tarifs</span>
             </a>
         </li>

@@ -3,7 +3,7 @@
         <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
             <i class="pi pi-bars"></i>
         </button>
-        <a class="layout-topbar-logo ml-2" routerLink="/home">
+        <a class="layout-topbar-logo ml-2" routerLink="/">
             <img [src]="layoutService.layoutConfig().darkTheme ? 'assets/latestWhite.svg' : 'assets/latestBlack.svg'" alt="logo" width="100" />
         </a>
     </div>
@@ -21,21 +21,21 @@
 
         <div class="layout-topbar-menu hidden lg:block">
             <div class="layout-topbar-menu-content">
-                <button type="button" class="layout-topbar-action" [routerLink]="[calendarLink()]">
+                <a type="button" class="layout-topbar-action" [routerLink]="[calendarLink()]">
                     <i class="pi pi-calendar"></i>
                     <span>Réservations</span>
-                </button>
-                <p-button type="button" class="layout-topbar-action h-[50px]" *ngIf="user().email && !isAdmin()" [routerLink]="['/reservation/orders-student']">
+                </a>
+                <a type="button" class="layout-topbar-action h-[50px]" *ngIf="user().email && !isAdmin()" [routerLink]="['/dashboard/reservation/orders-student']">
                     <i class="pi pi-shopping-cart relative" style="font-size: 1.75rem">
                         <p-badge class="absolute bottom-[5px] left-[3px]" [value]="numberBooking()" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
                     </i>
                     <span>Commandes</span>
-                </p-button>
-                <button type="button" class="layout-topbar-action" (click)="router.navigate(['/profile/me'])">
+                </a>
+                <a type="button" class="layout-topbar-action" [routerLink]="['/dashboard/profile/me']">
                     <i *ngIf="!user().email" class="pi pi-user"></i>
                     <p-avatar *ngIf="user().email" [image]="user().imgUrl" shape="circle"></p-avatar>
                     <span>Profil</span>
-                </button>
+                </a>
                 <!-- <p-menu #menu [model]="userItems()" [popup]="true"></p-menu> -->
             </div>
         </div>

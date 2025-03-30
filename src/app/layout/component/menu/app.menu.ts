@@ -31,19 +31,19 @@ export class AppMenu {
     ngOnInit() {
         if (this.isAdmin()) {
             this.model = [
-                { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/reservation/teacher'] },
-                { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/reservation/calendar-for-teacher'] },
-                { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/students-list'] },
-                { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/profile/me'] }
+                { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
+                { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
+                { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
             ];
         } else {
             this.model = [
-                { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/reservation/teacher'] },
-                { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/reservation/calendar-for-student'] },
-                { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/reservation/orders-student'] },
-                { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/profile/me'] }
+                { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
+                { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
+                { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] }
             ];
         }
     }

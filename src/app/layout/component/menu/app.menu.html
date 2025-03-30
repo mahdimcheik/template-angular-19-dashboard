@@ -2,30 +2,30 @@
     <li>
         <div class="min-h-8 pt-4 pb-4">
             <div class="flex gap-4 items-center">
-                <a routerLink="/home">
+                <a routerLink="/">
                     <img [src]="layoutService.layoutConfig().darkTheme ? 'assets/skillHiveSecondaryWhite.svg' : 'assets/skillHiveSecondaryBlack.svg'" alt="logo" width="100" />
                 </a>
             </div>
         </div>
     </li>
     <li *ngFor="let item of model; let i = index">
-        <button *ngIf="item.routerLink && item.visible !== false" class="menu-link" (click)="item.command" [routerLink]="item.routerLink[0]" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
+        <a *ngIf="item.routerLink && item.visible !== false" class="menu-link" (click)="item.command" [routerLink]="item.routerLink[0]" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
             <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
             <span class="layout-menuitem-text">{{ item.label }}</span>
-        </button>
+        </a>
     </li>
     <div class="last-items">
         <li>
-            <button class="menu-link" [routerLink]="'/settings'" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="menu-link" [routerLink]="'settings'" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
                 <i [ngClass]="settingsItem.icon" class="layout-menuitem-icon"></i>
                 <span class="layout-menuitem-text">{{ settingsItem.label }}</span>
-            </button>
+            </a>
         </li>
         <li>
-            <button class="menu-link" (click)="deconnect()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="menu-link" (click)="deconnect()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
                 <i [ngClass]="deconnecionItem.icon" class="layout-menuitem-icon"></i>
                 <span class="layout-menuitem-text">{{ deconnecionItem.label }}</span>
-            </button>
+            </a>
         </li>
         <!-- <li [ngStyle]="{padding: '25px'}"></li> -->
     </div>

@@ -120,7 +120,7 @@ export class AuthService {
 
     logout(): void {
         this.reset();
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/');
     }
 
     getprofile(): Observable<ResponseDTO> {
