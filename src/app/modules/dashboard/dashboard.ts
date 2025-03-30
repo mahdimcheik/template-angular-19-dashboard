@@ -23,7 +23,7 @@ export class Dashboard implements OnInit {
         //     offset: this.offset,
         //     perPage: this.perPage
         // };
-        this.notificationService.getNotificationsByUserId({ perPage: 10, offset: 0 }).subscribe((response: any) => {
+        this.notificationService.getNotificationsByUserId({ perPage: 100, offset: 0 }).subscribe((response: any) => {
             console.log(response);
             this.notifications = response.data?.items;
         });

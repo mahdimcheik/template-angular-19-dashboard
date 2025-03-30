@@ -12,15 +12,13 @@ import { NotificationApp } from '../../../shared/models/notification';
     template: `<div class="card">
         <div class="flex items-center justify-between mb-6">
             <div class="font-semibold text-xl">Notifications</div>
-            <!-- <div>
-                <button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text p-button-plain" (click)="menu.toggle($event)"></button>
-                <p-menu #menu [popup]="true" [model]="items"></p-menu>
-            </div> -->
         </div>
 
-        <div>
-            <app-notifcation *ngFor="let notif of notifications()" [notification]="notif"></app-notifcation>
-        </div>
+        <ul class="p-0 mx-0 mt-0 mb-6 list-none">
+            <li>
+                <app-notifcation *ngFor="let notif of notifications()" [notification]="notif"></app-notifcation>
+            </li>
+        </ul>
 
         <span class="block text-muted-color font-medium mb-4">Aujourd'hui</span>
         <ul class="p-0 mx-0 mt-0 mb-6 list-none">

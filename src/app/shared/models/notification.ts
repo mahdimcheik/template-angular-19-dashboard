@@ -1,7 +1,7 @@
 export type NotificationApp = {
     id: string;
     description?: string;
-    createAt: Date;
+    createdAt: Date;
     url?: string;
     isRead: boolean;
     senderId?: string;
