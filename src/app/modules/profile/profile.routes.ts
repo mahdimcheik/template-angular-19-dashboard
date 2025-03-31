@@ -3,7 +3,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 
 export default [
     {
-        path: ':userId',
+        path: 'me',
         component: ProfileComponent
     }
 ] as Routes;

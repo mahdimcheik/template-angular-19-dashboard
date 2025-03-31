@@ -7,7 +7,6 @@ import { AdressesListComponent } from '../../components/adresses-list/adresses-l
 import { FormationsListComponent } from '../../components/formations-list/formations-list.component';
 import { PersonnalInfosComponent } from '../../components/personnal-infos/personnal-infos.component';
 import { FormationService } from '../../../../shared/services/formation.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormationResponseDTO } from '../../../../shared/models/formation';
 import { AdresseService } from '../../../../shared/services/adresse.service';
 import { AdresseDTO } from '../../../../shared/models/adresse';
@@ -21,46 +20,22 @@ import { UserResponseDTO } from '../../../../shared/models/user';
     styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
-    route = inject(ActivatedRoute);
     authService = inject(AuthService);
     formationService = inject(FormationService);
     addressService = inject(AdresseService);
-    formations: FormationResponseDTO[] = [];
-    addresses: AdresseDTO[] = [];
+
+    formations = this.formationService.formations;
+    addresses = this.addressService.addresses;
 
     user = signal<UserResponseDTO>({} as UserResponseDTO);
 
     canEdit = false;
 
     ngOnInit(): void {
-        this.route.paramMap.subscribe((params) => {
-            const userId = params.get('userId') ?? '123';
+        this.canEdit = true;
+        this.user = this.authService.userConnected;
 
-            if (userId === 'me') {
-                this.canEdit = true;
-                this.user = this.authService.userConnected;
-                this.formationService.getFormations(this.user().id).subscribe((res) => {
-                    this.formations = res.data;
-                });
-
-                this.addressService.getAllAddresses(this.user().id).subscribe((res) => {
-                    this.addresses = res.data;
-                });
-            } else {
-                this.canEdit = false;
-                this.user = this.authService.userToDisplay;
-                this.authService.getPublicProfile(userId).subscribe((res) => {
-                    this.user.set(res.data);
-                });
-
-                this.formationService.getFormations(userId).subscribe((res) => {
-                    this.formations = res.data;
-                });
-
-                this.addressService.getAllAddresses(userId).subscribe((res) => {
-                    this.addresses = res.data;
-                });
-            }
-        });
+        this.formationService.getFormations(this.user().id).subscribe();
+        this.addressService.getAllAddresses(this.user().id).subscribe();
     }
 }

@@ -12,27 +12,27 @@ export class AdresseService {
     private http: HttpClient = inject(HttpClient);
     baseUrl = environment.BACK_URL;
 
-    listAddresses = signal([] as AdresseDTO[]);
+    addresses = signal([] as AdresseDTO[]);
     constructor() {}
 
     getAllAddresses(userId: string): Observable<ResponseDTO> {
-        return this.http.get<ResponseDTO>(`${this.baseUrl}/address/all?userId=${userId}`).pipe(tap((res) => this.listAddresses.set(res.data as AdresseDTO[])));
+        return this.http.get<ResponseDTO>(`${this.baseUrl}/address/all?userId=${userId}`).pipe(tap((res) => this.addresses.set(res.data as AdresseDTO[])));
     }
     updateAddresse(adresseDTO: AdresseDTO): Observable<ResponseDTO> {
         return this.http.put<ResponseDTO>(`${this.baseUrl}/address`, adresseDTO).pipe(
             tap((res) => {
-                let newAdress = this.listAddresses().findIndex((x) => x.id == adresseDTO.id);
-                this.listAddresses()[newAdress] = adresseDTO;
+                let newAdress = this.addresses().findIndex((x) => x.id == adresseDTO.id);
+                this.addresses()[newAdress] = adresseDTO;
 
-                this.listAddresses.update((oldList) => [...oldList]);
+                this.addresses.update((oldList) => [...oldList]);
             })
         );
     }
     addAddresse(adresseDTO: AdresseDTO): Observable<ResponseDTO> {
         return this.http.post<ResponseDTO>(`${this.baseUrl}/address`, adresseDTO).pipe(
             tap((res) => {
-                const resu = this.listAddresses();
-                this.listAddresses.update((oldList) => [...oldList, res.data as AdresseDTO]);
+                const resu = this.addresses();
+                this.addresses.update((oldList) => [...oldList, res.data as AdresseDTO]);
             })
         );
     }
@@ -41,7 +41,7 @@ export class AdresseService {
         return this.http.delete<ResponseDTO>(`${this.baseUrl}/address?addressId=${adresseId}`).pipe(
             tap((res) => {
                 if (res.status == 204) {
-                    this.listAddresses.update((oldList) => oldList.filter((x) => x.id != adresseId));
+                    this.addresses.update((oldList) => oldList.filter((x) => x.id != adresseId));
                 }
             })
         );

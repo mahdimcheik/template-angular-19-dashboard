@@ -1,7 +1,7 @@
 <div class="flex flex-col">
     <app-personnal-infos [userToDisplay]="user()" [canEdit]="canEdit"></app-personnal-infos>
-    <app-adresses-list [addresses]="addresses" [canEdit]="canEdit"></app-adresses-list>
-    <app-formations-list [formations]="formations" [canEdit]="canEdit"></app-formations-list>
+    <app-adresses-list [addresses]="addresses()" [canEdit]="canEdit"></app-adresses-list>
+    <app-formations-list [formations]="formations()" [canEdit]="canEdit"></app-formations-list>
 
     <div class="card mt-4">
         <div class="flex gap-4">
