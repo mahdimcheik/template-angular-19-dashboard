@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -10,6 +10,8 @@ import { FormationService } from '../../../../shared/services/formation.service'
 import { AdresseService } from '../../../../shared/services/adresse.service';
 import { UserResponseDTO } from '../../../../shared/models/user';
 import { ActivatedRoute } from '@angular/router';
+import { FormationResponseDTO } from '../../../../shared/models/formation';
+import { AdresseDTO } from '../../../../shared/models/adresse';
 
 @Component({
     selector: 'app-profile-student-public',
@@ -24,8 +26,8 @@ export class ProfileStudentPublicComponent implements OnInit {
     formationService = inject(FormationService);
     addressService = inject(AdresseService);
 
-    formations = this.formationService.formations;
-    addresses = this.addressService.addresses;
+    formations = signal<FormationResponseDTO[]>([]);
+    addresses = signal<AdresseDTO[]>([]);
 
     user!: UserResponseDTO;
 
@@ -36,8 +38,12 @@ export class ProfileStudentPublicComponent implements OnInit {
             const userId = params.get('userId') ?? '';
             this.authService.getPublicProfile(userId).subscribe((res) => {
                 this.user = res.data as UserResponseDTO;
-                this.formationService.getFormations(userId, false).subscribe();
-                this.addressService.getAllAddresses(userId).subscribe();
+                this.formationService.getFormations(userId, false).subscribe((res) => {
+                    this.formations.set(res.data);
+                });
+                this.addressService.getAllAddresses(userId, false).subscribe((res) => {
+                    this.addresses.set(res.data as any[]);
+                });
             });
         });
     }
