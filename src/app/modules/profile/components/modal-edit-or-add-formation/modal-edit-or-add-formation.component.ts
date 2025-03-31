@@ -45,8 +45,8 @@ export class ModalEditOrAddFormationComponent implements OnInit {
                 company: [this.formationToEdit().company, [Validators.required]],
                 city: [this.formationToEdit().city, [Validators.required]],
                 country: [this.formationToEdit().country, [Validators.required]],
-                startAt: [new Date(this.formationToEdit().startAt)],
-                endAt: [new Date(this.formationToEdit().endAt)]
+                startAt: [new Date(this.formationToEdit().startAt), [Validators.required]],
+                endAt: [new Date(this.formationToEdit().endAt), [Validators.required]]
             });
         } else if (this.updateOrAdd() == 'add') {
             this.title = 'Ajouter une formation';
