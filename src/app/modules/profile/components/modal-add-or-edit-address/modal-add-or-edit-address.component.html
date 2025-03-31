@@ -54,6 +54,9 @@
                             <div class="flex flex-wrap gap-2 w-full">
                                 <label for="postalCode" RequiredAsterisk>Code postal</label>
                                 <input pInputText id="postalCode" type="text" formControlName="postalCode" />
+                                <div class="error" *ngIf="form.submitted && userForm.controls['postalCode'].errors">
+                                    <p-message [hidden]="!userForm.controls['postalCode'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                </div>
                             </div>
                             <div class="flex flex-wrap gap-2 w-full">
                                 <label for="addressType" RequiredAsterisk>Type d'adresse</label>
