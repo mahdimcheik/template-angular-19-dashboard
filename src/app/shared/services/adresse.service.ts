@@ -15,12 +15,22 @@ export class AdresseService {
     addresses = signal([] as AdresseDTO[]);
     constructor() {}
 
-    getAllAddresses(userId: string): Observable<ResponseDTO> {
-        return this.http.get<ResponseDTO>(`${this.baseUrl}/address/all?userId=${userId}`).pipe(tap((res) => this.addresses.set(res.data as AdresseDTO[])));
+    getAllAddresses(userId: string, forOwner: boolean = true): Observable<ResponseDTO> {
+        return this.http.get<ResponseDTO>(`${this.baseUrl}/address/all?userId=${userId}`).pipe(
+            tap((res) => {
+                if (!forOwner) {
+                    return;
+                }
+                this.addresses.set(res.data as AdresseDTO[]);
+            })
+        );
     }
-    updateAddresse(adresseDTO: AdresseDTO): Observable<ResponseDTO> {
+    updateAddresse(adresseDTO: AdresseDTO, forOwner: boolean = true): Observable<ResponseDTO> {
         return this.http.put<ResponseDTO>(`${this.baseUrl}/address`, adresseDTO).pipe(
             tap((res) => {
+                if (!forOwner) {
+                    return;
+                }
                 let newAdress = this.addresses().findIndex((x) => x.id == adresseDTO.id);
                 this.addresses()[newAdress] = adresseDTO;
 
@@ -28,18 +38,24 @@ export class AdresseService {
             })
         );
     }
-    addAddresse(adresseDTO: AdresseDTO): Observable<ResponseDTO> {
+    addAddresse(adresseDTO: AdresseDTO, forOwner: boolean = true): Observable<ResponseDTO> {
         return this.http.post<ResponseDTO>(`${this.baseUrl}/address`, adresseDTO).pipe(
             tap((res) => {
+                if (!forOwner) {
+                    return;
+                }
                 const resu = this.addresses();
                 this.addresses.update((oldList) => [...oldList, res.data as AdresseDTO]);
             })
         );
     }
 
-    deleteAddresse(adresseId: string): Observable<ResponseDTO> {
+    deleteAddresse(adresseId: string, forOwner: boolean = true): Observable<ResponseDTO> {
         return this.http.delete<ResponseDTO>(`${this.baseUrl}/address?addressId=${adresseId}`).pipe(
             tap((res) => {
+                if (!forOwner) {
+                    return;
+                }
                 if (res.status == 204) {
                     this.addresses.update((oldList) => oldList.filter((x) => x.id != adresseId));
                 }

@@ -14,18 +14,24 @@ export class FormationService {
     private http: HttpClient = inject(HttpClient);
     formations = signal<FormationResponseDTO[]>([]);
 
-    getFormations(userId: string) {
+    // si les formations apparteinnent à l'utilisateur connecté, on les met à jour dans le signal
+    // sinon on ne fait rien, valable pour les autres fonctions aussi
+    getFormations(userId: string, forOwner: boolean = true): Observable<ResponseDTO> {
         return this.http.get<ResponseDTO>(`${this.baseUrl}/formation/all?userId=${userId}`).pipe(
             tap((res) => {
-                this.formations.set(res.data as FormationResponseDTO[]);
-                return res;
+                if (forOwner) {
+                    this.formations.set(res.data as FormationResponseDTO[]);
+                }
             })
         );
     }
 
-    addFormation(formation: FormationCreateDTO): Observable<ResponseDTO> {
+    addFormation(formation: FormationCreateDTO, forOwner: boolean = true): Observable<ResponseDTO> {
         return this.http.post<ResponseDTO>(`${this.baseUrl}/formation`, formation).pipe(
             tap((res) => {
+                if (!forOwner) {
+                    return;
+                }
                 this.formations.update((formations) => {
                     formations.push(res.data as FormationResponseDTO);
                     return formations;
@@ -34,9 +40,12 @@ export class FormationService {
         );
     }
 
-    updateFormation(formation: FormationUpdateDTO): Observable<ResponseDTO> {
+    updateFormation(formation: FormationUpdateDTO, forOwner: boolean = true): Observable<ResponseDTO> {
         return this.http.put<ResponseDTO>(`${this.baseUrl}/formation`, formation).pipe(
             tap((res) => {
+                if (!forOwner) {
+                    return;
+                }
                 this.formations.update((formations) => {
                     const index = formations.findIndex((f) => f.id === formation.id);
                     if (index !== -1) {
@@ -44,14 +53,16 @@ export class FormationService {
                     }
                     return formations;
                 });
-                return res;
             })
         );
     }
 
-    deleteFormation(formationId: string): Observable<ResponseDTO> {
+    deleteFormation(formationId: string, forOwner: boolean = true): Observable<ResponseDTO> {
         return this.http.delete<ResponseDTO>(`${this.baseUrl}/formation?formationId=${formationId}`).pipe(
             tap(() => {
+                if (!forOwner) {
+                    return;
+                }
                 this.formations.update((formations) => formations.filter((formation) => formation.id !== formationId));
             })
         );
