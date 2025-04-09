@@ -4,4 +4,7 @@
     </div>
     <span class="text-surface-900 dark:text-surface-0 leading-normal" [innerHTML]="notification().description"> </span>
     <span class="text-surface-900 dark:text-surface-0 leading-normal">, {{ notification().createdAt | dateIndicator }}</span>
+    <div class="ml-auto flex items-center">
+        <p-button variant="text" severity="danger" (onClick)="updateNotificationState($event)"> <i class="pi pi-circle-fill"></i></p-button>
+    </div>
 </div>
