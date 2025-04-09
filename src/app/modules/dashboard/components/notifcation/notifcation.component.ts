@@ -5,10 +5,11 @@ import { NotifcationTypePipe } from '../../../../shared/pipes/notifcation-type.p
 import { DateIndicatorPipe } from '../../../../shared/pipes/dob-to-age.pipe';
 import { ButtonModule } from 'primeng/button';
 import { NotificationService } from '../../../../shared/services/notification.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-notifcation',
-    imports: [CommonModule, NotifcationTypePipe, DateIndicatorPipe, ButtonModule],
+    imports: [CommonModule, NotifcationTypePipe, DateIndicatorPipe, ButtonModule, TooltipModule],
     templateUrl: './notifcation.component.html',
     styleUrl: './notifcation.component.scss'
 })
@@ -22,6 +23,10 @@ export class NotifcationComponent {
     };
 
     updateNotificationState(event: Event) {
+        event.stopPropagation();
+        this.notificationService.updateNotification(this.notification().id, !this.notification().isRead, this.initialfilter).subscribe();
+    }
+    onClickNotification(event: Event) {
         event.stopPropagation();
         this.notificationService.updateNotification(this.notification().id, !this.notification().isRead, this.initialfilter).subscribe();
     }
