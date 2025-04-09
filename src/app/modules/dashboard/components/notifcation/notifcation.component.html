@@ -1,10 +1,10 @@
-<div class="flex items-center py-2 border-b border-surface">
-    <div class="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-full mr-4 shrink-0">
+<div class="flex items-center py-2 border-b border-surface" [ngClass]="notification().isRead ? 'is-read' : ''">
+    <div class="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-full mr-4 shrink-0 ml-2">
         <i [ngClass]="'!text-xl text-green-500 pi ' + (notification().type | notifcationType)"></i>
     </div>
     <span class="text-surface-900 dark:text-surface-0 leading-normal" [innerHTML]="notification().description"> </span>
     <span class="text-surface-900 dark:text-surface-0 leading-normal">, {{ notification().createdAt | dateIndicator }}</span>
     <div class="ml-auto flex items-center">
-        <p-button variant="text" severity="danger" (onClick)="updateNotificationState($event)"> <i class="pi pi-circle-fill"></i></p-button>
+        <p-button variant="text" severity="danger" (onClick)="updateNotificationState($event)"> {{ notification().isRead ? 'Lue' : 'Pas lue' }}<i *ngIf="notification().isRead" class="pi pi-circle-fill"></i></p-button>
     </div>
 </div>
