@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, OnInit, inject, signal } from '@angular/core';
+import { Injectable, OnInit, computed, inject, signal } from '@angular/core';
 import { ResponseDTO, UserChangePasswordDTO, UserCreateDTO, UserLoginDTO, UserResponseDTO, UserUpdateDTO } from '../models/user';
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { LocalstorageService } from './localstorage.service';
@@ -35,6 +35,8 @@ export class AuthService {
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
     userToDisplay = signal({} as UserResponseDTO);
+
+    isAdmin = computed(() => this.userConnected()?.roles?.includes('Admin'));
 
     // pour la page qui je suis ?
     teacherDetails = signal({} as UserResponseDTO);

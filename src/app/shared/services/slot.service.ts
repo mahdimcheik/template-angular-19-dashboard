@@ -119,21 +119,21 @@ export class SlotService {
     }
 
     // get reservations
-    getReservationsByStudent(query: QueryPanigation): Observable<BookingResponseDTO[]> {
+    getReservationsByStudent(query: QueryPanigation): Observable<ResponseDTO> {
         return this.http.post<ResponseDTO>(`${this.baseUrl}/booking/reservations-student`, query).pipe(
-            map((res) => {
-                var reservations = res.data as BookingResponseDTO[];
-                if (reservations == null || reservations.length == 0) return [];
-                return reservations;
-            }),
             tap((res) => {
-                this.bookings.set(res);
-                console.log('reservations : ', res);
+                this.bookings.set(res?.data);
+                this.totalReservations.set(res.count ?? 0);
             })
         );
     }
 
     getReservationsByTeacher(query: QueryPanigation): Observable<ResponseDTO> {
-        return this.http.post<ResponseDTO>(`${this.baseUrl}/booking/reservations-teacher`, query);
+        return this.http.post<ResponseDTO>(`${this.baseUrl}/booking/reservations-teacher`, query).pipe(
+            tap((res) => {
+                this.bookings.set(res.data as BookingResponseDTO[]);
+                this.totalReservations.set(res.count ?? 0);
+            })
+        );
     }
 }

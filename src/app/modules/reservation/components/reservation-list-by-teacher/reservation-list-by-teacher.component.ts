@@ -7,6 +7,7 @@ import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
     selector: 'app-reservation-list-by-teacher',
@@ -19,8 +20,11 @@ import { PaginatorModule } from 'primeng/paginator';
 export class ReservationListByTeacherComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
     slotService = inject(SlotService);
-    reservations = signal<BookingResponseDTO[]>([] as BookingResponseDTO[]);
+    authService = inject(AuthService);
+
+    reservations = signal([] as BookingResponseDTO[]);
     totalReservations = signal(0);
+
     selectedReservation!: BookingResponseDTO;
     dateNow = computed(() => new Date());
     upComing = input<boolean>();
@@ -43,21 +47,23 @@ export class ReservationListByTeacherComponent implements OnInit {
         } else if (this.upComing() == false) {
             this.query.toDate = new Date();
         }
-        console.log('query ', this.query, this.upComing());
 
-        this.slotService.getReservationsByTeacher(this.query).subscribe((res) => {
-            this.reservations.set(res.data);
-            console.log('reservations ', res.data);
-
-            this.totalReservations.set(res.count ?? 0);
-        });
+        // si admin => get reservations by teacher sinon get reservations by student
+        this.authService.isAdmin()
+            ? this.slotService.getReservationsByTeacher(this.query).subscribe((res) => {
+                  this.reservations.set(res.data);
+                  this.totalReservations.set(res.count ?? 0);
+              })
+            : this.slotService.getReservationsByStudent(this.query).subscribe((res) => {
+                  this.reservations.set(res.data);
+                  this.totalReservations.set(res.count ?? 0);
+              });
     }
 
     async loadReservations($event: any) {
         this.query.start = $event.first;
         this.query.perPage = $event.rows;
 
-        console.log('query ', this.query, $event);
         this.slotService.getReservationsByTeacher(this.query).subscribe((res) => {
             this.reservations.set(res.data);
             this.totalReservations.set(res.count ?? 0);
