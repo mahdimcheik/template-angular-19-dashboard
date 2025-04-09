@@ -8,7 +8,11 @@
     </div>
     <div class="flex flex-col justify-center md:flex-row md:items-center md:justify-between w-full" [ngClass]="'border-t border-surface'">
         <div class="flex flex-col items-center justify-center gap-2 md:flex-row md:p-2 pt-2">
-            <img class="block xl:block mx-auto rounded md:w-40" src="https://cdn.pixabay.com/photo/2025/02/26/09/58/bird-9432600_1280.jpg" />
+            <!-- <img class="block xl:block mx-auto rounded md:w-40" src="https://cdn.pixabay.com/photo/2025/02/26/09/58/bird-9432600_1280.jpg" /> -->
+
+            <p-button variant="text" severity="info">
+                <i class="pi pi-list" style="font-size: 36px"></i>
+            </p-button>
             <div class="w-full p-0 pl-6 md:p-4">
                 <div class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ booking().typeHelp | helpType }}</div>
                 <div class="text-lg font-medium mt-2">Le {{ booking().startAt | date: 'dd MMMM à H:mm' }}</div>
