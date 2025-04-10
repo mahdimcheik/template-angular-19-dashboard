@@ -1,2 +1,2 @@
 <app-order *ngFor="let order of orders()" [order]="order"></app-order>
-<p-paginator></p-paginator>
+<p-paginator [first]="first" [rows]="rows" [totalRecords]="totalRecords()" [rowsPerPageOptions]="[10]" (onPageChange)="loadOrders($event)" #paginator />

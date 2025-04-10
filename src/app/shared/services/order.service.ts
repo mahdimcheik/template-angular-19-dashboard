@@ -4,6 +4,7 @@ import { ResponseDTO } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 import { OrderResponseDTO } from '../models/order';
 import { environment } from '../../../environments/environment.development';
+import { OrderPagination } from '../models/slot';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ import { environment } from '../../../environments/environment.development';
 export class OrderService {
     currentOrder = signal<OrderResponseDTO>({} as OrderResponseDTO);
     paidOrders = signal<OrderResponseDTO[]>([] as OrderResponseDTO[]);
+    ordersCount = signal<number>(0);
 
     http = inject(HttpClient);
     baseUrl = environment.BACK_URL;
@@ -23,11 +25,12 @@ export class OrderService {
         );
     }
 
-    getPaidOrders() {
-        return this.http.post<ResponseDTO>(`${this.baseUrl}/order/student/all`, {}).pipe(
+    getPaidOrders(filter: OrderPagination) {
+        return this.http.post<ResponseDTO>(`${this.baseUrl}/order/student/all`, filter).pipe(
             tap((res) => {
                 this.paidOrders.set(res?.data as OrderResponseDTO[]);
-                console.log('Paid orders', res);
+                this.ordersCount.set(res?.count as number);
+                console.log('Paid Orders', res);
             })
         );
     }

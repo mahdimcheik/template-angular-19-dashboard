@@ -59,6 +59,17 @@ export type QueryPanigation = {
     orderByDate?: number;
 };
 
+export type OrderPagination = {
+    start: number;
+    perPage: number;
+    bookerId?: string;
+    fromDate?: Date;
+    toDate?: Date;
+    status?: number;
+    orderByDate?: number;
+    searchField?: string;
+};
+
 export type BookingResponseDTO = {
     id: string;
     subject: string;
