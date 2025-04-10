@@ -31,4 +31,12 @@ export class OrderService {
             })
         );
     }
+
+    getBill(orderId: string): Observable<ResponseDTO> {
+        return this.http.get<ResponseDTO>(`${this.baseUrl}/bill?orderId=${orderId}`).pipe(
+            tap((res) => {
+                console.log('Bill', res);
+            })
+        );
+    }
 }

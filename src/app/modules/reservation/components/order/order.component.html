@@ -3,10 +3,9 @@
         <p-accordion-header>
             <ng-template #toggleicon let-active="active">
                 @if (active) {
-                    <!-- <span>{{ order()?.bookings?.length }}</span> -->
-                    <i class="pi pi-minus"></i>
+                    <span> <i class="pi pi-minus"></i></span>
                 } @else {
-                    <i class="pi pi-plus"></i>
+                    <span> <i class="pi pi-plus"></i></span>
                 }
             </ng-template>
             <div class="flex gap-4 md:gap-8 items-center bg-color-surface-100 dark:bg-color-surface-100 p-4 rounded-lg">
@@ -30,7 +29,10 @@
                         <span>Prix : {{ booking.discountedPrice }} €</span>
                         <span *ngIf="booking.price !== booking.discountedPrice">prix sans réduction : {{ booking.price }}</span>
                     </div>
-                    <!-- <app-reservation-line-by-teacher *ngFor="let booking of order()?.bookings" [reservation]="booking"></app-reservation-line-by-teacher> -->
+
+                    <div class="card">
+                        <p-button icon="pi pi-save" label="Télécharger"></p-button>
+                    </div>
                 }
             </div>
         </p-accordion-content>
