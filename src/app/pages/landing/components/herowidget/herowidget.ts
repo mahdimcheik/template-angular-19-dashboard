@@ -16,7 +16,7 @@ export class HeroWidget {
     router = inject(Router);
     book() {
         if (this.authService.userConnected().email) {
-            this.router.navigateByUrl('/reservation/calendar-for-student');
+            this.router.navigateByUrl('/dashboard/reservation/calendar-for-student');
         } else {
             this.router.navigateByUrl('/auth/login');
         }

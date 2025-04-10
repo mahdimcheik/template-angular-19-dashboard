@@ -9,12 +9,11 @@ import { CommonModule } from '@angular/common';
 import { OrderCurrentComponent } from '../../components/order-current/order-current.component';
 import { IconFieldModule } from 'primeng/iconfield';
 import { ToolbarModule } from 'primeng/toolbar';
-import { OrderComponent } from '../../components/order/order.component';
 import { OrdersHistoryComponent } from '../../components/orders-history/orders-history.component';
 
 @Component({
     selector: 'app-orders',
-    imports: [ButtonModule, ToolbarModule, IconFieldModule, InputNumberModule, InputIconModule, InputTextModule, FullCalendarModule, CommonModule, OrderCurrentComponent, OrderComponent, OrdersHistoryComponent],
+    imports: [ButtonModule, ToolbarModule, IconFieldModule, InputNumberModule, InputIconModule, InputTextModule, FullCalendarModule, CommonModule, OrderCurrentComponent, OrdersHistoryComponent],
 
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.scss'

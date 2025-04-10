@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { OrderResponseDTO } from '../../../../shared/models/order';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { OrderService } from '../../../../shared/services/order.service';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
     selector: 'app-orders-history',
-    imports: [OrderComponent, CommonModule],
+    imports: [OrderComponent, CommonModule, PaginatorModule],
     templateUrl: './orders-history.component.html',
     styleUrl: './orders-history.component.scss'
 })
