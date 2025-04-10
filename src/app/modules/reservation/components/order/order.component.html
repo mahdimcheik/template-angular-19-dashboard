@@ -1,0 +1,38 @@
+<p-accordion>
+    <p-accordion-panel value="0" header="Mes commandes">
+        <p-accordion-header>
+            <ng-template #toggleicon let-active="active">
+                @if (active) {
+                    <!-- <span>{{ order()?.bookings?.length }}</span> -->
+                    <i class="pi pi-minus"></i>
+                } @else {
+                    <i class="pi pi-plus"></i>
+                }
+            </ng-template>
+            <div class="flex gap-4 md:gap-8 items-center bg-color-surface-100 dark:bg-color-surface-100 p-4 rounded-lg">
+                <div class="flex flex-row gap-2 items-center">
+                    <i class="pi pi-calendar"></i>
+                    Passée le <span>{{ order()?.paymentDate | date: 'dd MMMM yyyy' }}</span>
+                </div>
+
+                <span>Numéro : {{ order()?.orderNumber }}</span>
+                <span>{{ order()?.bookings?.length }} articles</span>
+            </div>
+        </p-accordion-header>
+        <p-accordion-content>
+            <div>
+                @if (order()?.bookings?.length === 0) {
+                    <div class="card w-full">Aucune réservation en cours</div>
+                } @else {
+                    <div *ngFor="let booking of order()?.bookings" class="flex flex-row gap-2 p-4 border-b-2 border-color-primary-100 dark:border-color-primary-100">
+                        <span>Le {{ booking.startAt | date: 'dd MMMM à mm:HH' }}</span>
+                        <span>Sujet : {{ booking.subject }}</span>
+                        <span>Prix : {{ booking.discountedPrice }} €</span>
+                        <span *ngIf="booking.price !== booking.discountedPrice">prix sans réduction : {{ booking.price }}</span>
+                    </div>
+                    <!-- <app-reservation-line-by-teacher *ngFor="let booking of order()?.bookings" [reservation]="booking"></app-reservation-line-by-teacher> -->
+                }
+            </div>
+        </p-accordion-content>
+    </p-accordion-panel>
+</p-accordion>
