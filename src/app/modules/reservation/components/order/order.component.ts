@@ -19,7 +19,9 @@ export class OrderComponent {
     order = input<OrderResponseDTO>();
 
     getBill() {
-        if (this.order()?.id !== null && this.order()?.id !== undefined) {
+        console.log('Get Bill');
+
+        if (this.order() && this.order()?.id && this.order()?.id !== '') {
             this.orderService.getBill(this.order()?.id ?? '').subscribe((res) => {
                 console.log('Bill', res);
             });
