@@ -2,21 +2,26 @@
 
 import { inject } from '@angular/core';
 import { HttpInterceptorFn } from '@angular/common/http';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { catchError, finalize, switchMap, throwError } from 'rxjs';
 import { of } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../services/auth.service';
 import { LocalstorageService } from '../services/localstorage.service';
 
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
-    const messageService = inject(MessageService);
+    let isRefreshing = false;
     const authService = inject(AuthService);
-    const localStorageService = inject(LocalstorageService);
+
+    // Ne pas intercepter les appels vers le refresh token
+    if (req.url.includes('/refresh-token')) {
+        return next(req);
+    }
 
     return next(req).pipe(
         catchError((err: any) => {
             // cas où le rejet est dû à un token expiré
-            if (err.status === 401) {
+            if (err.status === 401 && !isRefreshing) {
+                isRefreshing = true;
                 return authService.refreshToken().pipe(
                     catchError((refreshErr) => {
                         return throwError(() => refreshErr);
@@ -24,17 +29,13 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
                     switchMap((newTokens) => {
                         const clonedRequest = req.clone({
                             setHeaders: {
-                                Authorization: `Bearer ${newTokens.data.accessToken}`
+                                Authorization: `Bearer ${authService.token()}`
                             }
                         });
-
                         // relancer l'ancienne requette avec le nouveau token
                         return next(clonedRequest);
                     }),
-                    // si le refresh token a échoué
-                    catchError((refreshErr) => {
-                        return throwError(() => refreshErr);
-                    })
+                    finalize(() => (isRefreshing = false))
                 );
             }
 

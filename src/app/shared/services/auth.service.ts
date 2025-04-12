@@ -71,56 +71,25 @@ export class AuthService {
                 this.localStorageService.setRefreshToken(this.refreshAccessToken() ?? '');
 
                 this.SseService.subscribeSSE(this.userConnected().email, this.token());
-
-                // this.messageService.add({
-                //     severity: 'success',
-                //     summary: 'Bienvenu ! ',
-                //     detail: res.message ?? 'Youpi!!!'
-                // });
-                /* // sse to delete or not ?
-                const eventSource = new EventSource(`${environment.BACK_URL}/sse/${this.userConnected().id}`);
-
-                eventSource.onmessage = (event) => {
-                    console.log('event', event);
-                    this.userConnected.set(JSON.parse(event.data));
-                };
-                */
-
-                // if (this.userConnected().roles.includes('Admin')) {
-                //     this.router.navigateByUrl('/');
-                // } else {
-                //     this.router.navigateByUrl('/');
-                // }
             })
         );
     }
 
     refreshToken() {
         // Call your backend refresh token endpoint
-        return this.http
-            .post<ResponseDTO>(`${environment.BACK_URL}/Users/refresh-token`, {
-                refreshToken: this.localStorageService.getRefreshToken(),
-                token: this.localStorageService.getToken()
+        return this.http.get<ResponseDTO>(`${environment.BACK_URL}/Users/refresh-token`).pipe(
+            tap((res) => {
+                console.log('response refresh token', res);
+
+                this.token.set(res.data.token);
+                console.log('new token from interceptor', this.token());
+            }),
+            catchError((err) => {
+                // Handle refresh token errors
+                this.reset();
+                throw err;
             })
-            .pipe(
-                tap((tokens) => {
-                    console.log('response refresh token', tokens);
-
-                    // Update tokens in localStorage
-                    this.localStorageService.setToken(tokens.data.accessToken);
-                    // this.localStorageService.setRefreshToken(tokens.data.refreshToken);
-
-                    // Update the access token in memory
-                    // this.refreshAccessToken.set(tokens.data.refreshToken);
-                    this.token.set(tokens.data.accessToken);
-                    console.log('new token from interceptor', this.token());
-                }),
-                catchError((err) => {
-                    // Handle refresh token errors
-                    this.reset();
-                    throw err;
-                })
-            );
+        );
     }
 
     logout(): void {
