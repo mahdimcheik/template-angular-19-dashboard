@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './app/layout/component/app.layout';
-import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 import { SettingsComponent } from './app/pages/settings/settings.component';
@@ -21,7 +20,6 @@ export const appRoutes: Routes = [
         canActivate: [isConnectedGuard],
         children: [
             { path: '', component: Dashboard },
-            { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
             { path: 'settings', component: SettingsComponent },
             {
