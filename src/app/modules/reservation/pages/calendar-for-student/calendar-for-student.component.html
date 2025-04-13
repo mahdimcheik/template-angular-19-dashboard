@@ -15,13 +15,6 @@
         <ng-template #eventContent let-arg class="custom-event">
             <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available']">
                 <ng-container *ngIf="arg.event.extendedProps?.slot?.studentId; else availableSlot">
-                    <!-- <div class="slot-content">
-                    <img [src]="arg.event.extendedProps.slot.studentImgUrl" width="24" height="24" />
-                    <span class="student-name">
-                        {{ arg.event.extendedProps?.slot?.studentFirstName }}
-                        {{ arg.event.extendedProps?.slot?.studentLastName }}
-                    </span>
-                </div> -->
                     <div class="event-type">
                         <span>Type : </span>
                         <span>{{ arg.event.extendedProps?.slot?.typeHelp | helpType }}</span>
