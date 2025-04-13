@@ -66,9 +66,6 @@ export class AuthService {
                         }
                     ).refreshToken
                 );
-                this.localStorageService.setUser(this.userConnected());
-                this.localStorageService.setToken(this.token());
-                this.localStorageService.setRefreshToken(this.refreshAccessToken() ?? '');
 
                 this.SseService.subscribeSSE(this.userConnected().email, this.token());
             })
@@ -76,7 +73,6 @@ export class AuthService {
     }
 
     refreshToken() {
-        // Call your backend refresh token endpoint
         return this.http.get<ResponseDTO>(`${environment.BACK_URL}/Users/refresh-token`).pipe(
             tap((res) => {
                 console.log('response refresh token', res);
@@ -98,8 +94,8 @@ export class AuthService {
     }
 
     getprofile(): Observable<ResponseDTO> {
-        this.userConnected.set(this.localStorageService.getUser());
-        this.token.set(this.localStorageService.getToken());
+        // this.userConnected.set(this.localStorageService.getUser());
+        // this.token.set(this.localStorageService.getToken());
 
         return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/my-informations`).pipe(
             tap((res) => {

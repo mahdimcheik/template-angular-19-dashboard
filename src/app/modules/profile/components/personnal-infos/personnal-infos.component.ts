@@ -23,7 +23,7 @@ export class PersonnalInfosComponent {
 
     authService = inject(AuthService);
 
-    fullName = computed(() => `${this.userToDisplay()?.firstName} ${this.userToDisplay()?.lastName}`);
+    fullName = computed(() => `${this.userToDisplay().email ? this.userToDisplay()?.firstName + ' ' + this.userToDisplay()?.lastName : ''}`);
 
     open() {
         this.isVisibleModalEditPerso.set(true);

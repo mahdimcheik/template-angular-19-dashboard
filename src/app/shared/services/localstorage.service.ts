@@ -20,18 +20,18 @@ export class LocalstorageService {
     getUser(): UserResponseDTO {
         return JSON.parse(localStorage.getItem('user') || '{}') as UserResponseDTO;
     }
-    setToken(token: string) {
-        localStorage.setItem('token', token);
-    }
-    getToken(): string {
-        return localStorage.getItem('token') || '';
-    }
-    getRefreshToken(): string {
-        return localStorage.getItem('refreshToken') || '';
-    }
-    setRefreshToken(token: string) {
-        localStorage.setItem('refreshToken', token);
-    }
+    // setToken(token: string) {
+    //     localStorage.setItem('token', token);
+    // }
+    // getToken(): string {
+    //     return localStorage.getItem('token') || '';
+    // }
+    // getRefreshToken(): string {
+    //     return localStorage.getItem('refreshToken') || '';
+    // }
+    // setRefreshToken(token: string) {
+    //     localStorage.setItem('refreshToken', token);
+    // }
     getLayoutConfig(): layoutConfig {
         return JSON.parse(localStorage.getItem('layoutConfig') || '{}');
     }
