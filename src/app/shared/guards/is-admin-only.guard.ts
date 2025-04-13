@@ -5,17 +5,21 @@ import { firstValueFrom } from 'rxjs';
 
 export const isAdminOnlyGuard: CanActivateFn = async (route, state) => {
     var auth = inject(AuthService);
-    if (!!auth.userConnected().email && auth.userConnected().roles.includes('Admin')) {
-        return true;
-    }
-    const refreshToken = getCookie('refreshToken');
-    if (!refreshToken) {
-        return false;
+    if (auth.userConnected().email) {
+        if (auth.userConnected().roles.includes('Admin')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // If the user is not connected, try to refresh the token
+    // const refreshToken = getCookie('refreshToken');
+    // if (!refreshToken) {
+    //     return false;
+    // }
+
     await firstValueFrom(auth.refreshToken());
-    if (auth.userConnected().roles.includes('Admin')) {
+    if (auth.userConnected().email && auth.userConnected().roles.includes('Admin')) {
         return true;
     }
     return false;
@@ -23,28 +27,31 @@ export const isAdminOnlyGuard: CanActivateFn = async (route, state) => {
 
 export const isStudentOnlyGuard: CanActivateFn = async (route, state) => {
     var auth = inject(AuthService);
-    if (!!auth.userConnected().email && auth.userConnected().roles.includes('Student')) {
-        return true;
+    if (auth.userConnected().email) {
+        if (auth.userConnected().roles.includes('Student')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    const refreshToken = getCookie('refreshToken');
-    if (!refreshToken) {
-        return false;
-    }
+    // const refreshToken = getCookie('refreshToken');
+    // if (!refreshToken) {
+    //     return false;
+    // }
 
-    // If the user is not connected, try to refresh the token
     await firstValueFrom(auth.refreshToken());
-    if (auth.userConnected().roles.includes('Student')) {
+    if (auth.userConnected().email && auth.userConnected().roles.includes('Student')) {
         return true;
     }
     return false;
 };
 
-function getCookie(name: string): string | null {
-    const value = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith(name + '='))
-        ?.split('=')[1];
+// function getCookie(name: string): string | null {
+//     const value = document.cookie
+//         .split('; ')
+//         .find((row) => row.startsWith(name + '='))
+//         ?.split('=')[1];
 
-    return value ? decodeURIComponent(value) : null;
-}
+//     return value ? decodeURIComponent(value) : null;
+// }
