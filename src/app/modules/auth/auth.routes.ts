@@ -6,7 +6,7 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
 import { AccountConfirmationComponent } from './pages/account-confirmation/account-confirmation.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { AccountCreatedSuccessfullyComponent } from './pages/account-created-successfully/account-created-successfully.component';
-import { canNotLoginGuard } from '../../shared/guards/can-login.guard';
+import { canNotLoginGuard, isNotConnectedGuard } from '../../shared/guards/can-login.guard';
 
 export default [
     {
@@ -16,7 +16,7 @@ export default [
             {
                 path: 'login',
                 component: LoginComponent,
-                canActivate: [canNotLoginGuard]
+                canActivate: [isNotConnectedGuard]
             },
             {
                 path: 'forgot-password',

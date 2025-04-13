@@ -13,11 +13,15 @@ export const isAdminOnlyGuard: CanActivateFn = async (route, state) => {
         }
     }
 
-    await firstValueFrom(auth.refreshToken());
-    if (auth.userConnected().email && auth.userConnected().roles.includes('Admin')) {
-        return true;
+    try {
+        await firstValueFrom(auth.refreshToken());
+        if (auth.userConnected().email && auth.userConnected().roles.includes('Admin')) {
+            return true;
+        }
+        return false;
+    } catch {
+        return false;
     }
-    return false;
 };
 
 export const isStudentOnlyGuard: CanActivateFn = async (route, state) => {
@@ -30,23 +34,13 @@ export const isStudentOnlyGuard: CanActivateFn = async (route, state) => {
         }
     }
 
-    // const refreshToken = getCookie('refreshToken');
-    // if (!refreshToken) {
-    //     return false;
-    // }
-
-    await firstValueFrom(auth.refreshToken());
-    if (auth.userConnected().email && auth.userConnected().roles.includes('Student')) {
-        return true;
+    try {
+        await firstValueFrom(auth.refreshToken());
+        if (auth.userConnected().email && auth.userConnected().roles.includes('Student')) {
+            return true;
+        }
+        return false;
+    } catch {
+        return false;
     }
-    return false;
 };
-
-// function getCookie(name: string): string | null {
-//     const value = document.cookie
-//         .split('; ')
-//         .find((row) => row.startsWith(name + '='))
-//         ?.split('=')[1];
-
-//     return value ? decodeURIComponent(value) : null;
-// }
