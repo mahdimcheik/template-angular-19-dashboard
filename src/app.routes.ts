@@ -7,6 +7,7 @@ import { PaymentSuccessComponent } from './app/modules/reservation/components/pa
 import { StudentListComponent } from './app/modules/students/student-list/student-list.component';
 import { isConnectedGuard } from './app/shared/guards/can-login.guard';
 import { Dashboard } from './app/modules/dashboard/dashboard';
+import { isAdminOnlyGuard } from './app/shared/guards/is-admin-only.guard';
 
 export const appRoutes: Routes = [
     {
@@ -36,7 +37,8 @@ export const appRoutes: Routes = [
             },
             {
                 path: 'students-list',
-                component: StudentListComponent
+                component: StudentListComponent,
+                canActivate: [isAdminOnlyGuard]
             }
         ]
     },
@@ -46,7 +48,5 @@ export const appRoutes: Routes = [
     },
 
     { path: 'notfound', component: Notfound },
-    { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
-
     { path: '**', redirectTo: '/notfound' }
 ];
