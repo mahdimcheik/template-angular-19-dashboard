@@ -47,4 +47,8 @@ export class StudentListComponent {
     showProfil(id: string) {
         this.router.navigateByUrl(`dashboard/profile/user/${id}`);
     }
+
+    contact(item: string) {
+        window.location.href = `mailto:${item}?subject=Demande%20d%27information&body=Bonjour%2C%0AJe%20souhaite%20avoir%20plus%20d%27infos...`;
+    }
 }
