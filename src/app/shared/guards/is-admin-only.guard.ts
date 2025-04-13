@@ -13,11 +13,6 @@ export const isAdminOnlyGuard: CanActivateFn = async (route, state) => {
         }
     }
 
-    // const refreshToken = getCookie('refreshToken');
-    // if (!refreshToken) {
-    //     return false;
-    // }
-
     await firstValueFrom(auth.refreshToken());
     if (auth.userConnected().email && auth.userConnected().roles.includes('Admin')) {
         return true;

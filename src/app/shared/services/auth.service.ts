@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit, computed, inject, signal } from '@angular/core';
 import { ResponseDTO, UserChangePasswordDTO, UserCreateDTO, UserLoginDTO, UserResponseDTO, UserUpdateDTO } from '../models/user';
-import { catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
 import { LocalstorageService } from './localstorage.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -60,17 +60,23 @@ export class AuthService {
             tap((res) => {
                 this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
                 this.token.set((res.data as { token: string; user: UserResponseDTO }).token);
-                this.refreshAccessToken.set(
-                    (
-                        res.data as {
-                            refreshToken: string;
-                            user: UserResponseDTO;
-                            token: string;
-                        }
-                    ).refreshToken
+                this.model.set(
+                    this.isAdmin()
+                        ? [
+                              { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                              { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
+                              { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
+                              { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
+                          ]
+                        : [
+                              { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/student'] },
+                              { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
+                              { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
+                              { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] }
+                          ]
                 );
-
-                this.SseService.subscribeSSE(this.userConnected().email, this.token());
             })
         );
     }
@@ -95,7 +101,7 @@ export class AuthService {
                           ]
                         : [
                               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/student'] },
                               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
                               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
                               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] }
@@ -106,8 +112,15 @@ export class AuthService {
     }
 
     logout(): void {
-        this.reset();
-        this.router.navigateByUrl('/');
+        this.http
+            .get(`${environment.BACK_URL}/users/logout`)
+            .pipe(
+                finalize(() => {
+                    this.reset();
+                    this.router.navigateByUrl('/');
+                })
+            )
+            .subscribe();
     }
 
     getprofile(): Observable<ResponseDTO> {
@@ -126,7 +139,7 @@ export class AuthService {
                           ]
                         : [
                               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/student'] },
                               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
                               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
                               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] }
