@@ -71,7 +71,7 @@ export class AuthService {
                           ]
                         : [
                               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/student'] },
+                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
                               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
                               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
                               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] }
@@ -101,7 +101,7 @@ export class AuthService {
                           ]
                         : [
                               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/student'] },
+                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
                               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
                               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
                               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] }
@@ -139,7 +139,7 @@ export class AuthService {
                           ]
                         : [
                               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/student'] },
+                              { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
                               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
                               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
                               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] }

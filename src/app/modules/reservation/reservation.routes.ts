@@ -4,7 +4,6 @@ import { CalendarForStudentComponent } from './pages/calendar-for-student/calend
 import { ReservationsTeacherComponent } from './pages/reservations-teacher/reservations-teacher.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { isAdminOnlyGuard, isStudentOnlyGuard } from '../../shared/guards/is-admin-only.guard';
-import { isConnectedGuard } from '../../shared/guards/can-login.guard';
 export default [
     {
         path: 'calendar-for-teacher',
@@ -22,6 +21,7 @@ export default [
     },
     {
         path: 'orders-student',
-        component: OrdersComponent
+        component: OrdersComponent,
+        canActivate: [isStudentOnlyGuard]
     }
 ] as Routes;
