@@ -15,6 +15,7 @@ export type SlotResponseDTO = {
     typeHelp?: number;
     subject?: string;
     description?: string;
+    status?: number;
 };
 
 export type SlotCreateDTO = {
