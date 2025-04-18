@@ -42,13 +42,15 @@ declare type SurfacesType = {
     standalone: true,
     imports: [CommonModule, FormsModule, SelectButtonModule],
     template: `
-        <div class="flex flex-col gap-2 mt-4">
-            <div *ngIf="showMenuModeButton()" class="flex flex-col gap-2 mt-4">
+        <div class="flex flex-col gap-2">
+            <div *ngIf="showMenuModeButton()" class="flex flex-col gap-2 border-2 border-indigo-200 rounded-lg pl-2 ">
                 <span class="text-lg text-muted-color font-bold">Position du menu latéral</span>
                 <p-selectbutton [ngModel]="menuMode()" (ngModelChange)="onMenuModeChange($event)" [options]="menuModeOptions" [allowEmpty]="false" size="small" />
             </div>
-            <div class="flex flex-col gap-4 w-full">
-                <div>
+            <div class="flex flex-col gap-4 w-full border-2 border-indigo-200 rounded-lg pl-2 pb-2">
+                <span class="text-lg text-muted-color font-bold">Palette de couleur</span>
+
+                <div class="pl-4">
                     <span class="text-lg text-muted-color font-bold">Couleur primaire</span>
                     <div class="pt-2 flex gap-2 flex-wrap justify-start">
                         @for (primaryColor of primaryColors(); track primaryColor.name) {
@@ -65,7 +67,7 @@ declare type SurfacesType = {
                         }
                     </div>
                 </div>
-                <div>
+                <div class="pl-4">
                     <span class="text-lg text-muted-color font-bold">Couleur des surfaces</span>
                     <div class="pt-2 flex gap-2 flex-wrap justify-start">
                         @for (surface of surfaces; track surface.name) {
@@ -82,17 +84,14 @@ declare type SurfacesType = {
                         }
                     </div>
                 </div>
-                <div class="flex flex-col gap-2">
-                    <span class="text-lg text-muted-color font-bold">Modèles prêts à l'usage</span>
-                    <p-selectbutton [options]="presets" [ngModel]="selectedPreset()" (ngModelChange)="onPresetChange($event)" [allowEmpty]="false" size="small" />
-                </div>
+            </div>
+            <div class="flex flex-col border-2 border-indigo-200 rounded-lg pl-2">
+                <span class="text-lg text-muted-color font-bold">Modèles prêts à l'usage</span>
+                <p-selectbutton [options]="presets" [ngModel]="selectedPreset()" (ngModelChange)="onPresetChange($event)" [allowEmpty]="false" size="small" />
             </div>
         </div>
     `
 })
-// host: {
-//     class: 'hidden absolute top-[3.25rem] right-0 w-72 p-4 bg-surface-0 dark:bg-surface-900 border border-surface rounded-border origin-top shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]'
-// }
 export class AppConfigurator {
     router = inject(Router);
 
