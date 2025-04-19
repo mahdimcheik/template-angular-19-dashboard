@@ -18,19 +18,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- cas où le créneau est réservé -->
                     <div *ngIf="slotDetailed()?.['studentId']" class="flex flex-col gap-2">
                         <div class="flex flex-col flex-wrap w-full">
-                            <!-- <h3 class="font-bold text-xxl">Détails de réservation</h3> -->
-
-                            <!-- <div class="m-2 flex flex-col gap-2">
-                                <div class="font-semibold text-xl">Sujet : {{ slotDetailed().typeHelp ?? 0 | helpType }}</div>
-                                <p-message class="text mb-2">{{ slotDetailed().subject }}</p-message>
-                                <p-message severity="success" styleClass="min-h-[100px]">{{ slotDetailed().description == '' || slotDetailed().description == null ? 'Sans description' : slotDetailed().description }}</p-message>
-                            </div> -->
                             <div class="flex flex-col gap-2">
                                 <div class="font-semibold text-xl">Sujet : {{ appointment().extendedProps?.['slot']?.['typeHelp'] ?? 0 | helpType }}</div>
-                                <!-- <p class="font-semibold text-l border rounded-md p-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p> -->
                                 <p-message class="text mb-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p-message>
                             </div>
 

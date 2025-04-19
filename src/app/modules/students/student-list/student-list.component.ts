@@ -35,7 +35,6 @@ export class StudentListComponent implements OnInit {
 
     // pagination
     count = 0;
-
     first = 0;
     rows = 10;
     paginatorRef = viewChild<Paginator>('paginator');
