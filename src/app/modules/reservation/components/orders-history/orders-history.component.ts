@@ -1,15 +1,21 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { OrderComponent } from '../order/order.component';
 import { CommonModule } from '@angular/common';
-import { OrderResponseDTO } from '../../../../shared/models/order';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { OrderService } from '../../../../shared/services/order.service';
-import { PaginatorModule } from 'primeng/paginator';
+import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { OrderPagination } from '../../../../shared/models/slot';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
+import { InputIconModule } from 'primeng/inputicon';
+import { FormsModule } from '@angular/forms';
+import { IconField } from 'primeng/iconfield';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-orders-history',
-    imports: [OrderComponent, CommonModule, PaginatorModule],
+    imports: [OrderComponent, CommonModule, PaginatorModule, ToolbarModule, ButtonModule, InputIconModule, FormsModule, IconField, InputTextModule],
     templateUrl: './orders-history.component.html',
     styleUrl: './orders-history.component.scss'
 })
@@ -17,11 +23,11 @@ export class OrdersHistoryComponent implements OnInit {
     authService = inject(AuthService);
     orderService = inject(OrderService);
 
-    paidOrders = this.orderService.paidOrders;
-    totalRecords = this.orderService.ordersCount;
-
+    //pagination
     first = 0; // premier element
     rows = 10; // reservations par page
+    count = 0; // nombre total de reservations
+    paginatorRef = viewChild<Paginator>('paginator');
 
     currentUser = this.authService.userConnected;
     orders = this.orderService.paidOrders;
@@ -33,8 +39,27 @@ export class OrdersHistoryComponent implements OnInit {
         orderByDate: 1
     };
 
+    // input word
+    searchWord = '';
+    searchSubject$ = new Subject<string>();
+
     ngOnInit(): void {
-        this.orderService.getPaidOrders(this.filter).subscribe();
+        this.searchSubject$.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => {
+            this.filter.searchField = res;
+            this.filter.start = 0;
+            this.filter.perPage = this.rows;
+
+            this.orderService.getPaidOrders(this.filter).subscribe((res) => {
+                this.count = res.count ?? 0;
+                this.orders.set(res.data);
+                if (this.paginatorRef()) {
+                    this.paginatorRef()?.updateFirst();
+                }
+            });
+        });
+        this.orderService.getPaidOrders(this.filter).subscribe((res) => {
+            this.count = res.count ?? 0;
+        });
     }
 
     loadOrders(event: any) {
@@ -45,5 +70,9 @@ export class OrdersHistoryComponent implements OnInit {
         this.filter.perPage = this.rows;
 
         this.orderService.getPaidOrders(this.filter).subscribe();
+    }
+
+    searchOrder() {
+        this.searchSubject$.next(this.searchWord);
     }
 }

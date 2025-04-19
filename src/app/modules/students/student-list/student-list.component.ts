@@ -54,12 +54,10 @@ export class StudentListComponent implements OnInit {
         });
         this.searchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe((search) => {
             this.adminService.getAllStudents(this.first, this.rows, this.searchWord).subscribe((res) => {
-                console.log(res);
                 this.count = res.count ?? 0;
 
                 this.students.set(res.data);
                 if (this.paginatorRef()) {
-                    // this.paginatorRef()?.changePage(0);
                     this.paginatorRef()?.updateFirst();
                 }
             });
