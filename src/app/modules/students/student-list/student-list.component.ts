@@ -11,10 +11,11 @@ import { AdminService } from '../../../shared/services/admin.service';
 import { PaginatorModule } from 'primeng/paginator';
 import { UserResponseDTO } from '../../../shared/models/user';
 import { Router } from '@angular/router';
+import { ModalEditUserByAdminComponent } from '../components/modal-edit-user-by-admin/modal-edit-user-by-admin.component';
 
 @Component({
     selector: 'app-student-list',
-    imports: [CommonModule, DataViewModule, FormsModule, SelectButtonModule, PickListModule, OrderListModule, TagModule, ButtonModule, PaginatorModule],
+    imports: [CommonModule, DataViewModule, FormsModule, SelectButtonModule, PickListModule, OrderListModule, TagModule, ButtonModule, PaginatorModule, ModalEditUserByAdminComponent],
 
     templateUrl: './student-list.component.html',
     styleUrl: './student-list.component.scss'
@@ -27,10 +28,15 @@ export class StudentListComponent {
     router = inject(Router);
     adminService = inject(AdminService);
     students = signal<UserResponseDTO[]>([]);
+
     count = 0;
 
     first = 0;
     rows = 10;
+
+    // region modal edit user by admin
+    student!: UserResponseDTO;
+    showModal = signal<boolean>(false);
 
     ngOnInit() {
         this.adminService.getAllStudents(this.first, this.rows).subscribe((res) => {
@@ -48,7 +54,11 @@ export class StudentListComponent {
         this.router.navigateByUrl(`dashboard/profile/user/${id}`);
     }
 
-    contact(item: string) {
-        window.location.href = `mailto:${item}?subject=Demande%20d%27information&body=Bonjour%2C%0AJe%20souhaite%20avoir%20plus%20d%27infos...`;
+    showMore(item: string) {
+        const user = this.students().find((u) => u.id === item);
+        if (user) {
+            this.student = user;
+            this.showModal.set(true);
+        }
     }
 }

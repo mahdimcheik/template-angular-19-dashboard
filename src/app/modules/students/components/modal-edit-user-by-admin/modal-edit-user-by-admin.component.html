@@ -1,0 +1,22 @@
+<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" header="Plus d'action" [modal]="true">
+    <ng-template #content>
+        <p-fluid>
+            <div class="flex flex-col justify-between items-start gap-2 mb-4">
+                <div class="w-full flex flex-col sm:flex-row justify-between items-start gap-2">
+                    <img class="block xl:block mx-auto rounded w-full" [src]="user()?.imgUrl" [style]="{ width: '100px', height: '100px' }" />
+                    <div class="flex flex-col gap-2" [style]="{ left: '4px', top: '4px' }">
+                        <input pInputText type="text" [value]="user()?.firstName + ' ' + user()?.lastName" class="w-full" disabled />
+                        <input pInputText type="text" [value]="(user()?.dateOfBirth ?? '' | dobToAge) + ' ans'" class="w-full" disabled />
+                    </div>
+                </div>
+                <p-message *ngIf="isBanned()" severity="warn" [ngStyle]="{ width: '100%' }">{{ isBanned() }} {{ user().bannedUntilDate | date: 'dd MMMM yyyy' }}</p-message>
+            </div>
+        </p-fluid>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="flex flex-row justify-between items-center gap-2">
+            <p-button icon="pi pi-times" [label]="user().isBanned ? 'Autoriser' : 'Bannir'" severity="warn" outlined="true"></p-button>
+            <p-button icon="pi pi-user" label="Profil"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>
