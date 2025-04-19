@@ -71,3 +71,9 @@ export type ResponseDTO = {
     data?: any;
     count?: number;
 };
+
+export type UserBanDTO = {
+    userId: string;
+    isBanned?: boolean;
+    bannedUntilDate?: Date;
+};

@@ -49,6 +49,13 @@ export class StudentListComponent {
             this.students.set(res.data);
         });
     }
+    onUpdate(e: UserResponseDTO) {
+        const index = this.students().findIndex((u) => u.id === e.id);
+        if (index !== -1) {
+            this.students()[index] = e;
+            this.students.update(() => [...this.students()]);
+        }
+    }
 
     showProfil(id: string) {
         this.router.navigateByUrl(`dashboard/profile/user/${id}`);
