@@ -55,6 +55,10 @@ export class AuthService {
         return this.http.post<ResponseRegister>(`${environment.BACK_URL}/Users/register`, userDTO);
     }
 
+    resendConfirmationLink(): Observable<ResponseDTO> {
+        return this.http.get<ResponseDTO>(`${environment.BACK_URL}/Users/resend-confirmation-link`).pipe(tap((res) => this.messageService.add({ severity: 'success', summary: 'Succès', detail: res.message })));
+    }
+
     login(userLoginDTO: UserLoginDTO): Observable<ResponseDTO> {
         return this.http.post<ResponseDTO>(`${environment.BACK_URL}/Users/login`, userLoginDTO).pipe(
             tap((res) => {

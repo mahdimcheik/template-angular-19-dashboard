@@ -28,4 +28,7 @@ export class PersonnalInfosComponent {
     open() {
         this.isVisibleModalEditPerso.set(true);
     }
+    resendConfirmationLink() {
+        this.authService.resendConfirmationLink().subscribe();
+    }
 }
