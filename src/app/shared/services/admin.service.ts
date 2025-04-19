@@ -11,8 +11,8 @@ export class AdminService {
     http = inject(HttpClient);
     baseUrl = environment.BACK_URL;
 
-    getAllStudents(start: number, perPage: number) {
-        return this.http.post<ResponseDTO>(this.baseUrl + '/admin/all-students', { start, perPage }).pipe(
+    getAllStudents(start: number, perPage: number, searchWord?: string) {
+        return this.http.post<ResponseDTO>(this.baseUrl + '/admin/all-students', { start, perPage, searchWord }).pipe(
             catchError((err) => {
                 console.error(err);
                 return throwError(() => err);

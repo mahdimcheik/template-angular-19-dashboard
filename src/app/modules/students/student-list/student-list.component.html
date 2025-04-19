@@ -1,9 +1,11 @@
 <div class="flex flex-col">
-    <div class="card">
+    <div class="">
         <div class="text-xl font-bold">Mes élèves</div>
         <p-dataview [layout]="layout" [value]="students()">
             <ng-template #header>
-                <div class="flex justify-end">
+                <div class="flex justify-between items-center mb-4">
+                    <input type="text" pInputText placeholder="Rechercher un élève" class="w-[200px]" [(ngModel)]="searchWord" (ngModelChange)="searchStudent()" />
+
                     <p-select-button [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
                         <ng-template #item let-option>
                             <i class="pi" [ngClass]="{ 'pi-bars': option === 'list', 'pi-table': option === 'grid' }"></i>
@@ -60,8 +62,8 @@
                                 </div>
                                 <div class="flex flex-col gap-6 mt-6">
                                     <div class="flex gap-2">
+                                        <p-button icon="pi pi-phone" label="Voir plus" class="flex-auto whitespace-nowrap" styleClass="w-full" [outlined]="true" (onClick)="showMore(item.id)"></p-button>
                                         <p-button icon="pi pi-user" label="Voir profil" class="flex-auto whitespace-nowrap" styleClass="w-full" (onClick)="showProfil(item.id)"></p-button>
-                                        <p-button icon="pi pi-phone" label="Voir plus" class="flex-auto whitespace-nowrap" styleClass="w-full" [outlined]="true" (onClick)="showMore(item.email)"></p-button>
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +74,15 @@
         </p-dataview>
     </div>
 </div>
-<p-paginator (onPageChange)="loadStudentsList($event)" [first]="first" [rows]="rows" [totalRecords]="count" [showCurrentPageReport]="true" [showJumpToPageDropdown]="false" currentPageReportTemplate="Élèves {first} à {last}, total : {totalRecords}" />
+<p-paginator
+    #paginator
+    (onPageChange)="loadStudentsList($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="count"
+    [showCurrentPageReport]="true"
+    [showJumpToPageDropdown]="false"
+    currentPageReportTemplate="Élèves {first} à {last}, total : {totalRecords}"
+/>
 
 <app-modal-edit-user-by-admin [(visible)]="showModal" [user]="student" (onUpdate)="onUpdate($event)"></app-modal-edit-user-by-admin>
