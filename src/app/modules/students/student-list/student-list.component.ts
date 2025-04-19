@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { AfterViewChecked, Component, computed, inject, OnInit, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataViewModule } from 'primeng/dataview';
 import { FormsModule } from '@angular/forms';
@@ -15,15 +15,16 @@ import { ModalEditUserByAdminComponent } from '../components/modal-edit-user-by-
 import { InputText, InputTextModule } from 'primeng/inputtext';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { AutoFocusModule } from 'primeng/autofocus';
 
 @Component({
     selector: 'app-student-list',
-    imports: [CommonModule, DataViewModule, FormsModule, SelectButtonModule, PickListModule, OrderListModule, TagModule, ButtonModule, PaginatorModule, ModalEditUserByAdminComponent, InputTextModule, InputText],
+    imports: [AutoFocusModule, CommonModule, DataViewModule, FormsModule, SelectButtonModule, PickListModule, OrderListModule, TagModule, ButtonModule, PaginatorModule, ModalEditUserByAdminComponent, InputTextModule, InputText],
 
     templateUrl: './student-list.component.html',
     styleUrl: './student-list.component.scss'
 })
-export class StudentListComponent {
+export class StudentListComponent implements OnInit {
     layout: 'list' | 'grid' = 'list';
 
     options = ['list', 'grid'];
@@ -65,6 +66,7 @@ export class StudentListComponent {
             });
         });
     }
+
     loadStudentsList(e: any) {
         this.adminService.getAllStudents(e.first, this.rows, this.searchWord).subscribe((res) => {
             this.students.set(res.data);

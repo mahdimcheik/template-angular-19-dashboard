@@ -4,7 +4,7 @@
         <p-dataview [layout]="layout" [value]="students()">
             <ng-template #header>
                 <div class="flex justify-between items-center mb-4">
-                    <input type="text" pInputText placeholder="Rechercher un élève" class="w-[200px]" [(ngModel)]="searchWord" (ngModelChange)="searchStudent()" />
+                    <input [pAutoFocus]="true" type="text" pInputText placeholder="Rechercher un élève" class="w-[200px]" [(ngModel)]="searchWord" (ngModelChange)="searchStudent()" />
 
                     <p-select-button [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
                         <ng-template #item let-option>
