@@ -7,13 +7,17 @@ import { of } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../services/auth.service';
 import { LocalstorageService } from '../services/localstorage.service';
+import { GlobalService } from '../services/global.service';
 
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
     let isRefreshing = false;
     const authService = inject(AuthService);
+    const isFetching = inject(GlobalService).isFetching;
 
+    isFetching.set(true);
     // Ne pas intercepter les appels vers le refresh token
     if (req.url.includes('/refresh-token')) {
+        isFetching.set(false);
         return next(req);
     }
 
@@ -35,18 +39,18 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
                         // relancer l'ancienne requette avec le nouveau token
                         return next(clonedRequest);
                     }),
-                    finalize(() => (isRefreshing = false))
+                    finalize(() => {
+                        isRefreshing = false;
+                        isFetching.set(false);
+                    })
                 );
             }
 
-            // Pour les autres erreurs
-            // messageService.add({
-            //     severity: 'error',
-            //     summary: 'Attention ! ',
-            //     detail: err.error?.message ?? 'Erreur coté serveur'
-            // });
-
+            isFetching.set(false);
             return throwError(() => err);
+        }),
+        finalize(() => {
+            isFetching.set(false);
         })
     );
 };

@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, computed, inject, OnInit, signal, viewChild } from '@angular/core';
+import { AfterViewChecked, Component, computed, DestroyRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataViewModule } from 'primeng/dataview';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 import { ModalEditUserByAdminComponent } from '../components/modal-edit-user-by-admin/modal-edit-user-by-admin.component';
 import { InputText, InputTextModule } from 'primeng/inputtext';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { AutoFocusModule } from 'primeng/autofocus';
 
 @Component({
@@ -47,12 +47,15 @@ export class StudentListComponent implements OnInit {
     student!: UserResponseDTO;
     showModal = signal<boolean>(false);
 
+    // destroy reference
+    destroyRef = inject(DestroyRef);
+
     ngOnInit() {
         this.adminService.getAllStudents(this.first, this.rows).subscribe((res) => {
             this.students.set(res.data);
             this.count = res.count ?? 0;
         });
-        this.searchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe((search) => {
+        this.searchSubject.pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef)).subscribe((search) => {
             this.adminService.getAllStudents(this.first, this.rows, this.searchWord).subscribe((res) => {
                 this.count = res.count ?? 0;
 

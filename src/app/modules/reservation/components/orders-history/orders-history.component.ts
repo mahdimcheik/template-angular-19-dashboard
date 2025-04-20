@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { OrderComponent } from '../order/order.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../shared/services/auth.service';
@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { IconField } from 'primeng/iconfield';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { InputTextModule } from 'primeng/inputtext';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-orders-history',
@@ -43,8 +44,11 @@ export class OrdersHistoryComponent implements OnInit {
     searchWord = '';
     searchSubject$ = new Subject<string>();
 
+    // destroy reference
+    destroyRef = inject(DestroyRef);
+
     ngOnInit(): void {
-        this.searchSubject$.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => {
+        this.searchSubject$.pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef)).subscribe((res) => {
             this.filter.searchField = res;
             this.filter.start = 0;
             this.filter.perPage = this.rows;

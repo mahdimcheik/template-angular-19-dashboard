@@ -19,7 +19,7 @@
                 <div class="flex flex-col gap-2">
                     <div class="flex flex-col flex-wrap w-full">
                         <div class="flex flex-col gap-2">
-                            <div class="font-semibold text-xl">Sujet : {{ reservation().typeHelp ?? 0 | helpType }}</div>
+                            <div class="font-semibold text-xl">Sujet : {{ reservation().typeHelp | helpType }}</div>
                             <p-message class="text mb-2">{{ reservation().subject }}</p-message>
                         </div>
                     </div>

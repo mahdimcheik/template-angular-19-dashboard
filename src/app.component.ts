@@ -8,14 +8,29 @@ import { catchError, of, switchMap } from 'rxjs';
 import { OrderService } from './app/shared/services/order.service';
 import { LayoutService } from './app/layout/service/layout.service';
 import { AppConfigurator } from './app/layout/component/app.configurator';
+import { ConnectionService } from './app/shared/services/connection.service';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { CommonModule } from '@angular/common';
+import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-spinner/overlay-spinner.component';
+import { GlobalService } from './app/shared/services/global.service';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule, ToastModule, AppConfigurator],
+    imports: [RouterModule, ToastModule, AppConfigurator, ProgressBarModule, CommonModule, OverlaySpinnerComponent],
     template: `
         <div class="hidden">
             <app-configurator></app-configurator>
+        </div>
+        <app-overlay-spinner></app-overlay-spinner>
+        <div>
+            <p-progressbar *ngIf="!connectionService.isOnline()" [style]="{ height: '25px' }" value="100" [showValue]="true" color="red">
+                <ng-template #content let-value>
+                    <div class="flex flex-row items-center gap-4">
+                        <span>Vous êtes hors ligne </span>
+                    </div>
+                </ng-template>
+            </p-progressbar>
         </div>
         <p-toast></p-toast>
         <router-outlet></router-outlet>
@@ -27,8 +42,10 @@ export class AppComponent implements OnInit {
     orderService = inject(OrderService);
     layoutService = inject(LayoutService);
     router = inject(Router);
+    connectionService = inject(ConnectionService);
 
     ngOnInit(): void {
+        this.connectionService.checkNetworkStatus();
         this.authService
             .getprofile()
             .pipe(
