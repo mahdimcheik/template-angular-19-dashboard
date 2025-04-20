@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainComponent } from './sub-pages/main/main.component';
 import { TeacherPublicProfileComponent } from './sub-pages/teacher-public-profile/teacher-public-profile.component';
+import { MentionsLegalesComponent } from './sub-pages/mentions-legales/mentions-legales.component';
 
 export default [
     {
@@ -10,5 +11,9 @@ export default [
     {
         path: 'teacher',
         component: TeacherPublicProfileComponent
+    },
+    {
+        path: 'mentions-legales',
+        component: MentionsLegalesComponent
     }
 ] as Routes;
