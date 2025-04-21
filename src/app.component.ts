@@ -12,7 +12,6 @@ import { ConnectionService } from './app/shared/services/connection.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CommonModule } from '@angular/common';
 import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-spinner/overlay-spinner.component';
-import { GlobalService } from './app/shared/services/global.service';
 
 @Component({
     selector: 'app-root',
