@@ -12,10 +12,11 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { OrdersHistoryComponent } from '../../components/orders-history/orders-history.component';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CountdownToPayComponent } from '../../components/countdown-to-pay/countdown-to-pay.component';
 
 @Component({
     selector: 'app-orders',
-    imports: [FormsModule, ButtonModule, ToolbarModule, IconFieldModule, InputNumberModule, InputIconModule, InputTextModule, FullCalendarModule, CommonModule, OrderCurrentComponent, OrdersHistoryComponent],
+    imports: [FormsModule, ButtonModule, ToolbarModule, IconFieldModule, InputNumberModule, InputIconModule, InputTextModule, FullCalendarModule, CommonModule, OrderCurrentComponent, OrdersHistoryComponent, CountdownToPayComponent],
 
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.scss'
