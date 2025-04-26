@@ -1,15 +1,17 @@
-import { DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, OnChanges, OnDestroy, input, output } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
-    imports: [DecimalPipe],
+    imports: [DecimalPipe, CommonModule],
     selector: 'app-countdown-to-pay',
-    template: ` <div><span>Temps restant pour payer </span> {{ minutes }}:{{ seconds | number: '2.0' }}</div> `,
+    template: ` <div *ngIf="show()"><span>Temps restant pour payer </span> {{ minutes }}:{{ seconds | number: '2.0' }}</div> `,
     styleUrls: ['./countdown.scss']
 })
 export class CountdownToPayComponent implements OnChanges, OnDestroy {
-    minutesTotal = input<number>(0);
+    minutesTotal = input.required<number>();
+    secondsTotal = input.required<number>();
+    show = input(false);
     onCountEnd = output<void>();
 
     minutes: number = 0;
@@ -24,7 +26,7 @@ export class CountdownToPayComponent implements OnChanges, OnDestroy {
         this.stopCounter();
 
         if (this.minutesTotal() > 0) {
-            let tempsRestantEnSecondes = this.minutesTotal() * 60;
+            let tempsRestantEnSecondes = this.minutesTotal() * 60 + this.secondsTotal();
 
             this.intervalSubscription = interval(1000).subscribe(() => {
                 tempsRestantEnSecondes--;

@@ -7,7 +7,12 @@
                     <p-button icon="pi pi-play" label="En cours" class="mr-2" severity="secondary" text />
                 </ng-template>
             </p-toolbar>
-            <app-countdown-to-pay [minutesTotal]="10"></app-countdown-to-pay>
+            <app-countdown-to-pay
+                [show]="!!currentOrder().bookings.length"
+                *ngIf="currentOrder().leftTimeToPay.seconds || currentOrder().leftTimeToPay.minutes"
+                [minutesTotal]="currentOrder().leftTimeToPay.minutes"
+                [secondsTotal]="currentOrder().leftTimeToPay.seconds"
+            ></app-countdown-to-pay>
         </div>
     </div>
     <div class="w-full flex flex-col gap-2" *ngIf="currentOrder() && currentOrder().bookings">

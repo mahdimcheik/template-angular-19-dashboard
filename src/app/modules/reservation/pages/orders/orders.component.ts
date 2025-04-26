@@ -29,8 +29,6 @@ export class OrdersComponent implements OnInit {
     ngOnInit(): void {
         try {
             this.orderService.getCurrentOrder().subscribe();
-        } catch (e) {
-            console.log(e);
-        }
+        } catch (e) {}
     }
 }
