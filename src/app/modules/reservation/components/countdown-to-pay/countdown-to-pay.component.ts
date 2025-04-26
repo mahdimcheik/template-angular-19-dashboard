@@ -1,25 +1,30 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Component, OnChanges, OnDestroy, input, output } from '@angular/core';
+import { Component, OnChanges, OnDestroy, effect, input, output, signal } from '@angular/core';
+import { InitEditableRow } from 'primeng/table';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
     imports: [DecimalPipe, CommonModule],
     selector: 'app-countdown-to-pay',
-    template: ` <div *ngIf="show()"><span>Temps restant pour payer </span> {{ minutes }}:{{ seconds | number: '2.0' }}</div> `,
+    template: ` <div *ngIf="show()"><span>Temps restant pour payer </span> {{ minutes() }}:{{ seconds() | number: '2.0' }}</div> `,
     styleUrls: ['./countdown.scss']
 })
-export class CountdownToPayComponent implements OnChanges, OnDestroy {
+export class CountdownToPayComponent implements OnDestroy {
     minutesTotal = input.required<number>();
     secondsTotal = input.required<number>();
     show = input(false);
     onCountEnd = output<void>();
 
-    minutes: number = 0;
-    seconds: number = 0;
+    minutes = signal(0);
+    seconds = signal(0);
     private intervalSubscription?: Subscription;
 
-    ngOnChanges(): void {
-        this.IntializeCounter();
+    constructor() {
+        effect(() => {
+            this.minutes.set(this.minutesTotal());
+            this.seconds.set(this.secondsTotal());
+            this.IntializeCounter();
+        });
     }
 
     private IntializeCounter(): void {
@@ -30,8 +35,8 @@ export class CountdownToPayComponent implements OnChanges, OnDestroy {
 
             this.intervalSubscription = interval(1000).subscribe(() => {
                 tempsRestantEnSecondes--;
-                this.minutes = Math.floor(tempsRestantEnSecondes / 60);
-                this.seconds = tempsRestantEnSecondes % 60;
+                this.minutes.set(Math.floor(tempsRestantEnSecondes / 60));
+                this.seconds.set(tempsRestantEnSecondes % 60);
 
                 if (tempsRestantEnSecondes <= 0) {
                     this.onCountEnd.emit();
@@ -39,8 +44,8 @@ export class CountdownToPayComponent implements OnChanges, OnDestroy {
                 }
             });
         } else {
-            this.minutes = 0;
-            this.seconds = 0;
+            this.minutes.set(0);
+            this.seconds.set(0);
         }
     }
 

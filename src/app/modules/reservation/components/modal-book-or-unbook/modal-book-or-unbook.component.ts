@@ -103,7 +103,9 @@ export class ModalBookOrUnbookComponent implements OnInit {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Erreur',
-                            detail: 'Une erreur est survenue lors de la réservation du créneau'
+                            detail: 'Une erreur est survenue lors de la réservation du créneau',
+                            life: 1000,
+                            icon: 'pi pi-exclamation-triangle'
                         });
                         this.close();
                         return res;
@@ -119,7 +121,9 @@ export class ModalBookOrUnbookComponent implements OnInit {
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Réservation',
-                        detail: 'Le créneau a été réservé avec succès'
+                        detail: 'Le créneau a été réservé avec succès',
+                        life: 500,
+                        icon: 'pi pi-thumbs-up'
                     });
                     this.onBooking.emit();
                 });
