@@ -9,7 +9,7 @@
             </p-toolbar>
             <app-countdown-to-pay
                 [show]="!!currentOrder().bookings && currentOrder().bookings.length > 0"
-                *ngIf="currentOrder().leftTimeToPay.seconds || currentOrder().leftTimeToPay.minutes"
+                *ngIf="currentOrder().leftTimeToPay?.seconds || currentOrder().leftTimeToPay?.minutes"
                 [minutesTotal]="currentOrder().leftTimeToPay.minutes"
                 [secondsTotal]="currentOrder().leftTimeToPay.seconds"
             ></app-countdown-to-pay>
