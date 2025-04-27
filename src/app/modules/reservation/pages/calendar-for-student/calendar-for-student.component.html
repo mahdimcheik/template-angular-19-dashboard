@@ -13,7 +13,7 @@
 <div class="card calendar">
     <full-calendar [options]="calendarOptions" #calendar [events]="visibleEvents()">
         <ng-template #eventContent let-arg class="custom-event">
-            <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available', arg.event.extendedProps?.slot?.status === 0 ? 'pending' : '']">
+            <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available', arg.event.extendedProps?.slot?.status === 0 || arg.event.extendedProps?.slot?.status === 3 ? 'pending' : '']">
                 <ng-container *ngIf="arg.event.extendedProps?.slot?.studentId; else availableSlot">
                     <div class="event-type">
                         <span>Type : </span>

@@ -28,7 +28,9 @@ export class OrdersComponent implements OnInit {
     router = inject(Router);
     ngOnInit(): void {
         try {
-            this.orderService.getCurrentOrder().subscribe();
+            this.orderService.getCurrentOrder().subscribe(() => {
+                const toto = this.orderService.currentOrder();
+            });
         } catch (e) {}
     }
 }
