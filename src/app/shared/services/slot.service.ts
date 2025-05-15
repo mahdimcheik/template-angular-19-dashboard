@@ -31,6 +31,8 @@ export class SlotService {
             map((res) => {
                 var slots = res.data as SlotResponseDTO[];
                 if (slots == null || slots.length == 0) return [];
+                // console.log('slots : ', slots);
+
                 return slots.map((slot) => this.convertSlotResponseToEventInput(slot));
             }),
             tap((res) => this.visibleEvents.set(res))

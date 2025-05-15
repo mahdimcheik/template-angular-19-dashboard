@@ -32,6 +32,9 @@ export class ModalCreateAppointmentComponent implements OnInit {
     studentFullName = computed(() => {
         return '' + this.appointment().extendedProps?.['slot']?.['studentFirstName'] + ' ' + this.appointment().extendedProps?.['slot']?.['studentLastName'];
     });
+    isPaidOrPending = computed(() => {
+        return this.appointment().extendedProps?.['slot']?.['studentId'] != null;
+    });
     passedReservation = signal<boolean>(false);
     price: number = 15;
     reduction: number = 0;
