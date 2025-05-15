@@ -20,7 +20,6 @@ import { MessageService } from 'primeng/api';
     styleUrl: './contact.component.scss'
 })
 export class ContactComponent implements OnInit {
-    userService = inject(AuthService);
     mailService = inject(MailService);
     router = inject(Router);
     messageService = inject(MessageService);
@@ -29,12 +28,9 @@ export class ContactComponent implements OnInit {
     userForm!: FormGroup;
 
     ngOnInit(): void {
-        const user = this.userService.userConnected();
         this.userForm = new FormGroup({
-            userId: new FormControl<string>(user.id),
-            email: new FormControl<string>(user.email),
-            subject: new FormControl<string>('Autre'),
-            message: new FormControl<string>('', [Validators.required, Validators.maxLength(500)]),
+            mailSubject: new FormControl<string>('Autre'),
+            mailBody: new FormControl<string>('', [Validators.required, Validators.maxLength(500)]),
             sendtoSender: new FormControl<boolean>(false)
         });
     }

@@ -1,8 +1,5 @@
 export type Email = {
-    id: string;
-    userId: string;
-    email: string;
-    subject: string;
-    message: string;
+    mailSubject: string;
+    mailBody: string;
     sendtoSender: boolean;
 };

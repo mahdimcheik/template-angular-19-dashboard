@@ -16,6 +16,6 @@ export class MailService {
      * @returns Observable<Email>
      */
     sendEmail(Email: Email) {
-        return this.Httpclient.post<Email>(environment.BACK_URL + 'mail/contact-admin', Email);
+        return this.Httpclient.post<Email>(environment.BACK_URL + '/mail/contact-admin', Email);
     }
 }
