@@ -8,6 +8,7 @@ import { StudentListComponent } from './app/modules/students/student-list/studen
 import { isConnectedGuard } from './app/shared/guards/can-login.guard';
 import { Dashboard } from './app/modules/dashboard/dashboard';
 import { isAdminOnlyGuard } from './app/shared/guards/is-admin-only.guard';
+import { ContactComponent } from './app/modules/contact/contact/contact.component';
 
 export const appRoutes: Routes = [
     {
@@ -39,6 +40,10 @@ export const appRoutes: Routes = [
                 path: 'students-list',
                 component: StudentListComponent,
                 canActivate: [isAdminOnlyGuard]
+            },
+            {
+                path: 'contact',
+                component: ContactComponent
             }
         ]
     },
