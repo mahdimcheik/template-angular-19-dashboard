@@ -79,7 +79,7 @@ export class AuthService {
                               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
                               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
                               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
-                              { label: 'Contact', icon: 'pi pi-fw pi-contact', routerLink: ['/dashboard/contact'] }
+                              { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
                           ]
                 );
             })

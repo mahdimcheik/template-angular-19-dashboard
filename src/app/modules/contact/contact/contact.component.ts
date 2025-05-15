@@ -3,12 +3,15 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { AuthService } from '../../../shared/services/auth.service';
-import { max } from 'rxjs';
+import { finalize, max } from 'rxjs';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { ImageModule } from 'primeng/image';
+import { MailService } from '../../../shared/services/mail.service';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-contact',
@@ -18,6 +21,10 @@ import { ImageModule } from 'primeng/image';
 })
 export class ContactComponent implements OnInit {
     userService = inject(AuthService);
+    mailService = inject(MailService);
+    router = inject(Router);
+    messageService = inject(MessageService);
+
     subjectOptions: string[] = ['Demande de renseignements', 'Demande de remboursements', 'Proposition', 'Autre'];
     userForm!: FormGroup;
 
@@ -32,5 +39,15 @@ export class ContactComponent implements OnInit {
         });
     }
 
-    onSubmit(form: any) {}
+    onSubmit() {
+        this.mailService.sendEmail(this.userForm.value).subscribe((res) => {
+            this.userForm.reset();
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Succès',
+                detail: 'Votre message a été envoyé avec succès !'
+            });
+            this.router.navigate(['/']);
+        });
+    }
 }
