@@ -34,6 +34,8 @@ export class ModalBookOrUnbookComponent implements OnInit {
     appointment = input.required<EventInput>();
     slotDetailed = computed<SlotResponseDTO>(() => this.appointment().extendedProps?.['slot'] as SlotResponseDTO);
     passedReservation = computed(() => this.appointment().extendedProps?.['slot']?.studentId !== null && new Date(this.appointment().extendedProps?.['slot']?.startAt) < new Date());
+    isPaid = computed(() => this.appointment().extendedProps?.['slot']?.studentId !== null && this.appointment().extendedProps?.['slot']?.status == '1');
+
     onBooking = output();
     userForm!: FormGroup;
     title: string = '';

@@ -35,7 +35,7 @@
                         </div>
                         <div class="flex justify-end gap-2 mt-4">
                             <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
-                            <p-button *ngIf="!passedReservation()" label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
+                            <p-button *ngIf="!passedReservation() && !isPaid()" label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
                         </div>
                     </div>
 
