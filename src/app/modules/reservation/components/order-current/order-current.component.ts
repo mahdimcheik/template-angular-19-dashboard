@@ -7,8 +7,6 @@ import { OrderStatusPipe } from '../../../../shared/pipes/order-status.pipe';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CardItemOrderComponent } from '../card-item-order/card-item-order.component';
-import { ModalBookOrUnbookComponent } from '../modal-book-or-unbook/modal-book-or-unbook.component';
-import { ModalDetailsReservationComponent } from '../modal-details-reservation/modal-details-reservation.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';

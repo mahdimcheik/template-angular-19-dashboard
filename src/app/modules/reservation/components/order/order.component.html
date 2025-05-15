@@ -16,6 +16,7 @@
 
                 <span>Numéro : {{ order()?.orderNumber }}</span>
                 <span>{{ order()?.bookings?.length }} articles</span>
+                <span> <i class="pi pi-copy" (click)="copyOrderDetails($event)" pTooltip="Copier les détails" tooltipPosition="right"></i></span>
             </div>
         </p-accordion-header>
         <p-accordion-content>

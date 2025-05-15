@@ -13,6 +13,8 @@ import { IconField } from 'primeng/iconfield';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { InputTextModule } from 'primeng/inputtext';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { OrderResponseDTO } from '../../../../shared/models/order';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-orders-history',
