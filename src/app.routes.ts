@@ -9,6 +9,7 @@ import { isConnectedGuard } from './app/shared/guards/can-login.guard';
 import { Dashboard } from './app/modules/dashboard/dashboard';
 import { isAdminOnlyGuard } from './app/shared/guards/is-admin-only.guard';
 import { ContactComponent } from './app/modules/contact/contact/contact.component';
+import { PaymentFailedComponent } from './app/modules/reservation/pages/payment-failed/payment-failed.component';
 
 export const appRoutes: Routes = [
     {
@@ -35,6 +36,10 @@ export const appRoutes: Routes = [
             {
                 path: 'success',
                 component: PaymentSuccessComponent
+            },
+            {
+                path: 'cancel',
+                component: PaymentFailedComponent
             },
             {
                 path: 'students-list',
