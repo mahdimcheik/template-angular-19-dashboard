@@ -76,7 +76,8 @@ export type BookingResponseDTO = {
     subject: string;
     description: string;
     typeHelp: number;
-    orderId: any;
+    orderId: string;
+    orderNumber: string;
     createdAt: string;
     price: number;
     discountedPrice: number;

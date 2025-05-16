@@ -19,13 +19,18 @@
                 <div class="flex flex-col gap-2">
                     <div class="flex flex-col flex-wrap w-full">
                         <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2">
+                                <label for="title">Commande <i class="pi pi-copy cursor-pointer" pTooltip="Copier les détails" tooltipPosition="right" (click)="copyOrderDetails()"></i> </label>
+                                <input pInputText id="title" type="text" [value]="reservation().orderNumber" disabled />
+                            </div>
                             <div class="font-semibold text-xl">Sujet : {{ reservation().typeHelp | helpType }}</div>
                             <p-message class="text mb-2">{{ reservation().subject }}</p-message>
+                            <textarea *ngIf="reservation().description" pTextarea [value]="reservation().description" disabled class="h-[100px]"></textarea>
                         </div>
                     </div>
                     <div class="flex justify-end gap-2 mt-4">
                         <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
-                        <p-button label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
+                        <p-button *ngIf="allowDelete()" label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
                     </div>
                 </div>
             </div>
