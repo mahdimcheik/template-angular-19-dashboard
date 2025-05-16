@@ -14,10 +14,11 @@ import { DobToAgePipe } from '../../../../shared/pipes/dob-to-age.pipe';
 import { AdminService } from '../../../../shared/services/admin.service';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
+import { ImageModule } from 'primeng/image';
 
 @Component({
     selector: 'app-modal-edit-user-by-admin',
-    imports: [InputTextModule, AvatarModule, DobToAgePipe, TextareaModule, MessageModule, ButtonModule, FluidModule, SelectModule, CommonModule, ReactiveFormsModule, DialogModule],
+    imports: [InputTextModule, AvatarModule, DobToAgePipe, TextareaModule, MessageModule, ButtonModule, FluidModule, SelectModule, CommonModule, ReactiveFormsModule, DialogModule, ImageModule],
     templateUrl: './modal-edit-user-by-admin.component.html',
     styleUrl: './modal-edit-user-by-admin.component.scss'
 })

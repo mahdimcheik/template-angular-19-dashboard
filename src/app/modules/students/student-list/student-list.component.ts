@@ -16,10 +16,28 @@ import { InputText, InputTextModule } from 'primeng/inputtext';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { ImageModule } from 'primeng/image';
+import { MessageModule } from 'primeng/message';
 
 @Component({
     selector: 'app-student-list',
-    imports: [AutoFocusModule, CommonModule, DataViewModule, FormsModule, SelectButtonModule, PickListModule, OrderListModule, TagModule, ButtonModule, PaginatorModule, ModalEditUserByAdminComponent, InputTextModule, InputText],
+    imports: [
+        AutoFocusModule,
+        CommonModule,
+        MessageModule,
+        DataViewModule,
+        FormsModule,
+        SelectButtonModule,
+        PickListModule,
+        OrderListModule,
+        TagModule,
+        ButtonModule,
+        PaginatorModule,
+        ModalEditUserByAdminComponent,
+        InputTextModule,
+        InputText,
+        ImageModule
+    ],
 
     templateUrl: './student-list.component.html',
     styleUrl: './student-list.component.scss'

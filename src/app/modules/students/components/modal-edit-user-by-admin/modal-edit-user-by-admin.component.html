@@ -1,20 +1,18 @@
-<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" header="Plus d'action" [modal]="true">
+<p-dialog [(visible)]="visible" [style]="{ width: '100%', maxWidth: '450px' }" header="Plus d'action" [modal]="true">
     <ng-template #content>
-        <p-fluid>
-            <div class="flex flex-col justify-between items-start gap-2 mb-4">
-                <div class="w-full flex flex-col sm:flex-row justify-between items-start gap-2">
-                    <img class="block xl:block mx-auto rounded w-full" [src]="user().imgUrl" [style]="{ width: '100px', height: '100px' }" />
-                    <div class="flex flex-col gap-2" [style]="{ left: '4px', top: '4px' }">
-                        <input pInputText type="text" [value]="user().firstName + ' ' + user().lastName" class="w-full" disabled />
-                        <input pInputText type="text" [value]="(user().dateOfBirth | dobToAge) + ' ans'" class="w-full" disabled />
-                    </div>
+        <div class="flex flex-col gap-4 w-full">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 w-full">
+                <img [src]="user().imgUrl" alt="User" class="rounded object-cover w-48 h-48 lg:w-24 lg:h-24" />
+                <div class="flex flex-col gap-2 w-full">
+                    <input pInputText type="text" [value]="user().firstName + ' ' + user().lastName" class="w-full" disabled />
+                    <input pInputText type="text" [value]="(user().dateOfBirth | dobToAge) + ' ans'" class="w-full" disabled />
                 </div>
-                <p-message *ngIf="isBanned()" severity="warn" [ngStyle]="{ width: '100%' }">{{ isBanned() }} {{ user().bannedUntilDate | date: 'dd MMMM yyyy' }}</p-message>
             </div>
-        </p-fluid>
+            <p-message *ngIf="isBanned()" severity="warn" class="w-full"> {{ isBanned() }} {{ user().bannedUntilDate | date: 'dd MMMM yyyy' }} </p-message>
+        </div>
     </ng-template>
     <ng-template pTemplate="footer">
-        <div class="flex flex-row justify-between items-center gap-2">
+        <div class="flex flex-row justify-end items-center gap-2 w-full">
             <p-button icon="pi pi-times" [label]="user().isBanned ? 'Autoriser' : 'Bannir'" severity="warn" outlined="true" (onClick)="banUnbanUser()"></p-button>
             <p-button icon="pi pi-user" label="Profil" (onClick)="showProfil(user().id)"></p-button>
         </div>
