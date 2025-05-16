@@ -1,4 +1,4 @@
-import HelpTypePipe from './help-type.pipe';
+import { HelpTypePipe } from './help-type.pipe';
 
 describe('HelpTypePipe', () => {
     it('create an instance', () => {

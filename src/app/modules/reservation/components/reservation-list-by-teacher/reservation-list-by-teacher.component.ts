@@ -10,14 +10,14 @@ import { PaginatorModule } from 'primeng/paginator';
 import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
-    selector: 'app-reservation-list-by-teacher',
+    selector: 'app-reservation-list',
     imports: [ButtonModule, DatePipe, TableModule, CurrencyPipe, PaginatorModule, CommonModule],
 
     templateUrl: './reservation-list-by-teacher.component.html',
     styleUrl: './reservation-list-by-teacher.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReservationListByTeacherComponent implements OnInit {
+export class ReservationListComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
     slotService = inject(SlotService);
     authService = inject(AuthService);
