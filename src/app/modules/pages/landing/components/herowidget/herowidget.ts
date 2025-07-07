@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { AuthService } from '../../../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

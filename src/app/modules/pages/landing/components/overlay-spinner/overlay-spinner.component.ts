@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { LoaderService } from '../../../../shared/services/loader.service';
+import { LoaderService } from '../../../../../shared/services/loader.service';
 
 @Component({
     selector: 'app-overlay-spinner',
