@@ -8,7 +8,7 @@
             </div>
         </div>
     </li>
-    <li *ngFor="let item of model; let i = index">
+    <li *ngFor="let item of model(); let i = index">
         <a *ngIf="item.routerLink && item.visible !== false" class="menu-link" (click)="item.command" [routerLink]="item.routerLink[0]" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
             <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
             <span class="layout-menuitem-text">{{ item.label }}</span>

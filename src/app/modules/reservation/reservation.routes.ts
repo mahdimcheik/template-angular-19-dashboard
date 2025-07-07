@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { CalendarForTeacherComponent } from './pages/calendar-for-teacher/calendar-for-teacher.component';
 import { CalendarForStudentComponent } from './pages/calendar-for-student/calendar-for-student.component';
-import { ReservationsTeacherComponent } from './pages/reservations-teacher/reservations-teacher.component';
+import { ReservationsPageComponent } from './pages/reservations-teacher/reservations-teacher.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { isAdminOnlyGuard, isStudentOnlyGuard } from '../../shared/guards/is-admin-only.guard';
-import { isConnectedGuard } from '../../shared/guards/can-login.guard';
+import { ReservationsListDetailedComponent } from './components/reservations-list-detailed/reservations-list-detailed.component';
 export default [
     {
         path: 'calendar-for-teacher',
@@ -17,11 +17,13 @@ export default [
         canActivate: [isStudentOnlyGuard]
     },
     {
-        path: 'teacher',
-        component: ReservationsTeacherComponent
+        path: 'list',
+        // component: ReservationsPageComponent
+        component: ReservationsListDetailedComponent
     },
     {
         path: 'orders-student',
-        component: OrdersComponent
+        component: OrdersComponent,
+        canActivate: [isStudentOnlyGuard]
     }
 ] as Routes;

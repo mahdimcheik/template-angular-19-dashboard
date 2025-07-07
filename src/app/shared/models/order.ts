@@ -11,12 +11,18 @@ export type OrderResponseDTO = {
     totalOriginalPrice: number;
     totalReduction: number;
     bookings: BookingResponseDTO[];
+    leftTimeToPay: TimeSpanDTO;
 };
 export enum EnumOrderStatus {
     pending = 0,
     paid = 1,
     canceled = 2
 }
+
+export type TimeSpanDTO = {
+    minutes: number;
+    seconds: number;
+};
 
 export type CheckoutRequest = {
     orderId: string;

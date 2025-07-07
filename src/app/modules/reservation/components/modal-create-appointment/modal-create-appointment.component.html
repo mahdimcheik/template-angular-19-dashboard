@@ -29,7 +29,7 @@
 
                 <div class="flex justify-end gap-2 mt-4">
                     <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
-                    <p-button [label]="'Supprimer'" icon="pi pi-check" *ngIf="!passedReservation()" />
+                    <p-button [label]="'Supprimer'" icon="pi pi-check" *ngIf="!passedReservation() && !isPaidOrPending()" />
                 </div>
             </section>
             <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm" *ngIf="!appointment().extendedProps?.['slot']?.['studentId']">
@@ -82,9 +82,4 @@
             </form>
         </p-fluid>
     </ng-template>
-
-    <!-- <ng-template #footer>
-        <p-button label="Annuler" type="button" icon="pi pi-times" text (onClick)="close()" />
-        <p-button label="Supprimer" type="submit" icon="pi pi-check"/>
-    </ng-template> -->
 </p-dialog>

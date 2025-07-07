@@ -172,7 +172,6 @@ export class LayoutService {
 
     onConfigUpdate() {
         const layoutLS = this.localStorageService.getLayoutConfig();
-        console.log('layoutLS', layoutLS);
 
         if (layoutLS) {
             this._config = { ...layoutLS };

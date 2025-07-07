@@ -10,10 +10,13 @@ import { OrderCurrentComponent } from '../../components/order-current/order-curr
 import { IconFieldModule } from 'primeng/iconfield';
 import { ToolbarModule } from 'primeng/toolbar';
 import { OrdersHistoryComponent } from '../../components/orders-history/orders-history.component';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CountdownToPayComponent } from '../../components/countdown-to-pay/countdown-to-pay.component';
 
 @Component({
     selector: 'app-orders',
-    imports: [ButtonModule, ToolbarModule, IconFieldModule, InputNumberModule, InputIconModule, InputTextModule, FullCalendarModule, CommonModule, OrderCurrentComponent, OrdersHistoryComponent],
+    imports: [FormsModule, ButtonModule, ToolbarModule, IconFieldModule, InputNumberModule, InputIconModule, InputTextModule, FullCalendarModule, CommonModule, OrderCurrentComponent, OrdersHistoryComponent, CountdownToPayComponent],
 
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.scss'
@@ -21,14 +24,13 @@ import { OrdersHistoryComponent } from '../../components/orders-history/orders-h
 export class OrdersComponent implements OnInit {
     orderService = inject(OrderService);
     currentOrder = this.orderService.currentOrder;
+
+    router = inject(Router);
     ngOnInit(): void {
         try {
-            this.orderService.getCurrentOrder().subscribe((res) => {
-                console.log(res);
-                console.log(this.currentOrder());
+            this.orderService.getCurrentOrder().subscribe(() => {
+                const toto = this.orderService.currentOrder();
             });
-        } catch (e) {
-            console.log(e);
-        }
+        } catch (e) {}
     }
 }

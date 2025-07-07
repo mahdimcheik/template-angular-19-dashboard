@@ -14,7 +14,8 @@
             <span class="text-lg font-semibold">Total : {{ currentOrder().totalOriginalPrice }} €</span>
             <span class="text-lg text-[--primary-color]" *ngIf="currentOrder().totalReduction !== 0">Reduction totale : {{ currentOrder().totalReduction }} €</span>
             <span class="text-lg font-semibold">Total à payer : {{ currentOrder().totalDiscountedPrice }} €</span>
-            <p-button label="Payer" styleClass="w-full mt-2" *ngIf="currentOrder().status === 0" (onClick)="getcheckout()"></p-button>
+            <!-- <p-button label="Payer" styleClass="w-full mt-2" *ngIf="currentOrder().status === 0" (onClick)="getcheckout()"></p-button> -->
+            <p-button label="Payer" styleClass="w-full mt-2" (onClick)="getcheckout()"></p-button>
         </div>
     </div>
 </div>

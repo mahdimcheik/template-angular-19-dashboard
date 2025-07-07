@@ -1,27 +1,24 @@
 <div class="flex flex-col gap-2 md:items-center mb-4 w-full">
-    <div class="card w-full">
-        <div class="font-semibold text-xl mb-4">Mes commandes</div>
-        <p-toolbar>
-            <ng-template #start>
-                <p-button icon="pi pi-play" label="En cours" class="mr-2" severity="secondary" text />
-                <p-button icon="pi pi-history" label="Passées" class="mr-2" severity="secondary" text />
-                <p-button icon="pi pi-delete-left" label="Annulées" severity="secondary" text />
-            </ng-template>
-
-            <ng-template #end>
-                <p-iconfield>
-                    <p-inputicon>
-                        <i class="pi pi-search"></i>
-                    </p-inputicon>
-                    <input pInputText placeholder="Numéro commande" />
-                </p-iconfield>
-            </ng-template>
-        </p-toolbar>
+    <div class="card w-full !mb-2">
+        <div class="font-semibold text-xl mb-4">Commande en cours</div>
+        <div class="flex flex-row justify-between">
+            <p-toolbar>
+                <ng-template #start>
+                    <p-button icon="pi pi-play" label="En cours" class="mr-2" severity="secondary" text />
+                </ng-template>
+            </p-toolbar>
+            <app-countdown-to-pay
+                [show]="!!currentOrder().bookings && currentOrder().bookings.length > 0"
+                *ngIf="currentOrder().leftTimeToPay?.seconds || currentOrder().leftTimeToPay?.minutes"
+                [minutesTotal]="currentOrder().leftTimeToPay.minutes"
+                [secondsTotal]="currentOrder().leftTimeToPay.seconds"
+            ></app-countdown-to-pay>
+        </div>
     </div>
     <div class="w-full flex flex-col gap-2" *ngIf="currentOrder() && currentOrder().bookings">
         <app-order-current [currentOrder]="currentOrder()"></app-order-current>
-        <!-- <app-card-item-order *ngFor="let booking of currentOrder().bookings" [booking]="booking" [orderNumber]="currentOrder().orderNumber" [orderStatus]="currentOrder().status"></app-card-item-order> -->
     </div>
 </div>
-
+<!-- <div class="flex flex-col gap-2 md:items-center mb-4 w-full"> -->
 <app-orders-history></app-orders-history>
+<!-- </div> -->

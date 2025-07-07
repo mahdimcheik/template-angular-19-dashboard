@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, OnInit, computed, inject, signal } from '@angular/core';
+import { Injectable, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { ResponseDTO, UserChangePasswordDTO, UserCreateDTO, UserLoginDTO, UserResponseDTO, UserUpdateDTO } from '../models/user';
-import { catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
 import { LocalstorageService } from './localstorage.service';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { SSEService } from './sse.service';
@@ -38,12 +38,38 @@ export class AuthService {
 
     isAdmin = computed(() => this.userConnected()?.roles?.includes('Admin'));
 
+    // lien de side navbar
+    model = signal<MenuItem[]>([]);
+
     // pour la page qui je suis ?
     teacherDetails = signal({} as UserResponseDTO);
 
     refreshAccessToken = signal<string | null>(null);
     token = signal<string>('');
 
+    /**
+     *
+     */
+    constructor() {
+        effect(() => {
+            this.isAdmin()
+                ? this.model.set([
+                      { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                      { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
+                      { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
+                      { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
+                      { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
+                  ])
+                : this.model.set([
+                      { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                      { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
+                      { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
+                      { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
+                      { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
+                      { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
+                  ]);
+        });
+    }
     getUsers(first: number, rows: number): Observable<ResponseDTO> {
         return this.http.get<ResponseDTO>(`${environment.BACK_URL}/Users/all?first=${first}&rows=${rows}`);
     }
@@ -52,95 +78,103 @@ export class AuthService {
         return this.http.post<ResponseRegister>(`${environment.BACK_URL}/Users/register`, userDTO);
     }
 
+    resendConfirmationLink(): Observable<ResponseDTO> {
+        return this.http.get<ResponseDTO>(`${environment.BACK_URL}/Users/resend-confirmation-link`).pipe(tap((res) => this.messageService.add({ severity: 'success', summary: 'Succès', detail: res.message })));
+    }
+
     login(userLoginDTO: UserLoginDTO): Observable<ResponseDTO> {
         return this.http.post<ResponseDTO>(`${environment.BACK_URL}/Users/login`, userLoginDTO).pipe(
             tap((res) => {
                 this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
                 this.token.set((res.data as { token: string; user: UserResponseDTO }).token);
-                this.refreshAccessToken.set(
-                    (
-                        res.data as {
-                            refreshToken: string;
-                            user: UserResponseDTO;
-                            token: string;
-                        }
-                    ).refreshToken
-                );
-                this.localStorageService.setUser(this.userConnected());
-                this.localStorageService.setToken(this.token());
-                this.localStorageService.setRefreshToken(this.refreshAccessToken() ?? '');
-
-                this.SseService.subscribeSSE(this.userConnected().email, this.token());
-
-                // this.messageService.add({
-                //     severity: 'success',
-                //     summary: 'Bienvenu ! ',
-                //     detail: res.message ?? 'Youpi!!!'
-                // });
-                /* // sse to delete or not ?
-                const eventSource = new EventSource(`${environment.BACK_URL}/sse/${this.userConnected().id}`);
-
-                eventSource.onmessage = (event) => {
-                    console.log('event', event);
-                    this.userConnected.set(JSON.parse(event.data));
-                };
-                */
-
-                // if (this.userConnected().roles.includes('Admin')) {
-                //     this.router.navigateByUrl('/');
-                // } else {
-                //     this.router.navigateByUrl('/');
-                // }
+                // this.model.set(
+                //     this.isAdmin()
+                //         ? [
+                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
+                //               { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
+                //               { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
+                //           ]
+                //         : [
+                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
+                //               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
+                //               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
+                //               { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
+                //           ]
+                // );
             })
         );
     }
 
     refreshToken() {
-        // Call your backend refresh token endpoint
-        return this.http
-            .post<ResponseDTO>(`${environment.BACK_URL}/Users/refresh-token`, {
-                refreshToken: this.localStorageService.getRefreshToken(),
-                token: this.localStorageService.getToken()
+        return this.http.get<ResponseDTO>(`${environment.BACK_URL}/Users/refresh-token`).pipe(
+            tap((res) => {
+                console.log('response refresh token', res);
+
+                this.token.set(res.data.token);
+                this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
+                console.log('new token from interceptor', this.token());
+
+                // this.model.set(
+                //     this.isAdmin()
+                //         ? [
+                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
+                //               { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
+                //               { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
+                //           ]
+                //         : [
+                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
+                //               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
+                //               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
+                //               { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
+                //           ]
+                // );
             })
-            .pipe(
-                tap((tokens) => {
-                    console.log('response refresh token', tokens);
-
-                    // Update tokens in localStorage
-                    this.localStorageService.setToken(tokens.data.accessToken);
-                    // this.localStorageService.setRefreshToken(tokens.data.refreshToken);
-
-                    // Update the access token in memory
-                    // this.refreshAccessToken.set(tokens.data.refreshToken);
-                    this.token.set(tokens.data.accessToken);
-                    console.log('new token from interceptor', this.token());
-                }),
-                catchError((err) => {
-                    // Handle refresh token errors
-                    this.reset();
-                    throw err;
-                })
-            );
+        );
     }
 
     logout(): void {
-        this.reset();
-        this.router.navigateByUrl('/');
+        this.http
+            .get(`${environment.BACK_URL}/users/logout`)
+            .pipe(
+                finalize(() => {
+                    this.reset();
+                    this.router.navigateByUrl('/');
+                })
+            )
+            .subscribe();
     }
 
     getprofile(): Observable<ResponseDTO> {
-        this.userConnected.set(this.localStorageService.getUser());
-        this.token.set(this.localStorageService.getToken());
-
         return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/my-informations`).pipe(
             tap((res) => {
                 this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
-                this.localStorageService.setUser(this.userConnected());
-                this.SseService.subscribeSSE(this.userConnected().email, this.token());
-            }),
-            catchError((error) => {
-                this.reset();
-                return of();
+
+                // this.model.set(
+                //     this.isAdmin()
+                //         ? [
+                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
+                //               { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
+                //               { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
+                //           ]
+                //         : [
+                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
+                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
+                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
+                //               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
+                //               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
+                //               { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
+                //           ]
+                // );
             })
         );
     }

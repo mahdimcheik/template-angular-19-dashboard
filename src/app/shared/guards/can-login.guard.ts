@@ -1,41 +1,74 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { LocalstorageService } from '../services/localstorage.service';
+import { firstValueFrom } from 'rxjs';
 
-export const canNotLoginGuard: CanActivateFn = (route, state) => {
+export const canNotLoginGuard: CanActivateFn = async (route, state) => {
     const authService = inject(AuthService);
-    const localStorageService = inject(LocalstorageService);
     if (authService.userConnected().email) {
         return false;
     } else {
-        if (localStorageService.getUser().email) {
-            return false;
+        try {
+            await firstValueFrom(authService.refreshToken());
+            if (authService.userConnected().email) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch {
+            return true;
         }
     }
-    return true;
 };
 
-export const canNotRegisterGuard: CanActivateFn = (route, state) => {
+export const canNotRegisterGuard: CanActivateFn = async (route, state) => {
     const authService = inject(AuthService);
     if (authService.userConnected().email) return false;
-    return true;
+    else {
+        try {
+            await firstValueFrom(authService.refreshToken());
+            if (authService.userConnected().email) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch {
+            return true;
+        }
+    }
 };
 
-export const isConnectedGuard: CanActivateFn = (route, state) => {
+export const isConnectedGuard: CanActivateFn = async (route, state) => {
     const authService = inject(AuthService);
     // Check if the user is connected , dans la mémoire
-    const router = inject(Router);
     if (authService.userConnected().email) {
         return true;
     }
-    // Sinon dans le localstorage, si il n'est pas connecté, on le redirige vers la page de connexion
-    const localStorageService = inject(LocalstorageService);
-    const user = localStorageService.getUser();
-    if (user.email) {
+
+    try {
+        await firstValueFrom(authService.refreshToken());
+        if (authService.userConnected().email) {
+            return true;
+        }
+        return false;
+    } catch {
+        return false;
+    }
+};
+
+export const isNotConnectedGuard: CanActivateFn = async (route, state) => {
+    const authService = inject(AuthService);
+    // Check if the user is connected , dans la mémoire
+    if (authService.userConnected().email) {
+        return false;
+    }
+    try {
+        await firstValueFrom(authService.refreshToken());
+        if (authService.userConnected().email) {
+            return false;
+        }
+        return true;
+    } catch {
         return true;
     }
-
-    router.navigateByUrl('/auth/login');
-    return false;
 };

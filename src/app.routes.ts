@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './app/layout/component/app.layout';
-import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 import { SettingsComponent } from './app/pages/settings/settings.component';
@@ -8,6 +7,9 @@ import { PaymentSuccessComponent } from './app/modules/reservation/components/pa
 import { StudentListComponent } from './app/modules/students/student-list/student-list.component';
 import { isConnectedGuard } from './app/shared/guards/can-login.guard';
 import { Dashboard } from './app/modules/dashboard/dashboard';
+import { isAdminOnlyGuard } from './app/shared/guards/is-admin-only.guard';
+import { ContactComponent } from './app/modules/contact/contact/contact.component';
+import { PaymentFailedComponent } from './app/modules/reservation/pages/payment-failed/payment-failed.component';
 
 export const appRoutes: Routes = [
     {
@@ -21,7 +23,6 @@ export const appRoutes: Routes = [
         canActivate: [isConnectedGuard],
         children: [
             { path: '', component: Dashboard },
-            { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
             { path: 'settings', component: SettingsComponent },
             {
@@ -37,8 +38,17 @@ export const appRoutes: Routes = [
                 component: PaymentSuccessComponent
             },
             {
+                path: 'cancel',
+                component: PaymentFailedComponent
+            },
+            {
                 path: 'students-list',
-                component: StudentListComponent
+                component: StudentListComponent,
+                canActivate: [isAdminOnlyGuard]
+            },
+            {
+                path: 'contact',
+                component: ContactComponent
             }
         ]
     },
@@ -48,7 +58,5 @@ export const appRoutes: Routes = [
     },
 
     { path: 'notfound', component: Notfound },
-    { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
-
     { path: '**', redirectTo: '/notfound' }
 ];

@@ -56,6 +56,8 @@ export type UserResponseDTO = {
     title?: string;
     description?: string;
     roles: string[];
+    isBanned?: boolean;
+    bannedUntilDate?: Date;
 };
 
 export type UserLoginDTO = {
@@ -68,4 +70,10 @@ export type ResponseDTO = {
     status: number;
     data?: any;
     count?: number;
+};
+
+export type UserBanDTO = {
+    userId: string;
+    isBanned?: boolean;
+    bannedUntilDate?: Date;
 };

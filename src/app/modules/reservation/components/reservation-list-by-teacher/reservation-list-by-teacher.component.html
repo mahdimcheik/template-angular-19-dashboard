@@ -40,9 +40,10 @@
             </td>
             <td class="flex justify-center gap-2 !p-8">
                 <p-button class="m-4" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" *ngIf="reservation.startAt < dateNow()" />
-                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" />
+                <p-button icon="pi pi-plus" class="mr-2" [rounded]="true" [outlined]="true" (onClick)="showDetailsModal(reservation)" />
             </td>
         </tr>
     </ng-template>
 </p-table>
 <p-paginator (onPageChange)="loadReservations($event)" [first]="first" [rows]="rows" [totalRecords]="totalReservations()" [rowsPerPageOptions]="[10]" />
+<app-modal-details-reservation [allowDelete]="false" [reservation]="reservationToShow()" [(visible)]="showDetails"></app-modal-details-reservation>

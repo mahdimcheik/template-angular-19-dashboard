@@ -1,0 +1,39 @@
+<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" header="Details de la résérvation" [modal]="true">
+    <ng-template #content>
+        <p-fluid>
+            <section class="flex flex-col w-full mb-0"></section>
+            <div class="card flex flex-col gap-4 w-full">
+                <h3 class="font-semibold text-xl">Le {{ reservation().startAt | date: 'd MMMM' }}</h3>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex flex-wrap gap-2 w-full justify-between">
+                        <div class="flex flex-col gap-2 w-full">
+                            <label for="endAt" RequiredAsterisk>De</label>
+                            <input pInputText id="title" type="text" [value]="reservation().startAt | date: 'H:mm'" disabled />
+                        </div>
+                        <div class="flex flex-col gap-2 w-full">
+                            <label for="endAt" RequiredAsterisk>À</label>
+                            <input pInputText id="title" type="text" [value]="reservation().endAt | date: 'H:mm'" disabled />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex flex-col flex-wrap w-full">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-2">
+                                <label for="title">Commande <i class="pi pi-copy cursor-pointer" pTooltip="Copier les détails" tooltipPosition="right" (click)="copyOrderDetails()"></i> </label>
+                                <input pInputText id="title" type="text" [value]="reservation().orderNumber" disabled />
+                            </div>
+                            <div class="font-semibold text-xl">Sujet : {{ reservation().typeHelp | helpType }}</div>
+                            <p-message class="text mb-2">{{ reservation().subject }}</p-message>
+                            <textarea *ngIf="reservation().description" pTextarea [value]="reservation().description" disabled class="h-[100px]"></textarea>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-2 mt-4">
+                        <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
+                        <p-button *ngIf="allowDelete()" label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
+                    </div>
+                </div>
+            </div>
+        </p-fluid>
+    </ng-template>
+</p-dialog>
