@@ -20,7 +20,6 @@ export class PaymentsService {
     getcheckout(orderId: string): Observable<CheckoutResponse> {
         return this.http.post<ResponseDTO>(`${this.baseUrl}/payments/create-checkout-session`, { orderId: orderId } as CheckoutRequest).pipe(
             catchError((err) => {
-                console.error('Error getting checkout', err);
                 return throwError(() => err);
             }),
             map((response) => response.data as CheckoutResponse)

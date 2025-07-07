@@ -32,7 +32,6 @@ export class OrderService {
             tap((res) => {
                 this.paidOrders.set(res?.data as OrderResponseDTO[]);
                 this.ordersCount.set(res?.count as number);
-                console.log('Paid Orders', res);
             })
         );
     }

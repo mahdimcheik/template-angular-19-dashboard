@@ -47,9 +47,6 @@ export class AuthService {
     refreshAccessToken = signal<string | null>(null);
     token = signal<string>('');
 
-    /**
-     *
-     */
     constructor() {
         effect(() => {
             this.isAdmin()
@@ -87,24 +84,6 @@ export class AuthService {
             tap((res) => {
                 this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
                 this.token.set((res.data as { token: string; user: UserResponseDTO }).token);
-                // this.model.set(
-                //     this.isAdmin()
-                //         ? [
-                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
-                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
-                //               { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
-                //               { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
-                //           ]
-                //         : [
-                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
-                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
-                //               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
-                //               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
-                //               { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
-                //           ]
-                // );
             })
         );
     }
@@ -112,30 +91,8 @@ export class AuthService {
     refreshToken() {
         return this.http.get<ResponseDTO>(`${environment.BACK_URL}/Users/refresh-token`).pipe(
             tap((res) => {
-                console.log('response refresh token', res);
-
                 this.token.set(res.data.token);
                 this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
-                console.log('new token from interceptor', this.token());
-
-                // this.model.set(
-                //     this.isAdmin()
-                //         ? [
-                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
-                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
-                //               { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
-                //               { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
-                //           ]
-                //         : [
-                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
-                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
-                //               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
-                //               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
-                //               { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
-                //           ]
-                // );
             })
         );
     }
@@ -156,25 +113,6 @@ export class AuthService {
         return this.http.get<ResponseDTO>(`${environment.BACK_URL}/users/my-informations`).pipe(
             tap((res) => {
                 this.userConnected.set((res.data as { token: string; user: UserResponseDTO }).user);
-
-                // this.model.set(
-                //     this.isAdmin()
-                //         ? [
-                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
-                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
-                //               { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
-                //               { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
-                //           ]
-                //         : [
-                //               { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                //               { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/teacher'] },
-                //               { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
-                //               { label: 'Mes Commandes', icon: 'pi pi-cart-arrow-down', routerLink: ['/dashboard/reservation/orders-student'] },
-                //               { label: 'Profil', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/profile/me'] },
-                //               { label: 'Contact', icon: 'pi pi-fw pi-at', routerLink: ['/dashboard/contact'] }
-                //           ]
-                // );
             })
         );
     }
@@ -200,7 +138,6 @@ export class AuthService {
     }
 
     reset(): void {
-        // this.localStorageService.setUser({} as UserResponseDTO);
         this.localStorageService.reset();
         this.userConnected.set({} as UserResponseDTO);
         this.token.set('');

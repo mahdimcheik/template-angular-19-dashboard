@@ -8,13 +8,6 @@ import { environment } from '../../../environments/environment.development';
 })
 export class MailService {
     Httpclient = inject(HttpClient);
-
-    constructor() {}
-    /**
-     * Send an email to the admin
-     * @param Email
-     * @returns Observable<Email>
-     */
     sendEmail(Email: Email) {
         return this.Httpclient.post<Email>(environment.BACK_URL + '/mail/contact-admin', Email);
     }

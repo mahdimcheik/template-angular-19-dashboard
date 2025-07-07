@@ -25,8 +25,6 @@ export class NotificationService {
     updateNotification(notificationId: string, newValue: boolean, query: NotificationFilter): Observable<ResponseDTO> {
         return this.http.put<ResponseDTO>(`${environment.BACK_URL}/notifications/${notificationId}/${newValue}`, {}).pipe(
             tap((res) => {
-                console.log('Notification updated successfully', res);
-
                 this.notifications.update((notifs) => {
                     const index = notifs.findIndex((notif) => notif.id === notificationId);
                     if (index !== -1) {
