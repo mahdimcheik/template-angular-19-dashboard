@@ -8,6 +8,7 @@ import { Table } from 'primeng/table';
 import { BookingResponseDTO } from '../../../../shared/models/slot';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
     selector: 'app-reservations-list-detailed',
@@ -17,6 +18,7 @@ import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
     styleUrls: ['./reservations-list-detailed.component.scss']
 })
 export class ReservationsListDetailedComponent implements OnInit {
+    authService = inject(AuthService);
     @ViewChild('dt') dt!: Table;
 
     private slotService = inject(SlotService);
@@ -34,14 +36,25 @@ export class ReservationsListDetailedComponent implements OnInit {
 
     loadReservations() {
         this.loading = true;
-        this.slotService
-            .getReservationsByTeacher({
-                start: this.first,
-                perPage: this.rows
-            })
-            .subscribe(() => {
-                this.loading = false;
-            });
+        if (this.authService.isAdmin()) {
+            this.slotService
+                .getReservationsByTeacher({
+                    start: this.first,
+                    perPage: this.rows
+                })
+                .subscribe(() => {
+                    this.loading = false;
+                });
+        } else {
+            this.slotService
+                .getReservationsByStudent({
+                    start: this.first,
+                    perPage: this.rows
+                })
+                .subscribe(() => {
+                    this.loading = false;
+                });
+        }
     }
 
     onPageChange(event: any) {
