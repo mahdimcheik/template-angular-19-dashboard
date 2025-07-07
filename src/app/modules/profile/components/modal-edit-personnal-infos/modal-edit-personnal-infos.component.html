@@ -75,10 +75,16 @@
                     <div class="flex flex-wrap flex-col gap-2 w-full">
                         <label for="linkedinUrl">Linkedin</label>
                         <input pInputText id="linkedinUrl" type="text" formControlName="linkedinUrl" />
+                        <div class="error" *ngIf="form.submitted && userForm.controls['linkedinUrl'].errors">
+                            <p-message [hidden]="!userForm.controls['linkedinUrl'].errors['pattern']" severity="error" variant="simple" size="small" styleClass="mt-2">L'URL de Linkedin est invalide</p-message>
+                        </div>
                     </div>
                     <div class="flex flex-wrap flex-col gap-2 w-full">
                         <label for="githubUrl">Github</label>
                         <input pInputText id="githubUrl" type="text" formControlName="githubUrl" />
+                        <div class="error" *ngIf="form.submitted && userForm.controls['githubUrl'].errors">
+                            <p-message [hidden]="!userForm.controls['githubUrl'].errors['pattern']" severity="error" variant="simple" size="small" styleClass="mt-2">L'URL de Github est invalide</p-message>
+                        </div>
                     </div>
 
                     <div class="col-span-12 mt-8 text-center flex justify-center gap-4">

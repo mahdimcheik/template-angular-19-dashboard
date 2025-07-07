@@ -74,8 +74,8 @@ export class ModalEditPersonnalInfosComponent {
             gender: [this.selectedGender],
             title: [this.user().title],
             description: [this.user().description],
-            linkedinUrl: [this.user().linkedinUrl],
-            githubUrl: [this.user().githubUrl]
+            linkedinUrl: [this.user().linkedinUrl, Validators.pattern('^https?://(www\\.)?linkedin\\.com/in/[^/]+$')],
+            githubUrl: [this.user().githubUrl, Validators.pattern('^https?://(www\\.)?github\\.com/[^/]+$')]
         });
     }
     async submit() {
