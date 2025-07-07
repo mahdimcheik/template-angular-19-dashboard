@@ -4,6 +4,7 @@ import { CalendarForStudentComponent } from './pages/calendar-for-student/calend
 import { ReservationsPageComponent } from './pages/reservations-teacher/reservations-teacher.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { isAdminOnlyGuard, isStudentOnlyGuard } from '../../shared/guards/is-admin-only.guard';
+import { ReservationsListDetailedComponent } from './components/reservations-list-detailed/reservations-list-detailed.component';
 export default [
     {
         path: 'calendar-for-teacher',
@@ -17,7 +18,8 @@ export default [
     },
     {
         path: 'list',
-        component: ReservationsPageComponent
+        // component: ReservationsPageComponent
+        component: ReservationsListDetailedComponent
     },
     {
         path: 'orders-student',
