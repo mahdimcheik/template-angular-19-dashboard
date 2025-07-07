@@ -34,7 +34,9 @@
                 <th pSortableColumn="category" class="text-left">Catégorie <p-sortIcon field="category"></p-sortIcon></th>
                 <th pSortableColumn="level" class="text-left">Niveau <p-sortIcon field="level"></p-sortIcon></th>
                 <th pSortableColumn="createdAt" class="text-left">Créé le <p-sortIcon field="createdAt"></p-sortIcon></th>
-                <th class="text-center">Actions</th>
+                @if (authService.isAdmin()) {
+                    <th class="text-center">Actions</th>
+                }
             </tr>
         </ng-template>
 
@@ -53,18 +55,20 @@
                     <span class="text-sm">{{ cursus.category }}</span>
                 </td>
                 <td class="text-left">
-                    <p-badge [value]="cursus.level | cursusLevel" [class]="cursus.level | cursusLevelBadge"></p-badge>
+                    <p-badge [value]="cursus.level | cursusLevel" [class]="cursus.level | cursusLevelBadge" [style]="{ 'font-size': '0.75rem', display: 'flex', 'align-items': 'center', 'justify-content': 'center' }"></p-badge>
                 </td>
                 <td class="text-left">
                     <span class="text-sm">{{ formatDate(cursus.createdAt) }}</span>
                 </td>
-                <td class="text-center">
-                    <div class="flex justify-center gap-2">
-                        <p-button icon="pi pi-eye" severity="info" [outlined]="true" size="small" pTooltip="Voir les détails" (onClick)="viewDetails(cursus)"></p-button>
-                        <p-button icon="pi pi-pencil" severity="danger" [outlined]="true" size="small" pTooltip="Modifier" (onClick)="openEditModal(cursus)"></p-button>
-                        <p-button icon="pi pi-trash" severity="danger" [outlined]="true" size="small" pTooltip="Supprimer" (onClick)="openDeleteModal(cursus)"></p-button>
-                    </div>
-                </td>
+                @if (authService.isAdmin()) {
+                    <td class="text-center">
+                        <div class="flex justify-center gap-2">
+                            <p-button icon="pi pi-eye" severity="info" [outlined]="true" size="small" pTooltip="Voir les détails" (onClick)="viewDetails(cursus)"></p-button>
+                            <p-button icon="pi pi-pencil" severity="danger" [outlined]="true" size="small" pTooltip="Modifier" (onClick)="openEditModal(cursus)"></p-button>
+                            <p-button icon="pi pi-trash" severity="danger" [outlined]="true" size="small" pTooltip="Supprimer" (onClick)="openDeleteModal(cursus)"></p-button>
+                        </div>
+                    </td>
+                }
             </tr>
         </ng-template>
 

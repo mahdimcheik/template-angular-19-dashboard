@@ -16,6 +16,7 @@ import { CursusLevelPipe, CursusLevelBadgePipe, CursusLevelIconPipe } from '../.
 import { ModalAddOrEditCursusComponent } from '../modal-add-or-edit-cursus/modal-add-or-edit-cursus.component';
 import { ModalConfirmDeleteCursusComponent } from '../modal-confirm-delete-cursus/modal-confirm-delete-cursus.component';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
     selector: 'app-cursus-list',
@@ -43,6 +44,7 @@ export class CursusListComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
 
     private cursusService = inject(CursusService);
+    authService = inject(AuthService);
     private router = inject(Router);
 
     cursus = this.cursusService.cursus;
