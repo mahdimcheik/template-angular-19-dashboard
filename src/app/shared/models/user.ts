@@ -11,6 +11,8 @@ export type UserCreateDTO = {
     description?: string;
     gender?: EnumGender;
     phoneNumber: string;
+    linkedinUrl?: string;
+    githubUrl?: string;
 };
 
 export type UserUpdateDTO = {
@@ -21,6 +23,8 @@ export type UserUpdateDTO = {
     dateOfBirth: Date;
     description?: string;
     gender: EnumGender;
+    linkedinUrl?: string;
+    githubUrl?: string;
 };
 
 export type UserChangePasswordDTO = {
@@ -58,6 +62,8 @@ export type UserResponseDTO = {
     roles: string[];
     isBanned?: boolean;
     bannedUntilDate?: Date;
+    linkedinUrl?: string;
+    githubUrl?: string;
 };
 
 export type UserLoginDTO = {

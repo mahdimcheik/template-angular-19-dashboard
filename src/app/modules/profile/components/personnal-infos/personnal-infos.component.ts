@@ -7,10 +7,11 @@ import { MessageModule } from 'primeng/message';
 import { ImageModule } from 'primeng/image';
 import { DobToAgePipe } from '../../../../shared/pipes/dob-to-age.pipe';
 import { ModalEditPersonnalInfosComponent } from '../modal-edit-personnal-infos/modal-edit-personnal-infos.component';
+import { TooltipClasses, TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-personnal-infos',
-    imports: [CommonModule, ButtonModule, MessageModule, ImageModule, DobToAgePipe, ModalEditPersonnalInfosComponent],
+    imports: [CommonModule, ButtonModule, MessageModule, ImageModule, DobToAgePipe, ModalEditPersonnalInfosComponent, TooltipModule],
 
     templateUrl: './personnal-infos.component.html',
     styleUrl: './personnal-infos.component.scss'

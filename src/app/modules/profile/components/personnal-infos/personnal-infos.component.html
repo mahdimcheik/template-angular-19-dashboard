@@ -2,16 +2,28 @@
     <div class="font-semibold text-xxl max-w-full p-1">
         <div class="w-full md:w-auto p-1 md:p-4">
             <div class="flex gap-4 items-center mb-4">
-                <h1 style="color: var(--primary-color); margin-bottom: 0">{{ fullName() | titlecase }}</h1>
+                <h1 style="color: var(--primary-color); margin-bottom: 0">
+                    @if (userToDisplay().title) {
+                        <span> {{ userToDisplay().title | titlecase }}:</span>
+                    }
+                    {{ fullName() | titlecase }}
+                </h1>
                 <p-button *ngIf="canEdit()" icon="pi pi-pencil" (onClick)="open()"></p-button>
             </div>
             <p>
                 {{ userToDisplay().description ?? 'Aucune description' }}
             </p>
             <div class="media flex items-center gap-4 mt-4">
-                <i class="pi pi-facebook"></i>
-                <i class="pi pi-twitter"></i>
-                <i class="pi pi-linkedin"></i>
+                @if (userToDisplay().githubUrl) {
+                    <a [href]="userToDisplay().githubUrl" target="_blank">
+                        <i class="pi pi-github"></i>
+                    </a>
+                }
+                @if (userToDisplay().linkedinUrl) {
+                    <a [href]="userToDisplay().linkedinUrl" target="_blank">
+                        <i class="pi pi-linkedin"></i>
+                    </a>
+                }
             </div>
             <div class="" class="media gap-4 mt-4" *ngIf="userToDisplay().isBanned">
                 <p-message variant="text" severity="warn" message>Votre compte est banni jusqu'au {{ userToDisplay().bannedUntilDate | date: 'dd MMMM yy' }}</p-message>
@@ -33,14 +45,20 @@
             <div class="font-semibold mb-4 flex flex-col justify-between items-center">{{ userToDisplay().dateOfBirth | dobToAge }} ans</div>
 
             <!-- <div class="flex items-center justify-center">{{ userToDisplay().title | titlecase }}</div> -->
-            <div class="flex items-center justify-center gap-2 mr-2 ml-2" *ngIf="!canEdit()">
-                <span>
-                    <p-button icon="pi pi-linkedin" severity="info" [outlined]="true" label="Linkedin" />
-                </span>
-                <span>
-                    <p-button icon="pi pi-github" severity="primary" [outlined]="true" label="Github" />
-                </span>
-            </div>
+            @if (!canEdit()) {
+                <div class="flex items-center justify-center gap-2 mr-2 ml-2">
+                    @if (userToDisplay().linkedinUrl) {
+                        <span>
+                            <p-button icon="pi pi-linkedin" severity="info" [outlined]="true" label="Linkedin" />
+                        </span>
+                    }
+                    @if (userToDisplay().githubUrl) {
+                        <span>
+                            <p-button icon="pi pi-github" severity="primary" [outlined]="true" label="Github" />
+                        </span>
+                    }
+                </div>
+            }
         </div>
     </div>
 </div>

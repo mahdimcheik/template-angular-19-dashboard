@@ -73,7 +73,9 @@ export class ModalEditPersonnalInfosComponent {
             dateOfBirth: [new Date(this.user().dateOfBirth), [Validators.required]],
             gender: [this.selectedGender],
             title: [this.user().title],
-            description: [this.user().description]
+            description: [this.user().description],
+            linkedinUrl: [this.user().linkedinUrl],
+            githubUrl: [this.user().githubUrl]
         });
     }
     async submit() {
@@ -84,7 +86,9 @@ export class ModalEditPersonnalInfosComponent {
             dateOfBirth: this.userForm.value['dateOfBirth'],
             gender: this.userForm.value['gender'].value,
             title: this.userForm.value['title'] ? this.userForm.value['title'] : this.user().title,
-            description: this.userForm.value['description']
+            description: this.userForm.value['description'],
+            linkedinUrl: this.userForm.value['linkedinUrl'],
+            githubUrl: this.userForm.value['githubUrl']
         };
 
         if (this.fileName && this.file != null) {
