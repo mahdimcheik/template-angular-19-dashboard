@@ -9,11 +9,12 @@ import { TokenInterceptor } from './app/shared/interceptors/token.interceptor';
 import { errorHandlerInterceptor } from './app/shared/interceptors/error-handler.interceptor';
 import { MessageService } from 'primeng/api';
 import { cookiesInterceptor } from './app/shared/interceptors/cookies.interceptor';
+import { loaderInterceptor } from './app/shared/interceptors/loader.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
-        provideHttpClient(withInterceptors([TokenInterceptor, cookiesInterceptor, errorHandlerInterceptor])), // errorHandlerInterceptor
+        provideHttpClient(withInterceptors([TokenInterceptor, cookiesInterceptor, errorHandlerInterceptor, loaderInterceptor])), // errorHandlerInterceptor
         MessageService,
         { provide: LOCALE_ID, useValue: 'fr-FR' },
         provideAnimationsAsync(),

@@ -9,6 +9,7 @@ import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { QueryPanigation } from '../../../shared/models/slot';
 import { NotificationFilter } from '../../../shared/models/notification';
+import { catchError, of } from 'rxjs';
 
 @Component({
     standalone: true,
