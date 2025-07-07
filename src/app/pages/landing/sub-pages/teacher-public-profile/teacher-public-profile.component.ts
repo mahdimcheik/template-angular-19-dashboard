@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { UserResponseDTO } from '../../../../shared/models/user';
@@ -13,11 +13,11 @@ import { ImageModule } from 'primeng/image';
     styleUrl: './teacher-public-profile.component.scss'
 })
 export class TeacherPublicProfileComponent implements OnInit {
-    teacherProfile!: UserResponseDTO;
+    teacherProfile = signal<UserResponseDTO>({} as UserResponseDTO);
     authService = inject(AuthService);
     ngOnInit(): void {
         this.authService.getTeacherProfile().subscribe((res) => {
-            this.teacherProfile = res.data as UserResponseDTO;
+            this.teacherProfile.set(res.data as UserResponseDTO);
         });
     }
 }
