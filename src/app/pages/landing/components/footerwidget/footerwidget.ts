@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { LayoutService } from '../../../../../layout/service/layout.service';
+import { LayoutService } from '../../../../layout/service/layout.service';
 import { ButtonModule } from 'primeng/button';
 
 @Component({

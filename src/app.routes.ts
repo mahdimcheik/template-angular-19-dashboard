@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './app/layout/component/app.layout';
-import { Landing } from './app/modules/pages/landing/landing';
-import { Notfound } from './app/modules/pages/notfound/notfound';
-import { SettingsComponent } from './app/modules/pages/settings/settings.component';
+import { Landing } from './app/pages/landing/landing';
+import { Notfound } from './app/pages/notfound/notfound';
+import { SettingsComponent } from './app/pages/settings/settings.component';
 import { PaymentSuccessComponent } from './app/modules/reservation/components/payment-success/payment-success.component';
 import { StudentListComponent } from './app/modules/students/student-list/student-list.component';
 import { isConnectedGuard } from './app/shared/guards/can-login.guard';
@@ -15,7 +15,7 @@ export const appRoutes: Routes = [
     {
         path: '',
         component: Landing,
-        loadChildren: () => import('./app/modules/pages/pages.routes')
+        loadChildren: () => import('./app/pages/landing/landing.routes')
     },
     {
         path: 'dashboard',
@@ -23,7 +23,7 @@ export const appRoutes: Routes = [
         canActivate: [isConnectedGuard],
         children: [
             { path: '', component: Dashboard },
-            { path: 'pages', loadChildren: () => import('./app/modules/pages/pages.routes') },
+            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
             { path: 'settings', component: SettingsComponent },
             {
                 path: 'reservation',

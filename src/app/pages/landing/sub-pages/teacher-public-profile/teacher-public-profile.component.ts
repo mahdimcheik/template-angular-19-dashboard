@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
-import { UserResponseDTO } from '../../../../../shared/models/user';
-import { AuthService } from '../../../../../shared/services/auth.service';
+import { UserResponseDTO } from '../../../../shared/models/user';
+import { AuthService } from '../../../../shared/services/auth.service';
 import { ImageModule } from 'primeng/image';
 
 @Component({

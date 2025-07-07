@@ -11,7 +11,7 @@ import { AppConfigurator } from './app/layout/component/app.configurator';
 import { ConnectionService } from './app/shared/services/connection.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CommonModule } from '@angular/common';
-import { OverlaySpinnerComponent } from './app/modules/pages/landing/components/overlay-spinner/overlay-spinner.component';
+import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-spinner/overlay-spinner.component';
 
 @Component({
     selector: 'app-root',
