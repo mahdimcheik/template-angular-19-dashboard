@@ -2,8 +2,12 @@
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-2xl font-semibold text-gray-800">Reservations</h2>
         <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input #searchInput pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..." class="p-inputtext-sm" />
+            <p-iconfield>
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText placeholder="Numéro commande" (input)="onGlobalFilter(dt, $event)" />
+            </p-iconfield>
         </span>
     </div>
 
@@ -23,14 +27,13 @@
     >
         <ng-template pTemplate="header">
             <tr class="bg-gray-50">
-                <th class="text-left">Order #</th>
-                <th class="text-left">Student</th>
-                <th class="text-left">Subject</th>
+                <th class="text-left">Commande</th>
+                <th class="text-left">Étudiant</th>
+                <th class="text-left">Sujet</th>
                 <th class="text-left">Type</th>
-                <th class="text-left">Start Time</th>
-                <th class="text-left">End Time</th>
-                <th class="text-right">Price</th>
-                <th class="text-center">Actions</th>
+                <th class="text-left">Début</th>
+                <th class="text-left">Fin</th>
+                <th class="text-right">Prix</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reservation>
@@ -47,11 +50,6 @@
                 <td class="text-left">{{ formatDate(reservation.startAt) }}</td>
                 <td class="text-left">{{ formatDate(reservation.endAt) }}</td>
                 <td class="text-right">{{ reservation.discountedPrice | currency: 'EUR' }}</td>
-                <td class="text-center">
-                    <div class="flex justify-center gap-2">
-                        <button pButton type="button" icon="pi pi-eye" class="p-button-rounded p-button-text p-button-sm" pTooltip="View Details"></button>
-                    </div>
-                </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -59,7 +57,7 @@
                 <td colspan="8" class="text-center p-4">
                     <div class="flex flex-col items-center justify-center">
                         <i class="pi pi-calendar-times text-gray-400 text-5xl mb-2"></i>
-                        <span class="text-gray-500">No reservations found</span>
+                        <span class="text-gray-500">Aucune réservation trouvée</span>
                     </div>
                 </td>
             </tr>
@@ -69,7 +67,7 @@
                 <td colspan="8" class="text-center p-4">
                     <div class="flex flex-col items-center justify-center">
                         <i class="pi pi-spin pi-spinner text-primary text-5xl mb-2"></i>
-                        <span class="text-gray-500">Loading reservations...</span>
+                        <span class="text-gray-500">Chargement des réservations...</span>
                     </div>
                 </td>
             </tr>

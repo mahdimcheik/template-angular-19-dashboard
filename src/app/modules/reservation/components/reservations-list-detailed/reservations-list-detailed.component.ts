@@ -9,18 +9,23 @@ import { BookingResponseDTO } from '../../../../shared/models/slot';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { AuthService } from '../../../../shared/services/auth.service';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { TooltipModule } from 'primeng/tooltip';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-reservations-list-detailed',
     standalone: true,
-    imports: [CommonModule, TableModule, ButtonModule, InputTextModule, PaginatorModule, HelpTypePipe],
+    imports: [CommonModule, TableModule, ButtonModule, InputTextModule, PaginatorModule, HelpTypePipe, IconFieldModule, InputIconModule, TooltipModule],
     templateUrl: './reservations-list-detailed.component.html',
     styleUrls: ['./reservations-list-detailed.component.scss']
 })
 export class ReservationsListDetailedComponent implements OnInit {
     authService = inject(AuthService);
-    @ViewChild('dt') dt!: Table;
+    router = inject(Router);
 
+    @ViewChild('dt') dt!: Table;
     private slotService = inject(SlotService);
 
     reservations = this.slotService.bookings;
@@ -69,5 +74,9 @@ export class ReservationsListDetailedComponent implements OnInit {
 
     formatDate(date: Date): string {
         return new Date(date).toLocaleString();
+    }
+
+    onViewDetails(reservation: BookingResponseDTO) {
+        this.router.navigate(['/dashboard/reservation/details', reservation.id]);
     }
 }
