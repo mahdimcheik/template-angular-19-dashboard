@@ -1,0 +1,70 @@
+<p-drawer [(visible)]="visibleRight" position="right" [closable]="true" [modal]="true" (onHide)="close()" styleClass="!w-full md:!w-100 lg:!w-[50rem] md:!mb-0 lg:!mb-0">
+    <div class="flex flex-col items-center justify-center">
+        <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
+            <div class="text-center">
+                <img [src]="layoutService.layoutConfig().darkTheme ? 'assets/skillHiveSecondaryWhite.svg' : 'assets/skillHiveSecondaryBlack.svg'" alt="logo" width="100" class="mb-8 w-full md:w-1/2 shrink-0 mx-auto" />
+                <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Gestion des Cursus</div>
+                <span class="text-muted-color font-medium">{{ title }}</span>
+            </div>
+
+            <p-fluid>
+                <form class="flex" [formGroup]="cursusForm" (ngSubmit)="cursusForm.valid && submit()" #form="ngForm">
+                    <div class="card flex flex-col gap-6 w-full">
+                        <div class="font-semibold text-xl">{{ title }}</div>
+
+                        <!-- Name Field -->
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="name" class="text-surface-900 dark:text-surface-0 font-medium"> Nom du cursus <span class="text-red-500">*</span> </label>
+                            <input pInputText id="name" type="text" formControlName="name" placeholder="Ex: Introduction à Angular" class="w-full" />
+                            <div class="error" *ngIf="getFieldError('name')">
+                                <p-message severity="error" variant="simple" size="small" styleClass="mt-2">
+                                    {{ getFieldError('name') }}
+                                </p-message>
+                            </div>
+                        </div>
+
+                        <!-- Description Field -->
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="description" class="text-surface-900 dark:text-surface-0 font-medium"> Description <span class="text-red-500">*</span> </label>
+                            <textarea pTextarea id="description" formControlName="description" placeholder="Décrivez le contenu et les objectifs du cursus..." rows="4" class="w-full"></textarea>
+                            <div class="error" *ngIf="getFieldError('description')">
+                                <p-message severity="error" variant="simple" size="small" styleClass="mt-2">
+                                    {{ getFieldError('description') }}
+                                </p-message>
+                            </div>
+                        </div>
+
+                        <!-- Level and Category Fields -->
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="level" class="text-surface-900 dark:text-surface-0 font-medium"> Niveau <span class="text-red-500">*</span> </label>
+                                <p-select id="level" formControlName="level" [options]="levelsList" optionLabel="name" placeholder="Sélectionnez le niveau" class="w-full"></p-select>
+                                <div class="error" *ngIf="getFieldError('level')">
+                                    <p-message severity="error" variant="simple" size="small" styleClass="mt-2">
+                                        {{ getFieldError('level') }}
+                                    </p-message>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="category" class="text-surface-900 dark:text-surface-0 font-medium"> Catégorie <span class="text-red-500">*</span> </label>
+                                <p-select id="category" formControlName="category" [options]="categoriesList" optionLabel="name" placeholder="Sélectionnez la catégorie" class="w-full"></p-select>
+                                <div class="error" *ngIf="getFieldError('category')">
+                                    <p-message severity="error" variant="simple" size="small" styleClass="mt-2">
+                                        {{ getFieldError('category') }}
+                                    </p-message>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="col-span-12 mt-8 text-center flex justify-center gap-4">
+                            <p-button label="Annuler" type="button" severity="secondary" [outlined]="true" styleClass="min-w-[100px]" (onClick)="close()" />
+                            <p-button [label]="updateOrAdd() === 'update' ? 'Modifier' : 'Ajouter'" type="submit" severity="success" styleClass="min-w-[100px]" [disabled]="!cursusForm.valid" />
+                        </div>
+                    </div>
+                </form>
+            </p-fluid>
+        </div>
+    </div>
+</p-drawer>

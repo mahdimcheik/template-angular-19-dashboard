@@ -1,0 +1,112 @@
+<div class="card p-4">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-semibold text-gray-800">Gestion des Cursus</h2>
+        <div class="flex gap-2 items-center">
+            <p-iconfield>
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText placeholder="Rechercher..." (input)="onGlobalFilter(dt, $event)" class="p-inputtext-sm" />
+            </p-iconfield>
+            <p-button icon="pi pi-plus" label="Nouveau Cursus" severity="success" (onClick)="openAddModal()"></p-button>
+        </div>
+    </div>
+
+    <p-table
+        #dt
+        [value]="cursus()"
+        [loading]="loading()"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [globalFilterFields]="['name', 'description', 'category', 'level']"
+        currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} entrées"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        styleClass="p-datatable-sm"
+        [sortField]="'name'"
+        [sortOrder]="1"
+    >
+        <ng-template pTemplate="header">
+            <tr class="bg-gray-50">
+                <th pSortableColumn="name" class="text-left">Nom <p-sortIcon field="name"></p-sortIcon></th>
+                <th class="text-left">Description</th>
+                <th pSortableColumn="category" class="text-left">Catégorie <p-sortIcon field="category"></p-sortIcon></th>
+                <th pSortableColumn="level" class="text-left">Niveau <p-sortIcon field="level"></p-sortIcon></th>
+                <th pSortableColumn="createdAt" class="text-left">Créé le <p-sortIcon field="createdAt"></p-sortIcon></th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-cursus>
+            <tr class="hover:bg-gray-50">
+                <td class="text-left">
+                    <div class="flex items-center gap-2">
+                        <i [class]="cursus.level | cursusLevelIcon" class="text-lg"></i>
+                        <span class="font-medium">{{ cursus.name }}</span>
+                    </div>
+                </td>
+                <td class="text-left">
+                    <span class="text-sm text-gray-600">{{ cursus.description | slice: 0 : 100 }}{{ cursus.description.length > 100 ? '...' : '' }}</span>
+                </td>
+                <td class="text-left">
+                    <span class="text-sm">{{ cursus.category }}</span>
+                </td>
+                <td class="text-left">
+                    <p-badge [value]="cursus.level | cursusLevel" [class]="cursus.level | cursusLevelBadge"></p-badge>
+                </td>
+                <td class="text-left">
+                    <span class="text-sm">{{ formatDate(cursus.createdAt) }}</span>
+                </td>
+                <td class="text-center">
+                    <div class="flex justify-center gap-2">
+                        <p-button icon="pi pi-eye" severity="info" [outlined]="true" size="small" pTooltip="Voir les détails" (onClick)="viewDetails(cursus)"></p-button>
+                        <p-button icon="pi pi-pencil" severity="danger" [outlined]="true" size="small" pTooltip="Modifier" (onClick)="openEditModal(cursus)"></p-button>
+                        <p-button icon="pi pi-trash" severity="danger" [outlined]="true" size="small" pTooltip="Supprimer" (onClick)="openDeleteModal(cursus)"></p-button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6" class="text-center p-4">
+                    <div class="flex flex-col items-center justify-center">
+                        <i class="pi pi-book text-gray-400 text-5xl mb-2"></i>
+                        <span class="text-gray-500">Aucun cursus trouvé</span>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+            <tr>
+                <td colspan="6" class="text-center p-4">
+                    <div class="flex flex-col items-center justify-center">
+                        <i class="pi pi-spin pi-spinner text-primary text-5xl mb-2"></i>
+                        <span class="text-gray-500">Chargement des cursus...</span>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- Modals -->
+<app-modal-add-or-edit-cursus
+    *ngIf="visibleAddEdit()"
+    [updateOrAdd]="updateOrAdd()"
+    [(visibleRight)]="visibleAddEdit"
+    [cursusToChange]="selectedCursus()"
+    (onClose)="closeAddEditModal()"
+    (actionEmitter)="onCursusUpdated()"
+></app-modal-add-or-edit-cursus>
+
+<app-modal-confirm-delete-cursus
+    *ngIf="visibleDelete()"
+    [(visible)]="visibleDelete"
+    [title]="'Supprimer le cursus'"
+    [question]="'Êtes-vous sûr de vouloir supprimer le cursus ' + selectedCursus()?.name + ' ?'"
+    (onDeleteConfirmed)="onDeleteConfirmed()"
+    (onCancel)="closeDeleteModal()"
+></app-modal-confirm-delete-cursus>

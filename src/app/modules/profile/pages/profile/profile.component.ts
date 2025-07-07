@@ -11,10 +11,11 @@ import { FormationResponseDTO } from '../../../../shared/models/formation';
 import { AdresseService } from '../../../../shared/services/adresse.service';
 import { AdresseDTO } from '../../../../shared/models/adresse';
 import { UserResponseDTO } from '../../../../shared/models/user';
+import { CursusListComponent } from '../../../cursus/components/cursus-list/cursus-list.component';
 
 @Component({
     selector: 'app-profile',
-    imports: [CommonModule, ButtonModule, DividerModule, AdressesListComponent, PersonnalInfosComponent, FormationsListComponent],
+    imports: [CommonModule, ButtonModule, DividerModule, AdressesListComponent, PersonnalInfosComponent, FormationsListComponent, CursusListComponent],
 
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.scss'
