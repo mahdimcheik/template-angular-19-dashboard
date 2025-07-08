@@ -51,7 +51,7 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
     ngOnInit(): void {
         this.isLoading.set(true);
-        this.getLevelsAndCategories();
+        // this.getLevelsAndCategories();
 
         if (this.updateOrAdd() === 'update' && this.cursusToChange()) {
             this.title = 'Modifier le cursus';
@@ -80,11 +80,15 @@ export class ModalAddOrEditCursusComponent implements OnInit {
         }
     }
 
-    async getLevelsAndCategories() {
-        await firstValueFrom(this.cursusService.getCursusLevels());
-        await firstValueFrom(this.cursusService.getCursusCategories());
-        this.isLoading.set(false);
-    }
+    // async getLevelsAndCategories() {
+    //     await firstValueFrom(this.cursusService.getCursusLevels());
+    //     await firstValueFrom(this.cursusService.getCursusCategories());
+    //     this.cursusForm.patchValue({
+    //         level: this.selectedLevel,
+    //         category: this.selectedCategory
+    //     });
+    //     this.isLoading.set(false);
+    // }
 
     close() {
         this.visibleRight.set(false);

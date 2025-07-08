@@ -19,6 +19,7 @@ export type { BookingCreateDTO } from './models/BookingCreateDTO';
 export type { BookingResponseDTO } from './models/BookingResponseDTO';
 export type { BookingResponseDTOListResponseDTO } from './models/BookingResponseDTOListResponseDTO';
 export type { Category } from './models/Category';
+export type { CategoryDTO } from './models/CategoryDTO';
 export type { CategoryIEnumerableResponseDTO } from './models/CategoryIEnumerableResponseDTO';
 export type { CheckoutRequest } from './models/CheckoutRequest';
 export type { CreateCursusDto } from './models/CreateCursusDto';
@@ -39,6 +40,7 @@ export type { FormationResponseDTOListResponseDTO } from './models/FormationResp
 export type { FormationResponseDTOResponseDTO } from './models/FormationResponseDTOResponseDTO';
 export type { FormationUpdateDTO } from './models/FormationUpdateDTO';
 export type { Level } from './models/Level';
+export type { LevelDTO } from './models/LevelDTO';
 export type { LevelIEnumerableResponseDTO } from './models/LevelIEnumerableResponseDTO';
 export type { LoginOutputDTO } from './models/LoginOutputDTO';
 export type { LoginOutputDTOResponseDTO } from './models/LoginOutputDTOResponseDTO';

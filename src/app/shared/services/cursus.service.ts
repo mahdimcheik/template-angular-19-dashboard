@@ -75,9 +75,7 @@ export class CursusMainService {
         return this.cursusService.deleteCursus(cursusId).pipe(
             delay(500),
             tap((res) => {
-                if (res.status === 204) {
-                    this.cursus.update((oldList) => oldList.filter((x) => x.id !== cursusId));
-                }
+                this.cursus.update((oldList) => oldList.filter((x) => x.id !== cursusId));
             })
         );
     }

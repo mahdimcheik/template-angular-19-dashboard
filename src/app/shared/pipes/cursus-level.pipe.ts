@@ -1,5 +1,6 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { Level } from '../../api/models/Level';
+import { CursusMainService } from '../services/cursus.service';
 
 @Pipe({
     name: 'cursusLevel'
@@ -7,11 +8,11 @@ import { Level } from '../../api/models/Level';
 export class CursusLevelPipe implements PipeTransform {
     transform(level: string): string {
         switch (level) {
-            case 'beginner':
+            case 'Débutant':
                 return 'Débutant';
-            case 'intermediate':
+            case 'Intermédiaire':
                 return 'Intermédiaire';
-            case 'advanced':
+            case 'Avancé':
                 return 'Avancé';
             default:
                 return 'Non défini';
@@ -25,11 +26,11 @@ export class CursusLevelPipe implements PipeTransform {
 export class CursusLevelBadgePipe implements PipeTransform {
     transform(level: string): string {
         switch (level) {
-            case 'beginner':
+            case 'Débutant':
                 return 'p-badge-success';
-            case 'intermediate':
+            case 'Intermédiaire':
                 return 'p-badge-warning';
-            case 'advanced':
+            case 'Avancé':
                 return 'p-badge-danger';
             default:
                 return 'p-badge-secondary';
@@ -43,14 +44,14 @@ export class CursusLevelBadgePipe implements PipeTransform {
 export class CursusLevelIconPipe implements PipeTransform {
     transform(level: string): string {
         switch (level) {
-            case 'beginner':
+            case 'Débutant':
                 return 'pi pi-star';
-            case 'intermediate':
+            case 'Intermédiaire':
                 return 'pi pi-star-fill';
-            case 'advanced':
+            case 'Avancé':
                 return 'pi pi-crown';
             default:
-                return 'pi pi-question';
+                return 'pi pi-crown-fill';
         }
     }
 }

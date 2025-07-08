@@ -10,13 +10,13 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { Router } from '@angular/router';
-import { CursusLevelPipe, CursusLevelBadgePipe, CursusLevelIconPipe } from '../../../../shared/pipes/cursus-level.pipe';
+import { CursusLevelPipe, CursusLevelIconPipe } from '../../../../shared/pipes/cursus-level.pipe';
 import { ModalAddOrEditCursusComponent } from '../modal-add-or-edit-cursus/modal-add-or-edit-cursus.component';
 import { ModalConfirmDeleteCursusComponent } from '../modal-confirm-delete-cursus/modal-confirm-delete-cursus.component';
 import { firstValueFrom } from 'rxjs';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { CursusMainService } from '../../../../shared/services/cursus.service';
-import { CursusDto } from '../../../../api';
+import { CursusDto, UpdateCursusDto } from '../../../../api';
 
 @Component({
     selector: 'app-cursus-list',
@@ -32,7 +32,6 @@ import { CursusDto } from '../../../../api';
         IconFieldModule,
         InputIconModule,
         CursusLevelPipe,
-        CursusLevelBadgePipe,
         CursusLevelIconPipe,
         ModalAddOrEditCursusComponent,
         ModalConfirmDeleteCursusComponent
@@ -77,13 +76,17 @@ export class CursusListComponent implements OnInit {
     }
 
     // Modal operations
-    openAddModal() {
+    async openAddModal() {
+        await this.getLevelsAndCategories();
+
         this.updateOrAdd.set('add');
         this.selectedCursus.set(null);
         this.visibleAddEdit.set(true);
     }
 
-    openEditModal(cursus: CursusDto) {
+    async openEditModal(cursus: CursusDto) {
+        await this.getLevelsAndCategories();
+
         this.updateOrAdd.set('update');
         this.selectedCursus.set(cursus);
         this.visibleAddEdit.set(true);
@@ -108,18 +111,38 @@ export class CursusListComponent implements OnInit {
         if (this.selectedCursus()) {
             try {
                 await firstValueFrom(this.cursusService.deleteCursus(this.selectedCursus()?.id ?? ''));
+
                 this.closeDeleteModal();
             } finally {
             }
         }
     }
 
-    onCursusUpdated() {
-        this.loadCursus();
-        this.closeAddEditModal();
+    async onCursusUpdated() {
+        if (this.selectedCursus()) {
+            try {
+                await firstValueFrom(this.cursusService.updateCursus(this.selectedCursus()! as UpdateCursusDto));
+            } finally {
+                this.closeAddEditModal();
+            }
+        } else {
+            this.closeAddEditModal();
+        }
     }
 
     viewDetails(cursus: CursusDto) {
         this.router.navigate(['/cursus', cursus.id]);
+    }
+
+    async getLevelsAndCategories() {
+        try {
+            if (this.cursusService.levels().length === 0) {
+                await firstValueFrom(this.cursusService.getCursusLevels());
+            }
+            if (this.cursusService.categories().length === 0) {
+                await firstValueFrom(this.cursusService.getCursusCategories());
+            }
+        } finally {
+        }
     }
 }
