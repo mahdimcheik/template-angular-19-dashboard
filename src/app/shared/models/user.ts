@@ -1,37 +1,3 @@
-// export type UserCreateDTO = {
-//     email: string;
-//     password: string;
-//     confirmPassword: string;
-//     firstName: string;
-//     lastName: string;
-//     title?: string;
-//     dateOfBirth: Date;
-//     description?: string;
-//     gender?: EnumGender;
-//     phoneNumber: string;
-//     linkedinUrl?: string;
-//     githubUrl?: string;
-// };
-
-// export type UserUpdateDTO = {
-//     email: string;
-//     firstName: string;
-//     lastName: string;
-//     title?: string;
-//     dateOfBirth: Date;
-//     description?: string;
-//     gender: EnumGender;
-//     linkedinUrl?: string;
-//     githubUrl?: string;
-// };
-
-// export type UserChangePasswordDTO = {
-//     userId: string;
-//     resetToken: string;
-//     password?: string;
-//     passwordConfirmation?: string;
-// };
-
 export enum EnumGender {
     Homme = 0,
     Femme = 1,
@@ -44,40 +10,3 @@ export type GenderDropDown = {
     name: string;
     value: number;
 };
-
-// export type UserResponseDTO = {
-//     id: string;
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     imgUrl: string;
-//     dateOfBirth: Date;
-//     lastLogginAt: Date;
-//     gender: EnumGender;
-//     emailConfirmed: boolean;
-//     title?: string;
-//     description?: string;
-//     roles: string[];
-//     isBanned?: boolean;
-//     bannedUntilDate?: Date;
-//     linkedinUrl?: string;
-//     githubUrl?: string;
-// };
-
-// export type UserLoginDTO = {
-//     email: string;
-//     password: string;
-// };
-
-// export type ResponseDTO = {
-//     message: string;
-//     status: number;
-//     data?: any;
-//     count?: number;
-// };
-
-// export type UserBanDTO = {
-//     userId: string;
-//     isBanned?: boolean;
-//     bannedUntilDate?: Date;
-// };
