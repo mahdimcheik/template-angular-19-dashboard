@@ -57,8 +57,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
             this.title = 'Modifier le cursus';
             const cursus = this.cursusToChange()!;
 
-            this.selectedLevel = this.levelsList().find((x) => x.name === cursus.level?.name) ?? this.levelsList()[0];
-            this.selectedCategory = this.categoriesList().find((x) => x.name === cursus.category?.name) ?? this.categoriesList()[0];
+            this.selectedLevel = this.levelsList().find((x) => x.id === cursus.levelId) ?? this.levelsList()[0];
+            this.selectedCategory = this.categoriesList().find((x) => x.id === cursus.categoryId) ?? this.categoriesList()[0];
 
             this.cursusForm = this.fb.group({
                 name: [cursus.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],

@@ -9,3 +9,4 @@ export type UpdateCursusDto = {
     levelId?: string | null;
     categoryId?: string | null;
 };
+

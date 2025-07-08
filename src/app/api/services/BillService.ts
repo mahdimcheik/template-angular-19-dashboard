@@ -14,12 +14,12 @@ export class BillService {
     constructor(public readonly http: HttpClient) {}
     /**
      * @param orderId
-     * @returns binary PDF file
+     * @returns any OK
      * @throws ApiError
      */
     public getBillExport(
         orderId?: string,
-    ): Observable<Blob> {
+    ): Observable<any> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
             url: '/bill/export',
