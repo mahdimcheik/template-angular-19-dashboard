@@ -6,7 +6,7 @@ import { catchError, finalize, firstValueFrom, switchMap } from 'rxjs';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { Title } from '@angular/platform-browser';
 import { BookingCreateDTO, SlotResponseDTO } from '../../../../shared/models/slot';
-import { OrderService } from '../../../../shared/services/order.service';
+import { OrderMainService } from '../../../../shared/services/orderMain.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
@@ -50,7 +50,7 @@ export class ModalBookOrUnbookComponent implements OnInit {
 
     fb = inject(FormBuilder);
     slotService = inject(SlotService);
-    orderService = inject(OrderService);
+    orderService = inject(OrderMainService);
     messageService = inject(MessageService);
 
     type = {

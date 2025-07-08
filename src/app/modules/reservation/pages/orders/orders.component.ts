@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { OrderService } from '../../../../shared/services/order.service';
+import { OrderMainService } from '../../../../shared/services/orderMain.service';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputIconModule } from 'primeng/inputicon';
@@ -22,7 +22,7 @@ import { CountdownToPayComponent } from '../../components/countdown-to-pay/count
     styleUrl: './orders.component.scss'
 })
 export class OrdersComponent implements OnInit {
-    orderService = inject(OrderService);
+    orderService = inject(OrderMainService);
     currentOrder = this.orderService.currentOrder;
 
     router = inject(Router);

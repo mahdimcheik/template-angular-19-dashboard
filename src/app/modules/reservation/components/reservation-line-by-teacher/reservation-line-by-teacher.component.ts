@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { BookingResponseDTO } from '../../../../shared/models/slot';
+import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
 import { ButtonModule } from 'primeng/button';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 

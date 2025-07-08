@@ -1,5 +1,5 @@
 import { Component, inject, input, output, signal } from '@angular/core';
-import { BookingResponseDTO } from '../../../../shared/models/slot';
+import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
 import { OrderStatusPipe } from '../../../../shared/pipes/order-status.pipe';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,8 @@ import { SlotService } from '../../../../shared/services/slot.service';
 import { catchError } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ResponseDTO } from '../../../../shared/models/user';
-import { OrderService } from '../../../../shared/services/order.service';
+import { OrderMainService } from '../../../../shared/services/orderMain.service';
+import { EnumBookingStatus } from '../../../../api/models/EnumBookingStatus';
 
 @Component({
     selector: 'app-card-item-order',
@@ -26,15 +27,15 @@ export class CardItemOrderComponent {
 
     detailed = input<boolean>(false);
     orderNumber = input.required<string>();
-    orderStatus = input.required<number>();
+    orderStatus = input.required<EnumBookingStatus>();
 
     slotService = inject(SlotService);
-    orderService = inject(OrderService);
+    orderService = inject(OrderMainService);
     messageService = inject(MessageService);
 
     deleteReservation() {
         this.slotService
-            .unbookReservationByStudent(this.booking().slotId)
+            .unbookReservationByStudent(this.booking().slotId!)
             .pipe(
                 catchError((err) => {
                     this.messageService.add({

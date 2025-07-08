@@ -2,9 +2,8 @@ import { Component, DestroyRef, inject, OnInit, signal, viewChild } from '@angul
 import { OrderComponent } from '../order/order.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { OrderService } from '../../../../shared/services/order.service';
+import { OrderMainService, OrderPagination } from '../../../../shared/services/orderMain.service';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
-import { OrderPagination } from '../../../../shared/models/slot';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { InputIconModule } from 'primeng/inputicon';
@@ -13,7 +12,7 @@ import { IconField } from 'primeng/iconfield';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { InputTextModule } from 'primeng/inputtext';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { OrderResponseDTO } from '../../../../shared/models/order';
+import { OrderResponseDTO } from '../../../../shared/services/orderMain.service';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -24,7 +23,7 @@ import { MessageService } from 'primeng/api';
 })
 export class OrdersHistoryComponent implements OnInit {
     authService = inject(AuthService);
-    orderService = inject(OrderService);
+    orderService = inject(OrderMainService);
 
     //pagination
     first = 0; // premier element
@@ -57,7 +56,7 @@ export class OrdersHistoryComponent implements OnInit {
 
             this.orderService.getPaidOrders(this.filter).subscribe((res) => {
                 this.count = res.count ?? 0;
-                this.orders.set(res.data);
+                this.orders.set(res.data as OrderResponseDTO[]);
                 if (this.paginatorRef()) {
                     this.paginatorRef()?.updateFirst();
                 }

@@ -5,7 +5,7 @@ import { ToastModule } from 'primeng/toast';
 import { LocalstorageService } from './app/shared/services/localstorage.service';
 import { AuthService } from './app/shared/services/auth.service';
 import { catchError, of, switchMap } from 'rxjs';
-import { OrderService } from './app/shared/services/order.service';
+import { OrderMainService } from './app/shared/services/orderMain.service';
 import { LayoutService } from './app/layout/service/layout.service';
 import { AppConfigurator } from './app/layout/component/app.configurator';
 import { ConnectionService } from './app/shared/services/connection.service';
@@ -38,7 +38,7 @@ import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-
 export class AppComponent implements OnInit {
     localStorageService = inject(LocalstorageService);
     authService = inject(AuthService);
-    orderService = inject(OrderService);
+    orderService = inject(OrderMainService);
     layoutService = inject(LayoutService);
     router = inject(Router);
     connectionService = inject(ConnectionService);

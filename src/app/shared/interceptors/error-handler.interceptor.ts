@@ -14,6 +14,8 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(req).pipe(
         catchError((err: any) => {
+            console.log('error catched' + err.message);
+
             // cas où le rejet est dû à un token expiré
             if (err.status === 401 && !isRefreshing) {
                 isRefreshing = true;

@@ -1,17 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { EnumOrderStatus } from '../models/order';
+import { EnumBookingStatus } from '../../api/models/EnumBookingStatus';
 
 @Pipe({
     name: 'orderStatus'
 })
 export class OrderStatusPipe implements PipeTransform {
-    transform(status: EnumOrderStatus): string {
+    transform(status: EnumBookingStatus): string {
         switch (status) {
-            case EnumOrderStatus.pending:
+            case EnumBookingStatus._0:
                 return 'En attente';
-            case EnumOrderStatus.paid:
+            case EnumBookingStatus._1:
                 return 'Payé';
-            case EnumOrderStatus.canceled:
+            case EnumBookingStatus._2:
                 return 'Annulé';
             default:
                 return 'Non défini';

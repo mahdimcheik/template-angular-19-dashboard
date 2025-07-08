@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild, ChangeDetectorRef, computed, input, signal } from '@angular/core';
 import { SlotService } from '../../../../shared/services/slot.service';
-import { QueryPanigation, BookingResponseDTO } from '../../../../shared/models/slot';
+import { QueryPanigation } from '../../../../shared/models/slot';
+import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
 import { delay, firstValueFrom } from 'rxjs';
 import { SortEvent } from 'primeng/api';
 import { Table, TableModule } from 'primeng/table';

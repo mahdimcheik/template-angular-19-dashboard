@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { Table } from 'primeng/table';
-import { BookingResponseDTO } from '../../../../shared/models/slot';
+import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
 import { SlotService } from '../../../../shared/services/slot.service';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { AuthService } from '../../../../shared/services/auth.service';

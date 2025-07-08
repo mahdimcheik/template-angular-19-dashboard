@@ -9,7 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
-import { BookingResponseDTO, SlotResponseDTO } from '../../../../shared/models/slot';
+import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
 import { MessageService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -32,7 +32,7 @@ export class ModalDetailsReservationComponent {
         this.visible.set(false);
     }
     unbook() {
-        this.onUnbook.emit(this.reservation().id);
+        this.onUnbook.emit(this.reservation().id!);
         this.visible.set(false);
     }
 

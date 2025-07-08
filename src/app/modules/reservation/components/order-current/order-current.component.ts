@@ -1,6 +1,6 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { OrderResponseDTO } from '../../../../shared/models/order';
-import { OrderService } from '../../../../shared/services/order.service';
+import { OrderResponseDTO } from '../../../../shared/services/orderMain.service';
+import { OrderMainService } from '../../../../shared/services/orderMain.service';
 import { PaymentsService } from '../../../../shared/services/payments.service';
 import { Router } from '@angular/router';
 import { OrderStatusPipe } from '../../../../shared/pipes/order-status.pipe';
@@ -19,13 +19,13 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class OrderCurrentComponent {
     paymentsService = inject(PaymentsService);
-    orderService = inject(OrderService);
+    orderService = inject(OrderMainService);
     router = inject(Router);
     currentOrder = input.required<OrderResponseDTO>();
     visibleModalDetails = signal(false);
 
     getcheckout() {
-        this.paymentsService.getcheckout(this.orderService.currentOrder().id).subscribe((checkoutResponse) => {
+        this.paymentsService.getcheckout(this.orderService.currentOrder().id!).subscribe((checkoutResponse) => {
             window.location.href = checkoutResponse.url;
         });
     }

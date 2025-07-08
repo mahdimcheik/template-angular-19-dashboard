@@ -11,7 +11,7 @@ import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
-import { OrderService } from '../../../shared/services/order.service';
+import { OrderMainService } from '../../../shared/services/orderMain.service';
 import { LocalstorageService } from '../../../shared/services/localstorage.service';
 
 @Component({
@@ -23,12 +23,12 @@ import { LocalstorageService } from '../../../shared/services/localstorage.servi
 export class AppTopbar {
     items!: MenuItem[];
     authService = inject(AuthService);
-    orderService = inject(OrderService);
+    orderService = inject(OrderMainService);
     layoutService = inject(LayoutService);
     currentOrder = this.orderService.currentOrder;
     numberBooking = computed(() => {
-        if (!this.currentOrder().bookings || this.currentOrder().bookings.length == 0) return '';
-        return '' + this.currentOrder().bookings.length;
+        if (!this.currentOrder().bookings || this.currentOrder().bookings?.length == 0) return '';
+        return '' + this.currentOrder().bookings?.length;
     });
     router = inject(Router);
     user = this.authService.userConnected;

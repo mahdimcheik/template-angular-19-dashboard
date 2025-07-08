@@ -1,8 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { SlotService } from './slot.service';
 import { HttpClient } from '@angular/common/http';
-import { CheckoutRequest, CheckoutResponse } from '../models/order';
-import { OrderService } from './order.service';
+import { CheckoutRequest } from '../../api/models/CheckoutRequest';
+import { OrderMainService } from './orderMain.service';
+
+// Type for checkout response - keeping the existing interface
+export type CheckoutResponse = {
+    sessionId: string;
+    url: string;
+};
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ResponseDTO } from '../models/user';
 import { environment } from '../../../environments/environment.development';
@@ -14,7 +20,7 @@ export class PaymentsService {
     baseUrl = environment.BACK_URL;
 
     slotService = inject(SlotService);
-    orderService = inject(OrderService);
+    orderService = inject(OrderMainService);
     http = inject(HttpClient);
 
     getcheckout(orderId: string): Observable<CheckoutResponse> {
