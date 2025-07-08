@@ -9,7 +9,7 @@ import { ModalConfirmDeleteComponent } from '../../../profile/components/modal-c
 import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { catchError } from 'rxjs';
 import { MessageService } from 'primeng/api';
-import { ResponseDTO } from '../../../../shared/models/user';
+import { ResponseDTO } from '../../../../shared/services/userMain.service';
 import { OrderMainService } from '../../../../shared/services/orderMain.service';
 import { EnumBookingStatus } from '../../../../api/models/EnumBookingStatus';
 

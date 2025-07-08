@@ -1,9 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
-import { ResponseDTO } from '../models/user';
 import { NotificationsService as GeneratedNotificationsService } from '../../api/services/NotificationsService';
 import { Notification } from '../../api/models/Notification';
 import { NotificationFilter } from '../../api/models/NotificationFilter';
+import { ResponseDTO } from './userMain.service';
 
 export type { NotificationFilter };
 

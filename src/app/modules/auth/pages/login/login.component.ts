@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
-import { UserLoginDTO, UserResponseDTO } from '../../../../shared/models/user';
+import { catchError } from 'rxjs';
+import { UserLoginDTO } from '../../../../shared/services/userMain.service';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';

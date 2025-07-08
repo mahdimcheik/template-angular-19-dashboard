@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UserMainService } from '../../../../shared/services/userMain.service';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
-import { EnumGender, GenderDropDown, UserLoginDTO } from '../../../../shared/models/user';
+import { finalize, firstValueFrom, tap } from 'rxjs';
+import { EnumGender, GenderDropDown } from '../../../../shared/models/user';
 import { UserCreateDTO } from '../../../../shared/services/userMain.service';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { MessageService } from 'primeng/api';

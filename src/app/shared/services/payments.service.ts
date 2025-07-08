@@ -9,9 +9,9 @@ export type CheckoutResponse = {
     url: string;
 };
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ResponseDTO } from '../models/user';
 import { environment } from '../../../environments/environment.development';
 import { SlotMainService } from './slotMain.service';
+import { ResponseDTO } from './userMain.service';
 
 @Injectable({
     providedIn: 'root'

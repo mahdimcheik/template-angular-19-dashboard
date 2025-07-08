@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
-import { UserResponseDTO } from '../../../../shared/models/user';
+import { UserResponseDTO } from '../../../../shared/services/userMain.service';
 import { AvatarModule } from 'primeng/avatar';
 import { DobToAgePipe } from '../../../../shared/pipes/dob-to-age.pipe';
 import { AdminMainService } from '../../../../shared/services/adminMain.service';
@@ -33,7 +33,7 @@ export class ModalEditUserByAdminComponent {
 
     banUnbanUser() {
         this.adminService
-            .banUnbanUser({ userId: this.user().id, isBanned: !this.user().isBanned })
+            .banUnbanUser({ userId: this.user().id ?? '', isBanned: !this.user().isBanned })
             .pipe(
                 finalize(() => {
                     console.log('banUnbanUser: finalize');

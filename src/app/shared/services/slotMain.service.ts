@@ -1,7 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { EventInput } from '@fullcalendar/core/index.js';
-import { ResponseDTO } from '../models/user';
 import { SlotService as GeneratedSlotService } from '../../api/services/SlotService';
 import { BookingService as GeneratedBookingService } from '../../api/services/BookingService';
 import { SlotResponseDTO } from '../../api/models/SlotResponseDTO';
@@ -49,7 +48,7 @@ export class SlotMainService {
         );
     }
 
-    addSlotByCreator(slotCreateDTO: SlotCreateDTO): Observable<ResponseDTO> {
+    addSlotByCreator(slotCreateDTO: SlotCreateDTO) {
         return this.generatedSlotService.postSlot(slotCreateDTO).pipe(
             map((response) => ({
                 message: response.message || 'Success',
@@ -64,7 +63,7 @@ export class SlotMainService {
         );
     }
 
-    updateSlotByCreator(slotUpdateDTO: SlotUpdateDTO): Observable<ResponseDTO> {
+    updateSlotByCreator(slotUpdateDTO: SlotUpdateDTO) {
         return this.generatedSlotService.putSlot(slotUpdateDTO).pipe(
             map((response) => ({
                 message: response.message || 'Success',
@@ -82,7 +81,7 @@ export class SlotMainService {
         );
     }
 
-    deleteSlotByCreator(slotId: string): Observable<ResponseDTO> {
+    deleteSlotByCreator(slotId: string) {
         return this.generatedSlotService.deleteSlot(slotId).pipe(
             map((response) => ({
                 message: response.message || 'Success',
@@ -93,7 +92,7 @@ export class SlotMainService {
         );
     }
 
-    unbookReservationByTeacher(slotId: string): Observable<ResponseDTO> {
+    unbookReservationByTeacher(slotId: string) {
         return this.generatedBookingService.deleteBookingUnbook(slotId).pipe(
             map((response) => ({
                 message: response.message || 'Success',
@@ -128,7 +127,7 @@ export class SlotMainService {
         );
     }
 
-    bookSlot(newBooking: BookingCreateDTO): Observable<ResponseDTO> {
+    bookSlot(newBooking: BookingCreateDTO) {
         return this.generatedBookingService.postBookingBook(newBooking).pipe(
             map((response) => ({
                 message: response.message || 'Success',
@@ -139,7 +138,7 @@ export class SlotMainService {
         );
     }
 
-    unbookReservationByStudent(slotId: string): Observable<ResponseDTO> {
+    unbookReservationByStudent(slotId: string) {
         return this.generatedBookingService.deleteBookingStudentUnbook(slotId).pipe(
             map((response) => ({
                 message: response.message || 'Success',
@@ -150,7 +149,7 @@ export class SlotMainService {
         );
     }
 
-    getReservationsByStudent(query: QueryPagination): Observable<ResponseDTO> {
+    getReservationsByStudent(query: QueryPagination) {
         return this.generatedBookingService.postBookingReservationsStudent(query).pipe(
             map((response) => ({
                 message: response.message || 'Success',
@@ -165,7 +164,7 @@ export class SlotMainService {
         );
     }
 
-    getReservationsByTeacher(query: QueryPagination): Observable<ResponseDTO> {
+    getReservationsByTeacher(query: QueryPagination) {
         return this.generatedBookingService.postBookingReservationsTeacher(query).pipe(
             map((response) => ({
                 message: response.message || 'Success',

@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap, of, delay } from 'rxjs';
 import { CursusDTO, CreateCursusDto, UpdateCursusDto } from '../models/cursus';
 import { HttpClient } from '@angular/common/http';
-import { ResponseDTO } from '../models/user';
+import { ResponseDTO } from './userMain.service';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({

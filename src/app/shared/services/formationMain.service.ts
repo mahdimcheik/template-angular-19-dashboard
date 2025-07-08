@@ -4,7 +4,7 @@ import { FormationService as GeneratedFormationService } from '../../api/service
 import { FormationCreateDTO } from '../../api/models/FormationCreateDTO';
 import { FormationResponseDTO } from '../../api/models/FormationResponseDTO';
 import { FormationUpdateDTO } from '../../api/models/FormationUpdateDTO';
-import { ResponseDTO } from '../models/user';
+import { ResponseDTO } from './userMain.service';
 @Injectable({
     providedIn: 'root'
 })

@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { ResponseDTO } from '../models/user';
 import { AdminService as GeneratedAdminService } from '../../api/services/AdminService';
 import { QueryPagination } from '../../api/models/QueryPagination';
 import { UserBanDTO } from '../../api/models/UserBanDTO';
+import { ResponseDTO } from './userMain.service';
 
 // Type aliases for backward compatibility
 export type { UserBanDTO };

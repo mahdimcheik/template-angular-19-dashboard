@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Theme } from './theme.service';
-import { UserResponseDTO } from '../models/user';
 import { layoutConfig } from '../../layout/service/layout.service';
+import { UserResponseDTO } from '../../api/models/UserResponseDTO';
 
 @Injectable({
     providedIn: 'root'

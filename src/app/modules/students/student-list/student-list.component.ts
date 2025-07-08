@@ -9,7 +9,7 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { AdminMainService } from '../../../shared/services/adminMain.service';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
-import { UserResponseDTO } from '../../../shared/models/user';
+import { UserResponseDTO } from '../../../shared/services/userMain.service';
 import { Router } from '@angular/router';
 import { ModalEditUserByAdminComponent } from '../components/modal-edit-user-by-admin/modal-edit-user-by-admin.component';
 import { InputText, InputTextModule } from 'primeng/inputtext';

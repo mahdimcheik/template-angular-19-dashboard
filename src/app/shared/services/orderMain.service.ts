@@ -1,12 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
-import { ResponseDTO } from '../models/user';
 import { OrderService as GeneratedOrderService } from '../../api/services/OrderService';
 import { BillService as GeneratedBillService } from '../../api/services/BillService';
 import { OrderResponseForStudentDTO } from '../../api/models/OrderResponseForStudentDTO';
 import { OrderPagination as GeneratedOrderPagination } from '../../api/models/OrderPagination';
 import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
+import { ResponseDTO } from './userMain.service';
 
 // Type aliases to maintain backward compatibility
 export type OrderResponseDTO = OrderResponseForStudentDTO;
