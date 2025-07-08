@@ -1,151 +1,78 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable, tap, of, delay } from 'rxjs';
-import { CursusDTO, CreateCursusDto, UpdateCursusDto } from '../models/cursus';
+import { Observable, tap, delay } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { ResponseDTO } from './userMain.service';
 import { environment } from '../../../environments/environment.development';
+import { CursusService } from '../../api/services/CursusService';
+import { CursusDtoIEnumerableResponseDTO } from '../../api/models/CursusDtoIEnumerableResponseDTO';
+import { CursusDto } from '../../api/models/CursusDto';
+import { CursusDtoResponseDTO } from '../../api/models/CursusDtoResponseDTO';
+import { StringResponseDTO } from '../../api/models/StringResponseDTO';
+import { CreateCursusDto } from '../../api/models/CreateCursusDto';
+import { UpdateCursusDto } from '../../api/models/UpdateCursusDto';
+import { Level } from '../../api/models/Level';
+import { Category } from '../../api/models/Category';
 
 @Injectable({
     providedIn: 'root'
 })
-export class CursusService {
+export class CursusMainService {
     private http: HttpClient = inject(HttpClient);
+    private cursusService = inject(CursusService);
     baseUrl = environment.BACK_URL;
 
-    cursus = signal([] as CursusDTO[]);
+    cursus = signal([] as CursusDto[]);
 
-    // Mock data for development
-    private mockCursus: CursusDTO[] = [
-        {
-            id: '1',
-            name: 'Introduction to Angular',
-            description: 'Learn the basics of Angular framework, including components, services, and routing.',
-            level: 'beginner',
-            category: 'Frontend Development',
-            createdAt: new Date('2024-01-15'),
-            updatedAt: new Date('2024-01-15')
-        },
-        {
-            id: '2',
-            name: 'Advanced TypeScript',
-            description: 'Master advanced TypeScript concepts including generics, decorators, and advanced types.',
-            level: 'advanced',
-            category: 'Programming Languages',
-            createdAt: new Date('2024-01-20'),
-            updatedAt: new Date('2024-01-20')
-        },
-        {
-            id: '3',
-            name: 'React Fundamentals',
-            description: 'Understand React concepts including hooks, state management, and component lifecycle.',
-            level: 'intermediate',
-            category: 'Frontend Development',
-            createdAt: new Date('2024-01-25'),
-            updatedAt: new Date('2024-01-25')
-        },
-        {
-            id: '4',
-            name: 'Node.js Backend Development',
-            description: 'Build robust backend applications using Node.js, Express, and MongoDB.',
-            level: 'intermediate',
-            category: 'Backend Development',
-            createdAt: new Date('2024-02-01'),
-            updatedAt: new Date('2024-02-01')
-        },
-        {
-            id: '5',
-            name: 'Python for Beginners',
-            description: 'Start your programming journey with Python, covering syntax, data structures, and basic algorithms.',
-            level: 'beginner',
-            category: 'Programming Languages',
-            createdAt: new Date('2024-02-05'),
-            updatedAt: new Date('2024-02-05')
-        }
-    ];
+    levels = signal([] as Level[]);
+    categories = signal([] as Category[]);
 
-    constructor() {
-        // Initialize with mock data
-        this.cursus.set(this.mockCursus);
-    }
-
-    getAllCursus(): Observable<ResponseDTO> {
-        // For now, return mock data. In production, use HTTP call:
-        // return this.http.get<ResponseDTO>(`${this.baseUrl}/cursus`).pipe(
-        //     tap((res) => {
-        //         this.cursus.set(res.data as CursusDTO[]);
-        //     })
-        // );
-
-        return of({
-            message: 'Success',
-            status: 200,
-            data: this.mockCursus,
-            count: this.mockCursus.length
-        }).pipe(
-            delay(500), // Simulate network delay
+    getCursusCategories() {
+        return this.cursusService.getCursusCategories().pipe(
             tap((res) => {
-                this.cursus.set(res.data as CursusDTO[]);
+                this.categories.set(res.data ?? []);
             })
         );
     }
 
-    getCursusById(cursusId: string): Observable<ResponseDTO> {
-        const cursus = this.mockCursus.find((c) => c.id === cursusId);
-        return of({
-            message: 'Success',
-            status: 200,
-            data: cursus
-        }).pipe(delay(300));
+    getCursusLevels() {
+        return this.cursusService.getCursusLevels().pipe(
+            tap((res) => {
+                this.levels.set(res.data ?? []);
+            })
+        );
     }
 
-    updateCursus(cursusDTO: UpdateCursusDto): Observable<ResponseDTO> {
-        // In production: return this.http.put<ResponseDTO>(`${this.baseUrl}/cursus`, cursusDTO).pipe(
+    getAllCursus(): Observable<CursusDtoIEnumerableResponseDTO> {
+        return this.cursusService.getCursus().pipe(
+            tap((res) => {
+                this.cursus.set(res.data ?? []);
+            })
+        );
+    }
 
-        return of({
-            message: 'Cursus updated successfully',
-            status: 200,
-            data: { ...cursusDTO, updatedAt: new Date() }
-        }).pipe(
+    updateCursus(cursusDTO: UpdateCursusDto): Observable<CursusDtoResponseDTO> {
+        return this.cursusService.putCursus(cursusDTO.id!, cursusDTO).pipe(
             delay(500),
             tap((res) => {
                 const cursusIndex = this.cursus().findIndex((x) => x.id === cursusDTO.id);
                 if (cursusIndex !== -1) {
-                    this.cursus()[cursusIndex] = { ...this.cursus()[cursusIndex], ...cursusDTO, updatedAt: new Date() };
+                    this.cursus()[cursusIndex] = res.data as CursusDto;
                     this.cursus.update((oldList) => [...oldList]);
                 }
             })
         );
     }
 
-    addCursus(cursusDTO: CreateCursusDto): Observable<ResponseDTO> {
-        // In production: return this.http.post<ResponseDTO>(`${this.baseUrl}/cursus`, cursusDTO).pipe(
-
-        const newCursus: CursusDTO = {
-            id: (this.cursus().length + 1).toString(),
-            ...cursusDTO,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-
-        return of({
-            message: 'Cursus created successfully',
-            status: 201,
-            data: newCursus
-        }).pipe(
+    addCursus(cursusDTO: CreateCursusDto): Observable<CursusDtoResponseDTO> {
+        return this.cursusService.postCursus(cursusDTO).pipe(
             delay(500),
             tap((res) => {
-                this.cursus.update((oldList) => [...oldList, res.data as CursusDTO]);
+                this.cursus.update((oldList) => [...oldList, res.data as CursusDto]);
             })
         );
     }
 
-    deleteCursus(cursusId: string): Observable<ResponseDTO> {
-        // In production: return this.http.delete<ResponseDTO>(`${this.baseUrl}/cursus?cursusId=${cursusId}`).pipe(
-
-        return of({
-            message: 'Cursus deleted successfully',
-            status: 204
-        }).pipe(
+    deleteCursus(cursusId: string): Observable<StringResponseDTO> {
+        return this.cursusService.deleteCursus(cursusId).pipe(
             delay(500),
             tap((res) => {
                 if (res.status === 204) {

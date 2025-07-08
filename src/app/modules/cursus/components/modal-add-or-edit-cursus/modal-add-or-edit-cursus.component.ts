@@ -1,9 +1,7 @@
-import { Component, inject, input, model, OnInit, output } from '@angular/core';
+import { Component, computed, inject, input, model, OnInit, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { CursusDTO, CreateCursusDto, UpdateCursusDto, CursusLevel, CursusLevelDropDown, CursusCategoryDropDown } from '../../../../shared/models/cursus';
 import { firstValueFrom } from 'rxjs';
-import { CursusService } from '../../../../shared/services/cursus.service';
 import { DialogModule } from 'primeng/dialog';
 import { MessageModule } from 'primeng/message';
 import { InputTextModule } from 'primeng/inputtext';
@@ -14,6 +12,12 @@ import { FluidModule } from 'primeng/fluid';
 import { DrawerModule } from 'primeng/drawer';
 import { TextareaModule } from 'primeng/textarea';
 import { LayoutService } from '../../../../layout/service/layout.service';
+import { CursusDto } from '../../../../api/models/CursusDto';
+import { CursusMainService } from '../../../../shared/services/cursus.service';
+import { Level } from '../../../../api/models/Level';
+import { Category } from '../../../../api/models/Category';
+import { UpdateCursusDto } from '../../../../api/models/UpdateCursusDto';
+import { CreateCursusDto } from '../../../../api';
 
 @Component({
     selector: 'app-modal-add-or-edit-cursus',
@@ -25,89 +29,36 @@ import { LayoutService } from '../../../../layout/service/layout.service';
 export class ModalAddOrEditCursusComponent implements OnInit {
     visibleRight = model<boolean>(false);
     onClose = output<boolean>();
-    cursusToChange = input<CursusDTO | null>(null);
+    cursusToChange = input<CursusDto | null>(null);
     updateOrAdd = input<'update' | 'add'>('update');
     actionEmitter = output<void>();
 
-    selectedLevel!: CursusLevelDropDown;
-    selectedCategory!: CursusCategoryDropDown;
+    selectedLevel!: Level;
+    selectedCategory!: Category;
     title!: string;
+    isLoading = signal(false);
 
     messageService = inject(MessageService);
-    cursusService = inject(CursusService);
+    cursusService = inject(CursusMainService);
     layoutService = inject(LayoutService);
     fb = inject(FormBuilder);
 
     cursusForm!: FormGroup;
 
-    levelsList: CursusLevelDropDown[] = [
-        {
-            id: '1',
-            name: 'Débutant',
-            value: CursusLevel.Beginner
-        },
-        {
-            id: '2',
-            name: 'Intermédiaire',
-            value: CursusLevel.Intermediate
-        },
-        {
-            id: '3',
-            name: 'Avancé',
-            value: CursusLevel.Advanced
-        }
-    ];
+    levelsList = computed(() => this.cursusService.levels());
 
-    categoriesList: CursusCategoryDropDown[] = [
-        {
-            id: '1',
-            name: 'Développement Frontend',
-            value: 'Frontend Development'
-        },
-        {
-            id: '2',
-            name: 'Développement Backend',
-            value: 'Backend Development'
-        },
-        {
-            id: '3',
-            name: 'Langages de Programmation',
-            value: 'Programming Languages'
-        },
-        {
-            id: '4',
-            name: 'Base de Données',
-            value: 'Database'
-        },
-        {
-            id: '5',
-            name: 'DevOps',
-            value: 'DevOps'
-        },
-        {
-            id: '6',
-            name: 'Design',
-            value: 'Design'
-        },
-        {
-            id: '7',
-            name: 'Mobile',
-            value: 'Mobile Development'
-        },
-        {
-            id: '8',
-            name: 'Intelligence Artificielle',
-            value: 'AI & Machine Learning'
-        }
-    ];
+    categoriesList = computed(() => this.cursusService.categories());
 
     ngOnInit(): void {
+        this.isLoading.set(true);
+        this.getLevelsAndCategories();
+
         if (this.updateOrAdd() === 'update' && this.cursusToChange()) {
             this.title = 'Modifier le cursus';
             const cursus = this.cursusToChange()!;
 
-            this.selectedLevel = this.levelsList.find((x) => x.value === cursus.level) ?? this.levelsList[0];
-            this.selectedCategory = this.categoriesList.find((x) => x.value === cursus.category) ?? this.categoriesList[0];
+            this.selectedLevel = this.levelsList().find((x) => x.name === cursus.level?.name) ?? this.levelsList()[0];
+            this.selectedCategory = this.categoriesList().find((x) => x.name === cursus.category?.name) ?? this.categoriesList()[0];
 
             this.cursusForm = this.fb.group({
                 name: [cursus.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
@@ -117,8 +68,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
             });
         } else {
             this.title = 'Ajouter un nouveau cursus';
-            this.selectedLevel = this.levelsList[0];
-            this.selectedCategory = this.categoriesList[0];
+            this.selectedLevel = this.levelsList()[0];
+            this.selectedCategory = this.categoriesList()[0];
 
             this.cursusForm = this.fb.group({
                 name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
@@ -127,6 +78,12 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                 category: [this.selectedCategory, [Validators.required]]
             });
         }
+    }
+
+    async getLevelsAndCategories() {
+        await firstValueFrom(this.cursusService.getCursusLevels());
+        await firstValueFrom(this.cursusService.getCursusCategories());
+        this.isLoading.set(false);
     }
 
     close() {
@@ -141,11 +98,11 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
                 if (this.updateOrAdd() === 'update' && this.cursusToChange()) {
                     const updateData: UpdateCursusDto = {
-                        id: this.cursusToChange()!.id,
+                        id: this.cursusToChange()?.id ?? '',
                         name: this.cursusForm.value.name,
                         description: this.cursusForm.value.description,
-                        level: this.cursusForm.value.level.value,
-                        category: this.cursusForm.value.category.value
+                        levelId: this.cursusForm.value.level.id,
+                        categoryId: this.cursusForm.value.category.id
                     };
 
                     await firstValueFrom(this.cursusService.updateCursus(updateData));
@@ -159,9 +116,11 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                     const createData: CreateCursusDto = {
                         name: this.cursusForm.value.name,
                         description: this.cursusForm.value.description,
-                        level: this.cursusForm.value.level.value,
-                        category: this.cursusForm.value.category.value
+                        levelId: this.cursusForm.value.level.id,
+                        categoryId: this.cursusForm.value.category.id
                     };
+
+                    console.log('createData', createData);
 
                     await firstValueFrom(this.cursusService.addCursus(createData));
                     this.messageService.add({
@@ -172,12 +131,13 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                     });
                 }
 
-                this.actionEmitter.emit();
+                // this.actionEmitter.emit();
             } catch (error) {
+                console.log('error', error);
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Erreur',
-                    detail: "Une erreur est survenue lors de l'opération",
+                    detail: "Une erreur est survenue lors de l'opérations",
                     life: 3000
                 });
             }

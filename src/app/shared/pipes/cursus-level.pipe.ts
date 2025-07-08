@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { CursusLevel } from '../models/cursus';
+import { Level } from '../../api/models/Level';
 
 @Pipe({
     name: 'cursusLevel'
@@ -7,11 +7,11 @@ import { CursusLevel } from '../models/cursus';
 export class CursusLevelPipe implements PipeTransform {
     transform(level: string): string {
         switch (level) {
-            case CursusLevel.Beginner:
+            case 'beginner':
                 return 'Débutant';
-            case CursusLevel.Intermediate:
+            case 'intermediate':
                 return 'Intermédiaire';
-            case CursusLevel.Advanced:
+            case 'advanced':
                 return 'Avancé';
             default:
                 return 'Non défini';
@@ -25,11 +25,11 @@ export class CursusLevelPipe implements PipeTransform {
 export class CursusLevelBadgePipe implements PipeTransform {
     transform(level: string): string {
         switch (level) {
-            case CursusLevel.Beginner:
+            case 'beginner':
                 return 'p-badge-success';
-            case CursusLevel.Intermediate:
+            case 'intermediate':
                 return 'p-badge-warning';
-            case CursusLevel.Advanced:
+            case 'advanced':
                 return 'p-badge-danger';
             default:
                 return 'p-badge-secondary';
@@ -43,11 +43,11 @@ export class CursusLevelBadgePipe implements PipeTransform {
 export class CursusLevelIconPipe implements PipeTransform {
     transform(level: string): string {
         switch (level) {
-            case CursusLevel.Beginner:
+            case 'beginner':
                 return 'pi pi-star';
-            case CursusLevel.Intermediate:
+            case 'intermediate':
                 return 'pi pi-star-fill';
-            case CursusLevel.Advanced:
+            case 'advanced':
                 return 'pi pi-crown';
             default:
                 return 'pi pi-question';

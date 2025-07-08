@@ -10,13 +10,13 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { Router } from '@angular/router';
-import { CursusDTO } from '../../../../shared/models/cursus';
-import { CursusService } from '../../../../shared/services/cursus.service';
 import { CursusLevelPipe, CursusLevelBadgePipe, CursusLevelIconPipe } from '../../../../shared/pipes/cursus-level.pipe';
 import { ModalAddOrEditCursusComponent } from '../modal-add-or-edit-cursus/modal-add-or-edit-cursus.component';
 import { ModalConfirmDeleteCursusComponent } from '../modal-confirm-delete-cursus/modal-confirm-delete-cursus.component';
 import { firstValueFrom } from 'rxjs';
 import { UserMainService } from '../../../../shared/services/userMain.service';
+import { CursusMainService } from '../../../../shared/services/cursus.service';
+import { CursusDto } from '../../../../api';
 
 @Component({
     selector: 'app-cursus-list',
@@ -43,19 +43,18 @@ import { UserMainService } from '../../../../shared/services/userMain.service';
 export class CursusListComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
 
-    private cursusService = inject(CursusService);
+    private cursusService = inject(CursusMainService);
     authService = inject(UserMainService);
     private router = inject(Router);
 
     cursus = this.cursusService.cursus;
-    loading = signal(false);
 
     // Modal states
     visibleAddEdit = signal(false);
     visibleDelete = signal(false);
 
     // Selected cursus for operations
-    selectedCursus = signal<CursusDTO | null>(null);
+    selectedCursus = signal<CursusDto | null>(null);
     updateOrAdd = signal<'update' | 'add'>('add');
 
     ngOnInit() {
@@ -63,11 +62,9 @@ export class CursusListComponent implements OnInit {
     }
 
     async loadCursus() {
-        this.loading.set(true);
         try {
             await firstValueFrom(this.cursusService.getAllCursus());
         } finally {
-            this.loading.set(false);
         }
     }
 
@@ -86,13 +83,13 @@ export class CursusListComponent implements OnInit {
         this.visibleAddEdit.set(true);
     }
 
-    openEditModal(cursus: CursusDTO) {
+    openEditModal(cursus: CursusDto) {
         this.updateOrAdd.set('update');
         this.selectedCursus.set(cursus);
         this.visibleAddEdit.set(true);
     }
 
-    openDeleteModal(cursus: CursusDTO) {
+    openDeleteModal(cursus: CursusDto) {
         this.selectedCursus.set(cursus);
         this.visibleDelete.set(true);
     }
@@ -109,12 +106,10 @@ export class CursusListComponent implements OnInit {
 
     async onDeleteConfirmed() {
         if (this.selectedCursus()) {
-            this.loading.set(true);
             try {
-                await firstValueFrom(this.cursusService.deleteCursus(this.selectedCursus()!.id));
+                await firstValueFrom(this.cursusService.deleteCursus(this.selectedCursus()?.id ?? ''));
                 this.closeDeleteModal();
             } finally {
-                this.loading.set(false);
             }
         }
     }
@@ -124,7 +119,7 @@ export class CursusListComponent implements OnInit {
         this.closeAddEditModal();
     }
 
-    viewDetails(cursus: CursusDTO) {
+    viewDetails(cursus: CursusDto) {
         this.router.navigate(['/cursus', cursus.id]);
     }
 }

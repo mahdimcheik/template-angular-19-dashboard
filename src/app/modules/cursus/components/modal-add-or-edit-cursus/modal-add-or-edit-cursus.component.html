@@ -38,7 +38,7 @@
                         <div class="flex flex-col md:flex-row gap-6">
                             <div class="flex flex-wrap gap-2 w-full">
                                 <label for="level" class="text-surface-900 dark:text-surface-0 font-medium"> Niveau <span class="text-red-500">*</span> </label>
-                                <p-select id="level" formControlName="level" [options]="levelsList" optionLabel="name" placeholder="Sélectionnez le niveau" class="w-full"></p-select>
+                                <p-select id="level" formControlName="level" [options]="levelsList()" optionLabel="name" placeholder="Sélectionnez le niveau" class="w-full"></p-select>
                                 <div class="error" *ngIf="getFieldError('level')">
                                     <p-message severity="error" variant="simple" size="small" styleClass="mt-2">
                                         {{ getFieldError('level') }}
@@ -48,7 +48,7 @@
 
                             <div class="flex flex-wrap gap-2 w-full">
                                 <label for="category" class="text-surface-900 dark:text-surface-0 font-medium"> Catégorie <span class="text-red-500">*</span> </label>
-                                <p-select id="category" formControlName="category" [options]="categoriesList" optionLabel="name" placeholder="Sélectionnez la catégorie" class="w-full"></p-select>
+                                <p-select id="category" formControlName="category" [options]="categoriesList()" optionLabel="name" placeholder="Sélectionnez la catégorie" class="w-full"></p-select>
                                 <div class="error" *ngIf="getFieldError('category')">
                                     <p-message severity="error" variant="simple" size="small" styleClass="mt-2">
                                         {{ getFieldError('category') }}

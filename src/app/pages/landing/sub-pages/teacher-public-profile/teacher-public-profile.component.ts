@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { UserMainService, UserResponseDTO } from '../../../../shared/services/userMain.service';
 import { ImageModule } from 'primeng/image';
-import { CursusService } from '../../../../shared/services/cursus.service';
+import { CursusMainService } from '../../../../shared/services/cursus.service';
 import { CursusListComponent } from '../../../../modules/cursus/components/cursus-list/cursus-list.component';
 
 @Component({
@@ -16,7 +16,7 @@ import { CursusListComponent } from '../../../../modules/cursus/components/cursu
 export class TeacherPublicProfileComponent implements OnInit {
     teacherProfile = signal<UserResponseDTO>({} as UserResponseDTO);
     authService = inject(UserMainService);
-    cursusService = inject(CursusService);
+    cursusService = inject(CursusMainService);
     ngOnInit(): void {
         (this.authService as any).getTeacherProfile().subscribe((res: any) => {
             this.teacherProfile.set(res.data as UserResponseDTO);
