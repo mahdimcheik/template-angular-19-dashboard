@@ -7,7 +7,7 @@ import { AdressesListComponent } from '../../components/adresses-list/adresses-l
 import { FormationsListComponent } from '../../components/formations-list/formations-list.component';
 import { PersonnalInfosComponent } from '../../components/personnal-infos/personnal-infos.component';
 import { FormationService } from '../../../../shared/services/formation.service';
-import { AdresseService } from '../../../../shared/services/adresse.service';
+import { AddressMainService } from '../../../../shared/services/addressMain.service';
 import { UserResponseDTO } from '../../../../shared/models/user';
 import { ActivatedRoute } from '@angular/router';
 import { FormationResponseDTO } from '../../../../shared/models/formation';
@@ -24,7 +24,7 @@ export class ProfileStudentPublicComponent implements OnInit {
     authService = inject(AuthService);
     activatedRoute = inject(ActivatedRoute);
     formationService = inject(FormationService);
-    addressService = inject(AdresseService);
+    addressService = inject(AddressMainService);
 
     formations = signal<FormationResponseDTO[]>([]);
     addresses = signal<Address[]>([]);

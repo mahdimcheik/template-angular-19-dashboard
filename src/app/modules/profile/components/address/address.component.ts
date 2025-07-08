@@ -1,5 +1,5 @@
 import { Component, inject, input, model, signal } from '@angular/core';
-import { AdresseService } from '../../../../shared/services/adresse.service';
+import { AddressMainService } from '../../../../shared/services/addressMain.service';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -18,7 +18,7 @@ export class AdressComponent {
     address = input.required<Address>();
     visibleRight = signal<boolean>(false);
     visibleModalDelete = model<boolean>(false);
-    addressService = inject(AdresseService);
+    addressService = inject(AddressMainService);
     canEdit = input<boolean>(true);
 
     close() {

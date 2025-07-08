@@ -7,7 +7,7 @@ import { AdressesListComponent } from '../../components/adresses-list/adresses-l
 import { FormationsListComponent } from '../../components/formations-list/formations-list.component';
 import { PersonnalInfosComponent } from '../../components/personnal-infos/personnal-infos.component';
 import { FormationService } from '../../../../shared/services/formation.service';
-import { AdresseService } from '../../../../shared/services/adresse.service';
+import { AddressMainService } from '../../../../shared/services/addressMain.service';
 import { UserResponseDTO } from '../../../../shared/models/user';
 import { CursusListComponent } from '../../../cursus/components/cursus-list/cursus-list.component';
 
@@ -21,7 +21,7 @@ import { CursusListComponent } from '../../../cursus/components/cursus-list/curs
 export class ProfileComponent implements OnInit {
     authService = inject(AuthService);
     formationService = inject(FormationService);
-    addressService = inject(AdresseService);
+    addressService = inject(AddressMainService);
 
     formations = this.formationService.formations;
     addresses = this.addressService.addresses;

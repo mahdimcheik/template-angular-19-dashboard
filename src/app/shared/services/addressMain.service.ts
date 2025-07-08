@@ -7,19 +7,24 @@ import { environment } from '../../../environments/environment.development';
 import { AddressCreateDTO } from '../../api/models/AddressCreateDTO';
 import { AddressUpdateDTO } from '../../api/models/AddressUpdateDTO';
 import { Address } from '../../api/models/Address';
+import { AddressService } from '../../api/services/AddressService';
+import { AddressResponseDTOListResponseDTO } from '../../api/models/AddressResponseDTOListResponseDTO';
+import { AddressResponseDTOResponseDTO } from '../../api/models/AddressResponseDTOResponseDTO';
+import { StringResponseDTO } from '../../api/models/StringResponseDTO';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AdresseService {
+export class AddressMainService {
     private http: HttpClient = inject(HttpClient);
+    private addressService = inject(AddressService);
     baseUrl = environment.BACK_URL;
 
     addresses = signal<Address[]>([]);
     constructor() {}
 
-    getAllAddresses(userId: string, forOwner: boolean = true): Observable<ResponseDTO> {
-        return this.http.get<ResponseDTO>(`${this.baseUrl}/address/all?userId=${userId}`).pipe(
+    getAllAddresses(userId: string, forOwner: boolean = true): Observable<AddressResponseDTOListResponseDTO> {
+        return this.addressService.getAddressAll(userId).pipe(
             tap((res) => {
                 if (!forOwner) {
                     return;
@@ -28,8 +33,9 @@ export class AdresseService {
             })
         );
     }
-    updateAddresse(adresseDTO: AddressUpdateDTO, forOwner: boolean = true): Observable<ResponseDTO> {
-        return this.http.put<ResponseDTO>(`${this.baseUrl}/address`, adresseDTO).pipe(
+
+    updateAddresse(adresseDTO: AddressUpdateDTO, forOwner: boolean = true): Observable<AddressResponseDTOResponseDTO> {
+        return this.addressService.putAddress(adresseDTO).pipe(
             tap((res) => {
                 if (!forOwner) {
                     return;
@@ -41,8 +47,9 @@ export class AdresseService {
             })
         );
     }
-    addAddresse(adresseDTO: AddressCreateDTO, forOwner: boolean = true): Observable<ResponseDTO> {
-        return this.http.post<ResponseDTO>(`${this.baseUrl}/address`, adresseDTO).pipe(
+
+    addAddresse(adresseDTO: AddressCreateDTO, forOwner: boolean = true): Observable<AddressResponseDTOResponseDTO> {
+        return this.addressService.postAddress(adresseDTO).pipe(
             tap((res) => {
                 if (!forOwner) {
                     return;
@@ -53,8 +60,8 @@ export class AdresseService {
         );
     }
 
-    deleteAddresse(adresseId: string, forOwner: boolean = true): Observable<ResponseDTO> {
-        return this.http.delete<ResponseDTO>(`${this.baseUrl}/address?addressId=${adresseId}`).pipe(
+    deleteAddresse(adresseId: string, forOwner: boolean = true): Observable<StringResponseDTO> {
+        return this.addressService.deleteAddress(adresseId).pipe(
             tap((res) => {
                 if (!forOwner) {
                     return;

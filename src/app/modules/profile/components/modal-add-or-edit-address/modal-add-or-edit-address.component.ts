@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MessageService } from 'primeng/api';
 import { AddressDropDown } from '../../../../shared/models/adresse';
 import { firstValueFrom } from 'rxjs';
-import { AdresseService } from '../../../../shared/services/adresse.service';
+import { AddressMainService } from '../../../../shared/services/addressMain.service';
 import { DialogModule } from 'primeng/dialog';
 import { MessageModule } from 'primeng/message';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -35,7 +35,7 @@ export class ModalAddOrEditAddressComponent implements OnInit {
     title!: string;
 
     messageService = inject(MessageService);
-    adresseService = inject(AdresseService);
+    adresseService = inject(AddressMainService);
     layoutService = inject(LayoutService);
     fb = inject(FormBuilder);
     userForm!: FormGroup;

@@ -1,5 +1,5 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { AdresseService } from '../../../../shared/services/adresse.service';
+import { AddressMainService } from '../../../../shared/services/addressMain.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { AdressComponent } from '../address/address.component';
@@ -13,7 +13,7 @@ import { Address } from '../../../../api/models/Address';
     styleUrl: './adresses-list.component.scss'
 })
 export class AdressesListComponent {
-    addressService = inject(AdresseService);
+    addressService = inject(AddressMainService);
     addresses = input.required<Address[]>();
     canEdit = input<boolean>(true);
 
