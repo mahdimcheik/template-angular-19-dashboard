@@ -16,15 +16,17 @@
         #dt
         [value]="cursus()"
         [paginator]="true"
-        [rows]="10"
+        [rows]="pageSize()"
         [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]"
         [globalFilterFields]="['name', 'description', 'category', 'level']"
         currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} entrées"
+        [totalRecords]="totalItems()"
         [tableStyle]="{ 'min-width': '75rem' }"
         styleClass="p-datatable-sm"
         [sortField]="'name'"
         [sortOrder]="1"
+        (onPage)="onPageChange($event)"
     >
         <ng-template pTemplate="header">
             <tr class="bg-gray-50">

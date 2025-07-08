@@ -10,6 +10,7 @@ import type { CreateCursusDto } from '../models/CreateCursusDto';
 import type { CursusDtoIEnumerableResponseDTO } from '../models/CursusDtoIEnumerableResponseDTO';
 import type { CursusDtoResponseDTO } from '../models/CursusDtoResponseDTO';
 import type { LevelIEnumerableResponseDTO } from '../models/LevelIEnumerableResponseDTO';
+import type { QueryPagination } from '../models/QueryPagination';
 import type { StringResponseDTO } from '../models/StringResponseDTO';
 import type { UpdateCursusDto } from '../models/UpdateCursusDto';
 import { OpenAPI } from '../core/OpenAPI';
@@ -20,13 +21,18 @@ import { request as __request } from '../core/request';
 export class CursusService {
     constructor(public readonly http: HttpClient) {}
     /**
+     * @param requestBody
      * @returns CursusDtoIEnumerableResponseDTO OK
      * @throws ApiError
      */
-    public getCursus(): Observable<CursusDtoIEnumerableResponseDTO> {
+    public postCursusAll(
+        requestBody?: QueryPagination,
+    ): Observable<CursusDtoIEnumerableResponseDTO> {
         return __request(OpenAPI, this.http, {
-            method: 'GET',
-            url: '/cursus',
+            method: 'POST',
+            url: '/cursus/all',
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 500: `Internal Server Error`,
             },

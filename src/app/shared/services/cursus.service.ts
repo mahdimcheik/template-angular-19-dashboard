@@ -41,12 +41,17 @@ export class CursusMainService {
         );
     }
 
-    getAllCursus(): Observable<CursusDtoIEnumerableResponseDTO> {
-        return this.cursusService.getCursus().pipe(
-            tap((res) => {
-                this.cursus.set(res.data ?? []);
+    getAllCursus(start: number, perPage: number): Observable<CursusDtoIEnumerableResponseDTO> {
+        return this.cursusService
+            .postCursusAll({
+                start: start,
+                perPage: perPage
             })
-        );
+            .pipe(
+                tap((res) => {
+                    this.cursus.set(res.data ?? []);
+                })
+            );
     }
 
     updateCursus(cursusDTO: UpdateCursusDto): Observable<CursusDtoResponseDTO> {

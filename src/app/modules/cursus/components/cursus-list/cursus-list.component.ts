@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
+import { TableModule, TablePageEvent } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
@@ -14,7 +14,7 @@ import { CursusLevelPipe, CursusLevelIconPipe } from '../../../../shared/pipes/c
 import { ModalAddOrEditCursusComponent } from '../modal-add-or-edit-cursus/modal-add-or-edit-cursus.component';
 import { ModalConfirmDeleteCursusComponent } from '../modal-confirm-delete-cursus/modal-confirm-delete-cursus.component';
 import { firstValueFrom } from 'rxjs';
-import { UserMainService } from '../../../../shared/services/userMain.service';
+import { PageEvent, UserMainService } from '../../../../shared/services/userMain.service';
 import { CursusMainService } from '../../../../shared/services/cursus.service';
 import { CursusDto, UpdateCursusDto } from '../../../../api';
 
@@ -56,19 +56,33 @@ export class CursusListComponent implements OnInit {
     selectedCursus = signal<CursusDto | null>(null);
     updateOrAdd = signal<'update' | 'add'>('add');
 
+    // Pagination
+    page = signal(1);
+    pageSize = signal(10);
+    totalItems = signal(0);
+
     ngOnInit() {
         this.loadCursus();
     }
 
     async loadCursus() {
         try {
-            await firstValueFrom(this.cursusService.getAllCursus());
+            const res = await firstValueFrom(this.cursusService.getAllCursus(Math.max(0, (this.page() - 1) * this.pageSize()), this.pageSize()));
+            this.totalItems.set(res.count ?? 0);
+            console.log('totalItems', this.totalItems());
         } finally {
         }
     }
 
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    }
+
+    onPageChange(event: TablePageEvent) {
+        console.log('event change', event);
+        this.page.set(event.first / event.rows);
+        this.pageSize.set(event.rows);
+        this.loadCursus();
     }
 
     formatDate(date: Date): string {
