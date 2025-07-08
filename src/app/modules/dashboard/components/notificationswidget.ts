@@ -4,11 +4,11 @@ import { MenuModule } from 'primeng/menu';
 import { NotifcationComponent } from './notifcation/notifcation.component';
 import { CommonModule } from '@angular/common';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
-import { NotificationService } from '../../../shared/services/notification.service';
+import { NotificationMainService } from '../../../shared/services/notificationMain.service';
 import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { QueryPanigation } from '../../../shared/models/slot';
-import { NotificationFilter } from '../../../shared/models/notification';
+import { NotificationFilter } from '../../../shared/services/notificationMain.service';
 import { catchError, of } from 'rxjs';
 
 @Component({
@@ -37,7 +37,7 @@ import { catchError, of } from 'rxjs';
     </div>`
 })
 export class NotificationsWidget implements OnInit {
-    notificationService = inject(NotificationService);
+    notificationService = inject(NotificationMainService);
     notifications = this.notificationService.notifications;
     totalRecords = this.notificationService.notificationsCount;
     first = 0; // premier element

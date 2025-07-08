@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild, ChangeDetectorRef, computed, input, signal } from '@angular/core';
-import { SlotService } from '../../../../shared/services/slot.service';
-import { QueryPanigation } from '../../../../shared/models/slot';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
+import { QueryPanigation } from '../../../../shared/services/slotMain.service';
 import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
 import { delay, firstValueFrom } from 'rxjs';
 import { SortEvent } from 'primeng/api';
@@ -21,7 +21,7 @@ import { ModalDetailsReservationComponent } from '../modal-details-reservation/m
 })
 export class ReservationListComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
-    slotService = inject(SlotService);
+    slotService = inject(SlotMainService);
     authService = inject(AuthService);
 
     reservations = signal([] as BookingResponseDTO[]);
@@ -48,9 +48,9 @@ export class ReservationListComponent implements OnInit {
             orderByName: 1
         };
         if (this.upComing() == true) {
-            this.query.fromDate = new Date();
+            this.query.fromDate = new Date().toISOString();
         } else if (this.upComing() == false) {
-            this.query.toDate = new Date();
+            this.query.toDate = new Date().toISOString();
         }
 
         // si admin => get reservations by teacher sinon get reservations by student

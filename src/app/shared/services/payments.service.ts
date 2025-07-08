@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { SlotService } from './slot.service';
 import { HttpClient } from '@angular/common/http';
 import { CheckoutRequest } from '../../api/models/CheckoutRequest';
 import { OrderMainService } from './orderMain.service';
@@ -12,6 +11,7 @@ export type CheckoutResponse = {
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ResponseDTO } from '../models/user';
 import { environment } from '../../../environments/environment.development';
+import { SlotMainService } from './slotMain.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +19,7 @@ import { environment } from '../../../environments/environment.development';
 export class PaymentsService {
     baseUrl = environment.BACK_URL;
 
-    slotService = inject(SlotService);
+    slotService = inject(SlotMainService);
     orderService = inject(OrderMainService);
     http = inject(HttpClient);
 

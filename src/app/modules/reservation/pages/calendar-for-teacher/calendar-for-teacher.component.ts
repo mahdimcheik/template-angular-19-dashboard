@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
-import { SlotService } from '../../../../shared/services/slot.service';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import { EventContentArg } from '@fullcalendar/core/index.js';
@@ -22,7 +22,7 @@ import { ModalCreateAppointmentComponent } from '../../components/modal-create-a
     styleUrl: './calendar-for-teacher.component.scss'
 })
 export class CalendarForTeacherComponent implements AfterViewInit {
-    slotService = inject(SlotService);
+    slotService = inject(SlotMainService);
     visibleEvents = this.slotService.visibleEvents; // signal
     userConnected = inject(AuthService).userConnected; // signal
 

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { ModalDetailsReservationComponent } from '../modal-details-reservation/modal-details-reservation.component';
 import { ModalConfirmDeleteComponent } from '../../../profile/components/modal-confirm-delete/modal-confirm-delete.component';
-import { SlotService } from '../../../../shared/services/slot.service';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { catchError } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ResponseDTO } from '../../../../shared/models/user';
@@ -29,7 +29,7 @@ export class CardItemOrderComponent {
     orderNumber = input.required<string>();
     orderStatus = input.required<EnumBookingStatus>();
 
-    slotService = inject(SlotService);
+    slotService = inject(SlotMainService);
     orderService = inject(OrderMainService);
     messageService = inject(MessageService);
 

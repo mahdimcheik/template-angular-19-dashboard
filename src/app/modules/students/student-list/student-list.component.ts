@@ -7,7 +7,7 @@ import { PickListModule } from 'primeng/picklist';
 import { OrderListModule } from 'primeng/orderlist';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
-import { AdminService } from '../../../shared/services/admin.service';
+import { AdminMainService } from '../../../shared/services/adminMain.service';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { UserResponseDTO } from '../../../shared/models/user';
 import { Router } from '@angular/router';
@@ -48,7 +48,7 @@ export class StudentListComponent implements OnInit {
     options = ['list', 'grid'];
 
     router = inject(Router);
-    adminService = inject(AdminService);
+    adminService = inject(AdminMainService);
     students = signal<UserResponseDTO[]>([]);
 
     // pagination

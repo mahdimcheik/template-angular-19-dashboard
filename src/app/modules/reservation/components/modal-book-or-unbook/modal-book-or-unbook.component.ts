@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, computed, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventInput } from '@fullcalendar/core/index.js';
-import { SlotService } from '../../../../shared/services/slot.service';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { catchError, finalize, firstValueFrom, switchMap } from 'rxjs';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { Title } from '@angular/platform-browser';
@@ -49,7 +49,7 @@ export class ModalBookOrUnbookComponent implements OnInit {
     });
 
     fb = inject(FormBuilder);
-    slotService = inject(SlotService);
+    slotService = inject(SlotMainService);
     orderService = inject(OrderMainService);
     messageService = inject(MessageService);
 

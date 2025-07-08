@@ -21,7 +21,8 @@ export class DobToAgePipe implements PipeTransform {
 }
 @Pipe({ name: 'dateIndicator' })
 export class DateIndicatorPipe implements PipeTransform {
-    transform(value: Date | string): string {
+    transform(value: string | undefined): string {
+        if (!value) return '';
         const date = new Date(value);
         const now = new Date();
 

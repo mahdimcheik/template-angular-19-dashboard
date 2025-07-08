@@ -1,15 +1,15 @@
-export type NotificationApp = {
-    id: string;
-    description?: string;
-    createdAt: Date;
-    url?: string;
-    isRead: boolean;
-    senderId?: string;
-    RecipientId?: string;
-    type: number;
-    bookingId?: string;
-    orderId?: string;
-};
+// export type NotificationApp = {
+//     id: string;
+//     description?: string;
+//     createdAt: Date;
+//     url?: string;
+//     isRead: boolean;
+//     senderId?: string;
+//     RecipientId?: string;
+//     type: number;
+//     bookingId?: string;
+//     orderId?: string;
+// };
 
 export type NotificationFilter = {
     isRead?: boolean;

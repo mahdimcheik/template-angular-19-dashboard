@@ -6,7 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
-import { SlotService } from '../../../../shared/services/slot.service';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -26,7 +26,7 @@ export class ReservationsListDetailedComponent implements OnInit {
     router = inject(Router);
 
     @ViewChild('dt') dt!: Table;
-    private slotService = inject(SlotService);
+    private slotService = inject(SlotMainService);
 
     reservations = this.slotService.bookings;
     totalRecords = this.slotService.totalReservations;

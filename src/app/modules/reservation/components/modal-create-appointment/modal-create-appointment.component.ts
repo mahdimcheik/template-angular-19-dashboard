@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, computed, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventInput } from '@fullcalendar/core/index.js';
-import { SlotService } from '../../../../shared/services/slot.service';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { catchError, finalize, firstValueFrom } from 'rxjs';
-import { SlotCreateDTO, SlotUpdateDTO } from '../../../../shared/models/slot';
+import { SlotCreateDTO, SlotUpdateDTO } from '../../../../shared/services/slotMain.service';
 import { MessageService } from 'primeng/api';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { InputTextModule } from 'primeng/inputtext';
@@ -41,7 +41,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     userForm!: FormGroup;
 
     fb = inject(FormBuilder);
-    slotService = inject(SlotService);
+    slotService = inject(SlotMainService);
     messageService = inject(MessageService);
 
     async ngOnInit() {
@@ -74,12 +74,12 @@ export class ModalCreateAppointmentComponent implements OnInit {
     submit() {
         if (this.isCreatingModal()) {
             const newAppointment: SlotCreateDTO = {
-                startAt: this.userForm.value.startAt as Date,
-                endAt: this.userForm.value.endAt as Date,
+                startAt: (this.userForm.value.startAt as Date).toISOString(),
+                endAt: (this.userForm.value.endAt as Date).toISOString(),
                 price: this.userForm.value.price,
                 reduction: this.userForm.value.reduction,
                 type: this.userForm.value.type,
-                createdAt: new Date()
+                createdAt: new Date().toISOString()
             };
             this.slotService
                 .addSlotByCreator(newAppointment)
@@ -98,12 +98,12 @@ export class ModalCreateAppointmentComponent implements OnInit {
         } else {
             const updatedAppointment: SlotUpdateDTO = {
                 id: this.appointment().extendedProps?.['slot']?.id,
-                startAt: this.selectedSlot().start as Date,
-                endAt: this.selectedSlot().end as Date,
+                startAt: (this.selectedSlot().start as Date).toISOString(),
+                endAt: (this.selectedSlot().end as Date).toISOString(),
                 price: this.userForm.value.price,
                 reduction: this.userForm.value.reduction,
                 type: this.userForm.value.type,
-                createdAt: new Date()
+                createdAt: new Date().toISOString()
             };
             this.slotService
                 .updateSlotByCreator(updatedAppointment)
