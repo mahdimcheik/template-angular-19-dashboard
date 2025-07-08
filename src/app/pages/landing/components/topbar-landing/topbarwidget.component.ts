@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { LayoutService } from '../../../../layout/service/layout.service';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { CommonModule } from '@angular/common';
 import { LocalstorageService } from '../../../../shared/services/localstorage.service';
 
@@ -15,7 +15,7 @@ import { LocalstorageService } from '../../../../shared/services/localstorage.se
 })
 export class TopbarWidget {
     layoutService = inject(LayoutService);
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     localStorageService = inject(LocalstorageService);
 
     toggleDarkMode() {

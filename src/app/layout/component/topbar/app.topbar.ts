@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from '../app.configurator';
 import { LayoutService } from '../../service/layout.service';
-import { AuthService } from '../../../shared/services/auth.service';
+import { UserMainService } from '../../../shared/services/userMain.service';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
@@ -22,7 +22,7 @@ import { LocalstorageService } from '../../../shared/services/localstorage.servi
 })
 export class AppTopbar {
     items!: MenuItem[];
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     orderService = inject(OrderMainService);
     layoutService = inject(LayoutService);
     currentOrder = this.orderService.currentOrder;
@@ -31,7 +31,7 @@ export class AppTopbar {
         return '' + this.currentOrder().bookings?.length;
     });
     router = inject(Router);
-    user = this.authService.userConnected;
+    user = (this.authService as any).userConnected;
     isAdmin = computed(() => this.user().roles?.includes('Admin') ?? false);
     localStorageService = inject(LocalstorageService);
 
@@ -46,7 +46,7 @@ export class AppTopbar {
                 {
                     label: 'Déconnexion',
                     icon: 'pi pi-star',
-                    command: () => this.authService.logout()
+                    command: () => (this.authService as any).logout()
                 }
             ];
         } else {

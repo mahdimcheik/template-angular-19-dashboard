@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'dobToAge'
 })
 export class DobToAgePipe implements PipeTransform {
-    transform(dob: Date | string): number {
+    transform(dob: Date | string | undefined | null): number {
         if (!dob) return 0;
 
         const birthDate = new Date(dob);

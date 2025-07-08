@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { AuthService } from './auth.service';
+import { UserMainService } from './userMain.service';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({

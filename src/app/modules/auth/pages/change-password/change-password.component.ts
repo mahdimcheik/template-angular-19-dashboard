@@ -3,8 +3,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { delay, finalize, firstValueFrom, tap } from 'rxjs';
-import { AuthService } from '../../../../shared/services/auth.service';
-import { UserChangePasswordDTO } from '../../../../shared/models/user';
+import { UserMainService } from '../../../../shared/services/userMain.service';
+import { UserChangePasswordDTO } from '../../../../shared/services/userMain.service';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { MessageModule } from 'primeng/message';
@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ChangePasswordComponent implements OnInit {
     visible: boolean = false;
-    private authService = inject(AuthService);
+    private authService = inject(UserMainService);
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
     isLoading = false;
@@ -52,7 +52,7 @@ export class ChangePasswordComponent implements OnInit {
     async submit() {
         this.isLoading = true;
         await firstValueFrom(
-            this.authService.resetPassword(this.userForm.value as UserChangePasswordDTO).pipe(
+            (this.authService as any).resetPassword(this.userForm.value as UserChangePasswordDTO).pipe(
                 tap((res) => {
                     this.router.navigateByUrl('/');
                 }),

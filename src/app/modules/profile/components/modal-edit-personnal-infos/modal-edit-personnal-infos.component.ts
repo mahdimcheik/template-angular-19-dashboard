@@ -1,8 +1,9 @@
 import { Component, inject, input, model, output } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { EnumGender, GenderDropDown, UserResponseDTO, UserUpdateDTO } from '../../../../shared/models/user';
+import { EnumGender, GenderDropDown } from '../../../../shared/models/user';
+import { UserResponseDTO, UserUpdateDTO } from '../../../../shared/services/userMain.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -33,13 +34,13 @@ export class ModalEditPersonnalInfosComponent {
     file?: File;
     fileName?: string;
 
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     layoutService = inject(LayoutService);
 
     fb = inject(FormBuilder);
     messageService = inject(MessageService);
 
-    typesGenderList = [
+    typesGenderList: GenderDropDown[] = [
         {
             id: '0',
             name: 'Homme',
@@ -70,7 +71,7 @@ export class ModalEditPersonnalInfosComponent {
         this.userForm = this.fb.group({
             firstName: [this.user().firstName, [Validators.required]],
             lastName: [this.user().lastName, [Validators.required]],
-            dateOfBirth: [new Date(this.user().dateOfBirth), [Validators.required]],
+            dateOfBirth: [new Date(this.user().dateOfBirth ?? ''), [Validators.required]],
             gender: [this.selectedGender],
             title: [this.user().title],
             description: [this.user().description],
@@ -80,22 +81,23 @@ export class ModalEditPersonnalInfosComponent {
     }
     async submit() {
         const newUser = {
-            ...this.user(),
+            id: this.user().id!,
             firstName: this.userForm.value['firstName'],
             lastName: this.userForm.value['lastName'],
-            dateOfBirth: this.userForm.value['dateOfBirth'],
+            dateOfBirth: this.userForm.value['dateOfBirth']?.toISOString(),
             gender: this.userForm.value['gender'].value,
             title: this.userForm.value['title'] ? this.userForm.value['title'] : this.user().title,
             description: this.userForm.value['description'],
             linkedinUrl: this.userForm.value['linkedinUrl'],
-            githubUrl: this.userForm.value['githubUrl']
+            githubUrl: this.userForm.value['githubUrl'],
+            phoneNumber: (this.user() as any).phoneNumber
         };
 
         if (this.fileName && this.file != null) {
-            await firstValueFrom(this.authService.updateAvatar(this.file));
+            await firstValueFrom((this.authService as any).updateAvatar(this.file));
         }
 
-        await firstValueFrom(this.authService.updatePersonnalInfos(newUser as UserUpdateDTO));
+        await firstValueFrom((this.authService as any).updatePersonnalInfos(newUser as UserUpdateDTO));
 
         this.onValidate.emit();
         this.visible.set(false);

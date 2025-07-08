@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { UserMainService } from '../services/userMain.service';
 import { firstValueFrom } from 'rxjs';
 
 export const isAdminOnlyGuard: CanActivateFn = async (route, state) => {
-    var auth = inject(AuthService);
-    if (auth.userConnected().email) {
-        if (auth.userConnected().roles.includes('Admin')) {
+    var auth = inject(UserMainService);
+    if ((auth as any).userConnected().email) {
+        if ((auth as any).userConnected().roles.includes('Admin')) {
             return true;
         } else {
             return false;
@@ -14,8 +14,8 @@ export const isAdminOnlyGuard: CanActivateFn = async (route, state) => {
     }
 
     try {
-        await firstValueFrom(auth.refreshToken());
-        if (auth.userConnected().email && auth.userConnected().roles.includes('Admin')) {
+        await firstValueFrom((auth as any).refreshToken());
+        if ((auth as any).userConnected().email && (auth as any).userConnected().roles.includes('Admin')) {
             return true;
         }
         return false;
@@ -25,9 +25,9 @@ export const isAdminOnlyGuard: CanActivateFn = async (route, state) => {
 };
 
 export const isStudentOnlyGuard: CanActivateFn = async (route, state) => {
-    var auth = inject(AuthService);
-    if (auth.userConnected().email) {
-        if (auth.userConnected().roles.includes('Student')) {
+    var auth = inject(UserMainService);
+    if ((auth as any).userConnected().email) {
+        if ((auth as any).userConnected().roles.includes('Student')) {
             return true;
         } else {
             return false;
@@ -35,8 +35,8 @@ export const isStudentOnlyGuard: CanActivateFn = async (route, state) => {
     }
 
     try {
-        await firstValueFrom(auth.refreshToken());
-        if (auth.userConnected().email && auth.userConnected().roles.includes('Student')) {
+        await firstValueFrom((auth as any).refreshToken());
+        if ((auth as any).userConnected().email && (auth as any).userConnected().roles.includes('Student')) {
             return true;
         }
         return false;

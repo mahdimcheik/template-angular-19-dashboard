@@ -5,11 +5,9 @@ import { NotifcationComponent } from './notifcation/notifcation.component';
 import { CommonModule } from '@angular/common';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { NotificationMainService } from '../../../shared/services/notificationMain.service';
-import { Checkbox, CheckboxModule } from 'primeng/checkbox';
+import { Checkbox } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
-import { QueryPanigation } from '../../../shared/models/slot';
 import { NotificationFilter } from '../../../shared/services/notificationMain.service';
-import { catchError, of } from 'rxjs';
 
 @Component({
     standalone: true,

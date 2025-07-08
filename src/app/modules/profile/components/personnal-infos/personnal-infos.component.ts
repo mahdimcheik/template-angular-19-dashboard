@@ -1,13 +1,13 @@
 import { Component, computed, inject, input, Input, output, signal, WritableSignal } from '@angular/core';
-import { UserResponseDTO } from '../../../../shared/models/user';
-import { AuthService } from '../../../../shared/services/auth.service';
+// import { UserResponseDTO } from '../../../../shared/models/user';
+import { UserMainService, UserResponseDTO } from '../../../../shared/services/userMain.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { ImageModule } from 'primeng/image';
 import { DobToAgePipe } from '../../../../shared/pipes/dob-to-age.pipe';
 import { ModalEditPersonnalInfosComponent } from '../modal-edit-personnal-infos/modal-edit-personnal-infos.component';
-import { TooltipClasses, TooltipModule } from 'primeng/tooltip';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-personnal-infos',
@@ -22,7 +22,7 @@ export class PersonnalInfosComponent {
     isVisibleModalEditPerso = signal<boolean>(false);
     onValidate = output<void>();
 
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
 
     fullName = computed(() => `${this.userToDisplay().email ? this.userToDisplay()?.firstName + ' ' + this.userToDisplay()?.lastName : ''}`);
 
@@ -30,6 +30,6 @@ export class PersonnalInfosComponent {
         this.isVisibleModalEditPerso.set(true);
     }
     resendConfirmationLink() {
-        this.authService.resendConfirmationLink().subscribe();
+        (this.authService as any).resendConfirmationLink().subscribe();
     }
 }

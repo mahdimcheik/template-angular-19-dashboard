@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
@@ -8,7 +8,7 @@ import { FormationsListComponent } from '../../components/formations-list/format
 import { PersonnalInfosComponent } from '../../components/personnal-infos/personnal-infos.component';
 import { FormationMainService } from '../../../../shared/services/formationMain.service';
 import { AddressMainService } from '../../../../shared/services/addressMain.service';
-import { UserResponseDTO } from '../../../../shared/models/user';
+import { UserResponseDTO } from '../../../../shared/services/userMain.service';
 import { ActivatedRoute } from '@angular/router';
 import { Address } from '../../../../api/models/Address';
 import { FormationResponseDTO } from '../../../../api/models/FormationResponseDTO';
@@ -21,7 +21,7 @@ import { FormationResponseDTO } from '../../../../api/models/FormationResponseDT
     styleUrl: './profile-student-public.component.scss'
 })
 export class ProfileStudentPublicComponent implements OnInit {
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     activatedRoute = inject(ActivatedRoute);
     formationService = inject(FormationMainService);
     addressService = inject(AddressMainService);
@@ -29,15 +29,15 @@ export class ProfileStudentPublicComponent implements OnInit {
     formations = signal<FormationResponseDTO[]>([]);
     addresses = signal<Address[]>([]);
 
-    user!: UserResponseDTO;
+    user = signal<UserResponseDTO>({} as UserResponseDTO);
 
     canEdit = false;
 
     ngOnInit(): void {
         this.activatedRoute.paramMap.subscribe((params) => {
             const userId = params.get('userId') ?? '';
-            this.authService.getPublicProfile(userId).subscribe((res) => {
-                this.user = res.data as UserResponseDTO;
+            (this.authService as any).getPublicProfile(userId).subscribe((res: any) => {
+                this.user.set(res.data as UserResponseDTO);
                 this.formationService.getFormations(userId, false).subscribe((res) => {
                     this.formations.set(res.data);
                 });

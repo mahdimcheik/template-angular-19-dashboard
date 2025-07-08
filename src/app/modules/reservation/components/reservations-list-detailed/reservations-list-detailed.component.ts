@@ -8,7 +8,7 @@ import { Table } from 'primeng/table';
 import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
 import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./reservations-list-detailed.component.scss']
 })
 export class ReservationsListDetailedComponent implements OnInit {
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     router = inject(Router);
 
     @ViewChild('dt') dt!: Table;
@@ -41,7 +41,7 @@ export class ReservationsListDetailedComponent implements OnInit {
 
     loadReservations() {
         this.loading = true;
-        if (this.authService.isAdmin()) {
+        if ((this.authService as any).isAdmin()) {
             this.slotService
                 .getReservationsByTeacher({
                     start: this.first,

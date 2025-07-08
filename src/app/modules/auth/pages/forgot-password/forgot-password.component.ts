@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
@@ -19,7 +19,7 @@ import { MessageService } from 'primeng/api';
     providers: []
 })
 export class ForgotPasswordComponent {
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     messageService = inject(MessageService);
     router = inject(Router);
     message = '';
@@ -32,7 +32,7 @@ export class ForgotPasswordComponent {
 
     submit() {
         this.isLoading = true;
-        this.authService
+        (this.authService as any)
             .forgotPassword(this.userForm.value as { email: string })
             .pipe(
                 catchError((err) => {

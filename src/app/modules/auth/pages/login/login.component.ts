@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
@@ -20,12 +20,12 @@ import { InputTextModule } from 'primeng/inputtext';
     providers: []
 })
 export class LoginComponent implements OnInit {
-    private authService = inject(AuthService);
+    private authService = inject(UserMainService);
     private messageService = inject(MessageService);
     private router = inject(Router);
     badCredentials = false;
     ngOnInit(): void {
-        console.log('LoginComponent initialized', this.authService.userConnected());
+        console.log('LoginComponent initialized', (this.authService as any).userConnected());
     }
 
     userForm = new FormGroup({
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     });
 
     submit() {
-        this.authService
+        (this.authService as any)
             .login(this.userForm.value as UserLoginDTO)
             .pipe(
                 catchError((err) => {

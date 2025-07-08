@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
-import { EnumGender, GenderDropDown, UserCreateDTO, UserLoginDTO } from '../../../../shared/models/user';
+import { EnumGender, GenderDropDown, UserLoginDTO } from '../../../../shared/models/user';
+import { UserCreateDTO } from '../../../../shared/services/userMain.service';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { MessageService } from 'primeng/api';
 import { FluidModule } from 'primeng/fluid';
@@ -25,7 +26,7 @@ import { PanelModule } from 'primeng/panel';
     providers: []
 })
 export class InscriptionComponent {
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     messageService = inject(MessageService);
     fb = inject(FormBuilder);
     router = inject(Router);
@@ -81,12 +82,13 @@ export class InscriptionComponent {
         this.isLoading = true;
         const newUser = {
             ...this.userForm.value,
-            gender: this.userForm.value['gender']?.value
+            gender: this.userForm.value['gender']?.value,
+            dateOfBirth: this.userForm.value['dateOfBirth']?.toISOString()
         } as UserCreateDTO;
 
         try {
             await firstValueFrom(
-                this.authService.register(newUser).pipe(
+                (this.authService as any).register(newUser).pipe(
                     tap((res) => {
                         console.log('res', res);
                         this.router.navigateByUrl('auth/account-created-successfully');

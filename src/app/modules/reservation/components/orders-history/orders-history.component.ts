@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { OrderComponent } from '../order/order.component';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { OrderMainService, OrderPagination } from '../../../../shared/services/orderMain.service';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -22,7 +22,7 @@ import { MessageService } from 'primeng/api';
     styleUrl: './orders-history.component.scss'
 })
 export class OrdersHistoryComponent implements OnInit {
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     orderService = inject(OrderMainService);
 
     //pagination
@@ -31,7 +31,7 @@ export class OrdersHistoryComponent implements OnInit {
     count = 0; // nombre total de reservations
     paginatorRef = viewChild<Paginator>('paginator');
 
-    currentUser = this.authService.userConnected;
+    currentUser = (this.authService as any).userConnected;
     orders = this.orderService.paidOrders;
 
     //filter

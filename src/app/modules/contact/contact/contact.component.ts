@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
-import { AuthService } from '../../../shared/services/auth.service';
+import { UserMainService } from '../../../shared/services/userMain.service';
 import { finalize, max } from 'rxjs';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';

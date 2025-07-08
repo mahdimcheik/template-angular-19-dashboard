@@ -3,7 +3,7 @@ import { NavigationStart, Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { LocalstorageService } from './app/shared/services/localstorage.service';
-import { AuthService } from './app/shared/services/auth.service';
+import { UserMainService } from './app/shared/services/userMain.service';
 import { catchError, of, switchMap } from 'rxjs';
 import { OrderMainService } from './app/shared/services/orderMain.service';
 import { LayoutService } from './app/layout/service/layout.service';
@@ -37,7 +37,7 @@ import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-
 })
 export class AppComponent implements OnInit {
     localStorageService = inject(LocalstorageService);
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     orderService = inject(OrderMainService);
     layoutService = inject(LayoutService);
     router = inject(Router);
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.connectionService.checkNetworkStatus();
-        this.authService
+        (this.authService as any)
             .getprofile()
             .pipe(
                 switchMap((res) => {

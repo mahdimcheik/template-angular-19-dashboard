@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { SlotMainService } from '../../../../shared/services/slotMain.service';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import { EventContentArg } from '@fullcalendar/core/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -24,7 +24,7 @@ import { ModalCreateAppointmentComponent } from '../../components/modal-create-a
 export class CalendarForTeacherComponent implements AfterViewInit {
     slotService = inject(SlotMainService);
     visibleEvents = this.slotService.visibleEvents; // signal
-    userConnected = inject(AuthService).userConnected; // signal
+    userConnected = inject(UserMainService).userConnected; // signal
 
     isVisibleModalCreate: boolean = false;
     isVisibleModalUpdate: boolean = false;
@@ -113,7 +113,7 @@ export class CalendarForTeacherComponent implements AfterViewInit {
     };
 
     loadSlot() {
-        this.slotService.getSlotByCreator(this.userConnected().id, this.dateStart, this.dateEnd).subscribe();
+        this.slotService.getSlotByCreator(this.userConnected().id!, this.dateStart, this.dateEnd).subscribe();
     }
 
     calendarOptions: CalendarOptions = {

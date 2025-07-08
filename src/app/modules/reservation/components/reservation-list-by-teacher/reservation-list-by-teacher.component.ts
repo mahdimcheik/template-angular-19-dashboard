@@ -2,13 +2,11 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild, ChangeDe
 import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { QueryPanigation } from '../../../../shared/services/slotMain.service';
 import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
-import { delay, firstValueFrom } from 'rxjs';
-import { SortEvent } from 'primeng/api';
 import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { ModalDetailsReservationComponent } from '../modal-details-reservation/modal-details-reservation.component';
 
 @Component({
@@ -22,7 +20,7 @@ import { ModalDetailsReservationComponent } from '../modal-details-reservation/m
 export class ReservationListComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
     slotService = inject(SlotMainService);
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
 
     reservations = signal([] as BookingResponseDTO[]);
     totalReservations = signal(0);
@@ -54,7 +52,7 @@ export class ReservationListComponent implements OnInit {
         }
 
         // si admin => get reservations by teacher sinon get reservations by student
-        this.authService.isAdmin()
+        (this.authService as any).isAdmin()
             ? this.slotService.getReservationsByTeacher(this.query).subscribe((res) => {
                   this.reservations.set(res.data);
                   this.totalReservations.set(res.count ?? 0);

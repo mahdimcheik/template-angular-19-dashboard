@@ -1,35 +1,34 @@
+import { HttpEvent, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { catchError, finalize, Observable, switchMap, throwError } from 'rxjs';
 import { inject } from '@angular/core';
-import { HttpInterceptorFn } from '@angular/common/http';
-import { catchError, finalize, switchMap, throwError } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { UserMainService } from '../services/userMain.service';
 
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
     let isRefreshing = false;
-    const authService = inject(AuthService);
+    const authService = inject(UserMainService);
 
-    // Ne pas intercepter les appels vers le refresh token
+    // Don't intercept refresh token calls
     if (req.url.includes('/refresh-token')) {
-        return next(req);
+        return next(req); // ✅ Correct type
     }
 
     return next(req).pipe(
         catchError((err: any) => {
-            console.log('error catched' + err.message);
+            console.log('error caught: ' + err.message);
 
-            // cas où le rejet est dû à un token expiré
             if (err.status === 401 && !isRefreshing) {
                 isRefreshing = true;
+
                 return authService.refreshToken().pipe(
                     catchError((refreshErr) => {
                         return throwError(() => refreshErr);
                     }),
-                    switchMap((newTokens) => {
+                    switchMap(() => {
                         const clonedRequest = req.clone({
                             setHeaders: {
                                 Authorization: `Bearer ${authService.token()}`
                             }
                         });
-                        // relancer l'ancienne requette avec le nouveau token
                         return next(clonedRequest);
                     }),
                     finalize(() => {
@@ -40,5 +39,5 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
 
             return throwError(() => err);
         })
-    );
+    ) as Observable<HttpEvent<any>>;
 };

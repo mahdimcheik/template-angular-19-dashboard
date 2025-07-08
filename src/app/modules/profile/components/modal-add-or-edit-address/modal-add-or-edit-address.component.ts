@@ -1,7 +1,7 @@
 import { Component, inject, input, model, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { AddressDropDown } from '../../../../shared/models/adresse';
+import { AddressDropDown } from '../../../../shared/models/adresseOption';
 import { firstValueFrom } from 'rxjs';
 import { AddressMainService } from '../../../../shared/services/addressMain.service';
 import { DialogModule } from 'primeng/dialog';
