@@ -32,8 +32,11 @@
                     <span>Commandes</span>
                 </a>
                 <a type="button" class="layout-topbar-action" [routerLink]="['/dashboard/profile/me']">
-                    <i *ngIf="!user().email" class="pi pi-user"></i>
-                    <p-avatar *ngIf="user().email" [image]="user().imgUrl" shape="circle"></p-avatar>
+                    @if (user().email) {
+                    <p-avatar [image]="user().imgUrl" shape="circle"></p-avatar>
+                    } @else {
+                    <i class="pi pi-user"></i>
+                    }
                     <span>Profil</span>
                 </a>
                 <!-- <p-menu #menu [model]="userItems()" [popup]="true"></p-menu> -->
