@@ -7,10 +7,11 @@ import { LayoutService } from '../../../../layout/service/layout.service';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { CommonModule } from '@angular/common';
 import { LocalstorageService } from '../../../../shared/services/localstorage.service';
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
     selector: 'topbar-widget',
-    imports: [RouterModule, StyleClassModule, ButtonModule, RippleModule, CommonModule],
+    imports: [RouterModule, StyleClassModule, ButtonModule, RippleModule, CommonModule, AvatarModule],
     templateUrl: './app.topbar-landing.html'
 })
 export class TopbarWidget {

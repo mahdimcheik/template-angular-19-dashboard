@@ -25,12 +25,14 @@
                     <i class="pi pi-calendar"></i>
                     <span>Réservations</span>
                 </a>
-                <a type="button" class="layout-topbar-action h-[50px]" *ngIf="user().email && !isAdmin()" [routerLink]="['/dashboard/reservation/orders-student']">
+                @if (user().email && !isAdmin()) {
+                <a type="button" class="layout-topbar-action h-[50px]" [routerLink]="['/dashboard/reservation/orders-student']">
                     <i class="pi pi-shopping-cart relative" style="font-size: 1.75rem">
                         <p-badge class="absolute bottom-[5px] left-[3px]" [value]="numberBooking()" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
                     </i>
                     <span>Commandes</span>
                 </a>
+                }
                 <a type="button" class="layout-topbar-action" [routerLink]="['/dashboard/profile/me']">
                     @if (user().email) {
                     <p-avatar [image]="user().imgUrl" shape="circle"></p-avatar>
