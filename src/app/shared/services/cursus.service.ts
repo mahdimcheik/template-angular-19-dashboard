@@ -25,6 +25,10 @@ export class CursusMainService {
     levels = signal([] as Level[]);
     categories = signal([] as Category[]);
 
+    // Store current pagination state
+    private currentStart = 0;
+    private currentPerPage = 10;
+
     getCursusCategories() {
         return this.cursusService.getCursusCategories().pipe(
             tap((res) => {
@@ -42,6 +46,9 @@ export class CursusMainService {
     }
 
     getAllCursus(start: number, perPage: number): Observable<CursusDtoIEnumerableResponseDTO> {
+        this.currentStart = start;
+        this.currentPerPage = perPage;
+
         return this.cursusService
             .postCursusAll({
                 start: start,
@@ -52,6 +59,11 @@ export class CursusMainService {
                     this.cursus.set(res.data ?? []);
                 })
             );
+    }
+
+    // Method to reload current page - useful after add/delete operations
+    reloadCurrentPage(): Observable<CursusDtoIEnumerableResponseDTO> {
+        return this.getAllCursus(this.currentStart, this.currentPerPage);
     }
 
     updateCursus(cursusDTO: UpdateCursusDto): Observable<CursusDtoResponseDTO> {
@@ -68,20 +80,10 @@ export class CursusMainService {
     }
 
     addCursus(cursusDTO: CreateCursusDto): Observable<CursusDtoResponseDTO> {
-        return this.cursusService.postCursus(cursusDTO).pipe(
-            delay(500),
-            tap((res) => {
-                this.cursus.update((oldList) => [...oldList, res.data as CursusDto]);
-            })
-        );
+        return this.cursusService.postCursus(cursusDTO).pipe(delay(500));
     }
 
     deleteCursus(cursusId: string): Observable<StringResponseDTO> {
-        return this.cursusService.deleteCursus(cursusId).pipe(
-            delay(500),
-            tap((res) => {
-                this.cursus.update((oldList) => oldList.filter((x) => x.id !== cursusId));
-            })
-        );
+        return this.cursusService.deleteCursus(cursusId).pipe(delay(500));
     }
 }

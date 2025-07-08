@@ -17,6 +17,7 @@
         [value]="cursus()"
         [paginator]="true"
         [rows]="pageSize()"
+        [first]="first()"
         [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]"
         [globalFilterFields]="['name', 'description', 'category', 'level']"
@@ -26,6 +27,7 @@
         styleClass="p-datatable-sm"
         [sortField]="'name'"
         [sortOrder]="1"
+        [lazy]="true"
         (onPage)="onPageChange($event)"
     >
         <ng-template pTemplate="header">

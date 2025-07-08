@@ -57,7 +57,7 @@ export class CursusListComponent implements OnInit {
     updateOrAdd = signal<'update' | 'add'>('add');
 
     // Pagination
-    page = signal(1);
+    first = signal(0);
     pageSize = signal(10);
     totalItems = signal(0);
 
@@ -67,10 +67,10 @@ export class CursusListComponent implements OnInit {
 
     async loadCursus() {
         try {
-            const res = await firstValueFrom(this.cursusService.getAllCursus(Math.max(0, (this.page() - 1) * this.pageSize()), this.pageSize()));
+            const res = await firstValueFrom(this.cursusService.getAllCursus(this.first(), this.pageSize()));
             this.totalItems.set(res.count ?? 0);
-            console.log('totalItems', this.totalItems());
-        } finally {
+        } catch (error) {
+            console.error('Error loading cursus:', error);
         }
     }
 
@@ -79,8 +79,7 @@ export class CursusListComponent implements OnInit {
     }
 
     onPageChange(event: TablePageEvent) {
-        console.log('event change', event);
-        this.page.set(event.first / event.rows);
+        this.first.set(event.first);
         this.pageSize.set(event.rows);
         this.loadCursus();
     }
@@ -125,9 +124,11 @@ export class CursusListComponent implements OnInit {
         if (this.selectedCursus()) {
             try {
                 await firstValueFrom(this.cursusService.deleteCursus(this.selectedCursus()?.id ?? ''));
-
+                // Reload current page to maintain pagination state
+                await this.loadCursus();
                 this.closeDeleteModal();
-            } finally {
+            } catch (error) {
+                console.error('Error deleting cursus:', error);
             }
         }
     }
@@ -136,10 +137,18 @@ export class CursusListComponent implements OnInit {
         if (this.selectedCursus()) {
             try {
                 await firstValueFrom(this.cursusService.updateCursus(this.selectedCursus()! as UpdateCursusDto));
+            } catch (error) {
+                console.error('Error updating cursus:', error);
             } finally {
                 this.closeAddEditModal();
             }
         } else {
+            // This is an add operation, reload current page
+            try {
+                await this.loadCursus();
+            } catch (error) {
+                console.error('Error reloading cursus:', error);
+            }
             this.closeAddEditModal();
         }
     }
