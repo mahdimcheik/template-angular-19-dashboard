@@ -1,13 +1,7 @@
-<div class="card p-4">
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold text-gray-800">Gestion des Cursus</h2>
+<div class="card mt-4">
+    <div class="flex gap-4 justify-between items-center">
+        <h3>Gestion des Cursus</h3>
         <div class="flex gap-2 items-center">
-            <p-iconfield>
-                <p-inputicon>
-                    <i class="pi pi-search"></i>
-                </p-inputicon>
-                <input pInputText placeholder="Rechercher..." (input)="onGlobalFilter(dt, $event)" class="p-inputtext-sm" />
-            </p-iconfield>
             <p-button icon="pi pi-plus" label="Nouveau Cursus" severity="success" (onClick)="openAddModal()"></p-button>
         </div>
     </div>
@@ -32,13 +26,13 @@
     >
         <ng-template pTemplate="header">
             <tr class="bg-gray-50">
-                <th pSortableColumn="name" class="text-left">Nom <p-sortIcon field="name"></p-sortIcon></th>
+                <th class="text-left">Nom</th>
                 <th class="text-left">Description</th>
-                <th pSortableColumn="category" class="text-left">Catégorie <p-sortIcon field="category"></p-sortIcon></th>
-                <th pSortableColumn="level" class="text-left">Niveau <p-sortIcon field="level"></p-sortIcon></th>
-                <th pSortableColumn="createdAt" class="text-left">Créé le <p-sortIcon field="createdAt"></p-sortIcon></th>
+                <th class="text-left">Catégorie</th>
+                <th class="text-left">Niveau</th>
+                <th class="text-left">Créé le</th>
                 @if (authService.isAdmin()) {
-                    <th class="text-center">Actions</th>
+                    <th class="text-center flex justify-center">Actions</th>
                 }
             </tr>
         </ng-template>

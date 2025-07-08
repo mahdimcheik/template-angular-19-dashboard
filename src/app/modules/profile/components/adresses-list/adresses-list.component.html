@@ -1,8 +1,14 @@
 <div class="card mt-4">
     <div class="flex gap-4">
         <h3>Mes adresses</h3>
-        <p-button icon="pi pi-plus" (onClick)="open()" *ngIf="canEdit()"></p-button>
+        @if (canEdit()) {
+            <p-button icon="pi pi-plus" (onClick)="open()"></p-button>
+        }
     </div>
-    <app-address *ngFor="let address of addresses()" [address]="address" [canEdit]="canEdit()"></app-address>
+    @for (address of addresses(); track address.id) {
+        <app-address [address]="address" [canEdit]="canEdit()"></app-address>
+    }
 </div>
-<app-modal-add-or-edit-address *ngIf="visibleRight()" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight" (onClose)="close()"></app-modal-add-or-edit-address>
+@if (canEdit()) {
+    <app-modal-add-or-edit-address *ngIf="visibleRight()" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight" (onClose)="close()"></app-modal-add-or-edit-address>
+}
