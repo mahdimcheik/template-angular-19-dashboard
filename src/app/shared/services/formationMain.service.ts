@@ -1,23 +1,27 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-
-import { Observable, switchMap, tap } from 'rxjs';
-import { FormationCreateDTO, FormationResponseDTO, FormationUpdateDTO } from '../models/formation';
+import { Observable, map, tap } from 'rxjs';
+import { FormationService as GeneratedFormationService } from '../../api/services/FormationService';
+import { FormationCreateDTO } from '../../api/models/FormationCreateDTO';
+import { FormationResponseDTO } from '../../api/models/FormationResponseDTO';
+import { FormationUpdateDTO } from '../../api/models/FormationUpdateDTO';
 import { ResponseDTO } from '../models/user';
-import { environment } from '../../../environments/environment.development';
 @Injectable({
     providedIn: 'root'
 })
-export class FormationService {
-    baseUrl = environment.BACK_URL;
-
-    private http: HttpClient = inject(HttpClient);
+export class FormationMainService {
+    private generatedFormationService = inject(GeneratedFormationService);
     formations = signal<FormationResponseDTO[]>([]);
 
     // si les formations apparteinnent à l'utilisateur connecté, on les met à jour dans le signal
     // sinon on ne fait rien, valable pour les autres fonctions aussi
     getFormations(userId: string, forOwner: boolean = true): Observable<ResponseDTO> {
-        return this.http.get<ResponseDTO>(`${this.baseUrl}/formation/all?userId=${userId}`).pipe(
+        return this.generatedFormationService.getFormationAll(userId).pipe(
+            map((response) => ({
+                message: response.message || 'Success',
+                status: response.status || 200,
+                data: response.data || [],
+                count: response.count || 0
+            })),
             tap((res) => {
                 if (forOwner) {
                     this.formations.set(res.data as FormationResponseDTO[]);
@@ -27,7 +31,13 @@ export class FormationService {
     }
 
     addFormation(formation: FormationCreateDTO, forOwner: boolean = true): Observable<ResponseDTO> {
-        return this.http.post<ResponseDTO>(`${this.baseUrl}/formation`, formation).pipe(
+        return this.generatedFormationService.postFormation(formation).pipe(
+            map((response) => ({
+                message: response.message || 'Success',
+                status: response.status || 201,
+                data: response.data || null,
+                count: response.count || 0
+            })),
             tap((res) => {
                 if (!forOwner) {
                     return;
@@ -41,7 +51,13 @@ export class FormationService {
     }
 
     updateFormation(formation: FormationUpdateDTO, forOwner: boolean = true): Observable<ResponseDTO> {
-        return this.http.put<ResponseDTO>(`${this.baseUrl}/formation`, formation).pipe(
+        return this.generatedFormationService.putFormation(formation).pipe(
+            map((response) => ({
+                message: response.message || 'Success',
+                status: response.status || 200,
+                data: response.data || null,
+                count: response.count || 0
+            })),
             tap((res) => {
                 if (!forOwner) {
                     return;
@@ -58,7 +74,13 @@ export class FormationService {
     }
 
     deleteFormation(formationId: string, forOwner: boolean = true): Observable<ResponseDTO> {
-        return this.http.delete<ResponseDTO>(`${this.baseUrl}/formation?formationId=${formationId}`).pipe(
+        return this.generatedFormationService.deleteFormation(formationId).pipe(
+            map((response) => ({
+                message: response.message || 'Success',
+                status: response.status || 204,
+                data: response.data || null,
+                count: response.count || 0
+            })),
             tap(() => {
                 if (!forOwner) {
                     return;

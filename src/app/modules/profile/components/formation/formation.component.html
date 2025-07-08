@@ -15,4 +15,4 @@
 </div>
 
 <app-modal-edit-or-add-formation (onClose)="close()" *ngIf="visibleRight()" [formationToEdit]="formation()" [updateOrAdd]="'update'" [(visibleRight)]="visibleRight"></app-modal-edit-or-add-formation>
-<app-modal-confirm-delete *ngIf="visibleModalDelete()" [(visible)]="visibleModalDelete" [title]="formation().title" (onDeleteConfirmed)="deleteFormation()"></app-modal-confirm-delete>
+<app-modal-confirm-delete *ngIf="visibleModalDelete()" [(visible)]="visibleModalDelete" [title]="formation().title ?? ''" (onDeleteConfirmed)="deleteFormation()"></app-modal-confirm-delete>
