@@ -11,7 +11,7 @@ import { AdresseService } from '../../../../shared/services/adresse.service';
 import { UserResponseDTO } from '../../../../shared/models/user';
 import { ActivatedRoute } from '@angular/router';
 import { FormationResponseDTO } from '../../../../shared/models/formation';
-import { AdresseDTO } from '../../../../shared/models/adresse';
+import { Address } from '../../../../api/models/Address';
 
 @Component({
     selector: 'app-profile-student-public',
@@ -27,7 +27,7 @@ export class ProfileStudentPublicComponent implements OnInit {
     addressService = inject(AdresseService);
 
     formations = signal<FormationResponseDTO[]>([]);
-    addresses = signal<AdresseDTO[]>([]);
+    addresses = signal<Address[]>([]);
 
     user!: UserResponseDTO;
 

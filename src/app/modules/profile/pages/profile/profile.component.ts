@@ -7,9 +7,7 @@ import { AdressesListComponent } from '../../components/adresses-list/adresses-l
 import { FormationsListComponent } from '../../components/formations-list/formations-list.component';
 import { PersonnalInfosComponent } from '../../components/personnal-infos/personnal-infos.component';
 import { FormationService } from '../../../../shared/services/formation.service';
-import { FormationResponseDTO } from '../../../../shared/models/formation';
 import { AdresseService } from '../../../../shared/services/adresse.service';
-import { AdresseDTO } from '../../../../shared/models/adresse';
 import { UserResponseDTO } from '../../../../shared/models/user';
 import { CursusListComponent } from '../../../cursus/components/cursus-list/cursus-list.component';
 

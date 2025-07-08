@@ -1,8 +1,7 @@
 import { Component, inject, input, model, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
-import { AddressDropDown, AddressTypeEnum, AdresseDTO } from '../../../../shared/models/adresse';
+import { AddressDropDown } from '../../../../shared/models/adresse';
 import { firstValueFrom } from 'rxjs';
 import { AdresseService } from '../../../../shared/services/adresse.service';
 import { DialogModule } from 'primeng/dialog';
@@ -17,6 +16,8 @@ import { CommonModule } from '@angular/common';
 import { FluidModule } from 'primeng/fluid';
 import { DrawerModule } from 'primeng/drawer';
 import { LayoutService } from '../../../../layout/service/layout.service';
+import { Address } from '../../../../api/models/Address';
+import { AddressTypeEnum } from '../../../../api/models/AddressTypeEnum';
 
 @Component({
     selector: 'app-modal-add-or-edit-address',
@@ -27,7 +28,7 @@ import { LayoutService } from '../../../../layout/service/layout.service';
 export class ModalAddOrEditAddressComponent implements OnInit {
     visibleRight = model<boolean>(false);
     onClose = output<boolean>();
-    adresseTochange = input<AdresseDTO>({} as AdresseDTO);
+    adresseTochange = input<Address>({} as Address);
     updateOrAdd = input<'update' | 'add'>('update');
     actionEmitter = output<void>();
     selectedType!: AddressDropDown;
@@ -43,22 +44,22 @@ export class ModalAddOrEditAddressComponent implements OnInit {
         {
             id: '1',
             name: 'Domicile',
-            value: AddressTypeEnum.Domicile
+            value: AddressTypeEnum._1
         },
         {
             id: '2',
             name: 'Travail',
-            value: AddressTypeEnum.Travail
+            value: AddressTypeEnum._2
         },
         {
             id: '3',
             name: 'Facturation',
-            value: AddressTypeEnum.Facturation
+            value: AddressTypeEnum._3
         },
         {
             id: '4',
             name: 'Livraison',
-            value: AddressTypeEnum.Livraison
+            value: AddressTypeEnum._4
         }
     ];
 
@@ -68,7 +69,7 @@ export class ModalAddOrEditAddressComponent implements OnInit {
             this.selectedType = this.typesAdresseList.find((x) => x.id == '' + this.adresseTochange().addressType) ?? {
                 id: '1',
                 name: 'Domicile',
-                value: AddressTypeEnum.Domicile
+                value: AddressTypeEnum._1
             };
 
             this.userForm = this.fb.group({
