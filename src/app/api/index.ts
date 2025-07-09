@@ -7,6 +7,10 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { ActivitiesStudent } from './models/ActivitiesStudent';
+export type { ActivitiesStudentResponseDTO } from './models/ActivitiesStudentResponseDTO';
+export type { ActivitiesTeacher } from './models/ActivitiesTeacher';
+export type { ActivitiesTeacherResponseDTO } from './models/ActivitiesTeacherResponseDTO';
 export type { Address } from './models/Address';
 export type { AddressCreateDTO } from './models/AddressCreateDTO';
 export type { AddressResponseDTO } from './models/AddressResponseDTO';
@@ -75,6 +79,7 @@ export type { UserLoginDTO } from './models/UserLoginDTO';
 export type { UserResponseDTO } from './models/UserResponseDTO';
 export type { UserUpdateDTO } from './models/UserUpdateDTO';
 
+export { ActivitiesService } from './services/ActivitiesService';
 export { AddressService } from './services/AddressService';
 export { AdminService } from './services/AdminService';
 export { BillService } from './services/BillService';

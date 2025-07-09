@@ -1,69 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivitiesService } from '../../../api/services/ActivitiesService';
+import { WidgetGenericComponent } from './widget-generic.component';
+import { ActivitiesTeacher } from '../../../api';
 
 @Component({
     standalone: true,
     selector: 'app-stats-widget',
-    imports: [CommonModule],
-    template: `<div class="col-span-12 lg:col-span-6 xl:col-span-3">
-            <div class="card mb-0">
-                <div class="flex justify-between mb-4">
-                    <div>
-                        <span class="block text-muted-color font-medium mb-4">Commandes du jour</span>
-                        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">2 créneaux</div>
-                    </div>
-                    <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-shopping-cart text-blue-500 !text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-primary font-medium">10:30 </span>
-                <span class="text-muted-color">à Bordeaux</span>
-            </div>
+    imports: [CommonModule, WidgetGenericComponent],
+    template: ` <div class="grid grid-cols-12 gap-4  w-full">
+        <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+            <app-widget-generic title="Réservations aujourd'hui" [middle]="todayReservations()" [icon]="'pi pi-address-book text-[var(--danger-color)] !text-xl'"></app-widget-generic>
         </div>
         <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-            <div class="card mb-0">
-                <div class="flex justify-between mb-4">
-                    <div>
-                        <span class="block text-muted-color font-medium mb-4">Revenu</span>
-                        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">100 €</div>
-                    </div>
-                    <div class="flex items-center justify-center bg-orange-100 dark:bg-orange-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-dollar text-orange-500 !text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-primary font-medium">20 € </span>
-                <span class="text-muted-color">de réduction</span>
-            </div>
+            <app-widget-generic [title]="'Réservations de la semaine'" [middle]="newReservations()" [icon]="'pi pi-address-book text-primary !text-xl'"></app-widget-generic>
+        </div>
+
+        <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+            <app-widget-generic [title]="'Nouveaux élèves'" [middle]="newStudents()" [icon]="'pi pi-user text-primary !text-xl'"></app-widget-generic>
         </div>
         <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-            <div class="card mb-0">
-                <div class="flex justify-between mb-4">
-                    <div>
-                        <span class="block text-muted-color font-medium mb-4">Élèves</span>
-                        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">152</div>
-                    </div>
-                    <div class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-users text-cyan-500 !text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-primary font-medium">2 </span>
-                <span class="text-muted-color">nouveaux élèves</span>
-            </div>
+            <app-widget-generic [title]="'Commandes de la semaine'" [middle]="newOrders()" [icon]="'pi pi-euro text-primary !text-xl'"></app-widget-generic>
         </div>
-        <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-            <div class="card mb-0">
-                <div class="flex justify-between mb-4">
-                    <div>
-                        <span class="block text-muted-color font-medium mb-4">Annulations</span>
-                        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">2</div>
-                    </div>
-                    <div class="flex items-center justify-center bg-purple-100 dark:bg-purple-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-comment text-purple-500 !text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-primary font-medium">13 </span>
-                <span class="text-muted-color">ce mois</span>
-            </div>
-        </div>`
+    </div>`
 })
-export class StatsWidget {}
+export class StatsWidget implements OnInit {
+    activitiesService = inject(ActivitiesService);
+    activities = signal<ActivitiesTeacher>({});
+    newStudents = computed<string>(() => (this.activities().newStudents?.length ? `${this.activities().newStudents?.length} nouveaux élèves` : 'Pas de nouveaux élèves'));
+    newOrders = computed<string>(() => (this.activities().ordersOfTheWeek?.length ? `${this.activities().ordersOfTheWeek?.length} nouvelles commandes` : 'Pas de nouvelles commandes'));
+    newReservations = computed<string>(() => (this.activities().bookingsOftheWeek?.length ? `${this.activities().bookingsOftheWeek?.length} nouvelles réservations` : 'Pas de nouvelles réservations'));
+    todayReservations = computed<string>(() =>
+        this.activities().bookingsOftheWeek?.filter((booking) => booking.startAt === new Date().toISOString().split('T')[0])?.length
+            ? `${this.activities().bookingsOftheWeek?.filter((booking) => booking.startAt === new Date().toISOString().split('T')[0])?.length} réservations aujourd'hui`
+            : "Pas de réservations aujourd'hui"
+    );
+    ngOnInit() {
+        this.activitiesService.getApiActivitiesTeacher().subscribe((activities) => {
+            this.activities.set(activities?.data ?? {});
+            console.log(this.activities());
+        });
+    }
+}
