@@ -43,6 +43,7 @@ export type { FormationResponseDTO } from './models/FormationResponseDTO';
 export type { FormationResponseDTOListResponseDTO } from './models/FormationResponseDTOListResponseDTO';
 export type { FormationResponseDTOResponseDTO } from './models/FormationResponseDTOResponseDTO';
 export type { FormationUpdateDTO } from './models/FormationUpdateDTO';
+export type { Int32ResponseDTO } from './models/Int32ResponseDTO';
 export type { Level } from './models/Level';
 export type { LevelDTO } from './models/LevelDTO';
 export type { LevelIEnumerableResponseDTO } from './models/LevelIEnumerableResponseDTO';
@@ -51,6 +52,10 @@ export type { LoginOutputDTOResponseDTO } from './models/LoginOutputDTOResponseD
 export type { Mail } from './models/Mail';
 export type { Notification } from './models/Notification';
 export type { NotificationFilter } from './models/NotificationFilter';
+export type { NotificationResponseDTO } from './models/NotificationResponseDTO';
+export type { NotificationResponseDTOPaginatedNotificationResult } from './models/NotificationResponseDTOPaginatedNotificationResult';
+export type { NotificationResponseDTOPaginatedNotificationResultResponseDTO } from './models/NotificationResponseDTOPaginatedNotificationResultResponseDTO';
+export type { NotificationResponseDTOResponseDTO } from './models/NotificationResponseDTOResponseDTO';
 export type { ObjectIEnumerableResponseDTO } from './models/ObjectIEnumerableResponseDTO';
 export type { ObjectResponseDTO } from './models/ObjectResponseDTO';
 export type { Order } from './models/Order';
