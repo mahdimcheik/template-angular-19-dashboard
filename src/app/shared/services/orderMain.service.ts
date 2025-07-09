@@ -7,6 +7,7 @@ import { OrderPagination as GeneratedOrderPagination } from '../../api/models/Or
 import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { ResponseDTO } from './userMain.service';
+import { environment } from '../../../environments/environment.development';
 
 // Type aliases to maintain backward compatibility
 export type OrderResponseDTO = OrderResponseForStudentDTO;
@@ -55,7 +56,7 @@ export class OrderMainService {
     }
 
     getBill(orderId: string): Observable<Blob> {
-        return this.http.get(`/bill/export?orderId=${orderId}`, { responseType: 'blob' }).pipe(
+        return this.http.get(`${environment.BACK_URL}/bill/export?orderId=${orderId}`, { responseType: 'blob' }).pipe(
             tap((blob) => {
                 console.log('telechargment');
 
