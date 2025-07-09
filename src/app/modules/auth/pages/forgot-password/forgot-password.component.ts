@@ -49,7 +49,7 @@ export class ForgotPasswordComponent {
                 this.errorRegistration = false;
                 this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Un email vous a été envoyé pour réinitialiser votre mot de passe' });
                 this.message = 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
-                this.router.navigateByUrl('/home');
+                this.router.navigateByUrl('/');
             });
     }
 }
