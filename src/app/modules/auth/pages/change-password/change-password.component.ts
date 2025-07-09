@@ -54,7 +54,7 @@ export class ChangePasswordComponent implements OnInit {
         await firstValueFrom(
             (this.authService as any).resetPassword(this.userForm.value as UserChangePasswordDTO).pipe(
                 tap((res) => {
-                    this.router.navigateByUrl('/');
+                    this.router.navigate(['/']);
                 }),
                 finalize(() => {
                     setTimeout(() => {

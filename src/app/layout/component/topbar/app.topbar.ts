@@ -41,7 +41,7 @@ export class AppTopbar {
                 {
                     label: `${this.user().firstName} ${this.user().lastName}`,
                     icon: 'pi pi-user',
-                    command: () => this.router.navigateByUrl('profile')
+                    command: () => this.router.navigate(['profile'])
                 },
                 {
                     label: 'Déconnexion',
@@ -54,12 +54,12 @@ export class AppTopbar {
                 {
                     label: 'Connexion',
                     icon: 'pi pi-home',
-                    command: () => this.router.navigateByUrl('auth/login')
+                    command: () => this.router.navigate(['auth/login'])
                 },
                 {
                     label: 'Inscription',
                     icon: 'pi pi-star',
-                    command: () => this.router.navigateByUrl('auth/inscription')
+                    command: () => this.router.navigate(['auth/inscription'])
                 }
             ];
         }

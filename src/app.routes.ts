@@ -5,7 +5,7 @@ import { Notfound } from './app/pages/notfound/notfound';
 import { SettingsComponent } from './app/pages/settings/settings.component';
 import { PaymentSuccessComponent } from './app/modules/reservation/components/payment-success/payment-success.component';
 import { StudentListComponent } from './app/modules/students/student-list/student-list.component';
-import { isConnectedGuard } from './app/shared/guards/can-login.guard';
+import { canNotLoginGuard, isConnectedGuard, isNotConnectedGuard } from './app/shared/guards/can-login.guard';
 import { Dashboard } from './app/modules/dashboard/dashboard';
 import { isAdminOnlyGuard } from './app/shared/guards/is-admin-only.guard';
 import { ContactComponent } from './app/modules/contact/contact/contact.component';
@@ -54,6 +54,7 @@ export const appRoutes: Routes = [
     },
     {
         path: 'auth',
+        canActivate: [isNotConnectedGuard],
         loadChildren: () => import('./app/modules/auth/auth.routes')
     },
 

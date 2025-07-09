@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
                     severity: 'success'
                 });
 
-                this.router.navigateByUrl('/');
+                this.router.navigate(['/']);
             });
     }
 }

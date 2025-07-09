@@ -49,6 +49,6 @@ export class ModalEditUserByAdminComponent {
 
     showProfil(id: string) {
         this.visible.set(false);
-        this.router.navigateByUrl(`dashboard/profile/user/${id}`);
+        this.router.navigate(['dashboard/profile/user', id]);
     }
 }

@@ -91,7 +91,7 @@ export class InscriptionComponent {
                 (this.authService as any).register(newUser).pipe(
                     tap((res) => {
                         console.log('res', res);
-                        this.router.navigateByUrl('auth/account-created-successfully');
+                        this.router.navigate(['auth/account-created-successfully']);
                     }),
                     finalize(() => {
                         setTimeout(() => {

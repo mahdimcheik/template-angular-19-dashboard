@@ -176,7 +176,7 @@ export class UserMainService {
             .pipe(
                 finalize(() => {
                     this.reset();
-                    this.router.navigateByUrl('/');
+                    this.router.navigate(['/']);
                 })
             )
             .subscribe();

@@ -100,7 +100,7 @@ export class StudentListComponent implements OnInit {
     }
 
     showProfil(id: string) {
-        this.router.navigateByUrl(`dashboard/profile/user/${id}`);
+        this.router.navigate(['dashboard/profile/user', id]);
     }
 
     showMore(item: string) {
