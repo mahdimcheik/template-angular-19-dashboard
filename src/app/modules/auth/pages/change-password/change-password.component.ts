@@ -15,9 +15,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RequiredAsteriskDirective } from '../../../../shared/directives/required-asterisk.directive';
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
+import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 @Component({
     selector: 'app-change-password',
-    imports: [FluidModule, ButtonModule, CommonModule, PasswordModule, InputTextModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule],
+    imports: [FluidModule, ButtonModule, CommonModule, PasswordModule, InputTextModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule, LogoComponent],
     templateUrl: './change-password.component.html',
     styleUrl: './change-password.component.scss',
     providers: []

@@ -16,10 +16,11 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { PanelModule } from 'primeng/panel';
+import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 
 @Component({
     selector: 'app-inscription',
-    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
+    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
 
     templateUrl: './inscription.component.html',
     styleUrl: './inscription.component.scss',

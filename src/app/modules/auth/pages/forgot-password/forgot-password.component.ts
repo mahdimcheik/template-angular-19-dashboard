@@ -9,10 +9,11 @@ import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
 import { InputText } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
+import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 
 @Component({
     selector: 'app-forgot-password',
-    imports: [FluidModule, ButtonModule, InputText, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
+    imports: [FluidModule, ButtonModule, InputText, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss',
     providers: []

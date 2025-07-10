@@ -11,10 +11,11 @@ import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
+import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 
 @Component({
     selector: 'app-login',
-    imports: [FluidModule, ButtonModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, PasswordModule, InputTextModule],
+    imports: [FluidModule, ButtonModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, PasswordModule, InputTextModule, LogoComponent],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss',
     providers: []
