@@ -7,6 +7,7 @@ import { AccountConfirmationComponent } from './pages/account-confirmation/accou
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { AccountCreatedSuccessfullyComponent } from './pages/account-created-successfully/account-created-successfully.component';
 import { canNotLoginGuard, isNotConnectedGuard } from '../../shared/guards/can-login.guard';
+import { PasswordResetSuccessfullyComponent } from './pages/password-reset-successfully/password-reset-successfully.component';
 
 export default [
     {
@@ -36,6 +37,10 @@ export default [
             {
                 path: 'account-created-successfully',
                 component: AccountCreatedSuccessfullyComponent
+            },
+            {
+                path: 'password-reset-successfully',
+                component: PasswordResetSuccessfullyComponent
             }
         ]
     }

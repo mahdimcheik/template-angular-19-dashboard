@@ -14,6 +14,7 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { RequiredAsteriskDirective } from '../../../../shared/directives/required-asterisk.directive';
 import { CommonModule } from '@angular/common';
+import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-change-password',
     imports: [FluidModule, ButtonModule, CommonModule, PasswordModule, InputTextModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule],
@@ -26,6 +27,7 @@ export class ChangePasswordComponent implements OnInit {
     private authService = inject(UserMainService);
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
+    private messageService = inject(MessageService);
     isLoading = false;
 
     userForm = new FormGroup(
@@ -55,6 +57,8 @@ export class ChangePasswordComponent implements OnInit {
             (this.authService as any).resetPassword(this.userForm.value as UserChangePasswordDTO).pipe(
                 tap((res) => {
                     this.router.navigate(['/']);
+                    this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mot de passe réinitialisé avec succès' });
+                    this.router.navigate(['/auth/password-reset-successfully']);
                 }),
                 finalize(() => {
                     setTimeout(() => {

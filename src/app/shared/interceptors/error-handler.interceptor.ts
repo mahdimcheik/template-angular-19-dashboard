@@ -30,7 +30,7 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
                     catchError((refreshErr) => {
                         isRefreshing = false;
                         // If refresh token fails, redirect to login
-                        authService.logout();
+                        authService.reset();
                         return throwError(() => refreshErr);
                     }),
                     switchMap(() => {

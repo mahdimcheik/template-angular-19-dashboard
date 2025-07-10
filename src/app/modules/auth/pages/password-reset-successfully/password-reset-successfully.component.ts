@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 
@@ -8,4 +9,10 @@ import { FluidModule } from 'primeng/fluid';
     templateUrl: './password-reset-successfully.component.html',
     styleUrl: './password-reset-successfully.component.scss'
 })
-export class PasswordResetSuccessfullyComponent {}
+export class PasswordResetSuccessfullyComponent {
+    router = inject(Router);
+
+    goToLogin() {
+        this.router.navigate(['/auth/login']);
+    }
+}
