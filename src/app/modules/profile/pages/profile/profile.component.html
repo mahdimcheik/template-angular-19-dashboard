@@ -2,5 +2,7 @@
     <app-personnal-infos [userToDisplay]="user()" [canEdit]="canEdit"></app-personnal-infos>
     <app-adresses-list [addresses]="addresses()" [canEdit]="canEdit"></app-adresses-list>
     <app-formations-list [formations]="formations()" [canEdit]="canEdit"></app-formations-list>
-    <app-cursus-list></app-cursus-list>
+    @if (authService.isAdmin()) {
+        <app-cursus-list></app-cursus-list>
+    }
 </div>

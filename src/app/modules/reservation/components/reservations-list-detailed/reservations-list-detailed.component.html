@@ -1,6 +1,6 @@
 <div class="card p-4">
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold text-gray-800">Reservations</h2>
+        <h2 class="text-2xl font-semibold">Reservations</h2>
         <span class="p-input-icon-left">
             <p-iconfield>
                 <p-inputicon>
@@ -37,7 +37,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reservation>
-            <tr class="hover:bg-gray-50">
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                 <td class="text-left">{{ reservation.orderNumber }}</td>
                 <td class="text-left">
                     <div class="flex items-center gap-2">

@@ -40,7 +40,7 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-cursus>
-            <tr class="hover:bg-gray-50">
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                 <td class="text-left">
                     <div class="flex items-center gap-2">
                         <i [class]="cursus.level?.name | cursusLevelIcon" class="text-lg"></i>
@@ -48,7 +48,7 @@
                     </div>
                 </td>
                 <td class="text-left">
-                    <span class="text-sm text-gray-600">{{ cursus.description | slice: 0 : 100 }}{{ cursus.description.length > 100 ? '...' : '' }}</span>
+                    <span class="text-sm">{{ cursus.description | slice: 0 : 100 }}{{ cursus.description.length > 100 ? '...' : '' }}</span>
                 </td>
                 <td class="text-left">
                     <span class="text-sm">{{ cursus.category?.name }}</span>
@@ -64,7 +64,7 @@
                     <td class="text-center">
                         <div class="flex justify-center gap-2">
                             <!-- <p-button icon="pi pi-eye" severity="info" [outlined]="true" size="small" pTooltip="Voir les détails" (onClick)="viewDetails(cursus)"></p-button> -->
-                            <p-button icon="pi pi-pencil" severity="danger" [outlined]="true" size="small" pTooltip="Modifier" (onClick)="openEditModal(cursus)"></p-button>
+                            <p-button icon="pi pi-pencil" severity="info" [outlined]="true" size="small" pTooltip="Modifier" (onClick)="openEditModal(cursus)"></p-button>
                             <p-button icon="pi pi-trash" severity="danger" [outlined]="true" size="small" pTooltip="Supprimer" (onClick)="openDeleteModal(cursus)"></p-button>
                         </div>
                     </td>
