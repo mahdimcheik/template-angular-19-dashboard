@@ -48,20 +48,18 @@ export class StatsWidget implements OnInit {
     newStudents = computed<string>(() => (this.activities().newStudents?.length ? `${this.activities().newStudents?.length} nouveaux élèves` : 'Pas de nouveaux élèves'));
     newOrders = computed<string>(() => (this.activities().ordersOfTheWeek?.length ? `${this.activities().ordersOfTheWeek?.length} nouvelles commandes` : 'Pas de nouvelles commandes'));
     newReservations = computed<string>(() => (this.activities().bookingsOftheWeek?.length ? `${this.activities().bookingsOftheWeek?.length} nouvelles réservations` : 'Pas de nouvelles réservations'));
-    todayReservations = computed<string>(() =>
-        this.activities().bookingsOftheWeek?.filter((booking) => booking.startAt === new Date().toISOString().split('T')[0])?.length
-            ? `${this.activities().bookingsOftheWeek?.filter((booking) => booking.startAt === new Date().toISOString().split('T')[0])?.length} réservations aujourd'hui`
-            : "Pas de réservations aujourd'hui"
-    );
+    todayReservations = computed<string>(() => {
+        const todaysReservations = this.activities().bookingsOftheWeek?.filter((booking) => new Date(booking.startAt ?? '') >= new Date() && new Date(booking.startAt ?? '') <= new Date(new Date().setHours(23, 59, 59, 999)))?.length ?? 0;
+        return todaysReservations ? `${todaysReservations} réservations aujourd'hui` : "Pas de réservations aujourd'hui";
+    });
 
     // sutdent activities
     newReservationsStudent = computed<string>(() => (this.activitiesStudent().bookingsOftheWeek?.length ? `${this.activitiesStudent().bookingsOftheWeek?.length} nouvelles réservations` : 'Pas de nouvelles réservations'));
     ordersHistoryStudent = computed<string>(() => (this.activitiesStudent().ordersHistory?.length ? `${this.activitiesStudent().ordersHistory?.length} commandes` : 'aucune commande'));
-    todayReservationsStudent = computed<string>(() =>
-        this.activitiesStudent().bookingsOftheWeek?.filter((booking) => booking.startAt === new Date().toISOString().split('T')[0])?.length
-            ? `${this.activitiesStudent().bookingsOftheWeek?.filter((booking) => booking.startAt === new Date().toISOString().split('T')[0])?.length} réservations aujourd'hui`
-            : "Pas de réservations aujourd'hui"
-    );
+    todayReservationsStudent = computed<string>(() => {
+        const todaysReservations = this.activitiesStudent().bookingsOftheWeek?.filter((booking) => new Date(booking.startAt ?? '') >= new Date() && new Date(booking.startAt ?? '') <= new Date(new Date().setHours(23, 59, 59, 999)))?.length ?? 0;
+        return todaysReservations ? `${todaysReservations} réservations aujourd'hui` : "Pas de réservations aujourd'hui";
+    });
 
     ngOnInit() {
         if (this.userService.isAdmin()) {
