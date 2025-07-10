@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
@@ -13,6 +13,8 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { ModalCreateAppointmentComponent } from '../../components/modal-create-appointment/modal-create-appointment.component';
+import { SizeWatcherService } from '../../../../shared/services/size-watcher.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-calendar-for-teacher',
@@ -25,6 +27,8 @@ export class CalendarForTeacherComponent implements AfterViewInit {
     slotService = inject(SlotMainService);
     visibleEvents = this.slotService.visibleEvents; // signal
     userConnected = inject(UserMainService).userConnected; // signal
+    sizeWatcher = inject(SizeWatcherService);
+    destroyRef = inject(DestroyRef);
 
     isVisibleModalCreate: boolean = false;
     isVisibleModalUpdate: boolean = false;
@@ -172,6 +176,11 @@ export class CalendarForTeacherComponent implements AfterViewInit {
     };
 
     ngAfterViewInit(): void {
+        this.sizeWatcher.size$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((size) => {
+            if (size === 'small') {
+                this.calendarComponent.getApi().changeView('timeGridDay');
+            }
+        });
         const calendarApi = this.calendarComponent.getApi();
         this.dateStart = calendarApi.view.currentStart.toUTCString();
         this.dateEnd = calendarApi.view.currentEnd.toUTCString();
