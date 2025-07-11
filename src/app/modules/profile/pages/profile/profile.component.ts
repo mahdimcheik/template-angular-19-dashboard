@@ -37,4 +37,8 @@ export class ProfileComponent implements OnInit {
         this.formationService.getFormations(this.user().id!).subscribe();
         this.addressService.getAllAddresses(this.user().id!).subscribe();
     }
+
+    sendMessage() {
+        this.authService.signalService.sendMessage('test', 'test');
+    }
 }

@@ -17,7 +17,7 @@ import { PasswordRecoveryInput } from '../../api/models/PasswordRecoveryInput';
 import { LoginOutputDTOResponseDTO } from '../../api/models/LoginOutputDTOResponseDTO';
 import { ObjectResponseDTO } from '../../api/models/ObjectResponseDTO';
 import { ObjectIEnumerableResponseDTO } from '../../api/models/ObjectIEnumerableResponseDTO';
-import { HttpHeaders } from '@angular/common/http';
+import { SignalService } from './signal.service';
 
 // Type aliases for backward compatibility
 export type { UserResponseDTO, UserCreateDTO, UserUpdateDTO, UserLoginDTO };
@@ -54,6 +54,7 @@ export class UserMainService {
     router = inject(Router);
     messageService = inject(MessageService);
     SseService = inject(SSEMainService);
+    signalService = inject(SignalService);
 
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
@@ -146,6 +147,7 @@ export class UserMainService {
                 if (res.data) {
                     this.userConnected.set(res.data.user);
                     this.token.set(res.data.token);
+                    this.signalService.startConnection(res.data.token);
                 }
             })
         );
@@ -177,6 +179,7 @@ export class UserMainService {
                 finalize(() => {
                     this.reset();
                     this.router.navigate(['/']);
+                    this.signalService.stopConnection();
                 })
             )
             .subscribe();
@@ -198,6 +201,7 @@ export class UserMainService {
                 } else if (res.data) {
                     this.userConnected.set(res.data);
                 }
+                this.signalService.startConnection(this.token());
             })
         );
     }
