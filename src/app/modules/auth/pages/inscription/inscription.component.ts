@@ -80,9 +80,7 @@ export class InscriptionComponent {
             description: [''],
             // GDPR Consent fields
             privacyPolicyConsent: [false, [Validators.requiredTrue]],
-            dataProcessingConsent: [false, [Validators.requiredTrue]],
-            marketingConsent: [false], // Optional
-            newsletterConsent: [false] // Optional
+            dataProcessingConsent: [false, [Validators.requiredTrue]]
         },
         { validators: [passwordValidator('password', 'confirmPassword')] }
     );

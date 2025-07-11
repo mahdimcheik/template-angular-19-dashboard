@@ -86,7 +86,7 @@
 
                         <!-- Privacy Policy Consent (Required) -->
                         <div class="flex items-start gap-3 mb-4">
-                            <p-checkbox [binary]="true" formControlName="privacyPolicyConsent" inputId="privacyPolicyConsent"> </p-checkbox>
+                            <p-checkbox [binary]="true" formControlName="privacyPolicyConsent" inputId="privacyPolicyConsent"></p-checkbox>
                             <label for="privacyPolicyConsent" class="text-sm text-surface-700 dark:text-surface-200 leading-relaxed cursor-pointer">
                                 <span class="text-red-500">*</span> J'ai lu et j'accepte la
                                 <a routerLink="/mentions-legales" target="_blank" class="text-primary-500 hover:text-primary-600 underline"> politique de confidentialité </a>
@@ -101,20 +101,6 @@
                             <label for="dataProcessingConsent" class="text-sm text-surface-700 dark:text-surface-200 leading-relaxed cursor-pointer">
                                 <span class="text-red-500">*</span> J'accepte que mes données personnelles soient traitées conformément au RGPD pour la création et la gestion de mon compte, ainsi que pour la fourniture des services de la plateforme.
                             </label>
-                        </div>
-
-                        <!-- Marketing Consent (Optional) -->
-                        <div class="flex items-start gap-3 mb-4">
-                            <p-checkbox [binary]="true" formControlName="marketingConsent" inputId="marketingConsent"> </p-checkbox>
-                            <label for="marketingConsent" class="text-sm text-surface-700 dark:text-surface-200 leading-relaxed cursor-pointer">
-                                J'accepte de recevoir des communications marketing personnalisées et des offres promotionnelles (vous pouvez vous désabonner à tout moment).
-                            </label>
-                        </div>
-
-                        <!-- Newsletter Consent (Optional) -->
-                        <div class="flex items-start gap-3 mb-4">
-                            <p-checkbox [binary]="true" formControlName="newsletterConsent" inputId="newsletterConsent"> </p-checkbox>
-                            <label for="newsletterConsent" class="text-sm text-surface-700 dark:text-surface-200 leading-relaxed cursor-pointer"> J'accepte de recevoir la newsletter avec les dernières actualités et conseils de la plateforme. </label>
                         </div>
 
                         <!-- Consent Validation Errors -->
