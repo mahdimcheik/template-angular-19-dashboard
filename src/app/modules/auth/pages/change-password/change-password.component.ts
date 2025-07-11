@@ -3,8 +3,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { delay, finalize, firstValueFrom, tap } from 'rxjs';
-import { AuthService } from '../../../../shared/services/auth.service';
-import { UserChangePasswordDTO } from '../../../../shared/models/user';
+import { UserMainService } from '../../../../shared/services/userMain.service';
+import { UserChangePasswordDTO } from '../../../../shared/services/userMain.service';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { MessageModule } from 'primeng/message';
@@ -14,18 +14,21 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { RequiredAsteriskDirective } from '../../../../shared/directives/required-asterisk.directive';
 import { CommonModule } from '@angular/common';
+import { MessageService } from 'primeng/api';
+import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 @Component({
     selector: 'app-change-password',
-    imports: [FluidModule, ButtonModule, CommonModule, PasswordModule, InputTextModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule],
+    imports: [FluidModule, ButtonModule, CommonModule, PasswordModule, InputTextModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule, LogoComponent],
     templateUrl: './change-password.component.html',
     styleUrl: './change-password.component.scss',
     providers: []
 })
 export class ChangePasswordComponent implements OnInit {
     visible: boolean = false;
-    private authService = inject(AuthService);
+    private authService = inject(UserMainService);
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
+    private messageService = inject(MessageService);
     isLoading = false;
 
     userForm = new FormGroup(
@@ -52,9 +55,11 @@ export class ChangePasswordComponent implements OnInit {
     async submit() {
         this.isLoading = true;
         await firstValueFrom(
-            this.authService.resetPassword(this.userForm.value as UserChangePasswordDTO).pipe(
+            (this.authService as any).resetPassword(this.userForm.value as UserChangePasswordDTO).pipe(
                 tap((res) => {
-                    this.router.navigateByUrl('/');
+                    this.router.navigate(['/']);
+                    this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mot de passe réinitialisé avec succès' });
+                    this.router.navigate(['/auth/password-reset-successfully']);
                 }),
                 finalize(() => {
                     setTimeout(() => {

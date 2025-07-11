@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'dobToAge'
 })
 export class DobToAgePipe implements PipeTransform {
-    transform(dob: Date | string): number {
+    transform(dob: Date | string | undefined | null): number {
         if (!dob) return 0;
 
         const birthDate = new Date(dob);
@@ -21,7 +21,8 @@ export class DobToAgePipe implements PipeTransform {
 }
 @Pipe({ name: 'dateIndicator' })
 export class DateIndicatorPipe implements PipeTransform {
-    transform(value: Date | string): string {
+    transform(value: string | undefined): string {
+        if (!value) return '';
         const date = new Date(value);
         const now = new Date();
 

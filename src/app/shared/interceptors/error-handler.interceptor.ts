@@ -1,56 +1,53 @@
-//
-
+import { HttpEvent, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { catchError, finalize, Observable, switchMap, throwError } from 'rxjs';
 import { inject } from '@angular/core';
-import { HttpInterceptorFn } from '@angular/common/http';
-import { catchError, finalize, switchMap, throwError } from 'rxjs';
-import { of } from 'rxjs';
-import { MessageService } from 'primeng/api';
-import { AuthService } from '../services/auth.service';
-import { LocalstorageService } from '../services/localstorage.service';
-import { GlobalService } from '../services/global.service';
+import { UserMainService } from '../services/userMain.service';
+import { environment } from '../../../environments/environment.development';
+
+// Move isRefreshing outside the interceptor function to share across all requests
+let isRefreshing = false;
 
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
-    let isRefreshing = false;
-    const authService = inject(AuthService);
-    const isFetching = inject(GlobalService).isFetching;
+    const authService = inject(UserMainService);
 
-    isFetching.set(true);
-    // Ne pas intercepter les appels vers le refresh token
-    if (req.url.includes('/refresh-token')) {
-        isFetching.set(false);
+    // Only intercept API calls (not static assets or other requests)
+    const isApiCall = req.url.includes('/api/') || req.url.includes(environment.BACK_URL);
+
+    // Don't intercept refresh token calls or non-API requests
+    if (req.url.includes('/refresh-token') || !isApiCall) {
         return next(req);
     }
 
     return next(req).pipe(
         catchError((err: any) => {
-            // cas où le rejet est dû à un token expiré
+            console.log('API error caught: ' + err.message);
+
+            // Only handle 401 errors for API calls and when not already refreshing
             if (err.status === 401 && !isRefreshing) {
                 isRefreshing = true;
+
                 return authService.refreshToken().pipe(
                     catchError((refreshErr) => {
+                        isRefreshing = false;
+                        // If refresh token fails, redirect to login
+                        authService.reset();
                         return throwError(() => refreshErr);
                     }),
-                    switchMap((newTokens) => {
+                    switchMap(() => {
                         const clonedRequest = req.clone({
                             setHeaders: {
                                 Authorization: `Bearer ${authService.token()}`
                             }
                         });
-                        // relancer l'ancienne requette avec le nouveau token
                         return next(clonedRequest);
                     }),
                     finalize(() => {
                         isRefreshing = false;
-                        isFetching.set(false);
                     })
                 );
             }
 
-            isFetching.set(false);
             return throwError(() => err);
-        }),
-        finalize(() => {
-            isFetching.set(false);
         })
-    );
+    ) as Observable<HttpEvent<any>>;
 };

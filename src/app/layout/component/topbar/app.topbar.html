@@ -15,25 +15,40 @@
             </button>
         </div>
 
+        <div class="layout-config-menu">
+            <button type="button" class="layout-topbar-action" (click)="router.navigate(['/dashboard'])">
+                <i class="pi pi-bell relative">
+                    @if (notificationService.unseencomputed() != '') {
+                    <p-badge class="absolute bottom-[8px] left-[5px] !p-0" [value]="notificationService.unseencomputed()" severity="warn" [style]="{ fontSize: '12px', cornerRadius: '100%'}"></p-badge>
+                    }
+                </i>
+            </button>
+        </div>
+
         <button class="layout-topbar-menu-button layout-topbar-action" pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
             <i class="pi pi-ellipsis-v"></i>
         </button>
 
         <div class="layout-topbar-menu hidden lg:block">
             <div class="layout-topbar-menu-content">
-                <a type="button" class="layout-topbar-action" [routerLink]="[calendarLink()]">
+                <a type="button" class="layout-topbar-action flex items-start" [routerLink]="[calendarLink()]">
                     <i class="pi pi-calendar"></i>
                     <span>Réservations</span>
                 </a>
-                <a type="button" class="layout-topbar-action h-[50px]" *ngIf="user().email && !isAdmin()" [routerLink]="['/dashboard/reservation/orders-student']">
+                @if (user().email && !isAdmin()) {
+                <a type="button" class="layout-topbar-action h-[50px] flex items-start" [routerLink]="['/dashboard/reservation/orders-student']">
                     <i class="pi pi-shopping-cart relative" style="font-size: 1.75rem">
                         <p-badge class="absolute bottom-[5px] left-[3px]" [value]="numberBooking()" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
                     </i>
                     <span>Commandes</span>
                 </a>
+                }
                 <a type="button" class="layout-topbar-action" [routerLink]="['/dashboard/profile/me']">
-                    <i *ngIf="!user().email" class="pi pi-user"></i>
-                    <p-avatar *ngIf="user().email" [image]="user().imgUrl" shape="circle"></p-avatar>
+                    @if (user().email) {
+                    <p-avatar [image]="user()?.imgUrl ?? ''" shape="circle"></p-avatar>
+                    } @else {
+                    <i class="pi pi-user"></i>
+                    }
                     <span>Profil</span>
                 </a>
                 <!-- <p-menu #menu [model]="userItems()" [popup]="true"></p-menu> -->

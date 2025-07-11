@@ -23,7 +23,7 @@
                                 <label for="title">Commande <i class="pi pi-copy cursor-pointer" pTooltip="Copier les détails" tooltipPosition="right" (click)="copyOrderDetails()"></i> </label>
                                 <input pInputText id="title" type="text" [value]="reservation().orderNumber" disabled />
                             </div>
-                            <div class="font-semibold text-xl">Sujet : {{ reservation().typeHelp | helpType }}</div>
+                            <div class="font-semibold text-xl">Sujet : {{ reservation().typeHelp! | helpType }}</div>
                             <p-message class="text mb-2">{{ reservation().subject }}</p-message>
                             <textarea *ngIf="reservation().description" pTextarea [value]="reservation().description" disabled class="h-[100px]"></textarea>
                         </div>

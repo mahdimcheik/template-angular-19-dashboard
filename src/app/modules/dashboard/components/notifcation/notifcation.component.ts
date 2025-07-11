@@ -1,10 +1,10 @@
 import { Component, inject, input } from '@angular/core';
-import { NotificationApp } from '../../../../shared/models/notification';
+import { Notification } from '../../../../api';
 import { CommonModule } from '@angular/common';
 import { NotifcationTypePipe } from '../../../../shared/pipes/notifcation-type.pipe';
 import { DateIndicatorPipe } from '../../../../shared/pipes/dob-to-age.pipe';
 import { ButtonModule } from 'primeng/button';
-import { NotificationService } from '../../../../shared/services/notification.service';
+import { NotificationMainService } from '../../../../shared/services/notificationMain.service';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
@@ -14,8 +14,8 @@ import { TooltipModule } from 'primeng/tooltip';
     styleUrl: './notifcation.component.scss'
 })
 export class NotifcationComponent {
-    notificationService = inject(NotificationService);
-    notification = input.required<NotificationApp>();
+    notificationService = inject(NotificationMainService);
+    notification = input.required<Notification>();
     initialfilter = {
         offset: 0,
         perPage: 10,
@@ -24,10 +24,10 @@ export class NotifcationComponent {
 
     updateNotificationState(event: Event) {
         event.stopPropagation();
-        this.notificationService.updateNotification(this.notification().id, !this.notification().isRead, this.initialfilter).subscribe();
+        this.notificationService.updateNotification(this.notification().id!, !this.notification().isRead, this.initialfilter).subscribe();
     }
     onClickNotification(event: Event) {
         event.stopPropagation();
-        this.notificationService.updateNotification(this.notification().id, !this.notification().isRead, this.initialfilter).subscribe();
+        this.notificationService.updateNotification(this.notification().id!, !this.notification().isRead, this.initialfilter).subscribe();
     }
 }

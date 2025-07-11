@@ -2,14 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
-import { AuthService } from '../../../shared/services/auth.service';
+import { UserMainService } from '../../../shared/services/userMain.service';
 import { finalize, max } from 'rxjs';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { ImageModule } from 'primeng/image';
-import { MailService } from '../../../shared/services/mail.service';
+import { MailMainService } from '../../../shared/services/mailMain.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
@@ -20,7 +20,7 @@ import { MessageService } from 'primeng/api';
     styleUrl: './contact.component.scss'
 })
 export class ContactComponent implements OnInit {
-    mailService = inject(MailService);
+    mailService = inject(MailMainService);
     router = inject(Router);
     messageService = inject(MessageService);
 

@@ -1,25 +1,25 @@
 import { Component, inject, signal } from '@angular/core';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
-import { UserLoginDTO } from '../../../../shared/models/user';
+import { catchError, finalize } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
 import { InputText } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
+import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 
 @Component({
     selector: 'app-forgot-password',
-    imports: [FluidModule, ButtonModule, InputText, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
+    imports: [FluidModule, ButtonModule, InputText, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss',
     providers: []
 })
 export class ForgotPasswordComponent {
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     messageService = inject(MessageService);
     router = inject(Router);
     message = '';
@@ -32,7 +32,7 @@ export class ForgotPasswordComponent {
 
     submit() {
         this.isLoading = true;
-        this.authService
+        (this.authService as any)
             .forgotPassword(this.userForm.value as { email: string })
             .pipe(
                 catchError((err) => {
@@ -50,7 +50,7 @@ export class ForgotPasswordComponent {
                 this.errorRegistration = false;
                 this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Un email vous a été envoyé pour réinitialiser votre mot de passe' });
                 this.message = 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
-                this.router.navigateByUrl('/home');
+                this.router.navigate(['/']);
             });
     }
 }

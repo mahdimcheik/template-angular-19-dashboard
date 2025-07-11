@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../shared/services/auth.service';
+import { UserMainService } from '../../../shared/services/userMain.service';
 import { LayoutService } from '../../service/layout.service';
 import { ButtonModule } from 'primeng/button';
 
@@ -13,10 +13,10 @@ import { ButtonModule } from 'primeng/button';
 })
 export class AppMenu {
     router = inject(Router);
-    authService = inject(AuthService);
-    model = this.authService.model;
+    authService = inject(UserMainService);
+    model = (this.authService as any).model;
     layoutService = inject(LayoutService);
-    isAdmin = computed(() => this.authService.userConnected()?.roles?.includes('Admin'));
+    isAdmin = computed(() => (this.authService as any).userConnected()?.roles?.includes('Admin'));
 
     deconnecionItem = {
         label: 'Déconnexion',
@@ -28,6 +28,6 @@ export class AppMenu {
     };
 
     deconnect() {
-        this.authService.logout();
+        (this.authService as any).logout();
     }
 }

@@ -2,33 +2,9 @@
     <app-personnal-infos [userToDisplay]="user()" [canEdit]="canEdit"></app-personnal-infos>
     <app-adresses-list [addresses]="addresses()" [canEdit]="canEdit"></app-adresses-list>
     <app-formations-list [formations]="formations()" [canEdit]="canEdit"></app-formations-list>
-
-    <div class="card mt-4">
-        <div class="flex gap-4">
-            <h3>Autres choses</h3>
-            <p-button icon="pi pi-plus"></p-button>
-        </div>
-        <div class="flex flex-col md:flex-row">
-            <div class="w-full md:w-5/12 flex flex-col items-center justify-center gap-3 py-5">
-                <div class="flex flex-col gap-2">
-                    <label for="username">Username</label>
-                    <input pInputText id="username" type="text" />
-                </div>
-                <div class="flex flex-col gap-2">
-                    <label for="password">Password</label>
-                    <input pInputText id="password" type="password" />
-                </div>
-                <div class="flex">
-                    <p-button label="Login" icon="pi pi-user" class="w-full max-w-[17.35rem] mx-auto"></p-button>
-                </div>
-            </div>
-            <div class="w-full md:w-2/12">
-                <p-divider layout="vertical" class="!hidden md:!flex"><b>OR</b></p-divider>
-                <p-divider layout="horizontal" class="!flex md:!hidden" align="center"><b>OR</b></p-divider>
-            </div>
-            <div class="w-full md:w-5/12 flex items-center justify-center py-5">
-                <p-button label="Sign Up" icon="pi pi-user-plus" severity="success" class="w-full" styleClass="w-full max-w-[17.35rem] mx-auto"></p-button>
-            </div>
-        </div>
-    </div>
+    @if (authService.isAdmin()) {
+        <app-cursus-list></app-cursus-list>
+    }
 </div>
+
+<button (click)="sendMessage()">sendMessage</button>

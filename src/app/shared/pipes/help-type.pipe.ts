@@ -1,17 +1,20 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { EnumTypeHelp } from '../models/slot';
+import { EnumTypeHelp } from '../../api/models/EnumTypeHelp';
 
 @Pipe({
     name: 'helpType'
 })
 export class HelpTypePipe implements PipeTransform {
-    transform(typeHelp: number): string {
+    transform(typeHelp: number | EnumTypeHelp): string {
         switch (typeHelp) {
-            case EnumTypeHelp.other:
+            case EnumTypeHelp._0:
+            case 0:
                 return 'Autre';
-            case EnumTypeHelp.homework:
+            case EnumTypeHelp._1:
+            case 1:
                 return 'Aides aux devoirs';
-            case EnumTypeHelp.exams:
+            case EnumTypeHelp._2:
+            case 2:
                 return 'Péparation aux examens';
             default:
                 return 'Non défini';

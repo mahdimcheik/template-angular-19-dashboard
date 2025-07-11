@@ -13,11 +13,13 @@
                 <span>Accueil</span>
             </a>
         </li>
-        <li *ngIf="authService.userConnected().email">
+        @if (authService.userConnected().email) {
+        <li>
             <a routerLink="/dashboard" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                 <span>Tableau de bord</span>
             </a>
         </li>
+        }
         <li>
             <a routerLink="/teacher" fragment="profile" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                 <span>Qui je suis</span>
@@ -30,10 +32,22 @@
         </li>
     </ul>
     <div class="flex flex-row items-center gap-4 justify-center">
-        <p-button type="button" (onClick)="toggleDarkMode()" outlined="true" [icon]="layoutService.isDarkTheme()?  'pi pi-moon' : 'pi pi-sun'" class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2"> </p-button>
-        <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2" *ngIf="!authService.userConnected().email">
-            <button pButton pRipple label="Connexion" routerLink="/auth/login" [rounded]="true" [text]="true"></button>
-            <button pButton pRipple label="Inscription" routerLink="/auth/inscription" [rounded]="true"></button>
-        </div>
+        <p-button
+            type="button"
+            (onClick)="toggleDarkMode()"
+            outlined="true"
+            [icon]="layoutService.isDarkTheme()?  'pi pi-moon' : 'pi pi-sun'"
+            class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2 flex items-center justify-center"
+        >
+        </p-button>
+
+        @if(authService.userConnected().email) {
+        <p-button type="button" outlined="true" [icon]="'pi pi-sign-out'" class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2 flex items-center justify-center" (onClick)="authService.logout()"> </p-button>
+        } @else {
+        <!-- <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2"> -->
+        <p-button pRipple label="Connexion" routerLink="/auth/login" [rounded]="true" [text]="true" class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2 flex items-center justify-center"></p-button>
+        <p-button pRipple label="Inscription" routerLink="/auth/inscription" [rounded]="true" class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2 flex items-center justify-center"></p-button>
+        <!-- </div> -->
+        }
     </div>
 </div>

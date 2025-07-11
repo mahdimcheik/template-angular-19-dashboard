@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 
 @Component({
     selector: 'app-mentions-legales',
@@ -8,5 +8,9 @@ import { AuthService } from '../../../../shared/services/auth.service';
     styleUrl: './mentions-legales.component.scss'
 })
 export class MentionsLegalesComponent {
-    owner = inject(AuthService).teacherDetails;
+    owner = inject(UserMainService).teacherDetails;
+
+    getCurrentDate(): string {
+        return new Date().toLocaleDateString('fr-FR');
+    }
 }

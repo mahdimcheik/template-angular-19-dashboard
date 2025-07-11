@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, computed, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventInput } from '@fullcalendar/core/index.js';
-import { SlotService } from '../../../../shared/services/slot.service';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { catchError, finalize, firstValueFrom, switchMap } from 'rxjs';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
-import { Title } from '@angular/platform-browser';
-import { BookingCreateDTO, SlotResponseDTO } from '../../../../shared/models/slot';
-import { OrderService } from '../../../../shared/services/order.service';
+import { BookingCreateDTO } from '../../../../api/models/BookingCreateDTO';
+import { SlotResponseDTO } from '../../../../api/models/SlotResponseDTO';
+import { OrderMainService } from '../../../../shared/services/orderMain.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
@@ -49,8 +49,8 @@ export class ModalBookOrUnbookComponent implements OnInit {
     });
 
     fb = inject(FormBuilder);
-    slotService = inject(SlotService);
-    orderService = inject(OrderService);
+    slotService = inject(SlotMainService);
+    orderService = inject(OrderMainService);
     messageService = inject(MessageService);
 
     type = {

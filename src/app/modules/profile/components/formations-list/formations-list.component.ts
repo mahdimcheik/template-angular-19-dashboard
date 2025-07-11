@@ -1,9 +1,6 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
-import { FormationResponseDTO } from '../../../../shared/models/formation';
-import { firstValueFrom } from 'rxjs';
-import { AdresseService } from '../../../../shared/services/adresse.service';
-import { AuthService } from '../../../../shared/services/auth.service';
-import { FormationService } from '../../../../shared/services/formation.service';
+import { FormationResponseDTO } from '../../../../api/models/FormationResponseDTO';
+import { FormationMainService } from '../../../../shared/services/formationMain.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { FormationComponent } from '../formation/formation.component';
@@ -17,7 +14,7 @@ import { ModalEditOrAddFormationComponent } from '../modal-edit-or-add-formation
 })
 export class FormationsListComponent {
     visibleRight = signal<boolean>(false);
-    formationService = inject(FormationService);
+    formationService = inject(FormationMainService);
 
     formations = input.required<FormationResponseDTO[]>();
     canEdit = input<boolean>(true);

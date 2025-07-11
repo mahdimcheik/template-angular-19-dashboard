@@ -8,10 +8,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
-import { UserResponseDTO } from '../../../../shared/models/user';
+import { UserResponseDTO } from '../../../../shared/services/userMain.service';
 import { AvatarModule } from 'primeng/avatar';
 import { DobToAgePipe } from '../../../../shared/pipes/dob-to-age.pipe';
-import { AdminService } from '../../../../shared/services/admin.service';
+import { AdminMainService } from '../../../../shared/services/adminMain.service';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { ImageModule } from 'primeng/image';
@@ -28,12 +28,12 @@ export class ModalEditUserByAdminComponent {
     user = input.required<UserResponseDTO>();
     isBanned = computed(() => (this.user()?.isBanned ? `est banni(e) jusqu\'au` : ''));
 
-    adminService = inject(AdminService);
+    adminService = inject(AdminMainService);
     router = inject(Router);
 
     banUnbanUser() {
         this.adminService
-            .banUnbanUser({ userId: this.user().id, isBanned: !this.user().isBanned })
+            .banUnbanUser({ userId: this.user().id ?? '', isBanned: !this.user().isBanned })
             .pipe(
                 finalize(() => {
                     console.log('banUnbanUser: finalize');
@@ -49,6 +49,6 @@ export class ModalEditUserByAdminComponent {
 
     showProfil(id: string) {
         this.visible.set(false);
-        this.router.navigateByUrl(`dashboard/profile/user/${id}`);
+        this.router.navigate(['dashboard/profile/user', id]);
     }
 }

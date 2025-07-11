@@ -1,18 +1,19 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from '../app.configurator';
 import { LayoutService } from '../../service/layout.service';
-import { AuthService } from '../../../shared/services/auth.service';
+import { UserMainService } from '../../../shared/services/userMain.service';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
-import { OrderService } from '../../../shared/services/order.service';
+import { OrderMainService } from '../../../shared/services/orderMain.service';
 import { LocalstorageService } from '../../../shared/services/localstorage.service';
+import { NotificationsMainService } from '../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-topbar',
@@ -20,20 +21,23 @@ import { LocalstorageService } from '../../../shared/services/localstorage.servi
     imports: [RouterModule, CommonModule, StyleClassModule, AvatarModule, MenuModule, MenubarModule, TagModule, BadgeModule],
     templateUrl: './app.topbar.html'
 })
-export class AppTopbar {
+export class AppTopbar implements OnInit {
     items!: MenuItem[];
-    authService = inject(AuthService);
-    orderService = inject(OrderService);
+    authService = inject(UserMainService);
+    orderService = inject(OrderMainService);
     layoutService = inject(LayoutService);
+    router = inject(Router);
+
     currentOrder = this.orderService.currentOrder;
     numberBooking = computed(() => {
-        if (!this.currentOrder().bookings || this.currentOrder().bookings.length == 0) return '';
-        return '' + this.currentOrder().bookings.length;
+        if (!this.currentOrder().bookings || this.currentOrder().bookings?.length == 0) return '';
+        return '' + this.currentOrder().bookings?.length;
     });
-    router = inject(Router);
+
     user = this.authService.userConnected;
     isAdmin = computed(() => this.user().roles?.includes('Admin') ?? false);
     localStorageService = inject(LocalstorageService);
+    notificationService = inject(NotificationsMainService);
 
     userItems = computed(() => {
         if (this.user().email) {
@@ -41,12 +45,12 @@ export class AppTopbar {
                 {
                     label: `${this.user().firstName} ${this.user().lastName}`,
                     icon: 'pi pi-user',
-                    command: () => this.router.navigateByUrl('profile')
+                    command: () => this.router.navigate(['profile'])
                 },
                 {
                     label: 'Déconnexion',
                     icon: 'pi pi-star',
-                    command: () => this.authService.logout()
+                    command: () => (this.authService as any).logout()
                 }
             ];
         } else {
@@ -54,21 +58,25 @@ export class AppTopbar {
                 {
                     label: 'Connexion',
                     icon: 'pi pi-home',
-                    command: () => this.router.navigateByUrl('auth/login')
+                    command: () => this.router.navigate(['auth/login'])
                 },
                 {
                     label: 'Inscription',
                     icon: 'pi pi-star',
-                    command: () => this.router.navigateByUrl('auth/inscription')
+                    command: () => this.router.navigate(['auth/inscription'])
                 }
             ];
         }
     });
 
+    ngOnInit(): void {
+        this.notificationService.getNotifcationsCountByUserId().subscribe();
+    }
+
     calendarLink = computed(() => {
         if (this.user().email) {
             if (this.user()?.roles) {
-                if (this.user()?.roles.includes('Admin')) {
+                if (this.user()?.roles?.includes('Admin')) {
                     return '/dashboard/reservation/calendar-for-teacher';
                 } else {
                     return '/dashboard/reservation/calendar-for-student';

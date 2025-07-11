@@ -1,17 +1,17 @@
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { AdressesListComponent } from '../../components/adresses-list/adresses-list.component';
 import { FormationsListComponent } from '../../components/formations-list/formations-list.component';
 import { PersonnalInfosComponent } from '../../components/personnal-infos/personnal-infos.component';
-import { FormationService } from '../../../../shared/services/formation.service';
-import { AdresseService } from '../../../../shared/services/adresse.service';
-import { UserResponseDTO } from '../../../../shared/models/user';
+import { FormationMainService } from '../../../../shared/services/formationMain.service';
+import { AddressMainService } from '../../../../shared/services/addressMain.service';
+import { UserResponseDTO } from '../../../../shared/services/userMain.service';
 import { ActivatedRoute } from '@angular/router';
-import { FormationResponseDTO } from '../../../../shared/models/formation';
-import { AdresseDTO } from '../../../../shared/models/adresse';
+import { Address } from '../../../../api/models/Address';
+import { FormationResponseDTO } from '../../../../api/models/FormationResponseDTO';
 
 @Component({
     selector: 'app-profile-student-public',
@@ -21,23 +21,23 @@ import { AdresseDTO } from '../../../../shared/models/adresse';
     styleUrl: './profile-student-public.component.scss'
 })
 export class ProfileStudentPublicComponent implements OnInit {
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     activatedRoute = inject(ActivatedRoute);
-    formationService = inject(FormationService);
-    addressService = inject(AdresseService);
+    formationService = inject(FormationMainService);
+    addressService = inject(AddressMainService);
 
     formations = signal<FormationResponseDTO[]>([]);
-    addresses = signal<AdresseDTO[]>([]);
+    addresses = signal<Address[]>([]);
 
-    user!: UserResponseDTO;
+    user = signal<UserResponseDTO>({} as UserResponseDTO);
 
     canEdit = false;
 
     ngOnInit(): void {
         this.activatedRoute.paramMap.subscribe((params) => {
             const userId = params.get('userId') ?? '';
-            this.authService.getPublicProfile(userId).subscribe((res) => {
-                this.user = res.data as UserResponseDTO;
+            (this.authService as any).getPublicProfile(userId).subscribe((res: any) => {
+                this.user.set(res.data as UserResponseDTO);
                 this.formationService.getFormations(userId, false).subscribe((res) => {
                     this.formations.set(res.data);
                 });

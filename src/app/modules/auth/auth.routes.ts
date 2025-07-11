@@ -7,6 +7,7 @@ import { AccountConfirmationComponent } from './pages/account-confirmation/accou
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { AccountCreatedSuccessfullyComponent } from './pages/account-created-successfully/account-created-successfully.component';
 import { canNotLoginGuard, isNotConnectedGuard } from '../../shared/guards/can-login.guard';
+import { PasswordResetSuccessfullyComponent } from './pages/password-reset-successfully/password-reset-successfully.component';
 
 export default [
     {
@@ -15,18 +16,15 @@ export default [
         children: [
             {
                 path: 'login',
-                component: LoginComponent,
-                canActivate: [isNotConnectedGuard]
+                component: LoginComponent
             },
             {
                 path: 'forgot-password',
-                component: ForgotPasswordComponent,
-                canActivate: [canNotLoginGuard]
+                component: ForgotPasswordComponent
             },
             {
                 path: 'reset-password',
-                component: ChangePasswordComponent,
-                canActivate: [canNotLoginGuard]
+                component: ChangePasswordComponent
             },
             {
                 path: 'email-confirmation-success',
@@ -34,12 +32,15 @@ export default [
             },
             {
                 path: 'inscription',
-                component: InscriptionComponent,
-                canActivate: [canNotLoginGuard]
+                component: InscriptionComponent
             },
             {
                 path: 'account-created-successfully',
                 component: AccountCreatedSuccessfullyComponent
+            },
+            {
+                path: 'password-reset-successfully',
+                component: PasswordResetSuccessfullyComponent
             }
         ]
     }

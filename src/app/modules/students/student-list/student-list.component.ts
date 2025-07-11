@@ -7,9 +7,9 @@ import { PickListModule } from 'primeng/picklist';
 import { OrderListModule } from 'primeng/orderlist';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
-import { AdminService } from '../../../shared/services/admin.service';
+import { AdminMainService } from '../../../shared/services/adminMain.service';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
-import { UserResponseDTO } from '../../../shared/models/user';
+import { UserResponseDTO } from '../../../shared/services/userMain.service';
 import { Router } from '@angular/router';
 import { ModalEditUserByAdminComponent } from '../components/modal-edit-user-by-admin/modal-edit-user-by-admin.component';
 import { InputText, InputTextModule } from 'primeng/inputtext';
@@ -48,7 +48,7 @@ export class StudentListComponent implements OnInit {
     options = ['list', 'grid'];
 
     router = inject(Router);
-    adminService = inject(AdminService);
+    adminService = inject(AdminMainService);
     students = signal<UserResponseDTO[]>([]);
 
     // pagination
@@ -100,7 +100,7 @@ export class StudentListComponent implements OnInit {
     }
 
     showProfil(id: string) {
-        this.router.navigateByUrl(`dashboard/profile/user/${id}`);
+        this.router.navigate(['dashboard/profile/user', id]);
     }
 
     showMore(item: string) {

@@ -6,8 +6,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import frLocale from '@fullcalendar/core/locales/fr';
 import interactionPlugin, { EventResizeDoneArg, EventResizeStopArg } from '@fullcalendar/interaction';
-import { SlotService } from '../../../../shared/services/slot.service';
-import { AuthService } from '../../../../shared/services/auth.service';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
+import { UserMainService } from '../../../../shared/services/userMain.service';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
@@ -36,9 +36,9 @@ type CustomEvent = {
     styleUrl: './calendar-for-student.component.scss'
 })
 export class CalendarForStudentComponent implements OnInit, AfterViewInit {
-    slotService = inject(SlotService);
+    slotService = inject(SlotMainService);
     visibleEvents = this.slotService.visibleEvents; // signal
-    userConnected = inject(AuthService).userConnected; // signal
+    userConnected = inject(UserMainService).userConnected; // signal
 
     isVisibleModalBookDelete: boolean = false;
 

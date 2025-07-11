@@ -1,9 +1,11 @@
 import { Component, inject, input, model, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { FormationResponseDTO } from '../../../../shared/models/formation';
+import { FormationResponseDTO } from '../../../../api/models/FormationResponseDTO';
+import { FormationCreateDTO } from '../../../../api/models/FormationCreateDTO';
+import { FormationUpdateDTO } from '../../../../api/models/FormationUpdateDTO';
 import { firstValueFrom } from 'rxjs';
-import { FormationService } from '../../../../shared/services/formation.service';
+import { FormationMainService } from '../../../../shared/services/formationMain.service';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
@@ -23,7 +25,7 @@ export class ModalEditOrAddFormationComponent implements OnInit {
     visibleRight = model<boolean>(false);
     onClose = output<boolean>();
     formationToEdit = input<FormationResponseDTO>({} as FormationResponseDTO);
-    formationService = inject(FormationService);
+    formationService = inject(FormationMainService);
     updateOrAdd = input<'update' | 'add'>('update');
     actionEmitter = output<void>();
     title!: string;
@@ -45,8 +47,8 @@ export class ModalEditOrAddFormationComponent implements OnInit {
                 company: [this.formationToEdit().company, [Validators.required]],
                 city: [this.formationToEdit().city, [Validators.required]],
                 country: [this.formationToEdit().country, [Validators.required]],
-                startAt: [new Date(this.formationToEdit().startAt), [Validators.required]],
-                endAt: [new Date(this.formationToEdit().endAt), [Validators.required]]
+                startAt: [this.formationToEdit().startAt ? new Date(this.formationToEdit().startAt!) : null, [Validators.required]],
+                endAt: [this.formationToEdit().endAt ? new Date(this.formationToEdit().endAt!) : null, [Validators.required]]
             });
         } else if (this.updateOrAdd() == 'add') {
             this.title = 'Ajouter une formation';
@@ -69,15 +71,27 @@ export class ModalEditOrAddFormationComponent implements OnInit {
 
     async submit() {
         if (this.updateOrAdd() == 'update') {
-            const newFormation = {
-                ...this.userForm.value
+            const formValue = this.userForm.value;
+            const newFormation: FormationUpdateDTO = {
+                id: this.formationToEdit().id!,
+                title: formValue.title,
+                company: formValue.company,
+                city: formValue.city,
+                country: formValue.country,
+                startAt: formValue.startAt ? formValue.startAt.toISOString() : '',
+                endAt: formValue.endAt ? formValue.endAt.toISOString() : ''
             };
-            newFormation.id = this.formationToEdit().id;
 
             await firstValueFrom(this.formationService.updateFormation(newFormation));
         } else if (this.updateOrAdd() == 'add') {
-            const newFormation = {
-                ...this.userForm.value
+            const formValue = this.userForm.value;
+            const newFormation: FormationCreateDTO = {
+                title: formValue.title,
+                company: formValue.company,
+                city: formValue.city,
+                country: formValue.country,
+                startAt: formValue.startAt ? formValue.startAt.toISOString() : '',
+                endAt: formValue.endAt ? formValue.endAt.toISOString() : ''
             };
 
             await firstValueFrom(this.formationService.addFormation(newFormation));

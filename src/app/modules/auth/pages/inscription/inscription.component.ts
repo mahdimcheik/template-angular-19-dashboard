@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '../../../../shared/services/auth.service';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserMainService } from '../../../../shared/services/userMain.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
-import { EnumGender, GenderDropDown, UserCreateDTO, UserLoginDTO } from '../../../../shared/models/user';
+import { finalize, firstValueFrom, tap } from 'rxjs';
+import { EnumGender, GenderDropDown } from '../../../../shared/models/user';
+import { UserCreateDTO } from '../../../../shared/services/userMain.service';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
 import { MessageService } from 'primeng/api';
 import { FluidModule } from 'primeng/fluid';
@@ -15,20 +16,24 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { PanelModule } from 'primeng/panel';
+import { CheckboxModule } from 'primeng/checkbox';
+import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
+import { CookieConsentService } from '../../../../shared/services/cookie-consent.service';
 
 @Component({
     selector: 'app-inscription',
-    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule],
+    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CheckboxModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
 
     templateUrl: './inscription.component.html',
     styleUrl: './inscription.component.scss',
     providers: []
 })
 export class InscriptionComponent {
-    authService = inject(AuthService);
+    authService = inject(UserMainService);
     messageService = inject(MessageService);
     fb = inject(FormBuilder);
     router = inject(Router);
+    cookieConsentService = inject(CookieConsentService);
     errorMessage = '';
     errorRegistration = false;
     isLoading = false;
@@ -72,7 +77,9 @@ export class InscriptionComponent {
             dateOfBirth: [new Date('1986-04-21'), [Validators.required, ageValidator()]],
             gender: [this.selectedGender, [Validators.required]],
             title: [''],
-            description: ['']
+            description: [''],
+            privacyPolicyConsent: [false, [Validators.requiredTrue]],
+            dataProcessingConsent: [false, [Validators.requiredTrue]]
         },
         { validators: [passwordValidator('password', 'confirmPassword')] }
     );
@@ -81,15 +88,16 @@ export class InscriptionComponent {
         this.isLoading = true;
         const newUser = {
             ...this.userForm.value,
-            gender: this.userForm.value['gender']?.value
+            gender: this.userForm.value['gender']?.value,
+            dateOfBirth: this.userForm.value['dateOfBirth']?.toISOString()
         } as UserCreateDTO;
 
         try {
             await firstValueFrom(
-                this.authService.register(newUser).pipe(
+                (this.authService as any).register(newUser).pipe(
                     tap((res) => {
                         console.log('res', res);
-                        this.router.navigateByUrl('auth/account-created-successfully');
+                        this.router.navigate(['auth/account-created-successfully']);
                     }),
                     finalize(() => {
                         setTimeout(() => {

@@ -1,10 +1,10 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { AdresseDTO } from '../../../../shared/models/adresse';
-import { AdresseService } from '../../../../shared/services/adresse.service';
+import { AddressMainService } from '../../../../shared/services/addressMain.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { AdressComponent } from '../address/address.component';
 import { ModalAddOrEditAddressComponent } from '../modal-add-or-edit-address/modal-add-or-edit-address.component';
+import { Address } from '../../../../api/models/Address';
 
 @Component({
     selector: 'app-adresses-list',
@@ -13,8 +13,8 @@ import { ModalAddOrEditAddressComponent } from '../modal-add-or-edit-address/mod
     styleUrl: './adresses-list.component.scss'
 })
 export class AdressesListComponent {
-    addressService = inject(AdresseService);
-    addresses = input.required<AdresseDTO[]>();
+    addressService = inject(AddressMainService);
+    addresses = input.required<Address[]>();
     canEdit = input<boolean>(true);
 
     visibleRight = signal<boolean>(false);

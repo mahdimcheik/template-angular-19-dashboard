@@ -12,7 +12,7 @@
                 <i class="pi pi-list" style="font-size: 36px"></i>
             </p-button>
             <div class="w-full p-0 pl-6 md:p-4">
-                <div class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ booking().typeHelp | helpType }}</div>
+                <div class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ booking().typeHelp! | helpType }}</div>
                 <div class="text-lg font-medium mt-2">Le {{ booking().startAt | date: 'dd MMMM à H:mm' }}</div>
             </div>
         </div>

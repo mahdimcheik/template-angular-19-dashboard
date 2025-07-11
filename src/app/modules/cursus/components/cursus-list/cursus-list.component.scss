@@ -1,0 +1,21 @@
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+    background-color: #f8f9fa;
+}
+
+.p-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+    .p-datatable .p-datatable-thead > tr > th,
+    .p-datatable .p-datatable-tbody > tr > td {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+}

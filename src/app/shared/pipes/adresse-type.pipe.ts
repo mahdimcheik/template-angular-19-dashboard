@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AddressTypeEnum } from '../models/adresse';
+import { AddressTypeEnum } from '../../api/models/AddressTypeEnum';
+// import { AddressTypeEnum } from '../models/adresse';
 
 @Pipe({
     name: 'adresseType'
@@ -7,13 +8,13 @@ import { AddressTypeEnum } from '../models/adresse';
 export class AdresseTypePipe implements PipeTransform {
     transform(adresseTypeNumber: number): string {
         switch (adresseTypeNumber) {
-            case AddressTypeEnum.Domicile:
+            case AddressTypeEnum._1:
                 return 'Domicile';
-            case AddressTypeEnum.Travail:
+            case AddressTypeEnum._2:
                 return 'Travail';
-            case AddressTypeEnum.Facturation:
+            case AddressTypeEnum._3:
                 return 'Facturation';
-            case AddressTypeEnum.Livraison:
+            case AddressTypeEnum._4:
                 return 'Livraison';
             default:
                 return 'Non défini';
@@ -27,13 +28,13 @@ export class AdresseTypePipe implements PipeTransform {
 export class AdresseImagePipe implements PipeTransform {
     transform(adresseTypeNumber: number): string {
         switch (adresseTypeNumber) {
-            case AddressTypeEnum.Domicile:
+            case AddressTypeEnum._1:
                 return 'assets/home.svg';
-            case AddressTypeEnum.Travail:
+            case AddressTypeEnum._2:
                 return 'assets/work.svg';
-            case AddressTypeEnum.Facturation:
+            case AddressTypeEnum._3:
                 return 'assets/bill.svg';
-            case AddressTypeEnum.Livraison:
+            case AddressTypeEnum._4:
                 return 'assets/delivery.svg';
             default:
                 return 'Non défini';

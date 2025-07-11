@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { AuthService } from './auth.service';
+import { UserMainService } from './userMain.service';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
@@ -18,7 +18,6 @@ export class SSEService {
             this.eventSource = new EventSource(`${this.baseUrl}/sse/${email}/${token}`);
 
             this.eventSource.onopen = (ev) => {
-                console.log('first ', ev);
                 this.wizzMessage.set('opened');
             };
             this.eventSource.onerror = (ev) => {
@@ -30,10 +29,6 @@ export class SSEService {
     }
 
     public onMessageRecieved(ev: MessageEvent<any>) {
-        console.log(ev.data);
-
         this.wizzMessage.set(this.wizzMessage());
-
-        console.log(this.wizzMessage());
     }
 }
