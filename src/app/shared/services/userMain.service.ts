@@ -18,6 +18,7 @@ import { LoginOutputDTOResponseDTO } from '../../api/models/LoginOutputDTORespon
 import { ObjectResponseDTO } from '../../api/models/ObjectResponseDTO';
 import { ObjectIEnumerableResponseDTO } from '../../api/models/ObjectIEnumerableResponseDTO';
 import { SignalRService } from './signal.service';
+import { CookieConsentService } from './cookie-consent.service';
 
 // Type aliases for backward compatibility
 export type { UserResponseDTO, UserCreateDTO, UserUpdateDTO, UserLoginDTO };
@@ -55,7 +56,7 @@ export class UserMainService {
     messageService = inject(MessageService);
     // SseService = inject(SSEMainService);
     signalService = inject(SignalRService);
-
+    cookieConsentService = inject(CookieConsentService);
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
     userToDisplay = signal({} as UserResponseDTO);
@@ -145,6 +146,7 @@ export class UserMainService {
             }),
             tap((res) => {
                 if (res.data) {
+                    this.cookieConsentService.acceptAll();
                     this.userConnected.set(res.data.user);
                     this.token.set(res.data.token);
                     this.signalService.startConnection(res.data.token);
@@ -183,7 +185,9 @@ export class UserMainService {
                     this.signalService.stopConnection();
                 })
             )
-            .subscribe();
+            .subscribe(() => {
+                this.cookieConsentService.withdrawConsent();
+            });
     }
 
     getprofile(): Observable<ResponseDTO> {
