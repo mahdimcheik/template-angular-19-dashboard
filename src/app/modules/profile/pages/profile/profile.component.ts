@@ -10,6 +10,7 @@ import { FormationMainService } from '../../../../shared/services/formationMain.
 import { AddressMainService } from '../../../../shared/services/addressMain.service';
 import { UserResponseDTO } from '../../../../shared/services/userMain.service';
 import { CursusListComponent } from '../../../cursus/components/cursus-list/cursus-list.component';
+import { SignalRService } from '../../../../shared/services/signal.service';
 
 @Component({
     selector: 'app-profile',
@@ -22,6 +23,7 @@ export class ProfileComponent implements OnInit {
     authService = inject(UserMainService);
     formationService = inject(FormationMainService);
     addressService = inject(AddressMainService);
+    signalService = inject(SignalRService);
 
     formations = this.formationService.formations;
     addresses = this.addressService.addresses;
@@ -39,6 +41,6 @@ export class ProfileComponent implements OnInit {
     }
 
     sendMessage() {
-        this.authService.signalService.sendMessage('test', 'test');
+        this.signalService.sendNotificationToAll('test');
     }
 }

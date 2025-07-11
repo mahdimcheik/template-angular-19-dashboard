@@ -4,7 +4,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { LocalstorageService } from './localstorage.service';
-import { SSEMainService } from './sseMain.service';
+// import { SSEMainService } from './sseMain.service';
 
 // Generated services and models
 import { UsersService as GeneratedUsersService } from '../../api/services/UsersService';
@@ -17,7 +17,7 @@ import { PasswordRecoveryInput } from '../../api/models/PasswordRecoveryInput';
 import { LoginOutputDTOResponseDTO } from '../../api/models/LoginOutputDTOResponseDTO';
 import { ObjectResponseDTO } from '../../api/models/ObjectResponseDTO';
 import { ObjectIEnumerableResponseDTO } from '../../api/models/ObjectIEnumerableResponseDTO';
-import { SignalService } from './signal.service';
+import { SignalRService } from './signal.service';
 
 // Type aliases for backward compatibility
 export type { UserResponseDTO, UserCreateDTO, UserUpdateDTO, UserLoginDTO };
@@ -53,8 +53,8 @@ export class UserMainService {
 
     router = inject(Router);
     messageService = inject(MessageService);
-    SseService = inject(SSEMainService);
-    signalService = inject(SignalService);
+    // SseService = inject(SSEMainService);
+    signalService = inject(SignalRService);
 
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
@@ -167,6 +167,7 @@ export class UserMainService {
                 if (res.data) {
                     this.token.set(res.data.token);
                     this.userConnected.set(res.data.user);
+                    this.signalService.startConnection(res.data.token);
                 }
             })
         );
@@ -198,10 +199,9 @@ export class UserMainService {
             tap((res) => {
                 if (res.data?.user) {
                     this.userConnected.set(res.data.user);
-                } else if (res.data) {
-                    this.userConnected.set(res.data);
+                    this.token.set(res.data.token);
+                    this.signalService.startConnection(res.data.token);
                 }
-                this.signalService.startConnection(this.token());
             })
         );
     }
