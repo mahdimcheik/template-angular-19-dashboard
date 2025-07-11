@@ -1,0 +1,106 @@
+import { Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { CookieConsentService, CookieConsentSettings } from '../../services/cookie-consent.service';
+
+@Component({
+    selector: 'app-cookie-consent-banner',
+    standalone: true,
+    imports: [CommonModule, ButtonModule, DialogModule, CheckboxModule, FormsModule, RouterModule],
+    templateUrl: './cookie-consent-banner.component.html',
+    styleUrl: './cookie-consent-banner.component.scss'
+})
+export class CookieConsentBannerComponent {
+    private cookieConsentService = inject(CookieConsentService);
+
+    // Signals from the service
+    showBanner = this.cookieConsentService.showConsentBanner;
+
+    // Local state for the detailed settings dialog
+    showDetailsDialog = signal<boolean>(false);
+
+    // Local state for custom consent settings
+    customSettings = signal<CookieConsentSettings>({
+        essential: true,
+        functional: false,
+        analytics: false,
+        marketing: false
+    });
+
+    constructor() {
+        // Initialize custom settings with current consent settings
+        this.customSettings.set({ ...this.cookieConsentService.consentSettings() });
+    }
+
+    /**
+     * Accept all cookies
+     */
+    acceptAll(): void {
+        this.cookieConsentService.acceptAll();
+    }
+
+    /**
+     * Accept only essential cookies
+     */
+    acceptEssentialOnly(): void {
+        this.cookieConsentService.acceptEssentialOnly();
+    }
+
+    /**
+     * Show the detailed settings dialog
+     */
+    showSettings(): void {
+        this.customSettings.set({ ...this.cookieConsentService.consentSettings() });
+        this.showDetailsDialog.set(true);
+    }
+
+    /**
+     * Save custom consent settings
+     */
+    saveCustomSettings(): void {
+        this.cookieConsentService.setCustomConsent(this.customSettings());
+        this.showDetailsDialog.set(false);
+    }
+
+    /**
+     * Cancel custom settings dialog
+     */
+    cancelSettings(): void {
+        this.showDetailsDialog.set(false);
+        this.customSettings.set({ ...this.cookieConsentService.consentSettings() });
+    }
+
+    /**
+     * Update functional cookies setting
+     */
+    updateFunctional(enabled: boolean): void {
+        this.customSettings.update((current) => ({
+            ...current,
+            functional: enabled
+        }));
+    }
+
+    /**
+     * Update analytics cookies setting
+     */
+    updateAnalytics(enabled: boolean): void {
+        this.customSettings.update((current) => ({
+            ...current,
+            analytics: enabled
+        }));
+    }
+
+    /**
+     * Update marketing cookies setting
+     */
+    updateMarketing(enabled: boolean): void {
+        this.customSettings.update((current) => ({
+            ...current,
+            marketing: enabled
+        }));
+    }
+}

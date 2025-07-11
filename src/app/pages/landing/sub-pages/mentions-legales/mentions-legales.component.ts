@@ -9,4 +9,8 @@ import { UserMainService } from '../../../../shared/services/userMain.service';
 })
 export class MentionsLegalesComponent {
     owner = inject(UserMainService).teacherDetails;
+
+    getCurrentDate(): string {
+        return new Date().toLocaleDateString('fr-FR');
+    }
 }

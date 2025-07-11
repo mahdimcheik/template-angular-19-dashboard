@@ -12,11 +12,12 @@ import { ConnectionService } from './app/shared/services/connection.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CommonModule } from '@angular/common';
 import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-spinner/overlay-spinner.component';
+import { CookieConsentBannerComponent } from './app/shared/components/cookie-consent-banner/cookie-consent-banner.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule, ToastModule, AppConfigurator, ProgressBarModule, CommonModule, OverlaySpinnerComponent],
+    imports: [RouterModule, ToastModule, AppConfigurator, ProgressBarModule, CommonModule, OverlaySpinnerComponent, CookieConsentBannerComponent],
     template: `
         <div class="hidden">
             <app-configurator></app-configurator>
@@ -33,6 +34,7 @@ import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-
         </div>
         <p-toast></p-toast>
         <router-outlet></router-outlet>
+        <app-cookie-consent-banner></app-cookie-consent-banner>
     `
 })
 export class AppComponent implements OnInit {

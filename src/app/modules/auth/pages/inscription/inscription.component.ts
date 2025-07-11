@@ -16,11 +16,13 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { PanelModule } from 'primeng/panel';
+import { CheckboxModule } from 'primeng/checkbox';
 import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
+import { CookieConsentService } from '../../../../shared/services/cookie-consent.service';
 
 @Component({
     selector: 'app-inscription',
-    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
+    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CheckboxModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
 
     templateUrl: './inscription.component.html',
     styleUrl: './inscription.component.scss',
@@ -31,6 +33,7 @@ export class InscriptionComponent {
     messageService = inject(MessageService);
     fb = inject(FormBuilder);
     router = inject(Router);
+    cookieConsentService = inject(CookieConsentService);
     errorMessage = '';
     errorRegistration = false;
     isLoading = false;
@@ -74,7 +77,12 @@ export class InscriptionComponent {
             dateOfBirth: [new Date('1986-04-21'), [Validators.required, ageValidator()]],
             gender: [this.selectedGender, [Validators.required]],
             title: [''],
-            description: ['']
+            description: [''],
+            // GDPR Consent fields
+            privacyPolicyConsent: [false, [Validators.requiredTrue]],
+            dataProcessingConsent: [false, [Validators.requiredTrue]],
+            marketingConsent: [false], // Optional
+            newsletterConsent: [false] // Optional
         },
         { validators: [passwordValidator('password', 'confirmPassword')] }
     );
