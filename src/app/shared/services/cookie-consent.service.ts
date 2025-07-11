@@ -2,9 +2,6 @@ import { Injectable, signal, effect } from '@angular/core';
 
 export interface CookieConsentSettings {
     essential: boolean;
-    functional: boolean;
-    analytics: boolean;
-    marketing: boolean;
 }
 
 export interface ConsentDecision {
@@ -28,10 +25,7 @@ export class CookieConsentService {
 
     // Signal to track current consent settings
     consentSettings = signal<CookieConsentSettings>({
-        essential: true, // Always true, cannot be disabled
-        functional: false,
-        analytics: false,
-        marketing: false
+        essential: true
     });
 
     // Signal to control banner visibility
@@ -100,38 +94,8 @@ export class CookieConsentService {
      */
     acceptAll(): void {
         this.consentSettings.set({
-            essential: true,
-            functional: true,
-            analytics: true,
-            marketing: true
+            essential: true
         });
-        this.hasConsented.set(true);
-        this.showConsentBanner.set(false);
-    }
-
-    /**
-     * Accept only essential cookies
-     */
-    acceptEssentialOnly(): void {
-        this.consentSettings.set({
-            essential: true,
-            functional: false,
-            analytics: false,
-            marketing: false
-        });
-        this.hasConsented.set(true);
-        this.showConsentBanner.set(false);
-    }
-
-    /**
-     * Set custom consent preferences
-     */
-    setCustomConsent(settings: Partial<CookieConsentSettings>): void {
-        this.consentSettings.update((current) => ({
-            ...current,
-            essential: true, // Always keep essential cookies enabled
-            ...settings
-        }));
         this.hasConsented.set(true);
         this.showConsentBanner.set(false);
     }
@@ -143,15 +107,9 @@ export class CookieConsentService {
         localStorage.removeItem(this.CONSENT_KEY);
         this.hasConsented.set(false);
         this.consentSettings.set({
-            essential: true,
-            functional: false,
-            analytics: false,
-            marketing: false
+            essential: true
         });
         this.showConsentBanner.set(true);
-
-        // Clear non-essential cookies and data
-        this.clearNonEssentialData();
     }
 
     /**
@@ -170,29 +128,6 @@ export class CookieConsentService {
             return stored ? JSON.parse(stored) : null;
         } catch {
             return null;
-        }
-    }
-
-    /**
-     * Clear non-essential data when consent is withdrawn
-     */
-    private clearNonEssentialData(): void {
-        const currentSettings = this.consentSettings();
-
-        // Clear localStorage items based on consent
-        if (!currentSettings.functional) {
-            localStorage.removeItem('theme');
-            localStorage.removeItem('layoutConfig');
-        }
-
-        if (!currentSettings.analytics) {
-            // Clear analytics data if any
-            localStorage.removeItem('analytics-session');
-        }
-
-        if (!currentSettings.marketing) {
-            // Clear marketing data if any
-            localStorage.removeItem('marketing-preferences');
         }
     }
 

@@ -25,11 +25,11 @@ export class CookieConsentBannerComponent {
 
     // Local state for custom consent settings
     customSettings = signal<CookieConsentSettings>({
-        essential: true,
-        functional: false,
-        analytics: false,
-        marketing: false
+        essential: true
     });
+
+    //default value for the checkbox
+    checked = true;
 
     constructor() {
         // Initialize custom settings with current consent settings
@@ -44,13 +44,6 @@ export class CookieConsentBannerComponent {
     }
 
     /**
-     * Accept only essential cookies
-     */
-    acceptEssentialOnly(): void {
-        this.cookieConsentService.acceptEssentialOnly();
-    }
-
-    /**
      * Show the detailed settings dialog
      */
     showSettings(): void {
@@ -62,7 +55,7 @@ export class CookieConsentBannerComponent {
      * Save custom consent settings
      */
     saveCustomSettings(): void {
-        this.cookieConsentService.setCustomConsent(this.customSettings());
+        this.acceptAll();
         this.showDetailsDialog.set(false);
     }
 
