@@ -78,7 +78,6 @@ export class InscriptionComponent {
             gender: [this.selectedGender, [Validators.required]],
             title: [''],
             description: [''],
-            // GDPR Consent fields
             privacyPolicyConsent: [false, [Validators.requiredTrue]],
             dataProcessingConsent: [false, [Validators.requiredTrue]]
         },

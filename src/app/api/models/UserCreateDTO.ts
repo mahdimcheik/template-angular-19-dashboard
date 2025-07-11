@@ -16,5 +16,7 @@ export type UserCreateDTO = {
     dateOfBirth: string;
     linkedinUrl?: string | null;
     githubUrl?: string | null;
+    privacyPolicyConsent?: boolean | null;
+    dataProcessingConsent?: boolean | null;
 };
 
