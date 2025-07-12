@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Structure } from './related-models';
 import { ConfigurableFormComponent } from './configurable-form.component';
 import { CommonModule } from '@angular/common';
@@ -53,6 +53,7 @@ import { CommonModule } from '@angular/common';
                                 <div class="mt-1 text-xs text-gray-600">
                                     <div>ID: {{ group.id }}</div>
                                     <div>Fields: {{ group.fields.length }}</div>
+                                    <div>Group Validators: {{ group.groupValidators ? group.groupValidators.length : 0 }}</div>
                                     <div class="mt-1">
                                         <span [class]="getSectionStatusColor(group.id)">
                                             {{ getSectionStatus(group.id) }}
@@ -74,7 +75,7 @@ export class ConfigurableFormExampleComponent {
     sampleStructure: Structure = {
         id: 'user-profile-form',
         name: 'Profil Utilisateur',
-        description: 'Formulaire de création et modification du profil utilisateur',
+        description: 'Formulaire de création et modification du profil utilisateur avec validation de groupe',
         icon: 'pi pi-user',
         styleClass: 'user-profile-form',
         formFieldGroups: [
@@ -119,26 +120,64 @@ export class ConfigurableFormExampleComponent {
                         type: 'text',
                         placeholder: '+33 1 23 45 67 89',
                         validation: [Validators.pattern(/^[+]?[0-9\s\-\(\)]+$/)]
+                    }
+                ],
+                // Group validator: ensure first name and last name are not the same
+                groupValidators: [this.namesShouldBeDifferent.bind(this)]
+            },
+            {
+                id: 'password-info',
+                name: 'Mot de Passe',
+                description: 'Définissez votre mot de passe',
+                icon: 'pi pi-lock',
+                fields: [
+                    {
+                        id: 'password',
+                        name: 'password',
+                        label: 'Mot de passe',
+                        type: 'password',
+                        placeholder: 'Entrez votre mot de passe',
+                        required: true,
+                        validation: [Validators.required, Validators.minLength(8)]
                     },
                     {
-                        id: 'birthDate',
-                        name: 'birthDate',
-                        label: 'Date de naissance',
+                        id: 'confirmPassword',
+                        name: 'confirmPassword',
+                        label: 'Confirmer le mot de passe',
+                        type: 'password',
+                        placeholder: 'Confirmez votre mot de passe',
+                        required: true,
+                        validation: [Validators.required]
+                    }
+                ],
+                // Group validator: ensure password and confirmPassword match
+                groupValidators: [this.passwordsMatch.bind(this)]
+            },
+            {
+                id: 'date-range',
+                name: "Période d'Activité",
+                description: "Définissez votre période d'activité",
+                icon: 'pi pi-calendar',
+                fields: [
+                    {
+                        id: 'startDate',
+                        name: 'startDate',
+                        label: 'Date de début',
                         type: 'date',
                         required: true,
                         validation: [Validators.required]
                     },
                     {
-                        id: 'gender',
-                        name: 'gender',
-                        label: 'Genre',
-                        type: 'select',
-                        placeholder: 'Sélectionnez votre genre',
-                        options: ['Homme', 'Femme', 'Non binaire', 'Préfère ne pas dire'],
+                        id: 'endDate',
+                        name: 'endDate',
+                        label: 'Date de fin',
+                        type: 'date',
                         required: true,
                         validation: [Validators.required]
                     }
-                ]
+                ],
+                // Group validator: ensure start date is before end date
+                groupValidators: [this.dateRangeValid.bind(this)]
             },
             {
                 id: 'address-info',
@@ -183,7 +222,9 @@ export class ConfigurableFormExampleComponent {
                         required: true,
                         validation: [Validators.required]
                     }
-                ]
+                ],
+                // Group validator: ensure postal code matches country format
+                groupValidators: [this.postalCodeMatchesCountry.bind(this)]
             },
             {
                 id: 'preferences',
@@ -210,25 +251,76 @@ export class ConfigurableFormExampleComponent {
                         validation: [Validators.required]
                     },
                     {
-                        id: 'bio',
-                        name: 'bio',
-                        label: 'Biographie',
-                        type: 'textarea',
-                        placeholder: 'Parlez-nous de vous...',
-                        validation: [Validators.maxLength(500)]
-                    },
-                    {
-                        id: 'age',
-                        name: 'age',
-                        label: 'Âge',
-                        type: 'number',
-                        placeholder: '25',
-                        validation: [Validators.min(18), Validators.max(120)]
+                        id: 'contactEmail',
+                        name: 'contactEmail',
+                        label: 'Email de contact (optionnel)',
+                        type: 'email',
+                        placeholder: 'contact@example.com',
+                        validation: [Validators.email]
                     }
-                ]
+                ],
+                // Group validator: if newsletter is checked, contact email is required
+                groupValidators: [this.newsletterRequiresContactEmail.bind(this)]
             }
         ]
     };
+
+    // Custom Group Validators
+    namesShouldBeDifferent(control: AbstractControl): ValidationErrors | null {
+        const firstName = control.get('firstName')?.value;
+        const lastName = control.get('lastName')?.value;
+
+        if (firstName && lastName && firstName.toLowerCase() === lastName.toLowerCase()) {
+            return { namesShouldBeDifferent: true };
+        }
+        return null;
+    }
+
+    passwordsMatch(control: AbstractControl): ValidationErrors | null {
+        const password = control.get('password')?.value;
+        const confirmPassword = control.get('confirmPassword')?.value;
+
+        if (password && confirmPassword && password !== confirmPassword) {
+            return { passwordsDoNotMatch: true };
+        }
+        return null;
+    }
+
+    dateRangeValid(control: AbstractControl): ValidationErrors | null {
+        const startDate = control.get('startDate')?.value;
+        const endDate = control.get('endDate')?.value;
+
+        if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
+            return { invalidDateRange: true };
+        }
+        return null;
+    }
+
+    postalCodeMatchesCountry(control: AbstractControl): ValidationErrors | null {
+        const postalCode = control.get('postalCode')?.value;
+        const country = control.get('country')?.value;
+
+        if (postalCode && country) {
+            // Simple validation example
+            if (country === 'France' && !/^\d{5}$/.test(postalCode)) {
+                return { invalidFrenchPostalCode: true };
+            }
+            if (country === 'Belgique' && !/^\d{4}$/.test(postalCode)) {
+                return { invalidBelgiumPostalCode: true };
+            }
+        }
+        return null;
+    }
+
+    newsletterRequiresContactEmail(control: AbstractControl): ValidationErrors | null {
+        const newsletter = control.get('newsletter')?.value;
+        const contactEmail = control.get('contactEmail')?.value;
+
+        if (newsletter && !contactEmail) {
+            return { contactEmailRequired: true };
+        }
+        return null;
+    }
 
     handleFormSubmit(formGroup: FormGroup) {
         console.log('=== FORM SUBMISSION ===');
@@ -244,11 +336,18 @@ export class ConfigurableFormExampleComponent {
         const flattenedValues = this.flattenFormValues(structuredValues);
         console.log('Flattened Values:', flattenedValues);
 
-        // Individual section values
-        console.log('=== SECTION VALUES ===');
+        // Individual section values and validation
+        console.log('=== SECTION VALUES AND VALIDATION ===');
         this.sampleStructure.formFieldGroups.forEach((group) => {
-            const sectionValue = formGroup.get(group.id)?.value;
-            console.log(`${group.name} (${group.id}):`, sectionValue);
+            const sectionFormGroup = formGroup.get(group.id) as FormGroup;
+            const sectionValue = sectionFormGroup?.value;
+            const sectionValid = sectionFormGroup?.valid;
+            const sectionErrors = sectionFormGroup?.errors;
+
+            console.log(`${group.name} (${group.id}):`);
+            console.log('  Values:', sectionValue);
+            console.log('  Valid:', sectionValid);
+            console.log('  Group Errors:', sectionErrors);
         });
 
         // Store last submitted values

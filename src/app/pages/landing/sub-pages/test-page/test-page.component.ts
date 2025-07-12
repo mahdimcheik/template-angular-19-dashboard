@@ -5,10 +5,11 @@ import { ChipModule } from 'primeng/chip';
 import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
 import { FormField, Structure } from '../../../../generic-components/configurable-form/related-models';
 import { FormGroup, Validators } from '@angular/forms';
+import { ConfigurableFormExampleComponent } from '../../../../generic-components/configurable-form/configurable-form-example';
 
 @Component({
     selector: 'app-test-page',
-    imports: [ConfigurableTableComponent, ChipModule, ConfigurableFormComponent],
+    imports: [ConfigurableTableComponent, ChipModule, ConfigurableFormComponent, ConfigurableFormExampleComponent],
     templateUrl: './test-page.component.html',
     styleUrl: './test-page.component.scss'
 })
@@ -61,6 +62,13 @@ export class TestPageComponent implements AfterViewInit, OnInit {
                         label: 'Nom',
                         type: 'text',
                         validation: [Validators.required, Validators.minLength(3)]
+                    },
+                    {
+                        id: 'color',
+                        name: 'color',
+                        label: 'Couleur',
+                        type: 'color',
+                        validation: [Validators.required]
                     }
                 ]
             },

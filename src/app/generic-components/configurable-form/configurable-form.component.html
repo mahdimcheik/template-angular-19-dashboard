@@ -39,13 +39,30 @@
                             <p class="mt-1 text-sm text-gray-600">{{ group.description }}</p>
                         }
 
-                        <!-- Group Errors Summary -->
-                        @if (getGroupErrors(group.id).length > 0 && isGroupTouched(group.id)) {
-                            <div class="mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
-                                <p class="text-sm text-red-600 font-medium">Erreurs dans cette section :</p>
-                                <ul class="mt-1 text-sm text-red-600 list-disc list-inside">
-                                    @for (error of getGroupErrors(group.id); track error) {
+                        <!-- Group-level Validation Errors -->
+                        @if (hasGroupValidationErrors(group.id) && isGroupTouched(group.id)) {
+                            <div class="mt-2 p-3 bg-red-50 border border-red-200 rounded-md border-l-4 border-l-red-500">
+                                <div class="flex items-center">
+                                    <i class="pi pi-exclamation-triangle text-red-500 mr-2"></i>
+                                    <p class="text-sm text-red-700 font-medium">Erreurs de validation du groupe :</p>
+                                </div>
+                                <ul class="mt-1 text-sm text-red-600 list-disc list-inside ml-6">
+                                    @for (error of getGroupValidationErrors(group.id); track error) {
                                         <li>{{ error }}</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        <!-- Field-level Errors Summary -->
+                        @if (getGroupErrors(group.id).length > getGroupValidationErrors(group.id).length && isGroupTouched(group.id)) {
+                            <div class="mt-2 p-2 bg-orange-50 border border-orange-200 rounded-md">
+                                <p class="text-sm text-orange-700 font-medium">Erreurs dans les champs :</p>
+                                <ul class="mt-1 text-sm text-orange-600 list-disc list-inside">
+                                    @for (error of getGroupErrors(group.id); track error) {
+                                        @if (!getGroupValidationErrors(group.id).includes(error)) {
+                                            <li>{{ error }}</li>
+                                        }
                                     }
                                 </ul>
                             </div>
@@ -65,7 +82,7 @@
                                 </label>
 
                                 <!-- Text Input -->
-                                @if (field.type === 'text' || field.type === 'email' || field.type === 'password') {
+                                @if (field.type === 'text' || field.type === 'email' || field.type === 'password' || field.type === 'color') {
                                     <input
                                         [id]="field.id"
                                         [type]="field.type"
@@ -151,9 +168,12 @@
                                     </div>
                                 }
 
-                                <!-- Error Message -->
+                                <!-- Individual Field Error Message -->
                                 @if (getFieldError(group.id, field.name); as errorMessage) {
-                                    <p class="mt-1 text-sm text-red-600">{{ errorMessage }}</p>
+                                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                                        <i class="pi pi-exclamation-circle mr-1"></i>
+                                        {{ errorMessage }}
+                                    </p>
                                 }
                             </div>
                         }

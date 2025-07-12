@@ -60,8 +60,10 @@ export class ConfigurableFormComponent implements OnInit {
                 groupControls[field.name] = control;
             });
 
-            // Create FormGroup for this section
-            formGroups[group.id] = this.fb.group(groupControls);
+            // Create FormGroup for this section with group-level validators
+            formGroups[group.id] = this.fb.group(groupControls, {
+                validators: group.groupValidators || []
+            });
         });
 
         // Create the main form with nested FormGroups
@@ -103,7 +105,6 @@ export class ConfigurableFormComponent implements OnInit {
         if (!groupForm) return null;
 
         const control = groupForm.get(fieldName);
-
         if (control && control.invalid && (control.dirty || control.touched)) {
             const errors = control.errors;
             if (errors) {
@@ -115,6 +116,26 @@ export class ConfigurableFormComponent implements OnInit {
             }
         }
         return null;
+    }
+
+    // Get group-level validation errors
+    getGroupValidationErrors(groupId: string): string[] {
+        const groupForm = this.getFormGroup(groupId);
+        if (!groupForm || !groupForm.errors) return [];
+
+        const errors: string[] = [];
+        Object.keys(groupForm.errors).forEach((errorKey) => {
+            const errorMessage = this.errorMessages[errorKey] ? this.errorMessages[errorKey](groupForm.errors![errorKey]) : `Erreur de validation du groupe: ${errorKey}`;
+            errors.push(errorMessage);
+        });
+
+        return errors;
+    }
+
+    // Check if group has validation errors (not field errors)
+    hasGroupValidationErrors(groupId: string): boolean {
+        const groupForm = this.getFormGroup(groupId);
+        return !!(groupForm && groupForm.errors && Object.keys(groupForm.errors).length > 0);
     }
 
     // Check if field is invalid in nested FormGroup
@@ -138,18 +159,25 @@ export class ConfigurableFormComponent implements OnInit {
         return groupForm ? groupForm.touched : false;
     }
 
-    // Get all errors for a FormGroup (section)
+    // Get all errors for a FormGroup (section) - includes both field and group errors
     getGroupErrors(groupId: string): string[] {
         const groupForm = this.getFormGroup(groupId);
         if (!groupForm) return [];
 
         const errors: string[] = [];
+
+        // Add group-level validation errors
+        const groupValidationErrors = this.getGroupValidationErrors(groupId);
+        errors.push(...groupValidationErrors);
+
+        // Add field-level validation errors
         Object.keys(groupForm.controls).forEach((fieldName) => {
-            const error = this.getFieldError(groupId, fieldName);
-            if (error) {
-                errors.push(error);
+            const fieldError = this.getFieldError(groupId, fieldName);
+            if (fieldError) {
+                errors.push(fieldError);
             }
         });
+
         return errors;
     }
 

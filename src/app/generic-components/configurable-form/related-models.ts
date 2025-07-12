@@ -4,7 +4,7 @@ export interface FormField<T> {
     id: string;
     label: string;
     name: string;
-    type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea';
+    type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea' | 'color';
     placeholder?: string;
     value?: T;
     disabled?: boolean;
@@ -22,6 +22,7 @@ export interface FormFieldGroup {
     icon?: string;
     styleClass?: string;
     sectionId?: string;
+    groupValidators?: ValidatorFn[];
 }
 
 export interface Structure {
@@ -34,11 +35,23 @@ export interface Structure {
 }
 
 export const errorMessages: { [key: string]: (errValue: any) => string } = {
+    // Field-level validation errors
     required: () => 'Ce champ est obligatoire.',
     email: () => 'Veuillez saisir une adresse e-mail valide.',
     minlength: (err) => `Ce champ doit contenir au moins ${err.requiredLength} caractères.`,
     maxlength: (err) => `Ce champ ne doit pas dépasser ${err.requiredLength} caractères.`,
     min: (err) => `La valeur minimale autorisée est ${err.min}.`,
     max: (err) => `La valeur maximale autorisée est ${err.max}.`,
-    pattern: () => 'Le format de la saisie est incorrect.'
+    pattern: () => 'Le format de la saisie est incorrect.',
+
+    // Group-level validation errors
+    namesShouldBeDifferent: () => 'Le prénom et le nom doivent être différents.',
+    passwordsDoNotMatch: () => 'Les mots de passe ne correspondent pas.',
+    invalidDateRange: () => 'La date de début doit être antérieure à la date de fin.',
+    invalidFrenchPostalCode: () => 'Le code postal français doit contenir 5 chiffres.',
+    invalidBelgiumPostalCode: () => 'Le code postal belge doit contenir 4 chiffres.',
+    contactEmailRequired: () => 'Un email de contact est requis si vous souhaitez recevoir la newsletter.',
+
+    // Generic group validation error
+    groupValidationError: () => "Une erreur de validation s'est produite dans cette section."
 };
