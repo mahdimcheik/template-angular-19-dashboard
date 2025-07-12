@@ -1,0 +1,5 @@
+<app-configurable-table [columns]="userTableColumns" [data]="users" [rows]="10" [globalFilter]="true">
+    <ng-template #chipTemplate let-row let-columns="columns">
+        <p-chip [label]="row" [style]="{ 'margin-right': '0.5rem' }"></p-chip>
+    </ng-template>
+</app-configurable-table>
