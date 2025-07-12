@@ -46,6 +46,7 @@ export class TestPageComponent implements AfterViewInit, OnInit {
                 id: 'Personnal infos',
                 name: 'Personnal infos',
                 description: 'Personnal infos',
+                icon: 'pi pi-user',
                 fields: [
                     {
                         id: 'firstName',
@@ -67,6 +68,7 @@ export class TestPageComponent implements AfterViewInit, OnInit {
                 id: 'email',
                 name: 'email',
                 description: 'Adresse e-mail',
+                icon: 'pi pi-envelope',
                 fields: [
                     {
                         id: 'email',
@@ -81,6 +83,7 @@ export class TestPageComponent implements AfterViewInit, OnInit {
                 id: 'age',
                 name: 'age',
                 description: 'Âge',
+                icon: 'pi pi-calendar',
                 fields: [
                     {
                         id: 'age',

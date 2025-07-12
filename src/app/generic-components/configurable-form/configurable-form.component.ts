@@ -19,7 +19,7 @@ export class ConfigurableFormComponent implements OnInit {
     // Output signal for form submission
     onFormSubmit = output<FormGroup>();
 
-    // Form instance
+    // Form instance - now contains nested FormGroups
     form = signal<FormGroup>(this.fb.group({}));
 
     // Error messages map
@@ -42,11 +42,18 @@ export class ConfigurableFormComponent implements OnInit {
             return;
         }
 
-        const formControls: { [key: string]: FormControl } = {};
+        const formGroups: { [key: string]: FormGroup } = {};
 
-        // Iterate through all form field groups
+        // Create a FormGroup for each FormFieldGroup
         structure.formFieldGroups.forEach((group: FormFieldGroup) => {
-            // Iterate through all fields in the group
+            const groupControls: { [key: string]: FormControl } = {};
+
+            // groupControls['name'] = this.fb.control(group.name);
+            // groupControls['description'] = this.fb.control(group.description);
+            // groupControls['icon'] = this.fb.control(group.icon);
+            // groupControls['styleClass'] = this.fb.control(group.styleClass);
+
+            // Add all fields from this group to the group's FormGroup
             group.fields.forEach((field: FormField<any>) => {
                 const control = this.fb.control(
                     {
@@ -55,11 +62,17 @@ export class ConfigurableFormComponent implements OnInit {
                     },
                     field.validation || []
                 );
-                formControls[field.name] = control;
+                groupControls[field.name] = control;
             });
+
+            // Create FormGroup for this section
+            formGroups[group.id] = this.fb.group(groupControls);
         });
 
-        this.form.set(this.fb.group(formControls));
+        // Create the main form with nested FormGroups
+        this.form.set(this.fb.group(formGroups));
+        console.log('formGroups', formGroups);
+        console.log('form', this.form().value);
     }
 
     private getDefaultValue(type: string): any {
@@ -85,8 +98,17 @@ export class ConfigurableFormComponent implements OnInit {
         }
     }
 
-    getFieldError(fieldName: string): string | null {
-        const control = this.form().get(fieldName);
+    // Get FormGroup for a specific section
+    getFormGroup(groupId: string): FormGroup {
+        return this.form().get(groupId) as FormGroup;
+    }
+
+    // Get field error from nested FormGroup
+    getFieldError(groupId: string, fieldName: string): string | null {
+        const groupForm = this.getFormGroup(groupId);
+        if (!groupForm) return null;
+
+        const control = groupForm.get(fieldName);
         if (control && control.invalid && (control.dirty || control.touched)) {
             const errors = control.errors;
             if (errors) {
@@ -97,9 +119,61 @@ export class ConfigurableFormComponent implements OnInit {
         return null;
     }
 
-    isFieldInvalid(fieldName: string): boolean {
-        const control = this.form().get(fieldName);
+    // Check if field is invalid in nested FormGroup
+    isFieldInvalid(groupId: string, fieldName: string): boolean {
+        const groupForm = this.getFormGroup(groupId);
+        if (!groupForm) return false;
+
+        const control = groupForm.get(fieldName);
         return !!(control && control.invalid && (control.dirty || control.touched));
+    }
+
+    // Check if entire FormGroup (section) is valid
+    isGroupValid(groupId: string): boolean {
+        const groupForm = this.getFormGroup(groupId);
+        return groupForm ? groupForm.valid : false;
+    }
+
+    // Check if FormGroup (section) has been touched
+    isGroupTouched(groupId: string): boolean {
+        const groupForm = this.getFormGroup(groupId);
+        return groupForm ? groupForm.touched : false;
+    }
+
+    // Get all errors for a FormGroup (section)
+    getGroupErrors(groupId: string): string[] {
+        const groupForm = this.getFormGroup(groupId);
+        if (!groupForm) return [];
+
+        const errors: string[] = [];
+        Object.keys(groupForm.controls).forEach((fieldName) => {
+            const error = this.getFieldError(groupId, fieldName);
+            if (error) {
+                errors.push(error);
+            }
+        });
+        return errors;
+    }
+
+    // Get form values in structured format
+    getStructuredFormValue(): any {
+        const formValue = this.form().value;
+        return formValue;
+    }
+
+    // Get flattened form values (original single-level structure)
+    getFlattenedFormValue(): any {
+        const formValue = this.form().value;
+        const flattened: any = {};
+
+        Object.keys(formValue).forEach((groupId) => {
+            const groupValue = formValue[groupId];
+            Object.keys(groupValue).forEach((fieldName) => {
+                flattened[fieldName] = groupValue[fieldName];
+            });
+        });
+
+        return flattened;
     }
 
     getSelectOptions(field: FormField<any>): any[] {

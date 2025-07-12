@@ -7,13 +7,45 @@ A modern Angular standalone component that dynamically renders forms based on a 
 - ✅ **Standalone Component** - No module dependencies
 - ✅ **Signal-based** - Modern reactive state management
 - ✅ **Dynamic Form Generation** - Create forms from configuration objects
+- ✅ **Nested FormGroups** - Each FormFieldGroup becomes its own FormGroup
 - ✅ **Multiple Input Types** - Text, email, password, number, date, select, checkbox, radio, textarea
 - ✅ **Form Validation** - Built-in and custom validators with error messages
+- ✅ **Section-level Validation** - Validate individual sections independently
 - ✅ **Grouped Fields** - Organize form fields into logical sections
 - ✅ **Responsive Design** - Mobile-friendly layout with Tailwind CSS
 - ✅ **Modern Template Syntax** - Uses @for, @if, @let control flow
 - ✅ **Accessibility** - Proper labeling and ARIA attributes
 - ✅ **Customizable Styling** - Support for custom CSS classes and icons
+
+## Form Structure
+
+The component creates a **nested FormGroup structure** where:
+- The main form contains multiple FormGroups
+- Each FormGroup represents a `FormFieldGroup` section
+- Each section contains its own form controls
+
+### Form Structure Example:
+```typescript
+// Instead of flat structure:
+FormGroup {
+  firstName: FormControl,
+  lastName: FormControl,
+  street: FormControl,
+  city: FormControl
+}
+
+// Component creates nested structure:
+FormGroup {
+  'personal-info': FormGroup {
+    firstName: FormControl,
+    lastName: FormControl
+  },
+  'address-info': FormGroup {
+    street: FormControl,
+    city: FormControl
+  }
+}
+```
 
 ## Installation
 
@@ -80,8 +112,31 @@ export class MyComponent {
   };
 
   handleFormSubmit(formGroup: FormGroup) {
-    console.log('Form submitted:', formGroup.value);
-    // Handle form submission
+    // Structured values (nested by sections)
+    const structuredValues = formGroup.value;
+    console.log('Structured:', structuredValues);
+    // Output: { "contact-info": { "name": "John", "email": "john@example.com" } }
+    
+    // Access specific section
+    const contactInfo = formGroup.get('contact-info')?.value;
+    console.log('Contact Info:', contactInfo);
+    // Output: { "name": "John", "email": "john@example.com" }
+    
+    // Flatten if needed (all fields at root level)
+    const flattenedValues = this.flattenFormValues(structuredValues);
+    console.log('Flattened:', flattenedValues);
+    // Output: { "name": "John", "email": "john@example.com" }
+  }
+  
+  private flattenFormValues(structuredValues: any): any {
+    const flattened: any = {};
+    Object.keys(structuredValues).forEach(groupId => {
+      const groupValue = structuredValues[groupId];
+      Object.keys(groupValue).forEach(fieldName => {
+        flattened[fieldName] = groupValue[fieldName];
+      });
+    });
+    return flattened;
   }
 }
 ```
@@ -100,6 +155,36 @@ export class MyComponent {
 |-------|------|-------------|
 | `onFormSubmit` | `FormGroup` | Emitted when form is submitted and valid |
 
+### Component Methods
+
+The component exposes several methods for working with nested FormGroups:
+
+```typescript
+// Get FormGroup for a specific section
+getFormGroup(groupId: string): FormGroup
+
+// Get field error from nested FormGroup
+getFieldError(groupId: string, fieldName: string): string | null
+
+// Check if field is invalid in nested FormGroup
+isFieldInvalid(groupId: string, fieldName: string): boolean
+
+// Check if entire FormGroup (section) is valid
+isGroupValid(groupId: string): boolean
+
+// Check if FormGroup (section) has been touched
+isGroupTouched(groupId: string): boolean
+
+// Get all errors for a FormGroup (section)
+getGroupErrors(groupId: string): string[]
+
+// Get form values in structured format
+getStructuredFormValue(): any
+
+// Get flattened form values (original single-level structure)
+getFlattenedFormValue(): any
+```
+
 ### Data Models
 
 #### Structure
@@ -117,13 +202,13 @@ interface Structure {
 #### FormFieldGroup
 ```typescript
 interface FormFieldGroup {
-  id: string;
-  name: string;
-  fields: FormField<any>[];
-  description?: string;
-  icon?: string;
-  styleClass?: string;
-  sectionId?: string;
+  id: string;                    // Used as FormGroup name
+  name: string;                  // Display name
+  fields: FormField<any>[];      // Fields in this group
+  description?: string;          // Section description
+  icon?: string;                 // Section icon
+  styleClass?: string;           // Custom CSS classes
+  sectionId?: string;            // Additional identifier
 }
 ```
 
@@ -132,7 +217,7 @@ interface FormFieldGroup {
 interface FormField<T> {
   id: string;
   label: string;
-  name: string;
+  name: string;                  // Used as FormControl name within group
   type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea';
   placeholder?: string;
   value?: T;
@@ -144,131 +229,130 @@ interface FormField<T> {
 }
 ```
 
-## Field Types
+## Working with Form Values
 
-### Text Input
+### Accessing Structured Values
 ```typescript
-{
-  id: 'username',
-  name: 'username',
-  label: 'Username',
-  type: 'text',
-  placeholder: 'Enter username',
-  required: true,
-  validation: [Validators.required, Validators.minLength(3)]
+handleFormSubmit(formGroup: FormGroup) {
+  const structuredValues = formGroup.value;
+  
+  // Access specific section
+  const personalInfo = formGroup.get('personal-info')?.value;
+  const addressInfo = formGroup.get('address-info')?.value;
+  
+  // Check section validity
+  const isPersonalInfoValid = formGroup.get('personal-info')?.valid;
+  const isAddressInfoValid = formGroup.get('address-info')?.valid;
 }
 ```
 
-### Email Input
+### Flattening Values
 ```typescript
-{
-  id: 'email',
-  name: 'email',
-  label: 'Email Address',
-  type: 'email',
-  placeholder: 'your@email.com',
-  required: true,
-  validation: [Validators.required, Validators.email]
+private flattenFormValues(structuredValues: any): any {
+  const flattened: any = {};
+  
+  Object.keys(structuredValues).forEach(groupId => {
+    const groupValue = structuredValues[groupId];
+    Object.keys(groupValue).forEach(fieldName => {
+      flattened[fieldName] = groupValue[fieldName];
+    });
+  });
+  
+  return flattened;
 }
 ```
 
-### Select Dropdown
-```typescript
+### Example Form Values
+
+**Structured Format:**
+```json
 {
-  id: 'country',
-  name: 'country',
-  label: 'Country',
-  type: 'select',
-  placeholder: 'Select a country',
-  options: ['France', 'Germany', 'Spain', 'Italy'],
-  required: true,
-  validation: [Validators.required]
+  "personal-info": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@example.com"
+  },
+  "address-info": {
+    "street": "123 Main St",
+    "city": "New York",
+    "postalCode": "10001"
+  }
 }
 ```
 
-### Radio Buttons
-```typescript
+**Flattened Format:**
+```json
 {
-  id: 'gender',
-  name: 'gender',
-  label: 'Gender',
-  type: 'radio',
-  options: ['Male', 'Female', 'Other'],
-  required: true,
-  validation: [Validators.required]
-}
-```
-
-### Checkbox
-```typescript
-{
-  id: 'newsletter',
-  name: 'newsletter',
-  label: 'Newsletter',
-  type: 'checkbox',
-  placeholder: 'Subscribe to newsletter',
-  value: false
-}
-```
-
-### Textarea
-```typescript
-{
-  id: 'message',
-  name: 'message',
-  label: 'Message',
-  type: 'textarea',
-  placeholder: 'Enter your message...',
-  validation: [Validators.maxLength(500)]
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "street": "123 Main St",
+  "city": "New York",
+  "postalCode": "10001"
 }
 ```
 
 ## Validation
 
-The component supports Angular's built-in validators and custom validators:
-
+### Field-level Validation
 ```typescript
-import { Validators } from '@angular/forms';
+{
+  id: 'email',
+  name: 'email',
+  label: 'Email',
+  type: 'email',
+  required: true,
+  validation: [Validators.required, Validators.email]
+}
+```
 
-// Built-in validators
-validation: [
-  Validators.required,
-  Validators.email,
-  Validators.minLength(3),
-  Validators.maxLength(100),
-  Validators.pattern(/^[a-zA-Z0-9]+$/)
-]
+### Section-level Validation
+```typescript
+// Check if entire section is valid
+const isPersonalInfoValid = formGroup.get('personal-info')?.valid;
 
-// Custom validator
-validation: [
-  (control: AbstractControl) => {
-    if (control.value && control.value.includes('test')) {
-      return { containsTest: true };
-    }
-    return null;
+// Get all errors in a section
+const personalInfoErrors = this.getGroupErrors('personal-info');
+```
+
+### Custom Validators
+```typescript
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+function customValidator(control: AbstractControl): ValidationErrors | null {
+  if (control.value && control.value.includes('test')) {
+    return { containsTest: true };
   }
-]
+  return null;
+}
+
+// Usage
+validation: [Validators.required, customValidator]
 ```
 
-## Error Messages
+## Advanced Features
 
-Default error messages are provided in French, but you can customize them by modifying the `errorMessages` object in `related-models.ts`:
+### Section Status Indicators
+The component shows visual indicators for each section:
+- ✅ Green checkmark when section is valid and touched
+- ⚠️ Warning triangle when section has errors
+- Error summary panel showing all errors in a section
 
-```typescript
-export const errorMessages: { [key: string]: (errValue: any) => string } = {
-  required: () => 'This field is required.',
-  email: () => 'Please enter a valid email address.',
-  minlength: (err) => `Minimum length is ${err.requiredLength} characters.`,
-  maxlength: (err) => `Maximum length is ${err.requiredLength} characters.`,
-  // Add your custom error messages here
-};
-```
+### Form Status Summary
+At the bottom of the form:
+- Overall form validity status
+- Visual indicators for form state
+
+### Responsive Design
+- Mobile-friendly layout
+- Proper field sizing and spacing
+- Responsive grid system
 
 ## Styling
 
 The component uses Tailwind CSS classes for styling. You can customize the appearance by:
 
-1. **Adding custom CSS classes** to the `styleClass` property of `Structure` or `FormFieldGroup`
+1. **Adding custom CSS classes** to the `styleClass` property
 2. **Modifying the SCSS file** to change default styles
 3. **Overriding CSS variables** in your global styles
 
@@ -289,15 +373,40 @@ formStructure: Structure = {
 };
 ```
 
-## Accessibility
+## Migration from Flat Structure
 
-The component includes accessibility features:
+If you were using the previous flat structure, you can easily migrate:
 
-- Proper labeling with `for` attributes
-- ARIA attributes for screen readers
-- Keyboard navigation support
-- Focus management
-- Error announcements
+### Before (Flat):
+```typescript
+// Old way - single FormGroup
+handleFormSubmit(formGroup: FormGroup) {
+  const values = formGroup.value;
+  // { firstName: "John", lastName: "Doe", street: "123 Main St" }
+}
+```
+
+### After (Nested):
+```typescript
+// New way - nested FormGroups
+handleFormSubmit(formGroup: FormGroup) {
+  const structuredValues = formGroup.value;
+  // { "personal-info": { firstName: "John", lastName: "Doe" }, "address-info": { street: "123 Main St" } }
+  
+  // Get flat values if needed
+  const flatValues = this.flattenFormValues(structuredValues);
+  // { firstName: "John", lastName: "Doe", street: "123 Main St" }
+}
+```
+
+## Benefits of Nested Structure
+
+1. **Better Organization**: Logical grouping of related fields
+2. **Section-level Validation**: Validate parts of the form independently
+3. **Modular Form Handling**: Process different sections differently
+4. **Improved UX**: Visual feedback per section
+5. **Scalability**: Easy to add/remove sections
+6. **Maintainability**: Clear separation of concerns
 
 ## Browser Support
 
@@ -305,14 +414,6 @@ The component includes accessibility features:
 - Firefox (latest)
 - Safari (latest)
 - Edge (latest)
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
 
 ## License
 
