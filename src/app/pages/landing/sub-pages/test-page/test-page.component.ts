@@ -3,7 +3,7 @@ import { ConfigurableTableComponent } from '../../../../generic-components/confi
 import { TableColumn } from '../../../../shared/models/TableColumn ';
 import { ChipModule } from 'primeng/chip';
 import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
-import { FormField } from '../../../../generic-components/configurable-form/related-models';
+import { FormField, Structure } from '../../../../generic-components/configurable-form/related-models';
 import { FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -35,34 +35,64 @@ export class TestPageComponent implements AfterViewInit, OnInit {
         ];
     }
 
-    formConfig: FormField<any>[] = [
-        {
-            id: 'firstName',
-            name: 'firstName',
-            label: 'Prénom',
-            value: '',
-            type: 'text',
-            validation: [Validators.required, Validators.minLength(3)]
-        },
-        {
-            id: 'email',
-            name: 'email',
-            label: 'Adresse e-mail',
-            value: '',
-            type: 'email',
-            validation: [Validators.required, Validators.email]
-        },
-        {
-            id: 'age',
-            name: 'age',
-            label: 'Âge',
-            value: null,
-            type: 'number',
-            validation: [Validators.min(18)]
-        }
-    ];
-
-    form = new FormGroup({});
+    formConfig: Structure = {
+        id: 'formConfig',
+        name: 'formConfig',
+        description: 'formConfig',
+        icon: 'pi pi-user',
+        styleClass: 'form-config',
+        formFieldGroups: [
+            {
+                id: 'Personnal infos',
+                name: 'Personnal infos',
+                description: 'Personnal infos',
+                fields: [
+                    {
+                        id: 'firstName',
+                        name: 'firstName',
+                        label: 'Prénom',
+                        type: 'text',
+                        validation: [Validators.required, Validators.minLength(3)]
+                    },
+                    {
+                        id: 'lastName',
+                        name: 'lastName',
+                        label: 'Nom',
+                        type: 'text',
+                        validation: [Validators.required, Validators.minLength(3)]
+                    }
+                ]
+            },
+            {
+                id: 'email',
+                name: 'email',
+                description: 'Adresse e-mail',
+                fields: [
+                    {
+                        id: 'email',
+                        name: 'email',
+                        label: 'Adresse e-mail',
+                        type: 'email',
+                        validation: [Validators.required, Validators.email]
+                    }
+                ]
+            },
+            {
+                id: 'age',
+                name: 'age',
+                description: 'Âge',
+                fields: [
+                    {
+                        id: 'age',
+                        name: 'age',
+                        label: 'Âge',
+                        type: 'number',
+                        validation: [Validators.min(18)]
+                    }
+                ]
+            }
+        ]
+    };
 
     ngOnInit(): void {}
 }

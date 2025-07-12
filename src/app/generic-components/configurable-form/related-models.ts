@@ -24,6 +24,15 @@ export interface FormFieldGroup {
     sectionId?: string;
 }
 
+export interface Structure {
+    id: string;
+    name: string;
+    description?: string;
+    icon?: string;
+    styleClass?: string;
+    formFieldGroups: FormFieldGroup[];
+}
+
 export const errorMessages: { [key: string]: (errValue: any) => string } = {
     required: () => 'Ce champ est obligatoire.',
     email: () => 'Veuillez saisir une adresse e-mail valide.',

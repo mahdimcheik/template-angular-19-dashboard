@@ -1,0 +1,199 @@
+.configurable-form-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.form-header {
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.form-field-group {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .group-header {
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1rem;
+    }
+}
+
+.form-field {
+    position: relative;
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #374151;
+
+        .required-asterisk {
+            color: #dc2626;
+            margin-left: 0.25rem;
+        }
+    }
+
+    input,
+    textarea,
+    select {
+        transition: all 0.2s ease-in-out;
+
+        &:focus {
+            transform: translateY(-1px);
+            box-shadow:
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        &.invalid {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        &:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    }
+
+    .error-message {
+        margin-top: 0.25rem;
+        font-size: 0.875rem;
+        color: #dc2626;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        &::before {
+            content: '⚠';
+            font-size: 0.75rem;
+        }
+    }
+}
+
+.form-actions {
+    background: #f9fafb;
+    margin: 2rem -1.5rem -1.5rem;
+    padding: 1.5rem;
+    border-radius: 0 0 12px 12px;
+
+    button {
+        transition: all 0.2s ease-in-out;
+
+        &:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow:
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        &[type='submit'] {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+
+            &:hover:not(:disabled) {
+                background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            }
+        }
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .configurable-form-container {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+
+    .form-field-group {
+        padding: 1rem;
+    }
+
+    .form-actions {
+        margin: 1.5rem -1rem -1rem;
+        padding: 1rem;
+
+        .flex {
+            flex-direction: column;
+            gap: 0.75rem;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+}
+
+// Custom checkbox and radio styles
+input[type='checkbox'],
+input[type='radio'] {
+    cursor: pointer;
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+}
+
+// Loading states
+.form-loading {
+    opacity: 0.6;
+    pointer-events: none;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #e5e7eb;
+        border-top: 2px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+// Animation for form field groups
+.form-field-group {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
