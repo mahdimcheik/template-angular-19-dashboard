@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    @for (control of fields(); track control.name) {
+        <div class="form-field">
+            <label>{{ control.label }}</label>
+            <input [formControlName]="control.name" [type]="control.type || 'text'" />
+            @let ctrl = form.get(control.name);
+            @if (ctrl?.invalid && (ctrl?.dirty || ctrl?.touched)) {
+                @for (error of form.get(control.name)?.errors | keyvalue; track error.key) {
+                    <div>
+                        @if (errorMessages[error.key]) {
+                            <small class="error-message">
+                                {{ errorMessages[error.key](error.value) }}
+                            </small>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    }
+    <button type="submit" [disabled]="form.invalid">Soumettre</button>
+</form>
