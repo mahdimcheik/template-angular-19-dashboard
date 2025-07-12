@@ -1,19 +1,19 @@
 @if (structure(); as structureData) {
-    <div class="w-full max-w-6xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden configurable-form-container" [class]="structureData.styleClass || ''">
+    <div class="w-full max-w-6xl mx-auto shadow-lg rounded-xl overflow-hidden configurable-form-container" [class]="structureData.styleClass || ''">
         <!-- Form Header -->
-        <div class="px-6 py-8 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 configurable-form-header">
+        <div class="px-6 py-8 border-b border-gray-200 configurable-form-header">
             <div class="flex flex-col sm:flex-row sm:items-center gap-4 configurable-form-header-content">
                 <div class="flex items-center gap-3 configurable-form-header-title">
                     @if (structureData.icon) {
-                        <div class="flex-shrink-0 p-2 bg-blue-100 rounded-lg configurable-form-header-icon">
+                        <div class="flex-shrink-0 p-2 rounded-lg configurable-form-header-icon">
                             <i [class]="structureData.icon" class="text-2xl text-blue-600"></i>
                         </div>
                     }
-                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 configurable-form-title">{{ structureData.name }}</h2>
+                    <h2 class="text-2xl sm:text-3xl font-bold configurable-form-title">{{ structureData.name }}</h2>
                 </div>
             </div>
             @if (structureData.description) {
-                <p class="mt-4 text-base text-gray-600 leading-relaxed configurable-form-description">{{ structureData.description }}</p>
+                <p class="mt-4 text-base leading-relaxed configurable-form-description">{{ structureData.description }}</p>
             }
         </div>
 
@@ -22,13 +22,13 @@
             <form [formGroup]="form()" (ngSubmit)="onSubmit()" class="space-y-8 configurable-form-content">
                 <!-- Form Field Groups -->
                 @for (group of structureData.formFieldGroups; track trackByGroupId($index, group)) {
-                    <div class="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:shadow-md transition-shadow duration-200 configurable-form-section configurable-form-field-group" [class]="group.styleClass || ''" [formGroupName]="group.id">
+                    <div class="rounded-xl p-6 border border-gray-200 hover:shadow-md transition-shadow duration-200 configurable-form-section configurable-form-field-group" [class]="group.styleClass || ''" [formGroupName]="group.id">
                         <!-- Group Header -->
                         <div class="mb-6 configurable-form-section-header configurable-form-field-group-header">
                             <div class="flex flex-col sm:flex-row sm:items-center gap-3 configurable-form-section-title-container">
                                 <div class="flex items-center gap-3 configurable-form-section-title-content">
                                     @if (group.icon) {
-                                        <div class="flex-shrink-0 p-2 bg-white rounded-lg shadow-sm configurable-form-section-icon">
+                                        <div class="flex-shrink-0 p-2 rounded-lg shadow-sm configurable-form-section-icon">
                                             <i [class]="group.icon" class="text-lg text-blue-500"></i>
                                         </div>
                                     }
@@ -114,94 +114,85 @@
 
                                     <!-- Input Container -->
                                     <div class="relative configurable-form-input-container">
-                                        <!-- Text, Email, Password, Color Inputs -->
-                                        @if (field.type === 'text' || field.type === 'email' || field.type === 'password' || field.type === 'color') {
+                                        <!-- Text, Email, Password Inputs -->
+                                        @if (field.type === 'text' || field.type === 'email' || field.type === 'password') {
                                             <input
+                                                pInputText
                                                 [id]="field.id"
                                                 [type]="field.type"
                                                 [formControlName]="field.name"
                                                 [placeholder]="field.placeholder || ''"
                                                 [readonly]="field.readonly || false"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 disabled:bg-gray-50 disabled:text-gray-500 configurable-form-input configurable-form-text-input"
-                                                [class.border-red-300]="isFieldInvalid(group.id, field.name)"
-                                                [class.ring-red-200]="isFieldInvalid(group.id, field.name)"
-                                                [class.focus:ring-red-500]="isFieldInvalid(group.id, field.name)"
-                                                [class.h-12]="field.type === 'color'"
+                                                class="w-full configurable-form-input configurable-form-text-input"
+                                                [class.p-invalid]="isFieldInvalid(group.id, field.name)"
                                             />
                                         }
 
                                         <!-- Number Input -->
                                         @if (field.type === 'number') {
                                             <input
+                                                pInputNumber
                                                 [id]="field.id"
-                                                type="number"
                                                 [formControlName]="field.name"
                                                 [placeholder]="field.placeholder || ''"
                                                 [readonly]="field.readonly || false"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 disabled:bg-gray-50 disabled:text-gray-500 configurable-form-input configurable-form-number-input"
-                                                [class.border-red-300]="isFieldInvalid(group.id, field.name)"
-                                                [class.ring-red-200]="isFieldInvalid(group.id, field.name)"
-                                                [class.focus:ring-red-500]="isFieldInvalid(group.id, field.name)"
+                                                class="w-full configurable-form-input configurable-form-number-input"
+                                                [class.p-invalid]="isFieldInvalid(group.id, field.name)"
                                             />
                                         }
 
                                         <!-- Date Input -->
                                         @if (field.type === 'date') {
-                                            <input
+                                            <p-datepicker
                                                 [id]="field.id"
-                                                type="date"
                                                 [formControlName]="field.name"
-                                                [readonly]="field.readonly || false"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 disabled:bg-gray-50 disabled:text-gray-500 configurable-form-input configurable-form-date-input"
-                                                [class.border-red-300]="isFieldInvalid(group.id, field.name)"
-                                                [class.ring-red-200]="isFieldInvalid(group.id, field.name)"
-                                                [class.focus:ring-red-500]="isFieldInvalid(group.id, field.name)"
+                                                [disabled]="field.readonly || false"
+                                                class="w-full configurable-form-input configurable-form-date-input"
+                                                [class.p-invalid]="isFieldInvalid(group.id, field.name)"
+                                            />
+                                        }
+
+                                        <!-- Color Input -->
+                                        @if (field.type === 'color') {
+                                            <p-colorpicker
+                                                [id]="field.id"
+                                                [formControlName]="field.name"
+                                                [disabled]="field.readonly || false"
+                                                class="configurable-form-input configurable-form-color-input"
+                                                [class.p-invalid]="isFieldInvalid(group.id, field.name)"
                                             />
                                         }
 
                                         <!-- Textarea -->
                                         @if (field.type === 'textarea') {
                                             <textarea
+                                                pTextarea
                                                 [id]="field.id"
                                                 [formControlName]="field.name"
                                                 [placeholder]="field.placeholder || ''"
                                                 [readonly]="field.readonly || false"
                                                 rows="4"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 disabled:bg-gray-50 disabled:text-gray-500 resize-vertical configurable-form-input configurable-form-textarea"
-                                                [class.border-red-300]="isFieldInvalid(group.id, field.name)"
-                                                [class.ring-red-200]="isFieldInvalid(group.id, field.name)"
-                                                [class.focus:ring-red-500]="isFieldInvalid(group.id, field.name)"
+                                                class="w-full configurable-form-input configurable-form-textarea"
+                                                [class.p-invalid]="isFieldInvalid(group.id, field.name)"
                                             ></textarea>
                                         }
 
                                         <!-- Select -->
                                         @if (field.type === 'select') {
-                                            <select
+                                            <p-select
                                                 [id]="field.id"
                                                 [formControlName]="field.name"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 disabled:bg-gray-50 disabled:text-gray-500 configurable-form-input configurable-form-select"
-                                                [class.border-red-300]="isFieldInvalid(group.id, field.name)"
-                                                [class.ring-red-200]="isFieldInvalid(group.id, field.name)"
-                                                [class.focus:ring-red-500]="isFieldInvalid(group.id, field.name)"
-                                            >
-                                                @if (field.placeholder) {
-                                                    <option value="" class="configurable-form-select-placeholder">{{ field.placeholder }}</option>
-                                                }
-                                                @for (option of getSelectOptions(field); track option) {
-                                                    <option [value]="option" class="configurable-form-select-option">{{ option }}</option>
-                                                }
-                                            </select>
+                                                [options]="getSelectOptions(field)"
+                                                [placeholder]="field.placeholder || 'Sélectionnez une option'"
+                                                class="w-full configurable-form-input configurable-form-select"
+                                                [class.p-invalid]="isFieldInvalid(group.id, field.name)"
+                                            />
                                         }
 
                                         <!-- Checkbox -->
                                         @if (field.type === 'checkbox') {
                                             <div class="flex items-start gap-3 configurable-form-checkbox-container">
-                                                <input
-                                                    [id]="field.id"
-                                                    type="checkbox"
-                                                    [formControlName]="field.name"
-                                                    class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-colors duration-200 configurable-form-input configurable-form-checkbox"
-                                                />
+                                                <p-checkbox [id]="field.id" [formControlName]="field.name" [binary]="true" class="configurable-form-input configurable-form-checkbox" />
                                                 <label [for]="field.id" class="text-sm text-gray-700 leading-relaxed cursor-pointer configurable-form-checkbox-label">
                                                     {{ field.placeholder || field.label }}
                                                 </label>
@@ -213,13 +204,7 @@
                                             <div class="space-y-3 configurable-form-radio-container">
                                                 @for (option of getSelectOptions(field); track option) {
                                                     <div class="flex items-center gap-3 configurable-form-radio-option">
-                                                        <input
-                                                            [id]="field.id + '_' + option"
-                                                            type="radio"
-                                                            [formControlName]="field.name"
-                                                            [value]="option"
-                                                            class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2 transition-colors duration-200 configurable-form-input configurable-form-radio"
-                                                        />
+                                                        <p-radiobutton [id]="field.id + '_' + option" [formControlName]="field.name" [value]="option" class="configurable-form-input configurable-form-radio" />
                                                         <label [for]="field.id + '_' + option" class="text-sm text-gray-700 cursor-pointer configurable-form-radio-label">
                                                             {{ option }}
                                                         </label>
@@ -274,19 +259,8 @@
 
                         <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto configurable-form-buttons">
-                            <button
-                                type="button"
-                                class="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 configurable-form-button configurable-form-button-cancel"
-                            >
-                                Annuler
-                            </button>
-                            <button
-                                type="submit"
-                                [disabled]="!isFormValid()"
-                                class="w-full sm:w-auto px-6 py-3 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors duration-200 configurable-form-button configurable-form-button-submit"
-                            >
-                                Soumettre
-                            </button>
+                            <p-button type="button" label="Annuler" severity="secondary" class="w-full sm:w-auto configurable-form-button configurable-form-button-cancel" />
+                            <p-button type="submit" label="Soumettre" [disabled]="!isFormValid()" class="w-full sm:w-auto configurable-form-button configurable-form-button-submit" />
                         </div>
                     </div>
                 </div>

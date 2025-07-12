@@ -18,11 +18,13 @@ import { Level } from '../../../../api/models/Level';
 import { Category } from '../../../../api/models/Category';
 import { UpdateCursusDto } from '../../../../api/models/UpdateCursusDto';
 import { CreateCursusDto } from '../../../../api';
+import { Structure } from '../../../../generic-components/configurable-form/related-models';
+import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
 
 @Component({
     selector: 'app-modal-add-or-edit-cursus',
     standalone: true,
-    imports: [CommonModule, FormsModule, FluidModule, DrawerModule, DialogModule, SelectModule, ButtonModule, MessageModule, ReactiveFormsModule, InputTextModule, TextareaModule],
+    imports: [CommonModule, FormsModule, ConfigurableFormComponent, FluidModule, DrawerModule, DialogModule, SelectModule, ButtonModule, MessageModule, ReactiveFormsModule, InputTextModule, TextareaModule],
     templateUrl: './modal-add-or-edit-cursus.component.html',
     styleUrls: ['./modal-add-or-edit-cursus.component.scss']
 })
@@ -37,6 +39,7 @@ export class ModalAddOrEditCursusComponent implements OnInit {
     selectedCategory!: Category;
     title!: string;
     isLoading = signal(false);
+    formStructure!: Structure;
 
     messageService = inject(MessageService);
     cursusService = inject(CursusMainService);
@@ -66,6 +69,57 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                 level: [this.selectedLevel, [Validators.required]],
                 category: [this.selectedCategory, [Validators.required]]
             });
+
+            this.formStructure = {
+                id: 'cursus',
+                name: 'Cursus',
+                description: 'Cursus',
+                icon: 'pi pi-book',
+                formFieldGroups: [
+                    {
+                        id: 'cursus',
+                        name: 'Cursus',
+                        fields: [
+                            {
+                                id: 'name',
+                                name: 'name',
+                                type: 'text',
+                                label: 'Nom du cursus',
+                                placeholder: 'Ex: Introduction à Angular',
+                                required: true,
+                                validation: [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
+                            },
+                            {
+                                id: 'description',
+                                name: 'description',
+                                type: 'textarea',
+                                label: 'Description',
+                                placeholder: 'Décrivez le contenu et les objectifs du cursus...'
+                            },
+                            {
+                                id: 'level',
+                                name: 'level',
+                                type: 'select',
+                                label: 'Niveau',
+                                placeholder: 'Sélectionnez un niveau',
+                                required: true,
+                                options: this.levelsList().map((level) => ({ label: level.name, value: level.id })),
+                                validation: [Validators.required]
+                            },
+                            {
+                                id: 'category',
+                                name: 'category',
+                                type: 'select',
+                                label: 'Catégorie',
+                                placeholder: 'Sélectionnez une catégorie',
+                                required: true,
+                                options: this.categoriesList().map((category) => ({ label: category.name, value: category.id })),
+                                validation: [Validators.required]
+                            }
+                        ]
+                    }
+                ]
+            };
         } else {
             this.title = 'Ajouter un nouveau cursus';
             this.selectedLevel = this.levelsList()[0];
@@ -146,6 +200,10 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                 });
             }
         }
+    }
+
+    submit1(event: any) {
+        console.log('event', event);
     }
 
     getFieldError(fieldName: string): string | null {
