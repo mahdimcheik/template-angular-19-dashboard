@@ -48,11 +48,6 @@ export class ConfigurableFormComponent implements OnInit {
         structure.formFieldGroups.forEach((group: FormFieldGroup) => {
             const groupControls: { [key: string]: FormControl } = {};
 
-            // groupControls['name'] = this.fb.control(group.name);
-            // groupControls['description'] = this.fb.control(group.description);
-            // groupControls['icon'] = this.fb.control(group.icon);
-            // groupControls['styleClass'] = this.fb.control(group.styleClass);
-
             // Add all fields from this group to the group's FormGroup
             group.fields.forEach((field: FormField<any>) => {
                 const control = this.fb.control(
@@ -71,7 +66,6 @@ export class ConfigurableFormComponent implements OnInit {
 
         // Create the main form with nested FormGroups
         this.form.set(this.fb.group(formGroups));
-        console.log('formGroups', formGroups);
         console.log('form', this.form().value);
     }
 
@@ -109,11 +103,15 @@ export class ConfigurableFormComponent implements OnInit {
         if (!groupForm) return null;
 
         const control = groupForm.get(fieldName);
+
         if (control && control.invalid && (control.dirty || control.touched)) {
             const errors = control.errors;
             if (errors) {
+                const fieldLabel = this.structure()
+                    ?.formFieldGroups.find((group) => group.id === groupId)
+                    ?.fields.find((field) => field.name === fieldName)?.label;
                 const errorKey = Object.keys(errors)[0];
-                return this.errorMessages[errorKey] ? this.errorMessages[errorKey](errors[errorKey]) : 'Erreur de validation';
+                return this.errorMessages[errorKey] ? `${fieldLabel} : ${this.errorMessages[errorKey](errors[errorKey])}` : 'Erreur de validation';
             }
         }
         return null;
