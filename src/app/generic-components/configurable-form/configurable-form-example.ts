@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
     selector: 'app-configurable-form-example',
     standalone: true,
     imports: [ConfigurableFormComponent, CommonModule],
-    styleUrl: './configurable-form-example.component.scss',
     template: `
         <div class="p-6 bg-gray-50 min-h-screen all-around-container">
             <h1 class="text-3xl font-bold mb-6">Configurable Form Example</h1>

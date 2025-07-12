@@ -7,8 +7,7 @@ import { errorMessages, FormField, FormFieldGroup, Structure } from './related-m
     selector: 'app-configurable-form',
     standalone: true,
     imports: [ReactiveFormsModule, CommonModule],
-    templateUrl: './configurable-form.component.html',
-    styleUrl: './configurable-form.component.scss'
+    templateUrl: './configurable-form.component.html'
 })
 export class ConfigurableFormComponent implements OnInit {
     private fb = inject(FormBuilder);
