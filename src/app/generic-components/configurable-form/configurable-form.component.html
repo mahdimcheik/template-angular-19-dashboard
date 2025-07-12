@@ -19,7 +19,7 @@
             @for (group of structureData.formFieldGroups; track trackByGroupId($index, group)) {
                 <div class="form-field-group configurable-form-field-group" [class]="group.styleClass || ''" [formGroupName]="group.id">
                     <!-- Group Header -->
-                    <div class="group-header mb-4">
+                    <div class="group-header mb-4 configurable-form-field-group-header">
                         <div class="flex items-center gap-2">
                             @if (group.icon) {
                                 <i [class]="group.icon" class="text-lg text-blue-500"></i>

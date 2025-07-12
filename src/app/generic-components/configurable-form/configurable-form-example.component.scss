@@ -1,20 +1,9 @@
-::ng-deep .user-profile-form {
-    background-color: red;
-}
-::ng-deep .personal-info-group {
-    background-color: blue !important;
-
-    h2 {
-        color: white !important;
-    }
-}
-
-::ng-deep .configurable-form-container .configurable-form-header .configurable-form-header-title {
-    h2 {
-        color: green;
-    }
-}
-
 ::ng-deep .test-container .configurable-form-container .configurable-form-content .configurable-form-field-group .configurable-form-field-label {
-    color: yellow !important;
+    color: #2b2b08 !important;
+}
+
+::ng-deep .test-container .configurable-form-container .configurable-form-content .configurable-form-field-group .configurable-form-field-group-header h3 {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    background-color: green !important;
 }
