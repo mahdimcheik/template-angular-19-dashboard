@@ -27,3 +27,55 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocola
 | `aria-modal`       | Indique qu’une boîte de dialogue est modale                      | `<div role="dialog" aria-modal="true">...</div>`                    |
 | `aria-required`    | Indique qu’un champ est requis                                   | `<input type="text" aria-required="true">`                          |
 | `role`             | Définit le rôle de l’élément pour l’accessibilité                | `<div role="alert">Error occurred</div>`                            |
+
+
+# Generic Form
+## configuration
+```html
+<app-configurable-form [structure]="sampleStructure" (onFormSubmit)="handleFormSubmit($event)" #formComponent> </app-configurable-form>
+```
+où stucture est de type `Structure` 
+```js
+    sampleStructure: Structure = {
+        id: 'user-profile-form',
+        name: 'Profil Utilisateur',
+        description: 'Formulaire de création et modification du profil utilisateur avec validation de groupe',
+        icon: 'pi pi-user',
+        styleClass: 'user-profile-form',
+        formFieldGroups: [        
+            {
+                id: 'preferences',
+                name: 'Préférences',
+                description: 'Vos préférences et paramètres',
+                icon: 'pi pi-cog',
+                fields: [
+                    {
+                        id: 'newsletter',
+                        name: 'newsletter',
+                        label: 'Newsletter',
+                        type: 'checkbox',
+                        placeholder: 'Je souhaite recevoir la newsletter',
+                        value: false,
+                        validation: [Validators.required, Validators.minLength(2)]
+                    },
+                ],
+                // Group validator: if newsletter is checked, contact email is required
+                groupValidators: [this.newsletterRequiresContactEmail.bind(this)]
+            }
+        ]
+    };
+```
+## style
+Pour cibler les elements HTML du formulaire generic 
+```scss
+::ng-deep .configurable-form-container .configurable-form-header .configurable-form-header-title {
+    h2 {
+        color: green;
+    }
+}
+
+::ng-deep .test-container .configurable-form-container .configurable-form-content .configurable-form-field-group .configurable-form-field-label {
+    color: yellow !important;
+}
+```
+Parfois il est indispensable de cibler le formulaire en partant d'une classe exterieur, pour ne pas cibler les autres formulaire
