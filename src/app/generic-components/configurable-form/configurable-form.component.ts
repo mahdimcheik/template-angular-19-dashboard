@@ -1,5 +1,5 @@
-import { Component, inject, input, output, OnInit, signal, computed, effect } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { Component, inject, input, output, OnInit, signal, computed, effect, ChangeDetectionStrategy } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormControl, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { errorMessages, FormField, FormFieldGroup, Structure } from './related-models';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -17,7 +17,8 @@ import { ColorPickerModule } from 'primeng/colorpicker';
     styleUrls: ['./configurable-form.component.scss'],
     standalone: true,
     imports: [ReactiveFormsModule, CommonModule, InputTextModule, InputNumberModule, TextareaModule, SelectModule, MultiSelectModule, CheckboxModule, RadioButtonModule, DatePickerModule, ColorPickerModule, ButtonModule],
-    templateUrl: './configurable-form.component.html'
+    templateUrl: './configurable-form.component.html',
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class ConfigurableFormComponent implements OnInit {
     private fb = inject(FormBuilder);
@@ -176,11 +177,6 @@ export class ConfigurableFormComponent implements OnInit {
         // Subscribe to form status changes
         currentForm.statusChanges.subscribe(() => {
             this.formValid.set(currentForm.valid);
-            this.formTouched.set(currentForm.touched);
-        });
-
-        // Subscribe to form value changes to also update touched state
-        currentForm.valueChanges.subscribe(() => {
             this.formTouched.set(currentForm.touched);
         });
     }
