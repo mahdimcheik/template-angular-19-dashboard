@@ -35,7 +35,9 @@ export interface Structure {
     icon?: string;
     imgUrl?: string;
     styleClass?: string;
-    formFieldGroups: FormFieldGroup[];
+    formFieldGroups?: FormFieldGroup[];
+    formFields?: FormField<any>[];
+    globalValidators?: ValidatorFn[];
 }
 
 export const errorMessages: { [key: string]: (errValue: any) => string } = {

@@ -70,31 +70,15 @@ export class ConfigurableFormComponent implements OnInit {
             return;
         }
 
-        const formGroups: { [key: string]: FormGroup } = {};
+        const formControls: { [key: string]: FormGroup | FormControl } = {};
 
-        // Create a FormGroup for each FormFieldGroup
-        structure.formFieldGroups.forEach((group: FormFieldGroup) => {
+        // Create FormGroups for each FormFieldGroup
+        structure.formFieldGroups?.forEach((group: FormFieldGroup) => {
             const groupControls: { [key: string]: FormControl } = {};
 
             // Add all fields from this group to the group's FormGroup
             group.fields.forEach((field: FormField<any>) => {
-                const validators = [];
-
-                // Add required validator if field is required
-                if (field.required) {
-                    validators.push((control: any) => {
-                        if (!control.value || control.value === '') {
-                            return { required: true };
-                        }
-                        return null;
-                    });
-                }
-
-                // Add custom validators if provided
-                if (field.validation) {
-                    validators.push(...field.validation);
-                }
-
+                const validators = this.createFieldValidators(field);
                 const control = this.fb.control(
                     {
                         value: field.value || this.getDefaultValue(field.type),
@@ -106,19 +90,55 @@ export class ConfigurableFormComponent implements OnInit {
             });
 
             // Create FormGroup for this section with group-level validators
-            formGroups[group.id] = this.fb.group(groupControls, {
+            formControls[group.id] = this.fb.group(groupControls, {
                 validators: group.groupValidators || []
             });
         });
 
-        // Create the main form with nested FormGroups
-        const newForm = this.fb.group(formGroups);
+        // Create FormControls for direct formFields
+        structure.formFields?.forEach((field: FormField<any>) => {
+            const validators = this.createFieldValidators(field);
+            const control = this.fb.control(
+                {
+                    value: field.value || this.getDefaultValue(field.type),
+                    disabled: field.disabled || false
+                },
+                validators
+            );
+            formControls[field.name] = control;
+        });
+
+        // Create the main form with both FormGroups and direct FormControls
+        const newForm = this.fb.group(formControls, {
+            validators: structure.globalValidators || []
+        });
         this.form.set(newForm);
 
         // Set up reactivity for form validity and touched state
         this.setupFormReactivity();
 
         console.log('form created', newForm.value);
+    }
+
+    private createFieldValidators(field: FormField<any>): any[] {
+        const validators = [];
+
+        // Add required validator if field is required
+        if (field.required) {
+            validators.push((control: any) => {
+                if (!control.value || control.value === '' || (Array.isArray(control.value) && control.value.length === 0)) {
+                    return { required: true };
+                }
+                return null;
+            });
+        }
+
+        // Add custom validators if provided
+        if (field.validation) {
+            validators.push(...field.validation);
+        }
+
+        return validators;
     }
 
     private setupFormReactivity() {
@@ -181,7 +201,7 @@ export class ConfigurableFormComponent implements OnInit {
             const errors = control.errors;
             if (errors) {
                 const fieldLabel = this.structure()
-                    ?.formFieldGroups.find((group) => group.id === groupId)
+                    ?.formFieldGroups?.find((group) => group.id === groupId)
                     ?.fields.find((field) => field.name === fieldName)?.label;
                 const errorKey = Object.keys(errors)[0];
                 return this.errorMessages[errorKey] ? `${fieldLabel} : ${this.errorMessages[errorKey](errors[errorKey])}` : 'Erreur de validation';
@@ -204,6 +224,26 @@ export class ConfigurableFormComponent implements OnInit {
         return errors;
     }
 
+    // Get global-level validation errors
+    getGlobalValidationErrors(): string[] {
+        const form = this.form();
+        if (!form || !form.errors) return [];
+
+        const errors: string[] = [];
+        Object.keys(form.errors).forEach((errorKey) => {
+            const errorMessage = this.errorMessages[errorKey] ? this.errorMessages[errorKey](form.errors![errorKey]) : `Erreur de validation globale: ${errorKey}`;
+            errors.push(errorMessage);
+        });
+
+        return errors;
+    }
+
+    // Check if form has global validation errors
+    hasGlobalValidationErrors(): boolean {
+        const form = this.form();
+        return !!(form && form.errors && Object.keys(form.errors).length > 0);
+    }
+
     // Check if group has validation errors (not field errors)
     hasGroupValidationErrors(groupId: string): boolean {
         const groupForm = this.getFormGroup(groupId);
@@ -217,6 +257,29 @@ export class ConfigurableFormComponent implements OnInit {
 
         const control = groupForm.get(fieldName);
         return !!(control && control.invalid && (control.dirty || control.touched));
+    }
+
+    // Check if direct field (not in group) is invalid
+    isDirectFieldInvalid(fieldName: string): boolean {
+        const form = this.form();
+        const control = form.get(fieldName);
+        return !!(control && control.invalid && (control.dirty || control.touched));
+    }
+
+    // Get direct field error (not in group)
+    getDirectFieldError(fieldName: string): string | null {
+        const form = this.form();
+        const control = form.get(fieldName);
+
+        if (control && control.invalid && (control.dirty || control.touched)) {
+            const errors = control.errors;
+            if (errors) {
+                const fieldLabel = this.structure()?.formFields?.find((field) => field.name === fieldName)?.label;
+                const errorKey = Object.keys(errors)[0];
+                return this.errorMessages[errorKey] ? `${fieldLabel} : ${this.errorMessages[errorKey](errors[errorKey])}` : 'Erreur de validation';
+            }
+        }
+        return null;
     }
 
     // Check if entire FormGroup (section) is valid

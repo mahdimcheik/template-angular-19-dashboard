@@ -41,7 +41,7 @@ import { CommonModule } from '@angular/common';
                     <ul class="text-sm text-blue-700 space-y-1">
                         <li>Form Valid: {{ isFormValid() }}</li>
                         <li>Form Touched: {{ isFormTouched() }}</li>
-                        <li>Total Form Groups: {{ sampleStructure.formFieldGroups.length }}</li>
+                        <li>Total Form Groups: {{ sampleStructure.formFieldGroups?.length }}</li>
                     </ul>
                 </div>
 
@@ -336,7 +336,7 @@ export class ConfigurableFormExampleComponent {
 
         // Individual section values and validation
         console.log('=== SECTION VALUES AND VALIDATION ===');
-        this.sampleStructure.formFieldGroups.forEach((group) => {
+        this.sampleStructure.formFieldGroups?.forEach((group) => {
             const sectionFormGroup = formGroup.get(group.id) as FormGroup;
             const sectionValue = sectionFormGroup?.value;
             const sectionValid = sectionFormGroup?.valid;
