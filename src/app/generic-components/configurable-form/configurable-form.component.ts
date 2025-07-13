@@ -14,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
 import { ColorPickerModule } from 'primeng/colorpicker';
 @Component({
     selector: 'app-configurable-form',
+    styleUrls: ['./configurable-form.component.scss'],
     standalone: true,
     imports: [ReactiveFormsModule, CommonModule, InputTextModule, InputNumberModule, TextareaModule, SelectModule, MultiSelectModule, CheckboxModule, RadioButtonModule, DatePickerModule, ColorPickerModule, ButtonModule],
     templateUrl: './configurable-form.component.html'
@@ -319,5 +320,6 @@ export class ConfigurableFormComponent implements OnInit {
 
     onCancelClick() {
         this.onCancel.emit();
+        console.log('onCancelClick', this.form().value);
     }
 }

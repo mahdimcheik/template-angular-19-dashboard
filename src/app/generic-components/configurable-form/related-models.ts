@@ -19,6 +19,7 @@ export interface FormField<T> {
 export interface FormFieldGroup {
     id: string;
     name: string;
+    label?: string;
     fields: FormField<any>[];
     description?: string;
     icon?: string;
@@ -32,6 +33,7 @@ export interface Structure {
     name: string;
     description?: string;
     icon?: string;
+    imgUrl?: string;
     styleClass?: string;
     formFieldGroups: FormFieldGroup[];
 }

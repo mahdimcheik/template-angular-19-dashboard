@@ -52,6 +52,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
     categoriesList = computed(() => this.cursusService.categories());
 
+    imgUrl = computed(() => (!this.layoutService.isDarkTheme() ? 'assets/skillHiveSecondaryBlack.svg' : 'assets/skillHiveSecondaryWhite.svg'));
+
     ngOnInit(): void {
         this.isLoading.set(true);
         // this.getLevelsAndCategories();
@@ -72,14 +74,16 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
             this.formStructure = {
                 id: 'cursus',
-                name: 'cursus',
-                description: 'cursus',
+                name: 'Cours',
+                description: 'Editer ce cours',
                 icon: 'pi pi-book',
+                imgUrl: this.imgUrl(),
                 formFieldGroups: [
                     {
                         id: 'cursus',
                         name: 'cursus',
-                        description: 'cursus',
+                        label: 'Cours',
+                        description: 'Détails du cours',
                         fields: [
                             {
                                 id: 'description',
@@ -142,13 +146,15 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
             this.formStructure = {
                 id: 'cursus',
-                name: 'cursus',
-                description: 'cursus',
+                name: 'Cours',
+                description: 'Ajouter un nouveau cours',
                 icon: 'pi pi-book',
+                imgUrl: this.imgUrl(),
                 formFieldGroups: [
                     {
                         id: 'cursus',
                         name: 'cursus',
+                        label: 'Cours',
                         description: 'cursus',
                         fields: [
                             {
@@ -175,8 +181,9 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 name: 'level',
                                 label: 'Niveau',
                                 type: 'select',
+                                displayKey: 'name',
                                 placeholder: 'Sélectionnez le niveau',
-                                value: this.selectedLevel,
+                                value: this.levelsList()[0],
                                 required: true,
                                 options: this.levelsList(),
                                 validation: [Validators.required]
@@ -186,8 +193,9 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 name: 'category',
                                 label: 'Catégorie',
                                 type: 'select',
+                                displayKey: 'name',
                                 placeholder: 'Sélectionnez la catégorie',
-                                value: this.selectedCategory,
+                                value: this.categoriesList()[0],
                                 required: true,
                                 options: this.categoriesList(),
                                 validation: [Validators.required]
