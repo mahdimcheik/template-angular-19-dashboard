@@ -4,7 +4,7 @@ export interface FormField<T> {
     id: string;
     label: string;
     name: string;
-    type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea' | 'color';
+    type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea' | 'color' | 'multiselect';
     placeholder?: string;
     value?: T | T[];
     compareKey?: string;

@@ -199,6 +199,18 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 required: true,
                                 options: this.categoriesList(),
                                 validation: [Validators.required]
+                            },
+                            {
+                                id: 'categories',
+                                name: 'categories',
+                                label: 'Catégories',
+                                type: 'multiselect',
+                                displayKey: 'name',
+                                placeholder: 'Sélectionnez la catégorie',
+                                value: [],
+                                required: true,
+                                options: this.categoriesList(),
+                                validation: [Validators.required]
                             }
                         ]
                     }

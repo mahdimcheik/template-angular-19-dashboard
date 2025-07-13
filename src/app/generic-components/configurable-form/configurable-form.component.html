@@ -186,6 +186,20 @@
                                             />
                                         }
 
+                                        <!-- MultiSelect -->
+                                        @if (field.type === 'multiselect') {
+                                            <p-multiselect
+                                                [id]="field.id"
+                                                [formControlName]="field.name"
+                                                [options]="getSelectOptions(field)"
+                                                [optionLabel]="field.displayKey"
+                                                [optionValue]="field.compareKey"
+                                                [placeholder]="field.placeholder || 'Sélectionnez vos options'"
+                                                class="w-full configurable-form-input configurable-form-select"
+                                                [class.p-invalid]="isFieldInvalid(group.id, field.name)"
+                                            />
+                                        }
+
                                         <!-- Checkbox -->
                                         @if (field.type === 'checkbox') {
                                             <div class="flex items-start gap-3 configurable-form-checkbox-container">
