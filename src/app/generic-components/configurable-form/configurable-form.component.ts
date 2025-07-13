@@ -222,4 +222,10 @@ export class ConfigurableFormComponent implements OnInit {
     trackByGroupId(index: number, group: FormFieldGroup): string {
         return group.id;
     }
+
+    onCancel() {
+        console.log('onCancel');
+        console.log('form', this.form().value);
+        this.form.set(this.form().hasError('required') ? this.fb.group({}) : this.form());
+    }
 }
