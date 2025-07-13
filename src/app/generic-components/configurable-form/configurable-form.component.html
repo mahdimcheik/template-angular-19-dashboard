@@ -1,7 +1,7 @@
 @if (structure(); as structureData) {
     <div class="w-full max-w-6xl mx-auto shadow-lg rounded-xl overflow-hidden configurable-form-container" [class]="structureData.styleClass || ''">
         <!-- Form Header -->
-        <div class="px-6 py-8 border-b border-gray-200 configurable-form-header">
+        <div class="px-6 configurable-form-header border-b border-gray-200">
             <div class="flex flex-col sm:flex-row sm:items-center gap-4 configurable-form-header-content">
                 <div class="flex items-center gap-3 configurable-form-header-title">
                     @if (structureData.icon) {
@@ -9,7 +9,9 @@
                             <i [class]="structureData.icon" class="text-2xl text-blue-600"></i>
                         </div>
                     }
-                    <h2 class="text-2xl sm:text-3xl font-bold configurable-form-title">{{ structureData.name }}</h2>
+                    @if (structureData.name) {
+                        <h2 class="text-2xl sm:text-3xl font-bold configurable-form-title">{{ structureData.name }}</h2>
+                    }
                 </div>
             </div>
             @if (structureData.description) {
@@ -32,7 +34,9 @@
                                             <i [class]="group.icon" class="text-lg text-blue-500"></i>
                                         </div>
                                     }
-                                    <h3 class="text-lg sm:text-xl font-semibold text-gray-800 configurable-form-section-title">{{ group.name }}</h3>
+                                    @if (group.name) {
+                                        <h3 class="text-lg sm:text-xl font-semibold configurable-form-section-title">{{ group.name }}</h3>
+                                    }
                                 </div>
 
                                 <!-- Group Validation Status -->
@@ -54,7 +58,7 @@
                             </div>
 
                             @if (group.description) {
-                                <p class="mt-3 text-sm text-gray-600 leading-relaxed configurable-form-section-description">{{ group.description }}</p>
+                                <p class="mt-3 text-sm leading-relaxed configurable-form-section-description">{{ group.description }}</p>
                             }
 
                             <!-- Group-level Validation Errors -->
@@ -105,7 +109,7 @@
                             @for (field of group.fields; track trackByFieldId($index, field)) {
                                 <div class="space-y-2 configurable-form-field-container configurable-form-field" [class.lg:col-span-2]="field.type === 'textarea'" [class.lg:col-span-1]="field.type !== 'textarea'">
                                     <!-- Field Label -->
-                                    <label [for]="field.id" class="block text-sm font-medium text-gray-700 configurable-form-field-label">
+                                    <label [for]="field.id" class="block text-sm font-medium configurable-form-field-label">
                                         <span class="configurable-form-field-label-text">{{ field.label }}</span>
                                         @if (field.required) {
                                             <span class="text-red-500 ml-1 configurable-form-field-required">*</span>
@@ -193,7 +197,7 @@
                                         @if (field.type === 'checkbox') {
                                             <div class="flex items-start gap-3 configurable-form-checkbox-container">
                                                 <p-checkbox [id]="field.id" [formControlName]="field.name" [binary]="true" class="configurable-form-input configurable-form-checkbox" />
-                                                <label [for]="field.id" class="text-sm text-gray-700 leading-relaxed cursor-pointer configurable-form-checkbox-label">
+                                                <label [for]="field.id" class="text-sm leading-relaxed cursor-pointer configurable-form-checkbox-label">
                                                     {{ field.placeholder || field.label }}
                                                 </label>
                                             </div>
@@ -205,7 +209,7 @@
                                                 @for (option of getSelectOptions(field); track option) {
                                                     <div class="flex items-center gap-3 configurable-form-radio-option">
                                                         <p-radiobutton [id]="field.id + '_' + option" [formControlName]="field.name" [value]="option" class="configurable-form-input configurable-form-radio" />
-                                                        <label [for]="field.id + '_' + option" class="text-sm text-gray-700 cursor-pointer configurable-form-radio-label">
+                                                        <label [for]="field.id + '_' + option" class="text-sm cursor-pointer configurable-form-radio-label">
                                                             {{ option }}
                                                         </label>
                                                     </div>
@@ -240,7 +244,7 @@
                 }
 
                 <!-- Form Actions -->
-                <div class="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 mt-8 -mx-6 -mb-6 rounded-b-xl configurable-form-actions">
+                <div class="sticky bottom-0 border-t border-gray-200 px-6 py-4 mt-8 -mx-6 -mb-6 rounded-b-xl configurable-form-actions">
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 configurable-form-actions-content">
                         <!-- Form Status Summary -->
                         <div class="flex items-center gap-2 configurable-form-status">
@@ -270,8 +274,8 @@
 } @else {
     <div class="flex items-center justify-center p-12 bg-gray-50 rounded-lg configurable-form-empty">
         <div class="text-center configurable-form-empty-content">
-            <i class="pi pi-inbox text-4xl text-gray-400 mb-4 configurable-form-empty-icon"></i>
-            <p class="text-gray-500 text-lg configurable-form-empty-message">Aucune structure de formulaire fournie</p>
+            <i class="pi pi-inbox text-4xl mb-4 configurable-form-empty-icon"></i>
+            <p class="text-lg configurable-form-empty-message">Aucune structure de formulaire fournie</p>
         </div>
     </div>
 }
