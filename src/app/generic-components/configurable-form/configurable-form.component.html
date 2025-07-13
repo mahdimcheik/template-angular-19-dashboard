@@ -120,7 +120,7 @@
                                                 pInputText
                                                 [id]="field.id"
                                                 [type]="field.type"
-                                                [formControlName]="field.value"
+                                                [formControlName]="field.name"
                                                 [placeholder]="field.placeholder || ''"
                                                 [readonly]="field.readonly || false"
                                                 class="w-full configurable-form-input configurable-form-text-input"
@@ -133,7 +133,7 @@
                                             <input
                                                 pInputNumber
                                                 [id]="field.id"
-                                                [formControlName]="field.value"
+                                                [formControlName]="field.name"
                                                 [placeholder]="field.placeholder || ''"
                                                 [readonly]="field.readonly || false"
                                                 class="w-full configurable-form-input configurable-form-number-input"
@@ -145,7 +145,7 @@
                                         @if (field.type === 'date') {
                                             <p-datepicker
                                                 [id]="field.id"
-                                                [formControlName]="field.value"
+                                                [formControlName]="field.name"
                                                 [disabled]="field.readonly || false"
                                                 class="w-full configurable-form-input configurable-form-date-input"
                                                 [class.p-invalid]="isFieldInvalid(group.id, field.name)"
@@ -156,7 +156,7 @@
                                         @if (field.type === 'color') {
                                             <p-colorpicker
                                                 [id]="field.id"
-                                                [formControlName]="field.value"
+                                                [formControlName]="field.name"
                                                 [disabled]="field.readonly || false"
                                                 class="configurable-form-input configurable-form-color-input"
                                                 [class.p-invalid]="isFieldInvalid(group.id, field.name)"
@@ -168,7 +168,7 @@
                                             <textarea
                                                 pTextarea
                                                 [id]="field.id"
-                                                [formControlName]="field.value"
+                                                [formControlName]="field.name"
                                                 [placeholder]="field.placeholder || ''"
                                                 [readonly]="field.readonly || false"
                                                 rows="4"
@@ -181,7 +181,7 @@
                                         @if (field.type === 'select') {
                                             <p-select
                                                 [id]="field.id"
-                                                [formControlName]="field.value"
+                                                [formControlName]="field.name"
                                                 [options]="getSelectOptions(field)"
                                                 [placeholder]="field.placeholder || 'Sélectionnez une option'"
                                                 class="w-full configurable-form-input configurable-form-select"
@@ -192,7 +192,7 @@
                                         <!-- Checkbox -->
                                         @if (field.type === 'checkbox') {
                                             <div class="flex items-start gap-3 configurable-form-checkbox-container">
-                                                <p-checkbox [id]="field.id" [formControlName]="field.value" [binary]="true" class="configurable-form-input configurable-form-checkbox" />
+                                                <p-checkbox [id]="field.id" [formControlName]="field.name" [binary]="true" class="configurable-form-input configurable-form-checkbox" />
                                                 <label [for]="field.id" class="text-sm leading-relaxed cursor-pointer configurable-form-checkbox-label">
                                                     {{ field.placeholder || field.label }}
                                                 </label>
@@ -204,9 +204,9 @@
                                             <div class="space-y-3 configurable-form-radio-container">
                                                 @for (option of getSelectOptions(field); track option) {
                                                     <div class="flex items-center gap-3 configurable-form-radio-option">
-                                                        <p-radiobutton [id]="field.id + '_' + option" [formControlName]="field.name" [value]="option" class="configurable-form-input configurable-form-radio" />
-                                                        <label [for]="field.id + '_' + option" class="text-sm cursor-pointer configurable-form-radio-label">
-                                                            {{ option }}
+                                                        <p-radiobutton [id]="field.id + '_' + option.value" [formControlName]="field.name" [value]="option.value" class="configurable-form-input configurable-form-radio" />
+                                                        <label [for]="field.id + '_' + option.value" class="text-sm cursor-pointer configurable-form-radio-label">
+                                                            {{ option.label }}
                                                         </label>
                                                     </div>
                                                 }
@@ -250,10 +250,12 @@
                                     <span class="text-sm font-medium">Formulaire valide</span>
                                 </div>
                             } @else {
-                                <div class="flex items-center gap-2 text-red-600 configurable-form-status-invalid">
-                                    <i class="pi pi-exclamation-triangle text-lg"></i>
-                                    <span class="text-sm font-medium">Veuillez corriger les erreurs</span>
-                                </div>
+                                @if (isFormTouched()) {
+                                    <div class="flex items-center gap-2 text-red-600 configurable-form-status-invalid">
+                                        <i class="pi pi-exclamation-triangle text-lg"></i>
+                                        <span class="text-sm font-medium">Veuillez corriger les erreurs</span>
+                                    </div>
+                                }
                             }
                         </div>
 
@@ -275,3 +277,5 @@
         </div>
     </div>
 }
+
+<p>form : {{ form().value | json }}</p>

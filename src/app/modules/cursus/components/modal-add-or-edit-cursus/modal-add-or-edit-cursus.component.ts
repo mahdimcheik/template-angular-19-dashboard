@@ -72,50 +72,32 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
             this.formStructure = {
                 id: 'cursus',
-                name: 'Mes cursus',
-                description: 'Ajouter ou éditer un cursus',
+                name: 'cursus',
+                description: 'cursus',
                 icon: 'pi pi-book',
                 formFieldGroups: [
                     {
                         id: 'cursus',
-                        name: 'Détails du cursus',
+                        name: 'cursus',
+                        description: 'cursus',
                         fields: [
                             {
                                 id: 'name',
                                 name: 'name',
+                                label: 'Nom',
                                 type: 'text',
-                                label: 'Nom du cursus',
-                                placeholder: 'Ex: Introduction à Angular',
+                                placeholder: 'Nom du cursus',
                                 required: true,
-                                validation: [Validators.required]
+                                validation: [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
+                            },
+                            {
+                                id: 'description',
+                                name: 'description',
+                                label: 'Description',
+                                type: 'textarea',
+                                placeholder: 'Description du cursus',
+                                required: true
                             }
-                            // {
-                            //     id: 'description',
-                            //     name: 'description',
-                            //     type: 'textarea',
-                            //     label: 'Description',
-                            //     placeholder: 'Décrivez le contenu et les objectifs du cursus...'
-                            // },
-                            // {
-                            //     id: 'level',
-                            //     name: 'level',
-                            //     type: 'select',
-                            //     label: 'Niveau',
-                            //     placeholder: 'Sélectionnez un niveau',
-                            //     required: true,
-                            //     options: this.levelsList().map((level) => ({ label: level.name, value: level.id })),
-                            //     validation: [Validators.required]
-                            // },
-                            // {
-                            //     id: 'category',
-                            //     name: 'category',
-                            //     type: 'select',
-                            //     label: 'Catégorie',
-                            //     placeholder: 'Sélectionnez une catégorie',
-                            //     required: true,
-                            //     options: this.categoriesList().map((category) => ({ label: category.name, value: category.id })),
-                            //     validation: [Validators.required]
-                            // }
                         ]
                     }
                 ]

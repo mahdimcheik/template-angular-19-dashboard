@@ -1,4 +1,4 @@
-import { Component, inject, input, output, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, input, output, OnInit, signal, computed, effect } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { errorMessages, FormField, FormFieldGroup, Structure } from './related-models';
@@ -30,18 +30,36 @@ export class ConfigurableFormComponent implements OnInit {
     // Form instance - now contains nested FormGroups
     form = signal<FormGroup>(this.fb.group({}));
 
+    // Reactive signal to track form validity
+    formValid = signal<boolean>(true);
+
+    // Reactive signal to track form touched state
+    formTouched = signal<boolean>(false);
+
     // Error messages map
     errorMessages = errorMessages;
 
-    // Computed signal to track form validity
-    isFormValid = computed(() => this.form().valid);
+    // Computed signal to track form validity (now properly reactive)
+    isFormValid = computed(() => {
+        console.log('isFormValid', this.formValid());
+        console.log('form', this.form().value);
+        return this.formValid();
+    });
 
-    // Computed signal to track if form has been touched
-    isFormTouched = computed(() => this.form().touched);
+    // Computed signal to track if form has been touched (now properly reactive)
+    isFormTouched = computed(() => this.formTouched());
 
-    ngOnInit(): void {
-        this.createForm();
+    constructor() {
+        // Use effect to respond to structure changes
+        effect(() => {
+            const structureData = this.structure();
+            if (structureData) {
+                this.createForm();
+            }
+        });
     }
+
+    ngOnInit(): void {}
 
     private createForm() {
         const structure = this.structure();
@@ -58,12 +76,29 @@ export class ConfigurableFormComponent implements OnInit {
 
             // Add all fields from this group to the group's FormGroup
             group.fields.forEach((field: FormField<any>) => {
+                const validators = [];
+
+                // Add required validator if field is required
+                if (field.required) {
+                    validators.push((control: any) => {
+                        if (!control.value || control.value === '') {
+                            return { required: true };
+                        }
+                        return null;
+                    });
+                }
+
+                // Add custom validators if provided
+                if (field.validation) {
+                    validators.push(...field.validation);
+                }
+
                 const control = this.fb.control(
                     {
                         value: field.value || this.getDefaultValue(field.type),
                         disabled: field.disabled || false
                     },
-                    field.validation || []
+                    validators
                 );
                 groupControls[field.name] = control;
             });
@@ -75,8 +110,32 @@ export class ConfigurableFormComponent implements OnInit {
         });
 
         // Create the main form with nested FormGroups
-        this.form.set(this.fb.group(formGroups));
-        console.log('form', this.form().value);
+        const newForm = this.fb.group(formGroups);
+        this.form.set(newForm);
+
+        // Set up reactivity for form validity and touched state
+        this.setupFormReactivity();
+
+        console.log('form created', newForm.value);
+    }
+
+    private setupFormReactivity() {
+        const currentForm = this.form();
+
+        // Initial state
+        this.formValid.set(currentForm.valid);
+        this.formTouched.set(currentForm.touched);
+
+        // Subscribe to form status changes
+        currentForm.statusChanges.subscribe(() => {
+            this.formValid.set(currentForm.valid);
+            this.formTouched.set(currentForm.touched);
+        });
+
+        // Subscribe to form value changes to also update touched state
+        currentForm.valueChanges.subscribe(() => {
+            this.formTouched.set(currentForm.touched);
+        });
     }
 
     private getDefaultValue(type: string): any {
@@ -99,6 +158,9 @@ export class ConfigurableFormComponent implements OnInit {
         } else {
             formInstance.markAllAsTouched();
             this.form.set(formInstance); // Trigger change detection
+            // Update reactive signals
+            this.formValid.set(formInstance.valid);
+            this.formTouched.set(formInstance.touched);
         }
     }
 
@@ -211,7 +273,18 @@ export class ConfigurableFormComponent implements OnInit {
     }
 
     getSelectOptions(field: FormField<any>): any[] {
-        return field.options || [];
+        if (!field.options) return [];
+
+        // If options are already objects with label/value structure, return as-is
+        if (field.options.length > 0 && typeof field.options[0] === 'object' && field.options[0].label) {
+            return field.options;
+        }
+
+        // Convert simple array to label/value format for PrimeNG
+        return field.options.map((option) => ({
+            label: option.toString(),
+            value: option
+        }));
     }
 
     // Track function for @for loops
@@ -225,7 +298,7 @@ export class ConfigurableFormComponent implements OnInit {
 
     onCancel() {
         console.log('onCancel');
-        console.log('form', this.form().value);
-        this.form.set(this.form().hasError('required') ? this.fb.group({}) : this.form());
+        // Reset form to initial state
+        this.createForm();
     }
 }

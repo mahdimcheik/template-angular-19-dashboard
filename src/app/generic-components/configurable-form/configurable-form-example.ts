@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
     selector: 'app-configurable-form-example',
     standalone: true,
     imports: [ConfigurableFormComponent, CommonModule],
-    styleUrl: './configurable-form-example.component.scss',
     template: `
         <div class="p-6 bg-gray-50 min-h-screen all-around-container">
             <h1 class="text-3xl font-bold mb-6">Configurable Form Example</h1>
@@ -96,7 +95,7 @@ export class ConfigurableFormExampleComponent {
                         type: 'text',
                         placeholder: 'Entrez votre prénom',
                         required: true,
-                        validation: [Validators.required, Validators.minLength(2)]
+                        validation: [Validators.minLength(2)]
                     },
                     {
                         id: 'lastName',
@@ -104,8 +103,7 @@ export class ConfigurableFormExampleComponent {
                         label: 'Nom',
                         type: 'text',
                         placeholder: 'Entrez votre nom',
-                        required: true,
-                        validation: [Validators.required, Validators.minLength(2)]
+                        required: true
                     },
                     {
                         id: 'email',
@@ -114,19 +112,16 @@ export class ConfigurableFormExampleComponent {
                         type: 'email',
                         placeholder: 'exemple@email.com',
                         required: true,
-                        validation: [Validators.required, Validators.email]
+                        validation: [Validators.email]
                     },
                     {
                         id: 'phone',
                         name: 'phone',
                         label: 'Téléphone',
                         type: 'text',
-                        placeholder: '+33 1 23 45 67 89',
-                        validation: [Validators.pattern(/^[+]?[0-9\s\-\(\)]+$/)]
+                        placeholder: '+33 1 23 45 67 89'
                     }
-                ],
-                // Group validator: ensure first name and last name are not the same
-                groupValidators: [this.namesShouldBeDifferent.bind(this)]
+                ]
             },
             {
                 id: 'password-info',
@@ -140,8 +135,7 @@ export class ConfigurableFormExampleComponent {
                         label: 'Mot de passe',
                         type: 'password',
                         placeholder: 'Entrez votre mot de passe',
-                        required: true,
-                        validation: [Validators.required, Validators.minLength(8)]
+                        required: true
                     },
                     {
                         id: 'confirmPassword',
@@ -149,12 +143,9 @@ export class ConfigurableFormExampleComponent {
                         label: 'Confirmer le mot de passe',
                         type: 'password',
                         placeholder: 'Confirmez votre mot de passe',
-                        required: true,
-                        validation: [Validators.required]
+                        required: true
                     }
-                ],
-                // Group validator: ensure password and confirmPassword match
-                groupValidators: [this.passwordsMatch.bind(this)]
+                ]
             },
             {
                 id: 'date-range',
@@ -167,20 +158,16 @@ export class ConfigurableFormExampleComponent {
                         name: 'startDate',
                         label: 'Date de début',
                         type: 'date',
-                        required: true,
-                        validation: [Validators.required]
+                        required: true
                     },
                     {
                         id: 'endDate',
                         name: 'endDate',
                         label: 'Date de fin',
                         type: 'date',
-                        required: true,
-                        validation: [Validators.required]
+                        required: true
                     }
-                ],
-                // Group validator: ensure start date is before end date
-                groupValidators: [this.dateRangeValid.bind(this)]
+                ]
             },
             {
                 id: 'address-info',
@@ -194,8 +181,7 @@ export class ConfigurableFormExampleComponent {
                         label: 'Rue',
                         type: 'text',
                         placeholder: 'Numéro et nom de rue',
-                        required: true,
-                        validation: [Validators.required]
+                        required: true
                     },
                     {
                         id: 'city',
@@ -203,8 +189,7 @@ export class ConfigurableFormExampleComponent {
                         label: 'Ville',
                         type: 'text',
                         placeholder: 'Votre ville',
-                        required: true,
-                        validation: [Validators.required]
+                        required: true
                     },
                     {
                         id: 'postalCode',
@@ -212,8 +197,7 @@ export class ConfigurableFormExampleComponent {
                         label: 'Code postal',
                         type: 'text',
                         placeholder: '75000',
-                        required: true,
-                        validation: [Validators.required, Validators.pattern(/^\d{5}$/)]
+                        required: true
                     },
                     {
                         id: 'country',
@@ -222,12 +206,9 @@ export class ConfigurableFormExampleComponent {
                         type: 'select',
                         placeholder: 'Sélectionnez votre pays',
                         options: ['France', 'Belgique', 'Suisse', 'Canada', 'Autre'],
-                        required: true,
-                        validation: [Validators.required]
+                        required: true
                     }
-                ],
-                // Group validator: ensure postal code matches country format
-                groupValidators: [this.postalCodeMatchesCountry.bind(this)]
+                ]
             },
             {
                 id: 'preferences',
@@ -243,23 +224,13 @@ export class ConfigurableFormExampleComponent {
                         placeholder: 'Je souhaite recevoir la newsletter',
                         value: false
                     },
-                    {
-                        id: 'notifications',
-                        name: 'notifications',
-                        label: 'Type de notifications',
-                        type: 'radio',
-                        options: ['Email', 'SMS', 'Push', 'Aucune'],
-                        value: 'Email',
-                        required: true,
-                        validation: [Validators.required]
-                    },
+
                     {
                         id: 'contactEmail',
                         name: 'contactEmail',
                         label: 'Email de contact (optionnel)',
                         type: 'email',
-                        placeholder: 'contact@example.com',
-                        validation: [Validators.email]
+                        placeholder: 'contact@example.com'
                     }
                 ],
                 // Group validator: if newsletter is checked, contact email is required
