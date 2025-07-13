@@ -277,7 +277,7 @@ export class ConfigurableFormComponent implements OnInit {
         if (!field.options) return [];
 
         // If custom displayKey or compareKey are provided, return options as-is
-        // (user is handling object structure with custom properties)
+        // PrimeNG will use the displayKey/compareKey for display and comparison
         if (field.displayKey || field.compareKey) {
             return field.options;
         }
@@ -287,11 +287,9 @@ export class ConfigurableFormComponent implements OnInit {
             return field.options;
         }
 
-        // Convert simple array to label/value format for PrimeNG
-        return field.options.map((option) => ({
-            label: option.toString(),
-            value: option
-        }));
+        // For simple arrays or objects without displayKey/compareKey,
+        // return as-is and let PrimeNG handle object comparison
+        return field.options;
     }
 
     // Helper method to get option value based on compareKey or fallback to 'value' property

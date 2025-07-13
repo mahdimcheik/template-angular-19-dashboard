@@ -66,8 +66,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
             this.cursusForm = this.fb.group({
                 name: [cursus.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
                 description: [cursus.description, [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-                level: [cursus.levelId, [Validators.required]],
-                category: [cursus.categoryId, [Validators.required]]
+                level: [this.selectedLevel, [Validators.required]],
+                category: [this.selectedCategory, [Validators.required]]
             });
 
             this.formStructure = {
@@ -82,6 +82,15 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                         description: 'cursus',
                         fields: [
                             {
+                                id: 'description',
+                                name: 'description',
+                                label: 'Description',
+                                type: 'textarea',
+                                placeholder: 'Description du cursus',
+                                value: cursus.description ?? '',
+                                required: true
+                            },
+                            {
                                 id: 'name',
                                 name: 'name',
                                 label: 'Nom',
@@ -92,23 +101,13 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 validation: [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
                             },
                             {
-                                id: 'description',
-                                name: 'description',
-                                label: 'Description',
-                                type: 'textarea',
-                                placeholder: 'Description du cursus',
-                                value: cursus.description ?? '',
-                                required: true
-                            },
-                            {
                                 id: 'level',
                                 name: 'level',
                                 label: 'Niveau',
-                                compareKey: 'id',
-                                displayKey: 'name',
                                 type: 'select',
                                 placeholder: 'Sélectionnez le niveau',
-                                value: cursus.levelId,
+                                value: this.selectedLevel,
+                                displayKey: 'name',
                                 required: true,
                                 options: this.levelsList(),
                                 validation: [Validators.required]
@@ -117,11 +116,10 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 id: 'category',
                                 name: 'category',
                                 label: 'Catégorie',
-                                compareKey: 'id',
-                                displayKey: 'name',
                                 type: 'select',
                                 placeholder: 'Sélectionnez la catégorie',
-                                value: cursus.categoryId,
+                                value: this.selectedCategory,
+                                displayKey: 'name',
                                 required: true,
                                 options: this.categoriesList(),
                                 validation: [Validators.required]
@@ -138,8 +136,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
             this.cursusForm = this.fb.group({
                 name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
                 description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-                level: [this.selectedLevel?.id ?? null, [Validators.required]],
-                category: [this.selectedCategory?.id ?? null, [Validators.required]]
+                level: [this.selectedLevel, [Validators.required]],
+                category: [this.selectedCategory, [Validators.required]]
             });
 
             this.formStructure = {
@@ -176,11 +174,9 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 id: 'level',
                                 name: 'level',
                                 label: 'Niveau',
-                                compareKey: 'id',
-                                displayKey: 'name',
                                 type: 'select',
                                 placeholder: 'Sélectionnez le niveau',
-                                value: this.selectedLevel?.id ?? null,
+                                value: this.selectedLevel,
                                 required: true,
                                 options: this.levelsList(),
                                 validation: [Validators.required]
@@ -189,11 +185,9 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 id: 'category',
                                 name: 'category',
                                 label: 'Catégorie',
-                                compareKey: 'id',
-                                displayKey: 'name',
                                 type: 'select',
                                 placeholder: 'Sélectionnez la catégorie',
-                                value: this.selectedCategory?.id ?? null,
+                                value: this.selectedCategory,
                                 required: true,
                                 options: this.categoriesList(),
                                 validation: [Validators.required]
