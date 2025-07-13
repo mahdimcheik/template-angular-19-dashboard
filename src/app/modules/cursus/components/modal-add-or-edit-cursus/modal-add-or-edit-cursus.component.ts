@@ -158,7 +158,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                         type: 'textarea',
                         placeholder: 'Description du cursus',
                         value: '',
-                        required: true
+                        required: true,
+                        order: 2
                     }
                 ],
                 formFieldGroups: [
@@ -167,6 +168,7 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                         name: 'cursus',
                         label: 'Cours',
                         description: 'cursus',
+                        order: 1,
                         fields: [
                             {
                                 id: 'name',
@@ -189,7 +191,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 value: this.levelsList()[0],
                                 required: true,
                                 options: this.levelsList(),
-                                validation: [Validators.required]
+                                validation: [Validators.required],
+                                order: 3
                             },
                             {
                                 id: 'category',
@@ -201,7 +204,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 value: this.categoriesList()[0],
                                 required: true,
                                 options: this.categoriesList(),
-                                validation: [Validators.required]
+                                validation: [Validators.required],
+                                order: 4
                             },
                             {
                                 id: 'categories',
@@ -213,7 +217,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 value: [],
                                 required: true,
                                 options: this.categoriesList(),
-                                validation: [Validators.required]
+                                validation: [Validators.required],
+                                order: 5
                             }
                         ]
                     }

@@ -14,6 +14,7 @@ export interface FormField<T> {
     options?: T[];
     required?: boolean;
     validation?: ValidatorFn[];
+    order?: number;
 }
 
 export interface FormFieldGroup {
@@ -26,6 +27,7 @@ export interface FormFieldGroup {
     styleClass?: string;
     sectionId?: string;
     groupValidators?: ValidatorFn[];
+    order?: number;
 }
 
 export interface Structure {
@@ -34,10 +36,12 @@ export interface Structure {
     description?: string;
     icon?: string;
     imgUrl?: string;
-    styleClass?: string;
     formFieldGroups?: FormFieldGroup[];
     formFields?: FormField<any>[];
     globalValidators?: ValidatorFn[];
+    styleClass?: string;
+    submitButtonLabel?: string;
+    cancelButtonLabel?: string;
 }
 
 export const errorMessages: { [key: string]: (errValue: any) => string } = {

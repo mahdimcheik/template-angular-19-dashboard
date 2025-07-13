@@ -51,6 +51,31 @@ export class ConfigurableFormComponent implements OnInit {
     // Computed signal to track if form has been touched (now properly reactive)
     isFormTouched = computed(() => this.formTouched());
 
+    // Computed signals for sorted fields and groups
+    sortedFormElements = computed(() => {
+        const structure = this.structure();
+        if (!structure) return [];
+
+        const elements: (FormField<any> | FormFieldGroup)[] = [];
+
+        // Add FormFieldGroups
+        structure.formFieldGroups?.forEach((group) => {
+            elements.push(group);
+        });
+
+        // Add FormFields
+        structure.formFields?.forEach((field) => {
+            elements.push(field);
+        });
+
+        // Sort by order, default to high value if no order specified
+        return [...elements].sort((a, b) => {
+            const orderA = (a as FormField<any> | FormFieldGroup).order ?? 999999;
+            const orderB = (b as FormField<any> | FormFieldGroup).order ?? 999999;
+            return orderA - orderB;
+        });
+    });
+
     constructor() {
         // Use effect to respond to structure changes
         effect(() => {
@@ -372,6 +397,25 @@ export class ConfigurableFormComponent implements OnInit {
         return option.label !== undefined ? option.label : option.toString();
     }
 
+    // Helper method to get sorted fields within a group
+    getSortedFieldsInGroup(group: FormFieldGroup): FormField<any>[] {
+        return [...group.fields].sort((a, b) => {
+            const orderA = a.order ?? 999999;
+            const orderB = b.order ?? 999999;
+            return orderA - orderB;
+        });
+    }
+
+    // Helper method to check if an element is a FormField
+    isFormField(element: FormField<any> | FormFieldGroup): element is FormField<any> {
+        return 'name' in element && 'type' in element;
+    }
+
+    // Helper method to check if an element is a FormFieldGroup
+    isFormFieldGroup(element: FormField<any> | FormFieldGroup): element is FormFieldGroup {
+        return 'fields' in element && Array.isArray((element as FormFieldGroup).fields);
+    }
+
     // Track function for @for loops
     trackByFieldId(index: number, field: FormField<any>): string {
         return field.id;
@@ -379,6 +423,11 @@ export class ConfigurableFormComponent implements OnInit {
 
     trackByGroupId(index: number, group: FormFieldGroup): string {
         return group.id;
+    }
+
+    // Track function for unified elements
+    trackByElementId(index: number, element: FormField<any> | FormFieldGroup): string {
+        return this.isFormField(element) ? element.id : (element as FormFieldGroup).id;
     }
 
     onCancelClick() {
