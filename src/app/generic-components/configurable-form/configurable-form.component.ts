@@ -26,6 +26,7 @@ export class ConfigurableFormComponent implements OnInit {
 
     // Output signal for form submission
     onFormSubmit = output<FormGroup>();
+    onCancel = output<void>();
 
     // Form instance - now contains nested FormGroups
     form = signal<FormGroup>(this.fb.group({}));
@@ -275,6 +276,12 @@ export class ConfigurableFormComponent implements OnInit {
     getSelectOptions(field: FormField<any>): any[] {
         if (!field.options) return [];
 
+        // If custom displayKey or compareKey are provided, return options as-is
+        // (user is handling object structure with custom properties)
+        if (field.displayKey || field.compareKey) {
+            return field.options;
+        }
+
         // If options are already objects with label/value structure, return as-is
         if (field.options.length > 0 && typeof field.options[0] === 'object' && field.options[0].label) {
             return field.options;
@@ -287,6 +294,22 @@ export class ConfigurableFormComponent implements OnInit {
         }));
     }
 
+    // Helper method to get option value based on compareKey or fallback to 'value' property
+    getOptionValue(option: any, field: FormField<any>): any {
+        if (field.compareKey) {
+            return option[field.compareKey];
+        }
+        return option.value !== undefined ? option.value : option;
+    }
+
+    // Helper method to get option label based on displayKey or fallback to 'label' property
+    getOptionLabel(option: any, field: FormField<any>): string {
+        if (field.displayKey) {
+            return option[field.displayKey];
+        }
+        return option.label !== undefined ? option.label : option.toString();
+    }
+
     // Track function for @for loops
     trackByFieldId(index: number, field: FormField<any>): string {
         return field.id;
@@ -296,9 +319,7 @@ export class ConfigurableFormComponent implements OnInit {
         return group.id;
     }
 
-    onCancel() {
-        console.log('onCancel');
-        // Reset form to initial state
-        this.createForm();
+    onCancelClick() {
+        this.onCancel.emit();
     }
 }

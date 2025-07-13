@@ -205,7 +205,15 @@ export class ConfigurableFormExampleComponent {
                         label: 'Pays',
                         type: 'select',
                         placeholder: 'Sélectionnez votre pays',
-                        options: ['France', 'Belgique', 'Suisse', 'Canada', 'Autre'],
+                        options: [
+                            { id: 'fr', name: 'France', code: 'FR' },
+                            { id: 'be', name: 'Belgique', code: 'BE' },
+                            { id: 'ch', name: 'Suisse', code: 'CH' },
+                            { id: 'ca', name: 'Canada', code: 'CA' },
+                            { id: 'other', name: 'Autre', code: 'OTHER' }
+                        ],
+                        displayKey: 'name',
+                        compareKey: 'id',
                         required: true
                     }
                 ]
@@ -231,6 +239,22 @@ export class ConfigurableFormExampleComponent {
                         label: 'Email de contact (optionnel)',
                         type: 'email',
                         placeholder: 'contact@example.com'
+                    },
+                    {
+                        id: 'notificationPreference',
+                        name: 'notificationPreference',
+                        label: 'Préférences de notification',
+                        type: 'radio',
+                        options: [
+                            { id: 'email', title: 'Email uniquement', description: 'Notifications par email' },
+                            { id: 'sms', title: 'SMS uniquement', description: 'Notifications par SMS' },
+                            { id: 'both', title: 'Email et SMS', description: 'Les deux types' },
+                            { id: 'none', title: 'Aucune', description: 'Pas de notifications' }
+                        ],
+                        displayKey: 'title',
+                        compareKey: 'id',
+                        value: 'email',
+                        required: true
                     }
                 ],
                 // Group validator: if newsletter is checked, contact email is required
