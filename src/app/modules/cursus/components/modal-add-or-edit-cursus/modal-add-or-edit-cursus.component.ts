@@ -202,10 +202,6 @@ export class ModalAddOrEditCursusComponent implements OnInit {
         }
     }
 
-    submit1(event: any) {
-        console.log('event', event);
-    }
-
     getFieldError(fieldName: string): string | null {
         const field = this.cursusForm.get(fieldName);
         if (field && field.errors && field.touched) {

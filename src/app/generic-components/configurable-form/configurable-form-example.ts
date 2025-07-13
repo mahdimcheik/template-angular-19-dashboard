@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 
             <!-- Form Component -->
             <div class="test-container">
-                <app-configurable-form [structure]="sampleStructure" #formComponent> </app-configurable-form>
+                <app-configurable-form [structure]="sampleStructure" (onFormSubmit)="handleFormSubmit($event)" #formComponent> </app-configurable-form>
             </div>
 
             <!-- Debug Panel -->
@@ -365,21 +365,21 @@ export class ConfigurableFormExampleComponent {
 
     // Helper methods for debug panel
     getStructuredValues(): any {
-        return 'Form values will be logged to console on submit';
+        return this.lastSubmittedValues()?.structured || {};
     }
 
     getFlattenedValues(): any {
-        return 'Flattened form values will be logged to console on submit';
+        return this.lastSubmittedValues()?.flattened || {};
     }
 
     isFormValid(): boolean {
-        // Form validation is handled internally by the component
-        return true;
+        // This would need access to the component instance
+        return true; // Placeholder
     }
 
     isFormTouched(): boolean {
-        // Form touch state is handled internally by the component
-        return false;
+        // This would need access to the component instance
+        return false; // Placeholder
     }
 
     getSectionStatus(groupId: string): string {
