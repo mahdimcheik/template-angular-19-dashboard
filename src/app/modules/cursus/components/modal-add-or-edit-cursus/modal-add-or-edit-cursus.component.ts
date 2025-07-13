@@ -97,6 +97,29 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 type: 'textarea',
                                 placeholder: 'Description du cursus',
                                 required: true
+                            },
+                            {
+                                id: 'level',
+                                name: 'level',
+                                label: 'Niveau',
+                                compareKey: 'name',
+                                displayKey: 'label',
+                                type: 'select',
+                                placeholder: 'Sélectionnez le niveau',
+                                required: true,
+                                options: this.levelsList(),
+                                validation: [Validators.required]
+                            },
+                            {
+                                id: 'category',
+                                name: 'category',
+                                label: 'Catégorie',
+
+                                type: 'select',
+                                placeholder: 'Sélectionnez la catégorie',
+                                required: true,
+                                options: this.categoriesList(),
+                                validation: [Validators.required]
                             }
                         ]
                     }

@@ -7,6 +7,8 @@ export interface FormField<T> {
     type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea' | 'color';
     placeholder?: string;
     value?: T | T[];
+    compareKey?: string;
+    displayKey?: string;
     disabled?: boolean;
     readonly?: boolean;
     options?: T[];

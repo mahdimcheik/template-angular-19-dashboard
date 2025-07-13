@@ -183,6 +183,7 @@
                                                 [id]="field.id"
                                                 [formControlName]="field.name"
                                                 [options]="getSelectOptions(field)"
+                                                [optionLabel]="field.displayKey || 'label'"
                                                 [placeholder]="field.placeholder || 'Sélectionnez une option'"
                                                 class="w-full configurable-form-input configurable-form-select"
                                                 [class.p-invalid]="isFieldInvalid(group.id, field.name)"
