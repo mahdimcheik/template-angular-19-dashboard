@@ -70,6 +70,9 @@ export const errorMessages: { [key: string]: (errValue: any) => string } = {
     min: (err) => `La valeur minimale autorisée est ${err.min}.`,
     max: (err) => `La valeur maximale autorisée est ${err.max}.`,
     pattern: () => 'Le format de la saisie est incorrect.',
+    weakPassword: () => 'Le mot de passe est trop faible.',
+    passwordDifference: () => 'Les mots de passe ne correspondent pas.',
+    underage: () => "L'âge doit être supérieur à 13 ans.",
 
     // Group-level validation errors
     namesShouldBeDifferent: () => 'Le prénom et le nom doivent être différents.',
