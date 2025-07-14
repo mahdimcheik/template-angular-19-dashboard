@@ -460,32 +460,38 @@
                 }
 
                 <!-- Form Actions -->
-                <div class="sticky bottom-0 px-6 py-4 mt-8 -mx-6 -mb-6 rounded-b-xl configurable-form-actions">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 configurable-form-actions-content">
-                        <!-- Form Status Summary -->
-                        <div class="flex items-center gap-2 configurable-form-status">
-                            @if (isFormValid()) {
-                                <div class="flex items-center gap-2 text-green-600 configurable-form-status-valid">
-                                    <i class="pi pi-check-circle text-lg"></i>
-                                    <span class="text-sm font-medium">Formulaire valide</span>
-                                </div>
-                            } @else {
-                                @if (isFormTouched()) {
-                                    <div class="flex items-center gap-2 text-red-600 configurable-form-status-invalid">
-                                        <i class="pi pi-exclamation-triangle text-lg"></i>
-                                        <span class="text-sm font-medium">Veuillez corriger les erreurs</span>
+                @if (!structureData.hideSubmitButton || !structureData.hideCancelButton) {
+                    <div class="sticky bottom-0 px-6 py-4 mt-8 -mx-6 -mb-6 rounded-b-xl configurable-form-actions">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 configurable-form-actions-content">
+                            <!-- Form Status Summary -->
+                            <div class="flex items-center gap-2 configurable-form-status">
+                                @if (isFormValid()) {
+                                    <div class="flex items-center gap-2 text-green-600 configurable-form-status-valid">
+                                        <i class="pi pi-check-circle text-lg"></i>
+                                        <span class="text-sm font-medium">Formulaire valide</span>
                                     </div>
+                                } @else {
+                                    @if (isFormTouched()) {
+                                        <div class="flex items-center gap-2 text-red-600 configurable-form-status-invalid">
+                                            <i class="pi pi-exclamation-triangle text-lg"></i>
+                                            <span class="text-sm font-medium">Veuillez corriger les erreurs</span>
+                                        </div>
+                                    }
                                 }
-                            }
-                        </div>
+                            </div>
 
-                        <!-- Action Buttons -->
-                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto configurable-form-buttons">
-                            <p-button type="button" label="Annuler" severity="secondary" class="w-full sm:w-auto configurable-form-button configurable-form-button-cancel" (onClick)="onCancelClick()" />
-                            <p-button type="submit" label="Soumettre" [disabled]="!isFormValid()" class="w-full sm:w-auto configurable-form-button configurable-form-button-submit" />
+                            <!-- Action Buttons -->
+                            <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto configurable-form-buttons">
+                                @if (!structureData.hideCancelButton) {
+                                    <p-button type="button" label="Annuler" severity="secondary" class="w-full sm:w-auto configurable-form-button configurable-form-button-cancel" (onClick)="onCancelClick()" />
+                                }
+                                @if (!structureData.hideSubmitButton) {
+                                    <p-button type="submit" label="Soumettre" [disabled]="!isFormValid()" class="w-full sm:w-auto configurable-form-button configurable-form-button-submit" />
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </form>
         </div>
     </div>

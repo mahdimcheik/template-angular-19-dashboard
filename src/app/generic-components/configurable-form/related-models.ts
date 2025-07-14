@@ -57,6 +57,8 @@ export interface Structure {
     styleClass?: string;
     submitButtonLabel?: string;
     cancelButtonLabel?: string;
+    hideSubmitButton?: boolean;
+    hideCancelButton?: boolean;
 }
 
 export const errorMessages: { [key: string]: (errValue: any) => string } = {
