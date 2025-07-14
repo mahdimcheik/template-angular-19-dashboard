@@ -33,6 +33,7 @@ export interface FormFieldGroup {
 export interface Structure {
     id: string;
     name: string;
+    label?: string;
     description?: string;
     icon?: string;
     imgUrl?: string;
