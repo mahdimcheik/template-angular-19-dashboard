@@ -25,7 +25,7 @@ import { ConfigurableFormComponent } from '../../../../generic-components/config
 export class LoginComponent implements OnInit {
     private authService = inject(UserMainService);
     private messageService = inject(MessageService);
-    private router = inject(Router);
+    router = inject(Router);
     badCredentials = false;
     ngOnInit(): void {
         console.log('LoginComponent initialized', (this.authService as any).userConnected());
@@ -40,12 +40,15 @@ export class LoginComponent implements OnInit {
         id: 'login',
         name: 'login',
         label: 'Connexion',
+        hideSubmitButton: true,
+        hideCancelButton: true,
         formFieldGroups: [
             {
                 id: 'login',
                 name: 'login',
                 description: 'Veuillez remplir les champs obligatoires',
                 styleClass: 'min-w-[30rem]',
+
                 fields: [
                     {
                         id: 'email',
@@ -72,9 +75,21 @@ export class LoginComponent implements OnInit {
         ]
     };
 
-    submit() {
+    // Handle form submission from configurable form
+    handleFormSubmit(formGroup: FormGroup) {
+        const formData = formGroup.value;
+        const loginData = {
+            email: formData.login.email,
+            password: formData.login.password
+        };
+
+        this.loginWithData(loginData);
+    }
+
+    // Original submit method (now private)
+    private loginWithData(loginData: UserLoginDTO) {
         (this.authService as any)
-            .login(this.userForm.value as UserLoginDTO)
+            .login(loginData)
             .pipe(
                 catchError((err) => {
                     console.error(err);
@@ -96,5 +111,10 @@ export class LoginComponent implements OnInit {
 
                 this.router.navigate(['/']);
             });
+    }
+
+    // Keep the original submit method for backward compatibility (if needed)
+    submit() {
+        this.loginWithData(this.userForm.value as UserLoginDTO);
     }
 }
