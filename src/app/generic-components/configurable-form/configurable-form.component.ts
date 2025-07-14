@@ -44,8 +44,6 @@ export class ConfigurableFormComponent implements OnInit {
 
     // Computed signal to track form validity (now properly reactive)
     isFormValid = computed(() => {
-        console.log('isFormValid', this.formValid());
-        console.log('form', this.form().value);
         return this.formValid();
     });
 
