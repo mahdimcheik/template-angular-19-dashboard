@@ -4,7 +4,7 @@ import { Directive, ElementRef, Renderer2, Input, OnInit } from '@angular/core';
     selector: '[RequiredAsterisk]'
 })
 export class RequiredAsteriskDirective implements OnInit {
-    @Input() appRequiredAsterisk = ''; // Allows custom text if needed
+    @Input() appRequiredAsterisk = '';
 
     constructor(
         private el: ElementRef,

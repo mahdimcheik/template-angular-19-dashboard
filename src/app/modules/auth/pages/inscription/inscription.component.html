@@ -1,135 +1,132 @@
-<div class="min-h-screen flex flex-wrap justify-center">
-    <div class="w-full lg:w-1/2 p-6 left-side scrollbar-off">
-        <div class="mt-12 flex flex-col items-center">
-            <app-logo />
-            <h1 class="text-2xl xl:text-3xl font-extrabold">Inscription</h1>
+<div class="w-full lg:w-1/2 p-6 left-side scrollbar-off">
+    <div class="mt-12 flex flex-col items-center">
+        <app-logo />
+        <h1 class="text-2xl xl:text-3xl font-extrabold">Inscription</h1>
 
-            <p-fluid class="flex justify-center">
-                <form [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm" class="w-full sm:w-4/5 mt-8 md:w-3/5">
-                    <div class="font-semibold text-xl">Champs obligatoires</div>
+        <p-fluid class="flex justify-center">
+            <form [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm" class="w-full sm:w-4/5 mt-8 md:w-3/5">
+                <div class="font-semibold text-xl">Champs obligatoires</div>
+                <div class="flex flex-col gap-2 w-full mt-2">
+                    <label for="firstname" RequiredAsterisk>Prénom</label>
+                    <input pInputText id="firstname" type="text" formControlName="firstName" />
+                    <div class="error" *ngIf="form.submitted && userForm.controls['firstName'].errors">
+                        <p-message [hidden]="!userForm.controls['firstName'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 w-full mt-2">
+                    <label for="lastname" RequiredAsterisk>Nom</label>
+                    <input pInputText id="lastname" type="text" formControlName="lastName" />
+                    <div class="error" *ngIf="form.submitted && userForm.controls['lastName'].errors">
+                        <p-message [hidden]="!userForm.controls['lastName'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 w-full mt-2">
+                    <label for="email" RequiredAsterisk>Email</label>
+                    <input pInputText type="email" id="email" rows="4" formControlName="email" />
+                    <div class="error" *ngIf="form.submitted && userForm.controls['email'].errors">
+                        <p-message [hidden]="!userForm.controls['email'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                        <p-message [hidden]="!userForm.controls['email'].errors['email']" severity="error" variant="simple" size="small" styleClass="mt-2">Le format n'est pas conforme</p-message>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 w-full mt-2">
+                    <label for="password" RequiredAsterisk>Mot de passe</label>
+                    <input pInputText id="password" type="password" formControlName="password" />
+                    <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
+                        <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe est requis</p-message>
+                        <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 w-full mt-2">
+                    <label for="confirmPassword" RequiredAsterisk>Confirmation</label>
+                    <input pInputText id="confirmPassword" type="password" formControlName="confirmPassword" />
+                    <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
+                        <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">La confirmation du mot de passe est requise</p-message>
+                        <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
+                    </div>
+                    <div class="error" *ngIf="form.submitted && userForm.errors?.['passwordDifference']">
+                        <p-message severity="error" variant="simple" size="small" styleClass="mt-2">Les mots de passe sont différents</p-message>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 w-full mt-2">
+                    <label for="zip" RequiredAsterisk>Date de naissance (jj/mm/aaaa)</label>
+                    <p-datepicker [showIcon]="true" [showButtonBar]="true" class="w-full" styleClass="w-full" formControlName="dateOfBirth"></p-datepicker>
+                    <div class="error" *ngIf="form.submitted && userForm.controls['dateOfBirth'].errors">
+                        <p-message [hidden]="!userForm.controls['dateOfBirth'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                        <p-message [hidden]="!userForm.controls['dateOfBirth'].errors['underage']" severity="error" variant="simple" size="small" styleClass="mt-2">{{ userForm.controls['dateOfBirth'].errors['underage'] }}</p-message>
+                    </div>
+                </div>
+                <div class="font-semibold text-xl mt-4 mb-2">Champs optionnels</div>
+                <p-panel #panel [header]="panel.collapsed ? 'Ouvrir' : 'Cacher'" [toggleable]="true" [collapsed]="true">
                     <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="firstname" RequiredAsterisk>Prénom</label>
-                        <input pInputText id="firstname" type="text" formControlName="firstName" />
-                        <div class="error" *ngIf="form.submitted && userForm.controls['firstName'].errors">
-                            <p-message [hidden]="!userForm.controls['firstName'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
-                        </div>
+                        <label for="phoneNumber">Téléphone</label>
+                        <input pInputText id="phoneNumber" type="text" formControlName="phoneNumber" />
                     </div>
                     <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="lastname" RequiredAsterisk>Nom</label>
-                        <input pInputText id="lastname" type="text" formControlName="lastName" />
-                        <div class="error" *ngIf="form.submitted && userForm.controls['lastName'].errors">
-                            <p-message [hidden]="!userForm.controls['lastName'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
-                        </div>
+                        <label for="title">Titre</label>
+                        <input pInputText id="title" type="text" formControlName="title" />
+                    </div>
+
+                    <div class="flex flex-col gap-2 w-full mt-2">
+                        <label for="description">Description</label>
+                        <textarea pTextarea id="description" rows="4" formControlName="password"></textarea>
                     </div>
                     <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="email" RequiredAsterisk>Email</label>
-                        <input pInputText type="email" id="email" rows="4" formControlName="email" />
-                        <div class="error" *ngIf="form.submitted && userForm.controls['email'].errors">
-                            <p-message [hidden]="!userForm.controls['email'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
-                            <p-message [hidden]="!userForm.controls['email'].errors['email']" severity="error" variant="simple" size="small" styleClass="mt-2">Le format n'est pas conforme</p-message>
-                        </div>
+                        <label for="state" RequiredAsterisk>Genre</label>
+                        <p-select id="state" formControlName="gender" [options]="typesGenderList" optionLabel="name" placeholder="Select One" class="w-full" styleClass="w-full"></p-select>
                     </div>
-                    <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="password" RequiredAsterisk>Mot de passe</label>
-                        <input pInputText id="password" type="password" formControlName="password" />
-                        <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
-                            <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe est requis</p-message>
-                            <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="confirmPassword" RequiredAsterisk>Confirmation</label>
-                        <input pInputText id="confirmPassword" type="password" formControlName="confirmPassword" />
-                        <div class="error" *ngIf="form.submitted && userForm.controls['password'].errors">
-                            <p-message [hidden]="!userForm.controls['password'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">La confirmation du mot de passe est requise</p-message>
-                            <p-message [hidden]="!userForm.controls['password'].errors['minlength']" severity="error" variant="simple" size="small" styleClass="mt-2">Le mot de passe doit avoir au moins 8 caractères</p-message>
-                        </div>
-                        <div class="error" *ngIf="form.submitted && userForm.errors?.['passwordDifference']">
-                            <p-message severity="error" variant="simple" size="small" styleClass="mt-2">Les mots de passe sont différents</p-message>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2 w-full mt-2">
-                        <label for="zip" RequiredAsterisk>Date de naissance (jj/mm/aaaa)</label>
-                        <p-datepicker [showIcon]="true" [showButtonBar]="true" class="w-full" styleClass="w-full" formControlName="dateOfBirth"></p-datepicker>
-                        <div class="error" *ngIf="form.submitted && userForm.controls['dateOfBirth'].errors">
-                            <p-message [hidden]="!userForm.controls['dateOfBirth'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
-                            <p-message [hidden]="!userForm.controls['dateOfBirth'].errors['underage']" severity="error" variant="simple" size="small" styleClass="mt-2">{{ userForm.controls['dateOfBirth'].errors['underage'] }}</p-message>
-                        </div>
-                    </div>
-                    <div class="font-semibold text-xl mt-4 mb-2">Champs optionnels</div>
-                    <p-panel #panel [header]="panel.collapsed ? 'Ouvrir' : 'Cacher'" [toggleable]="true" [collapsed]="true">
-                        <div class="flex flex-col gap-2 w-full mt-2">
-                            <label for="phoneNumber">Téléphone</label>
-                            <input pInputText id="phoneNumber" type="text" formControlName="phoneNumber" />
-                        </div>
-                        <div class="flex flex-col gap-2 w-full mt-2">
-                            <label for="title">Titre</label>
-                            <input pInputText id="title" type="text" formControlName="title" />
-                        </div>
+                </p-panel>
 
-                        <div class="flex flex-col gap-2 w-full mt-2">
-                            <label for="description">Description</label>
-                            <textarea pTextarea id="description" rows="4" formControlName="password"></textarea>
-                        </div>
-                        <div class="flex flex-col gap-2 w-full mt-2">
-                            <label for="state" RequiredAsterisk>Genre</label>
-                            <p-select id="state" formControlName="gender" [options]="typesGenderList" optionLabel="name" placeholder="Select One" class="w-full" styleClass="w-full"></p-select>
-                        </div>
-                    </p-panel>
+                <!-- GDPR Consent Section -->
+                <div class="mt-6 p-4 border border-surface-200 dark:border-surface-600 rounded-lg bg-surface-50 dark:bg-surface-800">
+                    <h3 class="font-semibold text-lg mb-4 text-surface-900 dark:text-surface-0">
+                        <i class="pi pi-shield text-primary-500 mr-2"></i>
+                        Consentements et confidentialité
+                    </h3>
 
-                    <!-- GDPR Consent Section -->
-                    <div class="mt-6 p-4 border border-surface-200 dark:border-surface-600 rounded-lg bg-surface-50 dark:bg-surface-800">
-                        <h3 class="font-semibold text-lg mb-4 text-surface-900 dark:text-surface-0">
-                            <i class="pi pi-shield text-primary-500 mr-2"></i>
-                            Consentements et confidentialité
-                        </h3>
-
-                        <!-- Privacy Policy Consent (Required) -->
-                        <div class="flex items-start gap-3 mb-4">
-                            <p-checkbox [binary]="true" formControlName="privacyPolicyConsent" inputId="privacyPolicyConsent"></p-checkbox>
-                            <label for="privacyPolicyConsent" class="text-sm text-surface-700 dark:text-surface-200 leading-relaxed cursor-pointer">
-                                <span class="text-red-500">*</span> J'ai lu et j'accepte la
-                                <a routerLink="/mentions-legales" target="_blank" class="text-primary-500 hover:text-primary-600 underline"> politique de confidentialité </a>
-                                et les
-                                <a routerLink="/mentions-legales" target="_blank" class="text-primary-500 hover:text-primary-600 underline"> conditions d'utilisation </a>
-                            </label>
-                        </div>
-
-                        <!-- Data Processing Consent (Required) -->
-                        <div class="flex items-start gap-3 mb-4">
-                            <p-checkbox [binary]="true" formControlName="dataProcessingConsent" inputId="dataProcessingConsent"> </p-checkbox>
-                            <label for="dataProcessingConsent" class="text-sm text-surface-700 dark:text-surface-200 leading-relaxed cursor-pointer">
-                                <span class="text-red-500">*</span> J'accepte que mes données personnelles soient traitées conformément au RGPD pour la création et la gestion de mon compte, ainsi que pour la fourniture des services de la plateforme.
-                            </label>
-                        </div>
-
-                        <!-- Consent Validation Errors -->
-                        <div class="error" *ngIf="form.submitted && (userForm.controls['privacyPolicyConsent'].errors || userForm.controls['dataProcessingConsent'].errors)">
-                            <p-message [hidden]="!userForm.controls['privacyPolicyConsent'].errors?.['required']" severity="error" variant="simple" size="small" styleClass="mt-2">
-                                Vous devez accepter la politique de confidentialité pour créer un compte
-                            </p-message>
-                            <p-message [hidden]="!userForm.controls['dataProcessingConsent'].errors?.['required']" severity="error" variant="simple" size="small" styleClass="mt-2">
-                                Vous devez consentir au traitement de vos données personnelles
-                            </p-message>
-                        </div>
-
-                        <div class="text-xs text-surface-500 dark:text-surface-400 mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded border-l-4 border-blue-400">
-                            <i class="pi pi-info-circle mr-2"></i>
-                            <strong>Vos droits RGPD :</strong> Vous avez le droit d'accéder, rectifier, supprimer vos données, de limiter leur traitement, de vous opposer au traitement et de demander la portabilité de vos données. Contactez-nous pour
-                            exercer ces droits.
-                        </div>
+                    <!-- Privacy Policy Consent (Required) -->
+                    <div class="flex items-start gap-3 mb-4">
+                        <p-checkbox [binary]="true" formControlName="privacyPolicyConsent" inputId="privacyPolicyConsent"></p-checkbox>
+                        <label for="privacyPolicyConsent" class="text-sm text-surface-700 dark:text-surface-200 leading-relaxed cursor-pointer">
+                            <span class="text-red-500">*</span> J'ai lu et j'accepte la
+                            <a routerLink="/mentions-legales" target="_blank" class="text-primary-500 hover:text-primary-600 underline"> politique de confidentialité </a>
+                            et les
+                            <a routerLink="/mentions-legales" target="_blank" class="text-primary-500 hover:text-primary-600 underline"> conditions d'utilisation </a>
+                        </label>
                     </div>
 
-                    <p-message [text]="errorMessage" severity="error" styleClass="mb-4 mt-4" *ngIf="errorRegistration"></p-message>
-
-                    <div class="col-span-12 mt-8 text-center">
-                        <p-button label="Inscription" type="submit" [loading]="isLoading" />
+                    <!-- Data Processing Consent (Required) -->
+                    <div class="flex items-start gap-3 mb-4">
+                        <p-checkbox [binary]="true" formControlName="dataProcessingConsent" inputId="dataProcessingConsent"> </p-checkbox>
+                        <label for="dataProcessingConsent" class="text-sm text-surface-700 dark:text-surface-200 leading-relaxed cursor-pointer">
+                            <span class="text-red-500">*</span> J'accepte que mes données personnelles soient traitées conformément au RGPD pour la création et la gestion de mon compte, ainsi que pour la fourniture des services de la plateforme.
+                        </label>
                     </div>
-                </form>
-            </p-fluid>
-        </div>
-    </div>
-    <div class="w-full lg:w-1/2 bg-indigo-100 text-center hidden lg:flex max-h-screen image-right">
-        <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat" style="background-image: url('https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg')"></div>
+
+                    <!-- Consent Validation Errors -->
+                    <div class="error" *ngIf="form.submitted && (userForm.controls['privacyPolicyConsent'].errors || userForm.controls['dataProcessingConsent'].errors)">
+                        <p-message [hidden]="!userForm.controls['privacyPolicyConsent'].errors?.['required']" severity="error" variant="simple" size="small" styleClass="mt-2">
+                            Vous devez accepter la politique de confidentialité pour créer un compte
+                        </p-message>
+                        <p-message [hidden]="!userForm.controls['dataProcessingConsent'].errors?.['required']" severity="error" variant="simple" size="small" styleClass="mt-2">
+                            Vous devez consentir au traitement de vos données personnelles
+                        </p-message>
+                    </div>
+
+                    <div class="text-xs text-surface-500 dark:text-surface-400 mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded border-l-4 border-blue-400">
+                        <i class="pi pi-info-circle mr-2"></i>
+                        <strong>Vos droits RGPD :</strong> Vous avez le droit d'accéder, rectifier, supprimer vos données, de limiter leur traitement, de vous opposer au traitement et de demander la portabilité de vos données. Contactez-nous pour
+                        exercer ces droits.
+                    </div>
+                </div>
+
+                <p-message [text]="errorMessage" severity="error" styleClass="mb-4 mt-4" *ngIf="errorRegistration"></p-message>
+
+                <div class="flex justify-center w-full gap-2 mt-4">
+                    <p-button outlined label="Accueil" type="button" [loading]="isLoading" (onClick)="router.navigate(['/'])"></p-button>
+
+                    <p-button label="Inscription" type="submit" [loading]="isLoading" />
+                </div>
+            </form>
+        </p-fluid>
     </div>
 </div>
