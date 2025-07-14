@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, model, OnInit, output, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
 import { DialogModule } from 'primeng/dialog';
@@ -37,7 +37,6 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
     selectedLevel!: Level;
     selectedCategory!: Category;
-    title!: string;
     isLoading = signal(false);
     formStructure!: Structure;
 
@@ -45,8 +44,6 @@ export class ModalAddOrEditCursusComponent implements OnInit {
     cursusService = inject(CursusMainService);
     layoutService = inject(LayoutService);
     fb = inject(FormBuilder);
-
-    cursusForm!: FormGroup;
 
     levelsList = computed(() => this.cursusService.levels());
 
@@ -56,21 +53,12 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
     ngOnInit(): void {
         this.isLoading.set(true);
-        // this.getLevelsAndCategories();
 
         if (this.updateOrAdd() === 'update' && this.cursusToChange()) {
-            this.title = 'Modifier le cursus';
             const cursus = this.cursusToChange()!;
 
             this.selectedLevel = this.levelsList().find((x) => x.id === cursus.levelId) ?? this.levelsList()[0];
             this.selectedCategory = this.categoriesList().find((x) => x.id === cursus.categoryId) ?? this.categoriesList()[0];
-
-            this.cursusForm = this.fb.group({
-                name: [cursus.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-                description: [cursus.description, [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-                level: [this.selectedLevel, [Validators.required]],
-                category: [this.selectedCategory, [Validators.required]]
-            });
 
             this.formStructure = {
                 id: 'cursus',
@@ -133,16 +121,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                 ]
             };
         } else {
-            this.title = 'Ajouter un nouveau cursus';
             this.selectedLevel = this.levelsList()[0];
             this.selectedCategory = this.categoriesList()[0];
-
-            this.cursusForm = this.fb.group({
-                name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-                description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-                level: [this.selectedLevel, [Validators.required]],
-                category: [this.selectedCategory, [Validators.required]]
-            });
 
             this.formStructure = {
                 id: 'cursus',
@@ -150,18 +130,7 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                 description: 'Ajouter un nouveau cours',
                 icon: 'pi pi-book',
                 imgUrl: this.imgUrl(),
-                formFields: [
-                    {
-                        id: 'description',
-                        name: 'description',
-                        label: 'Description',
-                        type: 'textarea',
-                        placeholder: 'Description du cursus',
-                        value: '',
-                        required: true,
-                        order: 2
-                    }
-                ],
+
                 formFieldGroups: [
                     {
                         id: 'cursus',
@@ -178,7 +147,18 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 placeholder: 'Nom du cursus',
                                 value: '',
                                 required: true,
+                                order: 1,
                                 validation: [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
+                            },
+                            {
+                                id: 'description',
+                                name: 'description',
+                                label: 'Description',
+                                type: 'textarea',
+                                placeholder: 'Description du cursus',
+                                value: '',
+                                required: true,
+                                order: 2
                             },
 
                             {
@@ -206,19 +186,6 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 options: this.categoriesList(),
                                 validation: [Validators.required],
                                 order: 4
-                            },
-                            {
-                                id: 'categories',
-                                name: 'categories',
-                                label: 'Catégories',
-                                type: 'multiselect',
-                                displayKey: 'name',
-                                placeholder: 'Sélectionnez la catégorie',
-                                value: [],
-                                required: true,
-                                options: this.categoriesList(),
-                                validation: [Validators.required],
-                                order: 5
                             }
                         ]
                     }
@@ -227,33 +194,24 @@ export class ModalAddOrEditCursusComponent implements OnInit {
         }
     }
 
-    // async getLevelsAndCategories() {
-    //     await firstValueFrom(this.cursusService.getCursusLevels());
-    //     await firstValueFrom(this.cursusService.getCursusCategories());
-    //     this.cursusForm.patchValue({
-    //         level: this.selectedLevel,
-    //         category: this.selectedCategory
-    //     });
-    //     this.isLoading.set(false);
-    // }
-
     close() {
         this.visibleRight.set(false);
         this.onClose.emit(false);
     }
 
-    async submit() {
-        if (this.cursusForm.valid) {
+    async submit(event: FormGroup<any>) {
+        const formValue = event.value;
+        if (event.valid) {
             try {
                 this.visibleRight.set(false);
 
                 if (this.updateOrAdd() === 'update' && this.cursusToChange()) {
                     const updateData: UpdateCursusDto = {
                         id: this.cursusToChange()?.id ?? '',
-                        name: this.cursusForm.value.name,
-                        description: this.cursusForm.value.description,
-                        levelId: this.cursusForm.value.level.id,
-                        categoryId: this.cursusForm.value.category.id
+                        name: formValue.cursus.name,
+                        description: formValue.cursus.description,
+                        levelId: formValue.cursus.level.id,
+                        categoryId: formValue.cursus.category.id
                     };
 
                     await firstValueFrom(this.cursusService.updateCursus(updateData));
@@ -264,14 +222,13 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                         life: 3000
                     });
                 } else {
+                    console.log('formValue', formValue);
                     const createData: CreateCursusDto = {
-                        name: this.cursusForm.value.name,
-                        description: this.cursusForm.value.description,
-                        levelId: this.cursusForm.value.level.id,
-                        categoryId: this.cursusForm.value.category.id
+                        name: formValue.cursus.name,
+                        description: formValue.cursus.description,
+                        levelId: formValue.cursus.level.id,
+                        categoryId: formValue.cursus.category.id
                     };
-
-                    console.log('createData', createData);
 
                     await firstValueFrom(this.cursusService.addCursus(createData));
                     this.messageService.add({
@@ -281,8 +238,6 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                         life: 3000
                     });
                 }
-
-                // this.actionEmitter.emit();
             } catch (error) {
                 console.log('error', error);
                 this.messageService.add({
@@ -293,21 +248,5 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                 });
             }
         }
-    }
-
-    getFieldError(fieldName: string): string | null {
-        const field = this.cursusForm.get(fieldName);
-        if (field && field.errors && field.touched) {
-            if (field.errors['required']) {
-                return 'Ce champ est requis';
-            }
-            if (field.errors['minlength']) {
-                return `Minimum ${field.errors['minlength'].requiredLength} caractères`;
-            }
-            if (field.errors['maxlength']) {
-                return `Maximum ${field.errors['maxlength'].requiredLength} caractères`;
-            }
-        }
-        return null;
     }
 }

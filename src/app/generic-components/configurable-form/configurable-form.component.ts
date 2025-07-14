@@ -196,12 +196,15 @@ export class ConfigurableFormComponent implements OnInit {
         const formInstance = this.form();
         if (formInstance.valid) {
             this.onFormSubmit.emit(formInstance);
+            console.log('onSubmit valid');
         } else {
             formInstance.markAllAsTouched();
             this.form.set(formInstance); // Trigger change detection
             // Update reactive signals
             this.formValid.set(formInstance.valid);
             this.formTouched.set(formInstance.touched);
+            console.log('onSubmit invalid');
+            this.onCancel.emit();
         }
     }
 

@@ -1,14 +1,14 @@
 @if (structure(); as structureData) {
-    <div class="w-full max-w-6xl mx-auto overflow-hidden configurable-form-container" [class]="structureData.styleClass || ''">
+    <div class="w-full max-w-6xl mx-auto overflow-hidden scrollbar-off configurable-form-container" [class]="structureData.styleClass || ''">
         <!-- Form Header -->
-        <div class="px-6 py-8 configurable-form-header">
-            <div class="flex flex-col items-center gap-2 configurable-form-header-content">
+        <div class="px-6 py-8 pb-2 configurable-form-header">
+            <div class="flex flex-col items-center configurable-form-header-content">
                 @if (structureData.imgUrl) {
                     <img [src]="structureData.imgUrl" alt="Form Icon" class="w-[350px] h-auto rounded-full" />
                 }
                 <h2 class="text-2xl sm:text-3xl font-bold configurable-form-title self-center">{{ structureData.name }}</h2>
                 @if (structureData.description) {
-                    <p class="mt-4 text-4xl leading-relaxed configurable-form-description">{{ structureData.description }}</p>
+                    <p class="text-3xl leading-relaxed configurable-form-description">{{ structureData.description }}</p>
                 }
             </div>
         </div>
