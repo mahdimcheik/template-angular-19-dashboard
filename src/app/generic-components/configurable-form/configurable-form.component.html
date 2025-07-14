@@ -155,10 +155,32 @@
                                         </div>
                                     }
 
+                                    @if (element.type === 'file') {
+                                        <app-custom-upload-file
+                                            [id]="element.id"
+                                            [name]="element.name"
+                                            [formControlName]="element.name"
+                                            [accept]="element.accept || '*'"
+                                            [multiple]="element.multiple || false"
+                                            [maxFileSize]="element.maxFileSize || 1000000"
+                                            [chooseLabel]="element.chooseLabel || 'Choisir'"
+                                            [uploadLabel]="element.uploadLabel || 'Téléverser'"
+                                            [cancelLabel]="element.cancelLabel || 'Annuler'"
+                                            [emptyMessage]="element.emptyMessage || 'Sélectionnez et glissez vos fichiers ici'"
+                                            [mode]="element.mode || 'advanced'"
+                                            [url]="element.url || ''"
+                                            [showUploadButton]="element.showUploadButton !== false"
+                                            [showCancelButton]="element.showCancelButton !== false"
+                                            [auto]="element.auto || false"
+                                            [invalid]="isDirectFieldInvalid(element.name)"
+                                            class="configurable-form-input configurable-form-file-input"
+                                        />
+                                    }
+
                                     <!-- Field Status Icon -->
                                     @if (isFormTouched()) {
                                         <div class="absolute right-3 top-3 configurable-form-field-status">
-                                            @if (!isDirectFieldInvalid(element.name) && element.type !== 'checkbox' && element.type !== 'radio') {
+                                            @if (!isDirectFieldInvalid(element.name) && element.type !== 'checkbox' && element.type !== 'radio' && element.type !== 'file') {
                                                 <i class="pi pi-check-circle text-green-500 text-sm configurable-form-field-status-valid"></i>
                                             }
                                             @if (isDirectFieldInvalid(element.name)) {
@@ -387,10 +409,33 @@
                                                 </div>
                                             }
 
+                                            <!-- File Upload -->
+                                            @if (field.type === 'file') {
+                                                <app-custom-upload-file
+                                                    [id]="field.id"
+                                                    [name]="field.name"
+                                                    [formControlName]="field.name"
+                                                    [accept]="field.accept || '*'"
+                                                    [multiple]="field.multiple || false"
+                                                    [maxFileSize]="field.maxFileSize || 1000000"
+                                                    [chooseLabel]="field.chooseLabel || 'Choisir'"
+                                                    [uploadLabel]="field.uploadLabel || 'Téléverser'"
+                                                    [cancelLabel]="field.cancelLabel || 'Annuler'"
+                                                    [emptyMessage]="field.emptyMessage || 'Sélectionnez et glissez vos fichiers ici'"
+                                                    [mode]="field.mode || 'advanced'"
+                                                    [url]="field.url || ''"
+                                                    [showUploadButton]="field.showUploadButton !== false"
+                                                    [showCancelButton]="field.showCancelButton !== false"
+                                                    [auto]="field.auto || false"
+                                                    [invalid]="isFieldInvalid(element.id, field.name)"
+                                                    class="configurable-form-input configurable-form-file-input"
+                                                />
+                                            }
+
                                             <!-- Field Status Icon -->
                                             @if (isGroupTouched(element.id)) {
                                                 <div class="absolute right-3 top-3 configurable-form-field-status">
-                                                    @if (!isFieldInvalid(element.id, field.name) && field.type !== 'checkbox' && field.type !== 'radio') {
+                                                    @if (!isFieldInvalid(element.id, field.name) && field.type !== 'checkbox' && field.type !== 'radio' && field.type !== 'file') {
                                                         <i class="pi pi-check-circle text-green-500 text-sm configurable-form-field-status-valid"></i>
                                                     }
                                                     @if (isFieldInvalid(element.id, field.name)) {

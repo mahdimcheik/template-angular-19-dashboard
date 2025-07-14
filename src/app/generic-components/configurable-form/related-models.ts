@@ -4,7 +4,7 @@ export interface FormField<T> {
     id: string;
     label: string;
     name: string;
-    type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea' | 'color' | 'multiselect';
+    type: 'text' | 'number' | 'email' | 'password' | 'date' | 'checkbox' | 'radio' | 'select' | 'textarea' | 'color' | 'multiselect' | 'file';
     placeholder?: string;
     value?: T | T[];
     compareKey?: string;
@@ -15,6 +15,20 @@ export interface FormField<T> {
     required?: boolean;
     validation?: ValidatorFn[];
     order?: number;
+
+    // File upload specific properties
+    accept?: string;
+    multiple?: boolean;
+    maxFileSize?: number;
+    chooseLabel?: string;
+    uploadLabel?: string;
+    cancelLabel?: string;
+    emptyMessage?: string;
+    mode?: 'basic' | 'advanced';
+    url?: string;
+    showUploadButton?: boolean;
+    showCancelButton?: boolean;
+    auto?: boolean;
 }
 
 export interface FormFieldGroup {

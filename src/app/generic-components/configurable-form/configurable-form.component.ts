@@ -12,11 +12,12 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { CustomUploadFileComponent } from '../custom-upload-file/custom-upload-file.component';
 @Component({
     selector: 'app-configurable-form',
     styleUrls: ['./configurable-form.component.scss'],
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule, InputTextModule, InputNumberModule, TextareaModule, SelectModule, MultiSelectModule, CheckboxModule, RadioButtonModule, DatePickerModule, ColorPickerModule, ButtonModule],
+    imports: [ReactiveFormsModule, CustomUploadFileComponent, CommonModule, InputTextModule, InputNumberModule, TextareaModule, SelectModule, MultiSelectModule, CheckboxModule, RadioButtonModule, DatePickerModule, ColorPickerModule, ButtonModule],
     templateUrl: './configurable-form.component.html',
     changeDetection: ChangeDetectionStrategy.Default
 })
@@ -187,6 +188,8 @@ export class ConfigurableFormComponent implements OnInit {
                 return 0;
             case 'date':
                 return '';
+            case 'file':
+                return null;
             default:
                 return '';
         }

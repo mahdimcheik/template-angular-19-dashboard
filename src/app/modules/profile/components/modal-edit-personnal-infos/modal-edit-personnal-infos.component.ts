@@ -15,10 +15,12 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { LayoutService } from '../../../../layout/service/layout.service';
+import { Structure } from '../../../../generic-components/configurable-form/related-models';
+import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
 
 @Component({
     selector: 'app-modal-edit-personnal-infos',
-    imports: [CommonModule, ButtonModule, DrawerModule, MessageModule, TextareaModule, InputTextModule, SelectModule, FluidModule, FormsModule, ReactiveFormsModule, FileUploadModule],
+    imports: [CommonModule, ButtonModule, DrawerModule, MessageModule, TextareaModule, InputTextModule, SelectModule, FluidModule, FormsModule, ReactiveFormsModule, FileUploadModule, ConfigurableFormComponent],
 
     templateUrl: './modal-edit-personnal-infos.component.html',
     styleUrl: './modal-edit-personnal-infos.component.scss'
@@ -40,28 +42,106 @@ export class ModalEditPersonnalInfosComponent {
     fb = inject(FormBuilder);
     messageService = inject(MessageService);
 
-    typesGenderList: GenderDropDown[] = [
-        {
-            id: '0',
-            name: 'Homme',
-            value: EnumGender.Homme
-        },
-        {
-            id: '1',
-            name: 'Femme',
-            value: EnumGender.Femme
-        },
-        {
-            id: '2',
-            name: 'Non-binaire',
-            value: EnumGender.NonBinaire
-        },
-        {
-            id: '3',
-            name: 'Autre',
-            value: EnumGender.Autre
-        }
-    ];
+    typesGenderList: GenderDropDown[] = this.authService.typesGenderList;
+
+    personnalInfosFormStructure: Structure = {
+        id: 'personnalInfos',
+        name: 'personnalInfos',
+        label: 'Informations personnelles',
+        description: 'Informations personnelles',
+        formFieldGroups: [
+            {
+                id: 'personnalInfos',
+                name: 'personnalInfos',
+                label: 'Informations personnelles',
+                description: 'Informations personnelles',
+                fields: [
+                    {
+                        id: 'firstName',
+                        name: 'firstName',
+                        label: 'Prénom',
+                        type: 'text',
+                        placeholder: 'Prénom',
+                        required: true,
+                        order: 1
+                    },
+                    {
+                        id: 'lastName',
+                        name: 'lastName',
+                        label: 'Nom',
+                        type: 'text',
+                        placeholder: 'Nom',
+                        required: true
+                    },
+                    {
+                        id: 'dateOfBirth',
+                        name: 'dateOfBirth',
+                        label: 'Date de naissance',
+                        type: 'date',
+                        placeholder: 'Date de naissance',
+                        required: true,
+                        order: 3
+                    },
+                    {
+                        id: 'gender',
+                        name: 'gender',
+                        label: 'Genre',
+                        type: 'select',
+                        placeholder: 'Genre',
+                        required: true,
+                        order: 4,
+                        options: this.typesGenderList,
+                        displayKey: 'name',
+                        value: this.selectedGender
+                    },
+                    {
+                        id: 'title',
+                        name: 'title',
+                        label: 'Titre',
+                        type: 'text',
+                        placeholder: 'Titre',
+                        required: true,
+                        order: 5
+                    },
+                    {
+                        id: 'description',
+                        name: 'description',
+                        label: 'Description',
+                        type: 'textarea',
+                        placeholder: 'Description',
+                        required: true,
+                        order: 6
+                    }
+                ]
+            },
+            {
+                id: 'socialMedia',
+                name: 'socialMedia',
+                label: 'Réseaux sociaux',
+                description: 'Réseaux sociaux',
+                fields: [
+                    {
+                        id: 'linkedinUrl',
+                        name: 'linkedinUrl',
+                        label: 'LinkedIn',
+                        type: 'text',
+                        placeholder: 'LinkedIn',
+                        required: true,
+                        order: 1
+                    },
+                    {
+                        id: 'githubUrl',
+                        name: 'githubUrl',
+                        label: 'GitHub',
+                        type: 'text',
+                        placeholder: 'GitHub',
+                        required: true,
+                        order: 2
+                    }
+                ]
+            }
+        ]
+    };
 
     userForm!: FormGroup;
 

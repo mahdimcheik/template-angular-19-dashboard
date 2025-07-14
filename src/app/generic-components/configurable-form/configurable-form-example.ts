@@ -28,6 +28,7 @@ import { CommonModule } from '@angular/common';
                 <button (click)="switchToBasicExample()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Basic Example</button>
                 <button (click)="switchToAdvancedExample()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Advanced Example</button>
                 <button (click)="switchToUnifiedOrderingExample()" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Unified Ordering Demo</button>
+                <button (click)="switchToFileUploadExample()" class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700">File Upload Example</button>
             </div>
 
             <!-- Current Example Info -->
@@ -232,6 +233,23 @@ export class ConfigurableFormExampleComponent {
                 type: 'color',
                 value: '#3B82F6',
                 order: 9
+            },
+            {
+                id: 'portfolio-file',
+                name: 'portfolio',
+                label: 'Portfolio File',
+                type: 'file',
+                placeholder: 'Upload your portfolio',
+                required: false,
+                accept: '.pdf,.doc,.docx,.zip',
+                maxFileSize: 10000000, // 10MB
+                multiple: false,
+                mode: 'advanced',
+                chooseLabel: 'Choose Portfolio',
+                uploadLabel: 'Upload',
+                cancelLabel: 'Cancel',
+                emptyMessage: 'Drag and drop your portfolio file here',
+                order: 10
             }
         ],
         formFieldGroups: [
@@ -356,6 +374,23 @@ export class ConfigurableFormExampleComponent {
                         type: 'text',
                         placeholder: 'https://linkedin.com/in/johndoe',
                         order: 3
+                    },
+                    {
+                        id: 'business-card',
+                        name: 'businessCard',
+                        label: 'Business Card',
+                        type: 'file',
+                        placeholder: 'Upload your business card',
+                        required: false,
+                        accept: 'image/*,.pdf',
+                        maxFileSize: 2000000, // 2MB
+                        multiple: false,
+                        mode: 'advanced',
+                        chooseLabel: 'Choose File',
+                        uploadLabel: 'Upload',
+                        cancelLabel: 'Cancel',
+                        emptyMessage: 'Drag and drop your business card here',
+                        order: 4
                     }
                 ]
             }
@@ -648,6 +683,50 @@ export class ConfigurableFormExampleComponent {
         globalValidators: [this.validateDateRange.bind(this)]
     };
 
+    // File Upload Example
+    fileUploadExample: Structure = {
+        id: 'file-upload-example',
+        name: 'File Upload Example',
+        label: 'File Upload Example',
+        description: 'Demonstration of file upload functionality',
+        formFields: [
+            {
+                id: 'single-file-upload',
+                name: 'profilePicture',
+                label: 'Profile Picture',
+                type: 'file',
+                placeholder: 'Select your profile picture',
+                required: true,
+                accept: 'image/*',
+                maxFileSize: 5000000, // 5MB
+                multiple: false,
+                mode: 'advanced',
+                chooseLabel: 'Choose Image',
+                uploadLabel: 'Upload',
+                cancelLabel: 'Cancel',
+                emptyMessage: 'Drag and drop your profile picture here',
+                order: 1
+            },
+            {
+                id: 'multiple-files-upload',
+                name: 'documents',
+                label: 'Documents',
+                type: 'file',
+                placeholder: 'Select multiple documents',
+                required: false,
+                accept: '.pdf,.doc,.docx,.txt',
+                maxFileSize: 10000000, // 10MB
+                multiple: true,
+                mode: 'advanced',
+                chooseLabel: 'Choose Files',
+                uploadLabel: 'Upload All',
+                cancelLabel: 'Cancel',
+                emptyMessage: 'Drag and drop your documents here',
+                order: 2
+            }
+        ]
+    };
+
     // Custom Validators
     validateProfile(control: AbstractControl): ValidationErrors | null {
         const values = control.value;
@@ -699,6 +778,13 @@ export class ConfigurableFormExampleComponent {
         this.currentStructure.set(this.unifiedOrderingStructure);
         this.currentExampleName.set('Unified Ordering Demo');
         this.currentExampleDescription.set('Demonstrates fields and groups mixed together with unified ordering - notice how elements appear in order: Field(1) → Group(2) → Field(3) → Group(4) → etc.');
+        this.lastSubmittedValues.set(null);
+    }
+
+    switchToFileUploadExample() {
+        this.currentStructure.set(this.fileUploadExample);
+        this.currentExampleName.set('File Upload Example');
+        this.currentExampleDescription.set('Demonstrates file upload functionality with single and multiple file uploads');
         this.lastSubmittedValues.set(null);
     }
 
