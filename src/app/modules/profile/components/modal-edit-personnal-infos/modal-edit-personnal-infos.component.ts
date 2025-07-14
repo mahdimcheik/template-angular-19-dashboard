@@ -1,4 +1,4 @@
-import { Component, inject, input, model, output } from '@angular/core';
+import { Component, computed, inject, input, model, output } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { EnumGender, GenderDropDown } from '../../../../shared/models/user';
 import { UserResponseDTO, UserUpdateDTO } from '../../../../shared/services/userMain.service';
@@ -42,111 +42,16 @@ export class ModalEditPersonnalInfosComponent {
     fb = inject(FormBuilder);
     messageService = inject(MessageService);
 
+    imgUrl = computed(() => (!this.layoutService.isDarkTheme() ? 'assets/skillHiveSecondaryBlack.svg' : 'assets/skillHiveSecondaryWhite.svg'));
     typesGenderList: GenderDropDown[] = this.authService.typesGenderList;
 
-    personnalInfosFormStructure: Structure = {
-        id: 'personnalInfos',
-        name: 'personnalInfos',
-        label: 'Informations personnelles',
-        description: 'Informations personnelles',
-        formFieldGroups: [
-            {
-                id: 'personnalInfos',
-                name: 'personnalInfos',
-                label: 'Informations personnelles',
-                description: 'Informations personnelles',
-                fields: [
-                    {
-                        id: 'firstName',
-                        name: 'firstName',
-                        label: 'Prénom',
-                        type: 'text',
-                        placeholder: 'Prénom',
-                        required: true,
-                        order: 1
-                    },
-                    {
-                        id: 'lastName',
-                        name: 'lastName',
-                        label: 'Nom',
-                        type: 'text',
-                        placeholder: 'Nom',
-                        required: true
-                    },
-                    {
-                        id: 'dateOfBirth',
-                        name: 'dateOfBirth',
-                        label: 'Date de naissance',
-                        type: 'date',
-                        placeholder: 'Date de naissance',
-                        required: true,
-                        order: 3
-                    },
-                    {
-                        id: 'gender',
-                        name: 'gender',
-                        label: 'Genre',
-                        type: 'select',
-                        placeholder: 'Genre',
-                        required: true,
-                        order: 4,
-                        options: this.typesGenderList,
-                        displayKey: 'name',
-                        value: this.selectedGender
-                    },
-                    {
-                        id: 'title',
-                        name: 'title',
-                        label: 'Titre',
-                        type: 'text',
-                        placeholder: 'Titre',
-                        required: true,
-                        order: 5
-                    },
-                    {
-                        id: 'description',
-                        name: 'description',
-                        label: 'Description',
-                        type: 'textarea',
-                        placeholder: 'Description',
-                        required: true,
-                        order: 6
-                    }
-                ]
-            },
-            {
-                id: 'socialMedia',
-                name: 'socialMedia',
-                label: 'Réseaux sociaux',
-                description: 'Réseaux sociaux',
-                fields: [
-                    {
-                        id: 'linkedinUrl',
-                        name: 'linkedinUrl',
-                        label: 'LinkedIn',
-                        type: 'text',
-                        placeholder: 'LinkedIn',
-                        required: true,
-                        order: 1
-                    },
-                    {
-                        id: 'githubUrl',
-                        name: 'githubUrl',
-                        label: 'GitHub',
-                        type: 'text',
-                        placeholder: 'GitHub',
-                        required: true,
-                        order: 2
-                    }
-                ]
-            }
-        ]
-    };
+    personnalInfosFormStructure!: Structure;
 
     userForm!: FormGroup;
 
     ngOnInit(): void {
         this.selectedGender = this.typesGenderList.find((x) => x.value == this.user().gender) ?? this.typesGenderList[3];
+        console.log('dateOfBirth', this.user());
 
         this.userForm = this.fb.group({
             firstName: [this.user().firstName, [Validators.required]],
@@ -158,23 +63,164 @@ export class ModalEditPersonnalInfosComponent {
             linkedinUrl: [this.user().linkedinUrl, Validators.pattern('^https?://(www\\.)?linkedin\\.com/in/[^/]+$')],
             githubUrl: [this.user().githubUrl, Validators.pattern('^https?://(www\\.)?github\\.com/[^/]+$')]
         });
+
+        this.personnalInfosFormStructure = {
+            id: 'personnalInfos',
+            name: 'personnalInfos',
+            label: 'Informations personnelles',
+            description: 'Veuillez remplir les champs obligatoires',
+            imgUrl: this.imgUrl(),
+            formFieldGroups: [
+                {
+                    id: 'personnalInfos',
+                    name: 'personnalInfos',
+                    label: 'Informations personnelles',
+                    description: 'Veuillez remplir les champs obligatoires',
+                    fields: [
+                        {
+                            id: 'firstName',
+                            name: 'firstName',
+                            label: 'Prénom',
+                            type: 'text',
+                            placeholder: 'Prénom',
+                            required: true,
+                            value: this.user().firstName,
+                            order: 1
+                        },
+                        {
+                            id: 'lastName',
+                            name: 'lastName',
+                            label: 'Nom',
+                            type: 'text',
+                            placeholder: 'Nom',
+                            required: true,
+                            value: this.user().lastName,
+                            order: 2
+                        },
+                        {
+                            id: 'dateOfBirth',
+                            name: 'dateOfBirth',
+                            label: 'Date de naissance',
+                            type: 'date',
+                            placeholder: 'Date de naissance',
+                            required: true,
+                            value: new Date(this.user().dateOfBirth ?? ''),
+                            order: 3
+                        },
+                        {
+                            id: 'gender',
+                            name: 'gender',
+                            label: 'Genre',
+                            type: 'select',
+                            placeholder: 'Genre',
+                            required: true,
+                            order: 4,
+                            options: this.typesGenderList,
+                            displayKey: 'name',
+                            value: this.selectedGender
+                        },
+                        {
+                            id: 'title',
+                            name: 'title',
+                            label: 'Titre',
+                            type: 'text',
+                            placeholder: 'Titre',
+                            order: 5,
+                            value: this.user().title
+                        },
+                        {
+                            id: 'description',
+                            name: 'description',
+                            label: 'Description',
+                            type: 'textarea',
+                            placeholder: 'Description',
+                            value: this.user().description,
+                            order: 6
+                        },
+                        {
+                            id: 'phoneNumber',
+                            name: 'phoneNumber',
+                            label: 'Numéro de téléphone',
+                            type: 'text',
+                            placeholder: 'Numéro de téléphone',
+                            value: this.user().phoneNumber ?? '',
+                            order: 7
+                        }
+                    ]
+                },
+                {
+                    id: 'avatar',
+                    name: 'avatar',
+                    label: 'Avatar',
+                    description: 'Veuillez remplir votre avatar',
+                    fields: [
+                        {
+                            id: 'profilePicture',
+                            name: 'profilePicture',
+                            label: 'Image de profil',
+                            type: 'file',
+                            placeholder: 'Choisir votre image de profil',
+                            accept: 'image/*',
+                            maxFileSize: 1000000,
+                            multiple: false,
+                            mode: 'advanced',
+                            chooseLabel: 'Choose Image',
+                            uploadLabel: 'Téléverser',
+                            cancelLabel: 'Annuler',
+                            emptyMessage: 'Glissez et déposez votre image ici',
+                            order: 1
+                        }
+                    ]
+                },
+                {
+                    id: 'socialMedia',
+                    name: 'socialMedia',
+                    label: 'Réseaux sociaux',
+                    description: 'Veuillez remplir vos réseaux sociaux',
+                    fields: [
+                        {
+                            id: 'linkedinUrl',
+                            name: 'linkedinUrl',
+                            label: 'LinkedIn',
+                            type: 'text',
+                            placeholder: 'LinkedIn',
+                            order: 1,
+                            value: this.user().linkedinUrl,
+                            validation: [Validators.pattern('^https?://(www\\.)?linkedin\\.com/in/[^/]+$')]
+                        },
+                        {
+                            id: 'githubUrl',
+                            name: 'githubUrl',
+                            label: 'GitHub',
+                            type: 'text',
+                            placeholder: 'GitHub',
+                            order: 2,
+                            value: this.user().githubUrl,
+                            validation: [Validators.pattern('^https?://(www\\.)?github\\.com/[^/]+$')]
+                        }
+                    ]
+                }
+            ]
+        };
     }
-    async submit() {
+    async submit(event: FormGroup<any>) {
+        console.log('event', event.value);
+        const data = event.value;
         const newUser = {
             id: this.user().id!,
-            firstName: this.userForm.value['firstName'],
-            lastName: this.userForm.value['lastName'],
-            dateOfBirth: this.userForm.value['dateOfBirth']?.toISOString(),
-            gender: this.userForm.value['gender'].value,
-            title: this.userForm.value['title'] ? this.userForm.value['title'] : this.user().title,
-            description: this.userForm.value['description'],
-            linkedinUrl: this.userForm.value['linkedinUrl'],
-            githubUrl: this.userForm.value['githubUrl'],
-            phoneNumber: (this.user() as any).phoneNumber
+            firstName: data.personnalInfos['firstName'],
+            lastName: data.personnalInfos['lastName'],
+            dateOfBirth: data.personnalInfos['dateOfBirth']?.toISOString(),
+            gender: +data.personnalInfos['gender'].value,
+            phoneNumber: data.personnalInfos['phoneNumber'],
+            title: data.personnalInfos['title'],
+            description: data.personnalInfos['description'],
+            linkedinUrl: data.socialMedia['linkedinUrl'],
+            githubUrl: data.socialMedia['githubUrl']
         };
 
-        if (this.fileName && this.file != null) {
-            await firstValueFrom((this.authService as any).updateAvatar(this.file));
+        if (data.avatar['profilePicture']) {
+            await firstValueFrom((this.authService as any).updateAvatar(data.avatar['profilePicture']));
         }
 
         await firstValueFrom((this.authService as any).updatePersonnalInfos(newUser as UserUpdateDTO));
@@ -185,24 +231,5 @@ export class ModalEditPersonnalInfosComponent {
     cancel() {
         this.visible.set(false);
         this.onValidate.emit();
-    }
-    genderChosen() {}
-
-    receiveFile(event: { file: File; fileName: string }) {
-        this.file = event.file;
-        this.fileName = event.fileName;
-    }
-
-    onUpload(event: any) {
-        for (const file of event.files) {
-            this.uploadedFiles.push(file);
-        }
-        this.receiveFile({ file: event.files[0], fileName: event.files[0].name });
-
-        this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Image téléversée' });
-    }
-
-    onBasicUpload() {
-        this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Image téléversée' });
     }
 }

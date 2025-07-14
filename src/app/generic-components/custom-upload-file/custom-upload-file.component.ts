@@ -127,9 +127,13 @@ export class CustomUploadFileComponent implements ControlValueAccessor, OnInit {
     }
 
     onRemove(event: any) {
-        const currentFiles = this.uploadedFiles();
-        const updatedFiles = currentFiles.filter((file) => file !== event.file);
-        this.handleFileChange(updatedFiles);
+        const currentFiles = this.uploadedFiles() ?? [];
+        if (currentFiles.length > 0) {
+            const updatedFiles = currentFiles.filter((file) => file !== event.file);
+            this.handleFileChange(updatedFiles);
+        } else {
+            this.handleFileChange([]);
+        }
     }
 
     onClear(event: any) {
