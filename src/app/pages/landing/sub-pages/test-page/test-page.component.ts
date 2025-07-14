@@ -39,6 +39,7 @@ export class TestPageComponent implements AfterViewInit, OnInit {
     formConfig: Structure = {
         id: 'formConfig',
         name: 'formConfig',
+        label: 'formConfig',
         description: 'formConfig',
         icon: 'pi pi-user',
         styleClass: 'form-config',

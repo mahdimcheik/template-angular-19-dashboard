@@ -62,7 +62,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
 
             this.formStructure = {
                 id: 'cursus',
-                name: 'Cours',
+                name: 'cursus',
+                label: 'Cours',
                 description: 'Editer ce cours',
                 icon: 'pi pi-book',
                 imgUrl: this.imgUrl(),
@@ -127,6 +128,7 @@ export class ModalAddOrEditCursusComponent implements OnInit {
             this.formStructure = {
                 id: 'cursus',
                 name: 'Cours',
+                label: 'Cours',
                 description: 'Ajouter un nouveau cours',
                 icon: 'pi pi-book',
                 imgUrl: this.imgUrl(),

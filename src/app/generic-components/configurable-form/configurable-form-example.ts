@@ -112,6 +112,7 @@ export class ConfigurableFormExampleComponent {
     basicStructure: Structure = {
         id: 'basic-form',
         name: 'Basic Form',
+        label: 'Basic Form',
         description: 'A simple form with basic fields',
         submitButtonLabel: 'Submit',
         cancelButtonLabel: 'Cancel',
@@ -177,6 +178,7 @@ export class ConfigurableFormExampleComponent {
     advancedStructure: Structure = {
         id: 'advanced-form',
         name: 'Advanced Form',
+        label: 'Advanced Form',
         description: 'A comprehensive form with all field types and validation',
         submitButtonLabel: 'Create Profile',
         cancelButtonLabel: 'Cancel',
@@ -365,6 +367,7 @@ export class ConfigurableFormExampleComponent {
     unifiedOrderingStructure: Structure = {
         id: 'unified-ordering-demo',
         name: 'Unified Ordering Demo',
+        label: 'Unified Ordering Demo',
         description: 'Demonstrates fields and groups mixed together with unified ordering',
         submitButtonLabel: 'Save Configuration',
         cancelButtonLabel: 'Reset',

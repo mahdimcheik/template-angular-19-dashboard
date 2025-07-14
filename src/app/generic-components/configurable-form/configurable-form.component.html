@@ -6,7 +6,7 @@
                 @if (structureData.imgUrl) {
                     <img [src]="structureData.imgUrl" alt="Form Icon" class="w-[350px] h-auto rounded-full" />
                 }
-                <h2 class="text-2xl sm:text-3xl font-bold configurable-form-title self-center">{{ structureData.name }}</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold configurable-form-title self-center">{{ structureData.label || structureData.name }}</h2>
                 @if (structureData.description) {
                     <p class="text-3xl leading-relaxed configurable-form-description">{{ structureData.description }}</p>
                 }
