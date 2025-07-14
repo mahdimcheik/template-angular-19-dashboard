@@ -67,8 +67,7 @@
                                     }
 
                                     @if (element.type === 'number') {
-                                        <input
-                                            pInputNumber
+                                        <p-inputNumber
                                             [id]="element.id"
                                             [formControlName]="element.name"
                                             [placeholder]="element.placeholder || ''"
@@ -289,8 +288,7 @@
 
                                             <!-- Number Input -->
                                             @if (field.type === 'number') {
-                                                <input
-                                                    pInputNumber
+                                                <p-inputNumber
                                                     [id]="field.id"
                                                     [formControlName]="field.name"
                                                     [placeholder]="field.placeholder || ''"
