@@ -126,7 +126,8 @@ export class ModalEditPersonnalInfosComponent {
                             type: 'text',
                             placeholder: 'Titre',
                             order: 5,
-                            value: this.user().title
+                            value: this.user().title,
+                            fullWidth: true
                         },
                         {
                             id: 'description',
@@ -168,7 +169,8 @@ export class ModalEditPersonnalInfosComponent {
                             uploadLabel: 'Téléverser',
                             cancelLabel: 'Annuler',
                             emptyMessage: 'Glissez et déposez votre image ici',
-                            order: 1
+                            order: 1,
+                            fullWidth: true
                         }
                     ]
                 },
@@ -186,6 +188,7 @@ export class ModalEditPersonnalInfosComponent {
                             placeholder: 'LinkedIn',
                             order: 1,
                             value: this.user().linkedinUrl,
+                            fullWidth: true,
                             validation: [Validators.pattern('^https?://(www\\.)?linkedin\\.com/in/[^/]+$')]
                         },
                         {
@@ -196,6 +199,7 @@ export class ModalEditPersonnalInfosComponent {
                             placeholder: 'GitHub',
                             order: 2,
                             value: this.user().githubUrl,
+                            fullWidth: true,
                             validation: [Validators.pattern('^https?://(www\\.)?github\\.com/[^/]+$')]
                         }
                     ]

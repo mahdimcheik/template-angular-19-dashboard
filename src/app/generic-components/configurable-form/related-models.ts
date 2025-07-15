@@ -16,6 +16,9 @@ export interface FormField<T> {
     validation?: ValidatorFn[];
     order?: number;
 
+    // Layout properties
+    fullWidth?: boolean; // If true, field spans the full width (2 columns) instead of default 1 column
+
     // File upload specific properties
     accept?: string;
     multiple?: boolean;

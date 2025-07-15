@@ -29,6 +29,7 @@ import { CommonModule } from '@angular/common';
                 <button (click)="switchToAdvancedExample()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Advanced Example</button>
                 <button (click)="switchToUnifiedOrderingExample()" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Unified Ordering Demo</button>
                 <button (click)="switchToFileUploadExample()" class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700">File Upload Example</button>
+                <button (click)="switchToGridLayoutExample()" class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700">Grid Layout Example</button>
             </div>
 
             <!-- Current Example Info -->
@@ -727,6 +728,144 @@ export class ConfigurableFormExampleComponent {
         ]
     };
 
+    // Grid Layout Example
+    gridLayoutExample: Structure = {
+        id: 'grid-layout-example',
+        name: 'Grid Layout Example',
+        label: 'Grid Layout Example',
+        description: 'Demonstrates horizontal field layout with fullWidth property',
+        formFields: [
+            {
+                id: 'title-field',
+                name: 'title',
+                label: 'Article Title',
+                type: 'text',
+                placeholder: 'Enter article title',
+                required: true,
+                fullWidth: true, // This field will span the full width
+                order: 1
+            },
+            {
+                id: 'author-field',
+                name: 'author',
+                label: 'Author',
+                type: 'text',
+                placeholder: 'Author name',
+                required: true,
+                fullWidth: false, // This field will take half width (paired)
+                order: 2
+            },
+            {
+                id: 'category-field',
+                name: 'category',
+                label: 'Category',
+                type: 'select',
+                placeholder: 'Select category',
+                required: true,
+                fullWidth: false, // This field will take half width (paired with author)
+                options: [
+                    { label: 'Technology', value: 'tech' },
+                    { label: 'Science', value: 'science' },
+                    { label: 'Business', value: 'business' }
+                ],
+                order: 3
+            },
+            {
+                id: 'tags-field',
+                name: 'tags',
+                label: 'Tags',
+                type: 'text',
+                placeholder: 'Enter tags separated by commas',
+                required: false,
+                fullWidth: false, // This field will take half width
+                order: 4
+            },
+            {
+                id: 'publish-date-field',
+                name: 'publishDate',
+                label: 'Publish Date',
+                type: 'date',
+                required: true,
+                fullWidth: false, // This field will take half width (paired with tags)
+                order: 5
+            },
+            {
+                id: 'summary-field',
+                name: 'summary',
+                label: 'Summary',
+                type: 'textarea',
+                placeholder: 'Enter article summary',
+                required: true,
+                fullWidth: true, // Textarea automatically takes full width
+                order: 6
+            }
+        ],
+        formFieldGroups: [
+            {
+                id: 'settings-group',
+                name: 'settings',
+                label: 'Article Settings',
+                description: 'Configure article visibility and notification settings',
+                order: 7,
+                fields: [
+                    {
+                        id: 'is-published',
+                        name: 'isPublished',
+                        label: 'Published',
+                        type: 'checkbox',
+                        placeholder: 'Publish this article immediately',
+                        required: false,
+                        fullWidth: false, // Checkbox takes half width
+                        value: false
+                    },
+                    {
+                        id: 'featured',
+                        name: 'featured',
+                        label: 'Featured',
+                        type: 'checkbox',
+                        placeholder: 'Mark as featured article',
+                        required: false,
+                        fullWidth: false, // Checkbox takes half width (paired)
+                        value: false
+                    },
+                    {
+                        id: 'notification-email',
+                        name: 'notificationEmail',
+                        label: 'Notification Email',
+                        type: 'email',
+                        placeholder: 'Enter email for notifications',
+                        required: false,
+                        fullWidth: true // Email field takes full width
+                    },
+                    {
+                        id: 'priority',
+                        name: 'priority',
+                        label: 'Priority',
+                        type: 'select',
+                        placeholder: 'Select priority level',
+                        required: false,
+                        fullWidth: false, // Select takes half width
+                        options: [
+                            { label: 'Low', value: 'low' },
+                            { label: 'Medium', value: 'medium' },
+                            { label: 'High', value: 'high' }
+                        ]
+                    },
+                    {
+                        id: 'estimated-read-time',
+                        name: 'estimatedReadTime',
+                        label: 'Estimated Read Time (minutes)',
+                        type: 'number',
+                        placeholder: 'Enter estimated reading time',
+                        required: false,
+                        fullWidth: false, // Number field takes half width (paired with priority)
+                        value: 5
+                    }
+                ]
+            }
+        ]
+    };
+
     // Custom Validators
     validateProfile(control: AbstractControl): ValidationErrors | null {
         const values = control.value;
@@ -785,6 +924,13 @@ export class ConfigurableFormExampleComponent {
         this.currentStructure.set(this.fileUploadExample);
         this.currentExampleName.set('File Upload Example');
         this.currentExampleDescription.set('Demonstrates file upload functionality with single and multiple file uploads');
+        this.lastSubmittedValues.set(null);
+    }
+
+    switchToGridLayoutExample() {
+        this.currentStructure.set(this.gridLayoutExample);
+        this.currentExampleName.set('Grid Layout Example');
+        this.currentExampleDescription.set('Demonstrates horizontal field layout with fullWidth property - fields are arranged in pairs except when fullWidth is true');
         this.lastSubmittedValues.set(null);
     }
 

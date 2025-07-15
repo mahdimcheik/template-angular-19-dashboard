@@ -164,6 +164,7 @@ export class InscriptionComponent {
                         type: 'checkbox',
                         label: "J'ai lu et j'accepte la politique de confidentialité",
                         required: true,
+                        fullWidth: true,
                         validation: [Validators.requiredTrue]
                     },
                     {
@@ -172,6 +173,7 @@ export class InscriptionComponent {
                         type: 'checkbox',
                         label: "J'accepte que mes données personnelles soient traitées conformément au RGPD pour la création et la gestion de mon compte, ainsi que pour la fourniture des services de la plateforme.",
                         required: true,
+                        fullWidth: true,
                         validation: [Validators.requiredTrue]
                     }
                 ]

@@ -57,6 +57,7 @@ export class LoginComponent implements OnInit {
                         type: 'text',
                         placeholder: 'Email',
                         required: true,
+                        fullWidth: true,
                         validation: [Validators.email, Validators.required],
                         order: 1
                     },
@@ -67,6 +68,7 @@ export class LoginComponent implements OnInit {
                         type: 'password',
                         placeholder: 'Mot de passe',
                         required: true,
+                        fullWidth: true,
                         validation: [Validators.required, Validators.minLength(8)],
                         order: 2
                     }

@@ -1,3 +1,18 @@
+// Grid layout styling
+.configurable-form-elements-container {
+    // Ensure grid items maintain proper spacing
+    > * {
+        min-width: 0; // Prevents grid items from overflowing
+    }
+}
+
+.configurable-form-fields-grid {
+    // Grid layout for fields within groups
+    > * {
+        min-width: 0; // Prevents grid items from overflowing
+    }
+}
+
 // Essential PrimeNG overrides to fix component widths
 :host ::ng-deep {
     // Fix datepicker width to match other inputs
