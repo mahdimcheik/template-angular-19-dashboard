@@ -17,7 +17,6 @@ import { PasswordRecoveryInput } from '../../api/models/PasswordRecoveryInput';
 import { LoginOutputDTOResponseDTO } from '../../api/models/LoginOutputDTOResponseDTO';
 import { ObjectResponseDTO } from '../../api/models/ObjectResponseDTO';
 import { ObjectIEnumerableResponseDTO } from '../../api/models/ObjectIEnumerableResponseDTO';
-import { SignalRService } from './signal.service';
 import { CookieConsentService } from './cookie-consent.service';
 import { EnumGender, GenderDropDown } from '../../shared/models/user';
 
@@ -55,8 +54,6 @@ export class UserMainService {
 
     router = inject(Router);
     messageService = inject(MessageService);
-    // SseService = inject(SSEMainService);
-    signalService = inject(SignalRService);
     cookieConsentService = inject(CookieConsentService);
     // pour la page profile
     userConnected = signal({} as UserResponseDTO);
@@ -173,7 +170,6 @@ export class UserMainService {
                     this.cookieConsentService.acceptAll();
                     this.userConnected.set(res.data.user);
                     this.token.set(res.data.token);
-                    this.signalService.startConnection(res.data.token);
                 }
             })
         );
@@ -193,7 +189,6 @@ export class UserMainService {
                 if (res.data) {
                     this.token.set(res.data.token);
                     this.userConnected.set(res.data.user);
-                    this.signalService.startConnection(res.data.token);
                 }
             })
         );
@@ -206,7 +201,6 @@ export class UserMainService {
                 finalize(() => {
                     this.reset();
                     this.router.navigate(['/']);
-                    this.signalService.stopConnection();
                 })
             )
             .subscribe(() => {
@@ -228,7 +222,6 @@ export class UserMainService {
                 if (res.data?.user) {
                     this.userConnected.set(res.data.user);
                     this.token.set(res.data.token);
-                    this.signalService.startConnection(res.data.token);
                 }
             })
         );
