@@ -24,13 +24,15 @@ import { CookieConsentBannerComponent } from './app/shared/components/cookie-con
         </div>
         <app-overlay-spinner></app-overlay-spinner>
         <div>
-            <p-progressbar *ngIf="!connectionService.isOnline()" [style]="{ height: '25px' }" value="100" [showValue]="true" color="red">
-                <ng-template #content let-value>
-                    <div class="flex flex-row items-center gap-4">
-                        <span>Vous êtes hors ligne </span>
-                    </div>
-                </ng-template>
-            </p-progressbar>
+            @if (!connectionService.isOnline()) {
+                <p-progressbar [style]="{ height: '25px' }" value="100" [showValue]="true" color="red">
+                    <ng-template #content let-value>
+                        <div class="flex flex-row items-center gap-4">
+                            <span>Vous êtes hors ligne </span>
+                        </div>
+                    </ng-template>
+                </p-progressbar>
+            }
         </div>
         <p-toast></p-toast>
         <router-outlet></router-outlet>

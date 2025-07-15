@@ -10,6 +10,8 @@ import { AddressService } from '../../api/services/AddressService';
 import { AddressResponseDTOListResponseDTO } from '../../api/models/AddressResponseDTOListResponseDTO';
 import { AddressResponseDTOResponseDTO } from '../../api/models/AddressResponseDTOResponseDTO';
 import { StringResponseDTO } from '../../api/models/StringResponseDTO';
+import { AddressDropDown } from '../models/adresseOption';
+import { AddressTypeEnum } from '../../api/models/AddressTypeEnum';
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +22,28 @@ export class AddressMainService {
     baseUrl = environment.BACK_URL;
 
     addresses = signal<Address[]>([]);
+    typesAdresseList: AddressDropDown[] = [
+        {
+            id: '1',
+            name: 'Domicile',
+            value: AddressTypeEnum._1
+        },
+        {
+            id: '2',
+            name: 'Travail',
+            value: AddressTypeEnum._2
+        },
+        {
+            id: '3',
+            name: 'Facturation',
+            value: AddressTypeEnum._3
+        },
+        {
+            id: '4',
+            name: 'Livraison',
+            value: AddressTypeEnum._4
+        }
+    ];
     constructor() {}
 
     getAllAddresses(userId: string, forOwner: boolean = true): Observable<AddressResponseDTOListResponseDTO> {

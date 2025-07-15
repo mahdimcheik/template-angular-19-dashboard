@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UserMainService } from '../../../../shared/services/userMain.service';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { finalize, firstValueFrom, tap } from 'rxjs';
 import { EnumGender, GenderDropDown } from '../../../../shared/models/user';
@@ -19,10 +19,12 @@ import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 import { CookieConsentService } from '../../../../shared/services/cookie-consent.service';
+import { Structure } from '../../../../generic-components/configurable-form/related-models';
+import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
 
 @Component({
     selector: 'app-inscription',
-    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CheckboxModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
+    imports: [FluidModule, ButtonModule, PanelModule, TextareaModule, InputTextModule, DatePickerModule, SelectModule, CheckboxModule, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent, ConfigurableFormComponent],
 
     templateUrl: './inscription.component.html',
     styleUrl: './inscription.component.scss',
@@ -34,36 +36,149 @@ export class InscriptionComponent {
     fb = inject(FormBuilder);
     router = inject(Router);
     cookieConsentService = inject(CookieConsentService);
-    errorMessage = '';
-    errorRegistration = false;
-    isLoading = false;
-
-    typesGenderList: GenderDropDown[] = [
-        {
-            id: '0',
-            name: 'Homme',
-            value: EnumGender.Homme
-        },
-        {
-            id: '1',
-            name: 'Femme',
-            value: EnumGender.Femme
-        },
-        {
-            id: '2',
-            name: 'Non-binaire',
-            value: EnumGender.NonBinaire
-        },
-        {
-            id: '3',
-            name: 'Autre',
-            value: EnumGender.Autre
-        }
-    ];
+    typesGenderList: GenderDropDown[] = this.authService.typesGenderList;
     selectedGender: GenderDropDown = {
         id: '3',
         name: 'Autre',
         value: EnumGender.Autre
+    };
+
+    inscriptionFormStructure: Structure = {
+        id: 'inscriptionForm',
+        name: 'inscriptionForm',
+        label: 'Inscription',
+        globalValidators: [Validators.required],
+        styleClass: 'max-w-[40rem] ',
+        formFieldGroups: [
+            {
+                id: 'inscriptionForm',
+                name: 'inscriptionForm',
+                label: 'Inscription',
+                fields: [
+                    {
+                        id: 'firstName',
+                        name: 'firstName',
+                        type: 'text',
+                        label: 'Prénom',
+                        required: true,
+                        placeholder: 'Prénom',
+                        validation: [Validators.required]
+                    },
+                    {
+                        id: 'lastName',
+                        name: 'lastName',
+                        type: 'text',
+                        label: 'Nom',
+                        required: true,
+                        placeholder: 'Nom',
+                        validation: [Validators.required]
+                    },
+                    {
+                        id: 'email',
+                        name: 'email',
+                        type: 'email',
+                        label: 'Email',
+                        required: true,
+                        placeholder: 'Email',
+                        validation: [Validators.email, Validators.required]
+                    },
+                    {
+                        id: 'password',
+                        name: 'password',
+                        type: 'password',
+                        label: 'Mot de passe',
+                        required: true,
+                        placeholder: 'Mot de passe',
+                        validation: [Validators.required, Validators.minLength(8), passwordStrengthValidator()]
+                    },
+                    {
+                        id: 'confirmPassword',
+                        name: 'confirmPassword',
+                        type: 'password',
+                        label: 'Confirmer le mot de passe',
+                        required: true,
+                        placeholder: 'Confirmer le mot de passe',
+                        validation: [Validators.required]
+                    },
+                    {
+                        id: 'dateOfBirth',
+                        name: 'dateOfBirth',
+                        type: 'date',
+                        label: 'Date de naissance',
+                        required: true,
+                        placeholder: 'Date de naissance',
+                        validation: [Validators.required, ageValidator()]
+                    },
+                    {
+                        id: 'gender',
+                        name: 'gender',
+                        label: 'Genre',
+                        type: 'select',
+                        placeholder: 'Genre',
+                        required: true,
+                        options: this.typesGenderList,
+                        displayKey: 'name'
+                    }
+                ],
+                groupValidators: [passwordValidator('password', 'confirmPassword')]
+            },
+            {
+                id: 'optionalFields',
+                name: 'optionalFields',
+                label: 'Champs facultatifs',
+                fields: [
+                    {
+                        id: 'phoneNumber',
+                        name: 'phoneNumber',
+                        type: 'text',
+                        label: 'Numéro de téléphone',
+                        required: false,
+                        placeholder: 'Numéro de téléphone'
+                    },
+                    {
+                        id: 'title',
+                        name: 'title',
+                        type: 'text',
+                        label: 'Titre',
+                        required: false,
+                        placeholder: 'Titre'
+                    },
+                    {
+                        id: 'description',
+                        name: 'description',
+                        type: 'textarea',
+                        label: 'Description',
+                        required: false,
+                        placeholder: 'Description'
+                    }
+                ]
+            },
+            {
+                id: 'privacy',
+                name: 'privacy',
+                label: 'Consentements et confidentialité',
+                fields: [
+                    {
+                        id: 'privacyPolicyConsent',
+                        name: 'privacyPolicyConsent',
+                        type: 'checkbox',
+                        label: "J'ai lu et j'accepte la politique de confidentialité",
+                        required: true,
+                        fullWidth: true,
+                        validation: [Validators.requiredTrue]
+                    },
+                    {
+                        id: 'dataProcessingConsent',
+                        name: 'dataProcessingConsent',
+                        type: 'checkbox',
+                        label: "J'accepte que mes données personnelles soient traitées conformément au RGPD pour la création et la gestion de mon compte, ainsi que pour la fourniture des services de la plateforme.",
+                        required: true,
+                        fullWidth: true,
+                        validation: [Validators.requiredTrue]
+                    }
+                ]
+            }
+        ]
     };
 
     userForm = this.fb.group(
@@ -84,25 +199,35 @@ export class InscriptionComponent {
         { validators: [passwordValidator('password', 'confirmPassword')] }
     );
 
-    async submit() {
-        this.isLoading = true;
+    async submit(e: FormGroup) {
+        const formValue = e.value;
+        console.log('formValue', formValue);
+
         const newUser = {
-            ...this.userForm.value,
-            gender: this.userForm.value['gender']?.value,
-            dateOfBirth: this.userForm.value['dateOfBirth']?.toISOString()
-        } as UserCreateDTO;
+            email: formValue.inscriptionForm.email,
+            password: formValue.inscriptionForm.password,
+            firstName: formValue.inscriptionForm.firstName,
+            lastName: formValue.inscriptionForm.lastName,
+            gender: formValue.inscriptionForm.gender.value,
+            dateOfBirth: formValue.inscriptionForm.dateOfBirth.toISOString(),
+            phoneNumber: formValue.optionalFields.phoneNumber,
+            title: formValue.optionalFields.title,
+            description: formValue.optionalFields.description,
+            privacyPolicyConsent: formValue.privacy.privacyPolicyConsent,
+            dataProcessingConsent: formValue.privacy.dataProcessingConsent
+        };
+        // const newUser = {
+        //     ...this.userForm.value,
+        //     gender: this.userForm.value['gender']?.value,
+        //     dateOfBirth: this.userForm.value['dateOfBirth']?.toISOString()
+        // } as UserCreateDTO;
 
         try {
             await firstValueFrom(
-                (this.authService as any).register(newUser).pipe(
+                this.authService.register(newUser).pipe(
                     tap((res) => {
                         console.log('res', res);
                         this.router.navigate(['auth/account-created-successfully']);
-                    }),
-                    finalize(() => {
-                        setTimeout(() => {
-                            this.isLoading = false;
-                        }, 200);
                     })
                 )
             );
@@ -113,8 +238,6 @@ export class InscriptionComponent {
                 detail: (err as any).error.message,
                 severity: 'error'
             });
-            this.errorMessage = (err as any).error.message;
-            this.errorRegistration = true;
         }
     }
 }

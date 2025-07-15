@@ -10,10 +10,12 @@ import { MessageModule } from 'primeng/message';
 import { InputText } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
+import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
+import { Structure } from '../../../../generic-components/configurable-form/related-models';
 
 @Component({
     selector: 'app-forgot-password',
-    imports: [FluidModule, ButtonModule, InputText, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
+    imports: [FluidModule, ButtonModule, ConfigurableFormComponent, CommonModule, ReactiveFormsModule, MessageModule, RouterModule, LogoComponent],
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss',
     providers: []
@@ -22,35 +24,35 @@ export class ForgotPasswordComponent {
     authService = inject(UserMainService);
     messageService = inject(MessageService);
     router = inject(Router);
-    message = '';
-    errorRegistration = false;
-    isLoading = false;
 
-    userForm = new FormGroup({
-        email: new FormControl<string>('', [Validators.email, Validators.required])
-    });
+    forgotPasswordFormStructure: Structure = {
+        id: 'forgotPasswordForm',
+        name: 'forgotPasswordForm',
+        label: 'Mot de passe oublié',
+        globalValidators: [Validators.required],
+        styleClass: 'min-w-[30rem] ',
+        formFields: [
+            {
+                id: 'email',
+                name: 'email',
+                label: 'Email',
+                type: 'email',
+                required: true,
+                placeholder: 'Entrer votre email',
+                validation: [Validators.email, Validators.required]
+            }
+        ]
+    };
 
-    submit() {
-        this.isLoading = true;
-        (this.authService as any)
-            .forgotPassword(this.userForm.value as { email: string })
-            .pipe(
-                catchError((err) => {
-                    this.errorRegistration = true;
-                    this.message = (err as any).error.message;
-                    return err;
-                }),
-                finalize(() => {
-                    setTimeout(() => {
-                        this.isLoading = false;
-                    }, 500);
-                })
-            )
-            .subscribe(() => {
-                this.errorRegistration = false;
-                this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Un email vous a été envoyé pour réinitialiser votre mot de passe' });
-                this.message = 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
-                this.router.navigate(['/']);
-            });
+    submit(e: FormGroup) {
+        const email = e.value.email;
+        this.authService.forgotPassword({ email }).subscribe(() => {
+            this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Un email vous a été envoyé pour réinitialiser votre mot de passe' });
+            this.router.navigate(['/auth/login']);
+        });
+    }
+
+    cancel() {
+        this.router.navigate(['/auth/login']);
     }
 }

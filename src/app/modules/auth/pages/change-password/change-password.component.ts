@@ -16,9 +16,11 @@ import { RequiredAsteriskDirective } from '../../../../shared/directives/require
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
+import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
+import { Structure } from '../../../../generic-components/configurable-form/related-models';
 @Component({
     selector: 'app-change-password',
-    imports: [FluidModule, ButtonModule, CommonModule, PasswordModule, InputTextModule, RequiredAsteriskDirective, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule, LogoComponent],
+    imports: [FluidModule, ButtonModule, CommonModule, PasswordModule, InputTextModule, ConfigurableFormComponent, MessageModule, InputTextModule, ToastModule, SelectModule, PasswordModule, FormsModule, ReactiveFormsModule, LogoComponent],
     templateUrl: './change-password.component.html',
     styleUrl: './change-password.component.scss',
     providers: []
@@ -29,7 +31,41 @@ export class ChangePasswordComponent implements OnInit {
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
     private messageService = inject(MessageService);
-    isLoading = false;
+
+    changePasswordFormStructure: Structure = {
+        id: 'changePasswordForm',
+        name: 'changePasswordForm',
+        label: 'Réinitialiser votre mot de passe',
+        globalValidators: [Validators.required],
+        styleClass: 'min-w-[30rem] ',
+        formFieldGroups: [
+            {
+                id: 'password',
+                name: 'password',
+                label: 'Mot de passe',
+                fields: [
+                    {
+                        id: 'password',
+                        name: 'password',
+                        label: 'Mot de passe',
+                        type: 'password',
+                        required: true,
+                        placeholder: 'Mot de passe',
+                        order: 1
+                    },
+                    {
+                        id: 'passwordConfirmation',
+                        name: 'passwordConfirmation',
+                        label: 'Confirmer votre mot de passe',
+                        type: 'password',
+                        required: true,
+                        placeholder: 'Confirmer votre mot de passe',
+                        order: 2
+                    }
+                ]
+            }
+        ]
+    };
 
     userForm = new FormGroup(
         {
@@ -52,19 +88,13 @@ export class ChangePasswordComponent implements OnInit {
         });
     }
 
-    async submit() {
-        this.isLoading = true;
+    async submit(e: FormGroup) {
         await firstValueFrom(
-            (this.authService as any).resetPassword(this.userForm.value as UserChangePasswordDTO).pipe(
+            (this.authService as any).resetPassword(e.value as UserChangePasswordDTO).pipe(
                 tap((res) => {
                     this.router.navigate(['/']);
                     this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mot de passe réinitialisé avec succès' });
                     this.router.navigate(['/auth/password-reset-successfully']);
-                }),
-                finalize(() => {
-                    setTimeout(() => {
-                        this.isLoading = false;
-                    }, 200);
                 })
             )
         );
