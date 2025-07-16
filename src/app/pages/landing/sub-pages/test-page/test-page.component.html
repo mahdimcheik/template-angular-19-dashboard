@@ -1,6 +1,38 @@
-<div class="flex flex-col p-4">
-    <h2 class="text-xl font-bold mb-4">Configurable Grid Test</h2>
-    <div class="w-full border border-gray-300 rounded">
-        <app-configurable-grid></app-configurable-grid>
+<div class="flex flex-col p-4 max-w-7xl mx-auto">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Configurable Grid Component</h1>
+        <p class="text-gray-600">A fully configurable data grid with global search, sorting, and filtering capabilities.</p>
+    </div>
+
+    <!-- Grid Configuration Demo -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">Employee Data Grid</h2>
+        <div class="w-full border border-gray-200 rounded-lg overflow-hidden">
+            <app-configurable-grid
+                [rowData]="sampleData()"
+                [columnDefs]="columnDefs()"
+                [gridOptions]="gridOptions()"
+                [searchPlaceholder]="'Search employees...'"
+                [showSearch]="true"
+                [className]="'ag-theme-alpine h-[500px]'"
+                (rowSelected)="onRowSelected($event)"
+            ></app-configurable-grid>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-blue-50 p-4 rounded-lg">
+            <h3 class="font-semibold text-blue-800 mb-2">🔍 Global Search</h3>
+            <p class="text-blue-700 text-sm">Search across all columns with real-time filtering</p>
+        </div>
+        <div class="bg-green-50 p-4 rounded-lg">
+            <h3 class="font-semibold text-green-800 mb-2">⚙️ Fully Configurable</h3>
+            <p class="text-green-700 text-sm">Pass data, columns, and options via inputs</p>
+        </div>
+        <div class="bg-purple-50 p-4 rounded-lg">
+            <h3 class="font-semibold text-purple-800 mb-2">📱 Responsive</h3>
+            <p class="text-purple-700 text-sm">Works perfectly on all screen sizes</p>
+        </div>
     </div>
 </div>

@@ -1,41 +1,76 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
-import type { ColDef, GridOptions, RowClassParams } from 'ag-grid-community'; // Column Definition Type Interface
+import { Component, computed, input, output, signal, effect, inject } from '@angular/core';
+import { AgGridAngular } from 'ag-grid-angular';
+import type { ColDef, GridOptions, GridApi, RowSelectedEvent } from 'ag-grid-community';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 
-interface IRow {
-    make: string;
-    model: string;
-    price: number;
-    electric: boolean;
+// Generic interface for any row data
+export interface IGridRow {
+    [key: string]: any;
 }
 
 @Component({
     selector: 'app-configurable-grid',
-    imports: [AgGridAngular, CommonModule],
+    imports: [AgGridAngular, CommonModule, InputTextModule, FormsModule],
     templateUrl: './configurable-grid.component.html',
     styleUrl: './configurable-grid.component.scss'
 })
 export class ConfigurableGridComponent {
-    rowData = input<IRow[]>([
-        { make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
-        { make: 'Ford', model: 'F-Series', price: 33850, electric: false },
-        { make: 'Toyota', model: 'Corolla', price: 29600, electric: false },
-        { make: 'Mercedes', model: 'EQA', price: 48890, electric: true },
-        { make: 'Fiat', model: '500', price: 15774, electric: false },
-        { make: 'Nissan', model: 'Juke', price: 20675, electric: false }
-    ]);
+    // Input signals for configuration
+    rowData = input<IGridRow[]>([]);
+    columnDefs = input<ColDef[]>([]);
+    gridOptions = input<GridOptions>({});
+    className = input<string>('ag-theme-alpine');
+    searchPlaceholder = input<string>('Search all columns...');
+    showSearch = input<boolean>(true);
 
-    gridOptions: GridOptions = {
-        rowHeight: 100
-    };
+    // Output signals for events
+    rowSelected = output<RowSelectedEvent>();
 
-    className = input<string>('ag-theme-alpine h-[500px]');
+    // Internal signals
+    private gridApi = signal<GridApi | null>(null);
+    searchTerm = signal<string>('');
 
-    // Column Definitions: Defines & controls grid columns.
-    colDefs = computed(() => [{ field: 'make' }, { field: 'model' }, { field: 'price' }, { field: 'electric' }]);
+    // Computed values
+    filteredRowData = computed(() => {
+        const data = this.rowData();
+        const search = this.searchTerm();
 
+        if (!search.trim()) {
+            return data;
+        }
+
+        return data.filter((row) => {
+            return Object.values(row).some((value) => String(value).toLowerCase().includes(search.toLowerCase()));
+        });
+    });
+
+    // Default column definition
     defaultColDef: ColDef = {
-        flex: 1
+        flex: 1,
+        sortable: true,
+        filter: true,
+        resizable: true
     };
+
+    // Grid ready event handler
+    onGridReady(params: any) {
+        this.gridApi.set(params.api);
+    }
+
+    // Row selection event handler
+    onRowSelected(event: RowSelectedEvent) {
+        this.rowSelected.emit(event);
+    }
+
+    // Search input change handler
+    onSearchChange(value: string) {
+        this.searchTerm.set(value);
+    }
+
+    // Clear search
+    clearSearch() {
+        this.searchTerm.set('');
+    }
 }
