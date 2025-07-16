@@ -1,9 +1,6 @@
-<!-- <app-configurable-table [columns]="userTableColumns" [data]="users" [rows]="10" [globalFilter]="true">
-    <ng-template #chipTemplate let-row let-columns="columns">
-        <p-chip [label]="row" [style]="{ 'margin-right': '0.5rem' }"></p-chip>
-    </ng-template>
-</app-configurable-table> -->
-
-<!-- <app-configurable-form [structure]="formConfig"></app-configurable-form> -->
-
-<app-configurable-form-example></app-configurable-form-example>
+<div class="flex flex-col p-4">
+    <h2 class="text-xl font-bold mb-4">Configurable Grid Test</h2>
+    <div class="w-full border border-gray-300 rounded">
+        <app-configurable-grid></app-configurable-grid>
+    </div>
+</div>

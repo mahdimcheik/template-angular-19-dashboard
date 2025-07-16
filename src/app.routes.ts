@@ -11,6 +11,16 @@ import { isAdminOnlyGuard } from './app/shared/guards/is-admin-only.guard';
 import { ContactComponent } from './app/modules/contact/contact/contact.component';
 import { PaymentFailedComponent } from './app/modules/reservation/pages/payment-failed/payment-failed.component';
 
+// Define path constants
+const DASHBOARD_PATH = 'dashboard';
+const SETTINGS_PATH = 'settings';
+const STUDENTS_LIST_PATH = 'students-list';
+const CONTACT_PATH = 'contact';
+const RESERVATION_PATH = 'reservation';
+const PROFILE_PATH = 'profile';
+const SUCCESS_PATH = 'success';
+const CANCEL_PATH = 'cancel';
+
 export const appRoutes: Routes = [
     {
         path: '',
@@ -18,36 +28,37 @@ export const appRoutes: Routes = [
         loadChildren: () => import('./app/pages/landing/landing.routes')
     },
     {
-        path: 'dashboard',
+        path: DASHBOARD_PATH,
         component: AppLayout,
         canActivate: [isConnectedGuard],
         children: [
             { path: '', component: Dashboard },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
-            { path: 'settings', component: SettingsComponent },
+
+            { path: SETTINGS_PATH, component: SettingsComponent },
             {
-                path: 'reservation',
+                path: RESERVATION_PATH,
                 loadChildren: () => import('./app/modules/reservation/reservation.routes')
             },
             {
-                path: 'profile',
+                path: PROFILE_PATH,
                 loadChildren: () => import('./app/modules/profile/profile.routes')
             },
             {
-                path: 'success',
+                path: SUCCESS_PATH,
                 component: PaymentSuccessComponent
             },
             {
-                path: 'cancel',
+                path: CANCEL_PATH,
                 component: PaymentFailedComponent
             },
             {
-                path: 'students-list',
+                path: STUDENTS_LIST_PATH,
                 component: StudentListComponent,
                 canActivate: [isAdminOnlyGuard]
             },
             {
-                path: 'contact',
+                path: CONTACT_PATH,
                 component: ContactComponent
             }
         ]
@@ -58,6 +69,14 @@ export const appRoutes: Routes = [
         loadChildren: () => import('./app/modules/auth/auth.routes')
     },
 
-    { path: 'notfound', component: Notfound },
+    {
+        // Import auth routes from ./app/modules/auth/auth.routes.ts file
+        path: '',
+        loadChildren: () => import('./app/modules/auth/auth.routes')
+    },
+    {
+        path: 'notfound',
+        component: Notfound
+    },
     { path: '**', redirectTo: '/notfound' }
 ];

@@ -6,105 +6,13 @@ import { ConfigurableFormComponent } from '../../../../generic-components/config
 import { FormField, Structure } from '../../../../generic-components/configurable-form/related-models';
 import { FormGroup, Validators } from '@angular/forms';
 import { ConfigurableFormExampleComponent } from '../../../../generic-components/configurable-form/configurable-form-example';
+import { ConfigurableGridComponent } from '../../../../generic-components/configurable-grid/configurable-grid.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-test-page',
-    imports: [ConfigurableTableComponent, ChipModule, ConfigurableFormComponent, ConfigurableFormExampleComponent],
+    imports: [ConfigurableGridComponent, CommonModule],
     templateUrl: './test-page.component.html',
     styleUrl: './test-page.component.scss'
 })
-export class TestPageComponent implements AfterViewInit, OnInit {
-    userTableColumns: TableColumn[] = [
-        { field: 'id', header: 'ID', sortable: true },
-        { field: 'name', header: 'Nom', filter: true },
-        { field: 'email', header: 'Email', filter: true },
-        { field: 'createdAt', header: 'Créé le', type: 'date' }
-    ];
-
-    users = [
-        { id: 1, name: 'John Doe', email: 'john.doe@example.com', createdAt: new Date() },
-        { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', createdAt: new Date() },
-        { id: 3, name: 'Alice Johnson', email: 'alice.johnson@example.com', createdAt: new Date() }
-    ];
-
-    ngAfterViewInit(): void {
-        this.userTableColumns = [
-            { field: 'id', header: 'ID', sortable: true, templateName: 'chipTemplate' },
-            { field: 'name', header: 'Nom', filter: true },
-            { field: 'email', header: 'Email', filter: true },
-            { field: 'createdAt', header: 'Créé le', type: 'date' }
-        ];
-    }
-
-    formConfig: Structure = {
-        id: 'formConfig',
-        name: 'formConfig',
-        label: 'formConfig',
-        description: 'formConfig',
-        icon: 'pi pi-user',
-        styleClass: 'form-config',
-        formFieldGroups: [
-            {
-                id: 'Personnal infos',
-                name: 'Personnal infos',
-                description: 'Personnal infos',
-                icon: 'pi pi-user',
-                fields: [
-                    {
-                        id: 'firstName',
-                        name: 'firstName',
-                        label: 'Prénom',
-                        type: 'text',
-                        validation: [Validators.required, Validators.minLength(3)]
-                    },
-                    {
-                        id: 'lastName',
-                        name: 'lastName',
-                        label: 'Nom',
-                        type: 'text',
-                        validation: [Validators.required, Validators.minLength(3)]
-                    },
-                    {
-                        id: 'color',
-                        name: 'color',
-                        label: 'Couleur',
-                        type: 'color',
-                        validation: [Validators.required]
-                    }
-                ]
-            },
-            {
-                id: 'email',
-                name: 'email',
-                description: 'Adresse e-mail',
-                icon: 'pi pi-envelope',
-                fields: [
-                    {
-                        id: 'email',
-                        name: 'email',
-                        label: 'Adresse e-mail',
-                        type: 'email',
-                        validation: [Validators.required, Validators.email]
-                    }
-                ]
-            },
-            {
-                id: 'age',
-                name: 'age',
-                description: 'Âge',
-                icon: 'pi pi-calendar',
-                fields: [
-                    {
-                        id: 'age',
-                        name: 'age',
-                        label: 'Âge',
-                        type: 'number',
-                        validation: [Validators.min(18)]
-                    }
-                ]
-            }
-        ]
-    };
-
-    ngOnInit(): void {}
-}
+export class TestPageComponent {}

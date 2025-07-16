@@ -56,7 +56,6 @@ export type { NotificationResponseDTO } from './models/NotificationResponseDTO';
 export type { NotificationResponseDTOPaginatedNotificationResult } from './models/NotificationResponseDTOPaginatedNotificationResult';
 export type { NotificationResponseDTOPaginatedNotificationResultResponseDTO } from './models/NotificationResponseDTOPaginatedNotificationResultResponseDTO';
 export type { NotificationResponseDTOResponseDTO } from './models/NotificationResponseDTOResponseDTO';
-export type { ObjectIEnumerableResponseDTO } from './models/ObjectIEnumerableResponseDTO';
 export type { ObjectResponseDTO } from './models/ObjectResponseDTO';
 export type { Order } from './models/Order';
 export type { OrderPagination } from './models/OrderPagination';
@@ -67,6 +66,8 @@ export type { OrderResponseForTeacherDTO } from './models/OrderResponseForTeache
 export type { OrderResponseForTeacherDTOListResponseDTO } from './models/OrderResponseForTeacherDTOListResponseDTO';
 export type { OrderResponseForTeacherDTOResponseDTO } from './models/OrderResponseForTeacherDTOResponseDTO';
 export type { PasswordRecoveryInput } from './models/PasswordRecoveryInput';
+export type { PasswordResetResponseDTO } from './models/PasswordResetResponseDTO';
+export type { PasswordResetResponseDTOResponseDTO } from './models/PasswordResetResponseDTOResponseDTO';
 export type { QueryPagination } from './models/QueryPagination';
 export type { Slot } from './models/Slot';
 export type { SlotCreateDTO } from './models/SlotCreateDTO';
@@ -82,6 +83,10 @@ export type { UserBanDTO } from './models/UserBanDTO';
 export type { UserCreateDTO } from './models/UserCreateDTO';
 export type { UserLoginDTO } from './models/UserLoginDTO';
 export type { UserResponseDTO } from './models/UserResponseDTO';
+export type { UserResponseDTOResponseDTO } from './models/UserResponseDTOResponseDTO';
+export type { UserResponseDTOResponseDTOResponseDTO } from './models/UserResponseDTOResponseDTOResponseDTO';
+export type { UserResponseDTOResponsePagination } from './models/UserResponseDTOResponsePagination';
+export type { UserResponseDTOResponsePaginationResponseDTO } from './models/UserResponseDTOResponsePaginationResponseDTO';
 export type { UserUpdateDTO } from './models/UserUpdateDTO';
 
 export { ActivitiesService } from './services/ActivitiesService';

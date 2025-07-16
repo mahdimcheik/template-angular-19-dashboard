@@ -6,65 +6,62 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import type { Observable } from 'rxjs';
 import type { ForgotPasswordInput } from '../models/ForgotPasswordInput';
+import type { LoginOutputDTO } from '../models/LoginOutputDTO';
 import type { LoginOutputDTOResponseDTO } from '../models/LoginOutputDTOResponseDTO';
-import type { ObjectIEnumerableResponseDTO } from '../models/ObjectIEnumerableResponseDTO';
 import type { ObjectResponseDTO } from '../models/ObjectResponseDTO';
 import type { PasswordRecoveryInput } from '../models/PasswordRecoveryInput';
+import type { PasswordResetResponseDTOResponseDTO } from '../models/PasswordResetResponseDTOResponseDTO';
+import type { StringResponseDTO } from '../models/StringResponseDTO';
 import type { UserCreateDTO } from '../models/UserCreateDTO';
 import type { UserLoginDTO } from '../models/UserLoginDTO';
+import type { UserResponseDTOResponseDTO } from '../models/UserResponseDTOResponseDTO';
+import type { UserResponseDTOResponseDTOResponseDTO } from '../models/UserResponseDTOResponseDTOResponseDTO';
+import type { UserResponseDTOResponsePaginationResponseDTO } from '../models/UserResponseDTOResponsePaginationResponseDTO';
 import type { UserUpdateDTO } from '../models/UserUpdateDTO';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class UsersService {
     constructor(public readonly http: HttpClient) {}
     /**
      * @param requestBody
-     * @returns any OK
+     * @returns UserResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public postUsersRegister(
-        requestBody?: UserCreateDTO,
-    ): Observable<any> {
+    public postUsersRegister(requestBody?: UserCreateDTO): Observable<UserResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/register',
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: 'application/json'
         });
     }
     /**
      * @param requestBody
-     * @returns any OK
+     * @returns UserResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public patchUsersUpdate(
-        requestBody?: UserUpdateDTO,
-    ): Observable<any> {
+    public patchUsersUpdate(requestBody?: UserUpdateDTO): Observable<UserResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'PATCH',
             url: '/users/update',
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: 'application/json'
         });
     }
     /**
      * @param formData
-     * @returns any OK
+     * @returns UserResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public postUsersUploadAvatar(
-        formData?: {
-            file?: Blob;
-        },
-    ): Observable<any> {
+    public postUsersUploadAvatar(formData?: { file?: Blob }): Observable<UserResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/upload-avatar',
             formData: formData,
-            mediaType: 'multipart/form-data',
+            mediaType: 'multipart/form-data'
         });
     }
     /**
@@ -72,43 +69,38 @@ export class UsersService {
      * @returns LoginOutputDTOResponseDTO OK
      * @throws ApiError
      */
-    public postUsersLogin(
-        requestBody?: UserLoginDTO,
-    ): Observable<LoginOutputDTOResponseDTO> {
+    public postUsersLogin(requestBody?: UserLoginDTO): Observable<LoginOutputDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/login',
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: 'application/json'
         });
     }
     /**
      * @param userId
      * @param confirmationToken
-     * @returns ObjectResponseDTO OK
+     * @returns StringResponseDTO OK
      * @throws ApiError
      */
-    public getUsersEmailConfirmation(
-        userId?: string,
-        confirmationToken?: string,
-    ): Observable<ObjectResponseDTO> {
+    public getUsersEmailConfirmation(userId?: string, confirmationToken?: string): Observable<StringResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
             url: '/users/email-confirmation',
             query: {
-                'userId': userId,
-                'confirmationToken': confirmationToken,
-            },
+                userId: userId,
+                confirmationToken: confirmationToken
+            }
         });
     }
     /**
-     * @returns any OK
+     * @returns UserResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public getUsersResendConfirmationLink(): Observable<any> {
+    public getUsersResendConfirmationLink(): Observable<UserResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/resend-confirmation-link',
+            url: '/users/resend-confirmation-link'
         });
     }
     /**
@@ -118,92 +110,83 @@ export class UsersService {
     public getUsersMyInformations(): Observable<ObjectResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/my-informations',
+            url: '/users/my-informations'
         });
     }
     /**
      * @param userId
-     * @returns ObjectResponseDTO OK
+     * @returns UserResponseDTOResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public getUsersPublicInformations(
-        userId?: string,
-    ): Observable<ObjectResponseDTO> {
+    public getUsersPublicInformations(userId?: string): Observable<UserResponseDTOResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
             url: '/users/public-informations',
             query: {
-                'userId': userId,
-            },
+                userId: userId
+            }
         });
     }
     /**
      * @param requestBody
-     * @returns ObjectResponseDTO OK
+     * @returns PasswordResetResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public postUsersForgotPassword(
-        requestBody?: ForgotPasswordInput,
-    ): Observable<ObjectResponseDTO> {
+    public postUsersForgotPassword(requestBody?: ForgotPasswordInput): Observable<PasswordResetResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/forgot-password',
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: 'application/json'
         });
     }
     /**
      * @param requestBody
-     * @returns ObjectResponseDTO OK
+     * @returns StringResponseDTO OK
      * @throws ApiError
      */
-    public postUsersResetPassword(
-        requestBody?: PasswordRecoveryInput,
-    ): Observable<ObjectResponseDTO> {
+    public postUsersResetPassword(requestBody?: PasswordRecoveryInput): Observable<StringResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/reset-password',
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: 'application/json'
         });
     }
     /**
-     * @returns any OK
+     * @returns LoginOutputDTO OK
      * @throws ApiError
      */
-    public getUsersRefreshToken(): Observable<any> {
+    public getUsersRefreshToken(): Observable<LoginOutputDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/refresh-token',
+            url: '/users/refresh-token'
         });
     }
     /**
      * @param first
      * @param rows
-     * @returns ObjectIEnumerableResponseDTO OK
+     * @returns UserResponseDTOResponsePaginationResponseDTO OK
      * @throws ApiError
      */
-    public getUsersAll(
-        first?: number,
-        rows?: number,
-    ): Observable<ObjectIEnumerableResponseDTO> {
+    public getUsersAll(first?: number, rows?: number): Observable<UserResponseDTOResponsePaginationResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
             url: '/users/all',
             query: {
-                'first': first,
-                'rows': rows,
-            },
+                first: first,
+                rows: rows
+            }
         });
     }
     /**
-     * @returns any OK
+     * @returns ObjectResponseDTO OK
      * @throws ApiError
      */
-    public getUsersLogout(): Observable<any> {
+    public getUsersLogout(): Observable<ObjectResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/logout',
+            url: '/users/logout'
         });
     }
     /**
@@ -213,7 +196,7 @@ export class UsersService {
     public getUsersSeed(): Observable<any> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/seed',
+            url: '/users/seed'
         });
     }
 }

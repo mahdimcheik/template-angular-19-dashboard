@@ -16,9 +16,9 @@ import { ForgotPasswordInput } from '../../api/models/ForgotPasswordInput';
 import { PasswordRecoveryInput } from '../../api/models/PasswordRecoveryInput';
 import { LoginOutputDTOResponseDTO } from '../../api/models/LoginOutputDTOResponseDTO';
 import { ObjectResponseDTO } from '../../api/models/ObjectResponseDTO';
-import { ObjectIEnumerableResponseDTO } from '../../api/models/ObjectIEnumerableResponseDTO';
 import { CookieConsentService } from './cookie-consent.service';
 import { EnumGender, GenderDropDown } from '../../shared/models/user';
+import { UserResponseDTOResponsePaginationResponseDTO } from '../../api/models/UserResponseDTOResponsePaginationResponseDTO';
 
 // Type aliases for backward compatibility
 export type { UserResponseDTO, UserCreateDTO, UserUpdateDTO, UserLoginDTO };
@@ -116,7 +116,7 @@ export class UserMainService {
 
     getUsers(first: number, rows: number): Observable<ResponseDTO> {
         return this.generatedUsersService.getUsersAll(first, rows).pipe(
-            switchMap((response: ObjectIEnumerableResponseDTO) => {
+            switchMap((response: UserResponseDTOResponsePaginationResponseDTO) => {
                 const legacyResponse: ResponseDTO = {
                     message: response.message || '',
                     status: response.status || 200,

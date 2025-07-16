@@ -5,8 +5,10 @@ import { registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 import { OpenAPI } from './app/api/core/OpenAPI';
 import { environment } from './environments/environment';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 OpenAPI.BASE = environment.BACK_URL;
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 registerLocaleData(fr.default);
 

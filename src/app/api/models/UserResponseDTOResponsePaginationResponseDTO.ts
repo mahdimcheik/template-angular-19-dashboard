@@ -2,10 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type ObjectIEnumerableResponseDTO = {
+import type { UserResponseDTOResponsePagination } from './UserResponseDTOResponsePagination';
+export type UserResponseDTOResponsePaginationResponseDTO = {
     message?: string | null;
     status?: number | null;
-    data?: Array<any> | null;
+    data?: UserResponseDTOResponsePagination;
     count?: number | null;
 };
 
