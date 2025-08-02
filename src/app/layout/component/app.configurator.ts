@@ -45,11 +45,11 @@ declare type SurfacesType = {
         <div class="flex flex-col gap-2">
             <div *ngIf="showMenuModeButton()" class="flex flex-col gap-2 border-2 border-indigo-200 rounded-lg pl-2 ">
                 <span class="text-lg text-muted-color font-bold">Position du menu latéral</span>
+                <!-- static ou overlay -->
                 <p-selectbutton [ngModel]="menuMode()" (ngModelChange)="onMenuModeChange($event)" [options]="menuModeOptions" [allowEmpty]="false" size="small" />
             </div>
             <div class="flex flex-col gap-4 w-full border-2 border-indigo-200 rounded-lg pl-2 pb-2">
                 <span class="text-lg text-muted-color font-bold">Palette de couleur</span>
-
                 <div class="pl-4">
                     <span class="text-lg text-muted-color font-bold">Couleur primaire</span>
                     <div class="pt-2 flex gap-2 flex-wrap justify-start">
@@ -269,16 +269,17 @@ export class AppConfigurator {
     menuMode = computed(() => this.layoutService.layoutConfig().menuMode);
 
     primaryColors = computed<SurfacesType[]>(() => {
-        const presetPalette = presets[this.layoutService.layoutConfig().preset as KeyOfType<typeof presets>].primitive;
+        const presetPalette = presets[this.layoutService.layoutConfig().preset as KeyOfType<typeof presets>].primitive; // palette de couleur du preset de primeng
         const colors = ['emerald', 'green', 'lime', 'orange', 'amber', 'yellow', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
         const palettes: SurfacesType[] = [{ name: 'noir', palette: {} }];
 
         colors.forEach((color) => {
             palettes.push({
                 name: color,
-                palette: presetPalette?.[color as KeyOfType<typeof presetPalette>] as SurfacesType['palette']
+                palette: presetPalette?.[color as KeyOfType<typeof presetPalette>] as SurfacesType['palette'] //
             });
         });
+        console.log(presetPalette);
 
         return palettes;
     });

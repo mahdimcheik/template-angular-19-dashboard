@@ -19,10 +19,8 @@ import { ToastModule } from 'primeng/toast';
             <div class="layout-main">
                 <router-outlet></router-outlet>
             </div>
-            <!-- <app-footer></app-footer> -->
         </div>
         <div class="layout-mask animate-fadein"></div>
-        <!-- <p-toast></p-toast> -->
     </div> `
 })
 export class AppLayout {

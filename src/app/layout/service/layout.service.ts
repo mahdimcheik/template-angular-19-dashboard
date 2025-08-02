@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { LocalstorageService } from '../../shared/services/localstorage.service';
 
 export interface layoutConfig {
-    preset?: string;
+    preset?: string; // Aura, Fluent, Material, Bootstrap, ...
     primary?: string;
     surface?: string | undefined | null;
     darkTheme?: boolean;
