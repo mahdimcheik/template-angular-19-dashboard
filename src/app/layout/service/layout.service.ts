@@ -3,9 +3,6 @@ import { Subject } from 'rxjs';
 import { LocalstorageService } from '../../shared/services/localstorage.service';
 
 export interface layoutConfig {
-    preset?: string; // Aura, Fluent, Material, Bootstrap, ...
-    primary?: string;
-    surface?: string | undefined | null;
     darkTheme?: boolean;
     menuMode?: string;
 }
@@ -28,9 +25,6 @@ interface MenuChangeEvent {
 })
 export class LayoutService {
     _config: layoutConfig = {
-        preset: 'Aura',
-        primary: 'emerald',
-        surface: null,
         darkTheme: false,
         menuMode: 'static'
     };
@@ -65,15 +59,9 @@ export class LayoutService {
 
     overlayOpen$ = this.overlayOpen.asObservable();
 
-    theme = computed(() => (this.layoutConfig()?.darkTheme ? 'light' : 'dark'));
-
     isSidebarActive = computed(() => this.layoutState().overlayMenuActive || this.layoutState().staticMenuMobileActive);
 
     isDarkTheme = computed(() => this.layoutConfig().darkTheme);
-
-    getPrimary = computed(() => this.layoutConfig().primary);
-
-    getSurface = computed(() => this.layoutConfig().surface);
 
     isOverlay = computed(() => this.layoutConfig().menuMode === 'overlay');
 
