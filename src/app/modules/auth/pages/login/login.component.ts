@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
                 id: 'login',
                 name: 'login',
                 description: 'Veuillez remplir les champs obligatoires',
-                styleClass: 'w-[50rem]',
+                styleClass: 'min-w-[30rem]',
 
                 fields: [
                     {

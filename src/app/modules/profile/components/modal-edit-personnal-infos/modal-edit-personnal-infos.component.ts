@@ -70,7 +70,6 @@ export class ModalEditPersonnalInfosComponent {
             label: 'Informations personnelles',
             description: 'Veuillez remplir les champs obligatoires',
             imgUrl: this.imgUrl(),
-
             formFieldGroups: [
                 {
                     id: 'personnalInfos',
@@ -86,7 +85,6 @@ export class ModalEditPersonnalInfosComponent {
                             placeholder: 'Prénom',
                             required: true,
                             value: this.user().firstName,
-                            validation: [Validators.required, Validators.minLength(3), Validators.maxLength(20)],
                             order: 1
                         },
                         {
@@ -147,8 +145,7 @@ export class ModalEditPersonnalInfosComponent {
                             type: 'text',
                             placeholder: 'Numéro de téléphone',
                             value: this.user().phoneNumber ?? '',
-                            order: 7,
-                            fullWidth: true
+                            order: 7
                         }
                     ]
                 },
