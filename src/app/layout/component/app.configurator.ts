@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { LayoutService } from '../service/layout.service';
-import { LocalstorageService } from '../../shared/services/localstorage.service';
 
 @Component({
     selector: 'app-configurator',
@@ -29,7 +28,6 @@ import { LocalstorageService } from '../../shared/services/localstorage.service'
 export class AppConfigurator {
     router = inject(Router);
     layoutService: LayoutService = inject(LayoutService);
-    localstorageService = inject(LocalstorageService);
     platformId = inject(PLATFORM_ID);
 
     showMenuModeButton = signal(!this.router.url.includes('auth'));
@@ -44,32 +42,16 @@ export class AppConfigurator {
         { label: 'Overlay', value: 'overlay' }
     ];
 
-    isDarkTheme = computed(() => this.layoutService.layoutConfig().darkTheme);
+    isDarkTheme = computed(() => this.layoutService.isDarkTheme());
     menuMode = computed(() => this.layoutService.layoutConfig().menuMode);
-
-    ngOnInit() {
-        if (isPlatformBrowser(this.platformId)) {
-            // Initialize dark mode on component load
-            this.toggleDarkMode(this.isDarkTheme() ?? false);
-        }
-    }
 
     onDarkModeChange(isDark: boolean) {
         this.layoutService.layoutConfig.update((prev) => ({ ...prev, darkTheme: isDark }));
-        this.toggleDarkMode(isDark);
-        this.localstorageService.setLayoutConfig(this.layoutService.layoutConfig());
+        this.layoutService.applyDarkMode();
+        this.layoutService.saveConfig();
     }
 
     onMenuModeChange(menuMode: string) {
-        this.layoutService.layoutConfig.update((prev) => ({ ...prev, menuMode }));
-        this.localstorageService.setLayoutConfig(this.layoutService.layoutConfig());
-    }
-
-    private toggleDarkMode(isDark: boolean) {
-        if (isDark) {
-            document.documentElement.classList.add('app-dark');
-        } else {
-            document.documentElement.classList.remove('app-dark');
-        }
+        this.layoutService.setMenuMode(menuMode as 'static' | 'overlay');
     }
 }

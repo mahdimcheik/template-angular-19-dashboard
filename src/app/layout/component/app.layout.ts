@@ -24,8 +24,6 @@ import { ToastModule } from 'primeng/toast';
     </div> `
 })
 export class AppLayout {
-    overlayMenuOpenSubscription: Subscription;
-
     menuOutsideClickListener: any;
 
     @ViewChild(AppSidebar) appSidebar!: AppSidebar;
@@ -37,20 +35,6 @@ export class AppLayout {
         public renderer: Renderer2,
         public router: Router
     ) {
-        this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
-            if (!this.menuOutsideClickListener) {
-                this.menuOutsideClickListener = this.renderer.listen('document', 'click', (event) => {
-                    if (this.isOutsideClicked(event)) {
-                        this.hideMenu();
-                    }
-                });
-            }
-
-            if (this.layoutService.layoutState().staticMenuMobileActive) {
-                this.blockBodyScroll();
-            }
-        });
-
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
             this.hideMenu();
         });
@@ -65,7 +49,7 @@ export class AppLayout {
     }
 
     hideMenu() {
-        this.layoutService.layoutState.update((prev) => ({ ...prev, overlayMenuActive: false, staticMenuMobileActive: false, menuHoverActive: false }));
+        this.layoutService.closeSidebar();
         if (this.menuOutsideClickListener) {
             this.menuOutsideClickListener();
             this.menuOutsideClickListener = null;
@@ -93,17 +77,13 @@ export class AppLayout {
         return {
             'layout-overlay': this.layoutService.layoutConfig().menuMode === 'overlay',
             'layout-static': this.layoutService.layoutConfig().menuMode === 'static',
-            'layout-static-inactive': this.layoutService.layoutState().staticMenuDesktopInactive && this.layoutService.layoutConfig().menuMode === 'static',
-            'layout-overlay-active': this.layoutService.layoutState().overlayMenuActive,
-            'layout-mobile-active': this.layoutService.layoutState().staticMenuMobileActive
+            'layout-static-inactive': this.layoutService.isMenuDesktopInactive() && this.layoutService.layoutConfig().menuMode === 'static',
+            'layout-overlay-active': this.layoutService.isSidebarActive(),
+            'layout-mobile-active': this.layoutService.isMenuMobileActive()
         };
     }
 
     ngOnDestroy() {
-        if (this.overlayMenuOpenSubscription) {
-            this.overlayMenuOpenSubscription.unsubscribe();
-        }
-
         if (this.menuOutsideClickListener) {
             this.menuOutsideClickListener();
         }
