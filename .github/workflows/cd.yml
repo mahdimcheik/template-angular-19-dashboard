@@ -1,11 +1,16 @@
 name: CD Pipeline for Angular Project
 
+# on:
+#   workflow_run:
+#     workflows:
+#       - "CI Pipeline for Angular Project"
+#     types:
+#       - completed
+
 on:
-  workflow_run:
-    workflows:
-      - "CI Pipeline for Angular Project"
-    types:
-      - completed
+  push:
+      branches:
+          - main
 
 jobs:
   deploy:
@@ -22,10 +27,10 @@ jobs:
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
             password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-files
+      # - name: Download build artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-files
 
 
       # Step 2: build the docker image 
