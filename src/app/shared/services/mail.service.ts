@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Email } from '../models/email';
+import { Email } from '../../api';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
 

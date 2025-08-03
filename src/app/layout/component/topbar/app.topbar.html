@@ -1,11 +1,6 @@
 <header class="layout-topbar">
     <div class="layout-topbar-logo-container">
-        <button
-            class="layout-menu-button layout-topbar-action"
-            aria-label="Ouvrir le menu de navigation"
-            (click)="layoutService.onMenuToggle()"
-            [attr.aria-expanded]="layoutService.layoutState().overlayMenuActive || layoutService.layoutState().staticMenuMobileActive"
-        >
+        <button class="layout-menu-button layout-topbar-action" aria-label="Ouvrir le menu de navigation" (click)="layoutService.toggleSidebar()" [attr.aria-expanded]="layoutService.isSidebarActive()">
             <i class="pi pi-bars"></i>
         </button>
         <a class="layout-topbar-logo ml-2" routerLink="/">

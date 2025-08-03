@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { ResponseDTO, UserBanDTO, UserResponseDTO } from '../models/user';
+import { UserBanDTO } from '../../api';
 import { catchError, map, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
+import { ResponseDTO } from './userMain.service';
 
 @Injectable({
     providedIn: 'root'
