@@ -33,11 +33,11 @@ jobs:
 
       # Step 2: build the docker image 
       - name: Build the docker image
-        run: docker build -t mahdimcheik/skillhive:prod .
+        run: docker build -t mahdimcheik/skill-hive-front:prod .
 
       # Step 3: Push the docker image to the docker hub
       - name: Push the docker image to the docker hub
-        run: docker push mahdimcheik/skillhive:prod
+        run: docker push mahdimcheik/skill-hive-front:prod
 
 
 
@@ -49,5 +49,5 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
           script: |
-            docker pull mahdimcheik/skillhive:prod
+            docker pull mahdimcheik/skill-hive-front:prod
             docker compose -f /root/skillhive/frontend/docker-compose.yml up -d
