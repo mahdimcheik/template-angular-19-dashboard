@@ -14,10 +14,12 @@ import { ToastModule } from 'primeng/toast';
     imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, ToastModule], //AppFooter,
     template: `<div class="layout-wrapper" [ngClass]="containerClass">
         <app-topbar></app-topbar>
-        <app-sidebar></app-sidebar>
-        <div class="layout-main-container">
-            <div class="layout-main">
-                <router-outlet></router-outlet>
+        <div>
+            <app-sidebar></app-sidebar>
+            <div class="layout-main-container">
+                <div class="layout-main">
+                    <router-outlet></router-outlet>
+                </div>
             </div>
         </div>
         <div class="layout-mask animate-fadein"></div>
