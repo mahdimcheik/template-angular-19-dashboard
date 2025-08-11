@@ -30,7 +30,7 @@ export class LayoutService {
     constructor() {
         // Load saved configuration from localStorage
         const savedConfig = this.localStorageService.getLayoutConfig();
-        if (savedConfig) {
+        if (savedConfig && Object.keys(savedConfig).length > 0) {
             this.layoutConfig.set(savedConfig);
         }
 
