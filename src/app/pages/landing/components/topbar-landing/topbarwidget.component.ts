@@ -47,8 +47,7 @@ export class TopbarWidget {
     ];
 
     toggleDarkMode() {
-        this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
-        this.localStorageService.setLayoutConfig(this.layoutService.layoutConfig());
+        this.layoutService.toggleDarkMode();
     }
 
     toggleMenu(event: Event) {

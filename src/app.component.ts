@@ -17,11 +17,8 @@ import { CookieConsentBannerComponent } from './app/shared/components/cookie-con
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule, ToastModule, AppConfigurator, ProgressBarModule, CommonModule, OverlaySpinnerComponent, CookieConsentBannerComponent],
+    imports: [RouterModule, ToastModule, ProgressBarModule, CommonModule, OverlaySpinnerComponent, CookieConsentBannerComponent],
     template: `
-        <div class="hidden">
-            <app-configurator></app-configurator>
-        </div>
         <app-overlay-spinner></app-overlay-spinner>
         <div>
             @if (!connectionService.isOnline()) {

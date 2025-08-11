@@ -46,9 +46,7 @@ export class AppConfigurator {
     menuMode = computed(() => this.layoutService.layoutConfig().menuMode);
 
     onDarkModeChange(isDark: boolean) {
-        this.layoutService.layoutConfig.update((prev) => ({ ...prev, darkTheme: isDark }));
-        this.layoutService.applyDarkMode();
-        this.layoutService.saveConfig();
+        this.layoutService.toggleDarkMode();
     }
 
     onMenuModeChange(menuMode: string) {
