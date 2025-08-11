@@ -24,12 +24,12 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 
             <div class="flex items-center">
                 <p-radiobutton name="mode" value="unseen" [(ngModel)]="showMode" inputId="unseen" (onClick)="onFilterChange($event)" />
-                <label for="unseen" class="ml-2">Non-lues uniquement</label>
+                <label for="unseen" class="ml-2">Non-lues</label>
             </div>
 
             <div class="flex items-center">
                 <p-radiobutton name="mode" value="seen" [(ngModel)]="showMode" inputId="seen" (onClick)="onFilterChange($event)" />
-                <label for="seen" class="ml-2">Lues uniquement</label>
+                <label for="seen" class="ml-2">Lues</label>
             </div>
         </div>
 
