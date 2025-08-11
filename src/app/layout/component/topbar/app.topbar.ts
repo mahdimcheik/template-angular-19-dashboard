@@ -13,7 +13,7 @@ import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
 import { OrderMainService } from '../../../shared/services/orderMain.service';
 import { LocalstorageService } from '../../../shared/services/localstorage.service';
-import { NotificationsMainService } from '../../../shared/services/notification.service';
+import { NotificationMainService } from '../../../shared/services/notificationMain.service';
 
 @Component({
     selector: 'app-topbar',
@@ -26,6 +26,8 @@ export class AppTopbar implements OnInit {
     authService = inject(UserMainService);
     orderService = inject(OrderMainService);
     layoutService = inject(LayoutService);
+    localStorageService = inject(LocalstorageService);
+    notificationService = inject(NotificationMainService);
     router = inject(Router);
 
     currentOrder = this.orderService.currentOrder;
@@ -36,8 +38,6 @@ export class AppTopbar implements OnInit {
 
     user = this.authService.userConnected;
     isAdmin = computed(() => this.user().roles?.includes('Admin') ?? false);
-    localStorageService = inject(LocalstorageService);
-    notificationService = inject(NotificationsMainService);
 
     userItems = computed(() => {
         if (this.user().email) {
@@ -70,7 +70,7 @@ export class AppTopbar implements OnInit {
     });
 
     ngOnInit(): void {
-        this.notificationService.getNotifcationsCountByUserId().subscribe();
+        this.notificationService.getNotificationsCount().subscribe();
     }
 
     calendarLink = computed(() => {

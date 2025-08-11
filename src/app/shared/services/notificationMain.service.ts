@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { NotificationsService as GeneratedNotificationsService } from '../../api/services/NotificationsService';
 import { Notification } from '../../api/models/Notification';
@@ -15,6 +15,14 @@ export class NotificationMainService {
 
     notifications = signal<Notification[]>([] as Notification[]);
     notificationsCount = signal<number>(0);
+    unseenNotificationsCount = signal<number>(0);
+    unseencomputed = computed(() => {
+        if (this.unseenNotificationsCount() > 9) {
+            return '9+';
+        } else {
+            return this.unseenNotificationsCount().toString();
+        }
+    });
 
     getNotificationsByUserId(filter: NotificationFilter): Observable<ResponseDTO> {
         return this.generatedNotificationsService.postNotificationsUser(filter).pipe(
@@ -27,6 +35,15 @@ export class NotificationMainService {
             tap((response) => {
                 this.notifications.set(response.data?.items as Notification[]);
                 this.notificationsCount.set(response.count ?? 0);
+            })
+        );
+    }
+
+    getNotificationsCount(): Observable<number> {
+        return this.generatedNotificationsService.getNotificationsCount().pipe(
+            map((response) => response.data ?? 0),
+            tap((count) => {
+                this.unseenNotificationsCount.set(count);
             })
         );
     }

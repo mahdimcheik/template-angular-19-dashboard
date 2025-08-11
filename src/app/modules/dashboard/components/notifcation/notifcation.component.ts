@@ -8,10 +8,11 @@ import { NotificationMainService } from '../../../../shared/services/notificatio
 import { TooltipModule } from 'primeng/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { NotificationUrlPipe } from '../../../../shared/pipes/notification-url.pipe';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-notifcation',
-    imports: [CommonModule, NotifcationTypePipe, DateIndicatorPipe, ButtonModule, TooltipModule, RouterLink, NotificationUrlPipe],
+    imports: [CommonModule, NotifcationTypePipe, DateIndicatorPipe, ButtonModule, TooltipModule],
     templateUrl: './notifcation.component.html',
     styleUrl: './notifcation.component.scss'
 })
@@ -25,18 +26,25 @@ export class NotifcationComponent {
         isRead: undefined
     };
 
-    updateNotificationState(event: Event) {
+    async updateNotificationState(event: Event) {
         event.stopPropagation();
-        this.notificationService.updateNotification(this.notification().id!, !this.notification().isRead, this.initialfilter).subscribe();
+        try {
+            await firstValueFrom(this.notificationService.updateNotification(this.notification().id!, !this.notification().isRead, this.initialfilter));
+            await firstValueFrom(this.notificationService.getNotificationsCount());
+        } catch (error) {
+            console.error('Error updating notification:', error);
+        }
     }
-    onClickNotification(event: Event) {
-        event.stopPropagation();
-        this.notificationService.updateNotification(this.notification().id!, !this.notification().isRead, this.initialfilter).subscribe();
-    }
-    onContainerClick(event: Event) {
+
+    async onContainerClick(event: Event) {
         event.stopPropagation();
         if (!this.notification().isRead) {
-            this.notificationService.updateNotification(this.notification().id!, true, this.initialfilter).subscribe();
+            try {
+                await firstValueFrom(this.notificationService.updateNotification(this.notification().id!, true, this.initialfilter));
+                await firstValueFrom(this.notificationService.getNotificationsCount());
+            } catch (error) {
+                console.error('Error updating notification:', error);
+            }
         }
         const notificationTypegetter = new NotificationUrlPipe();
         console.log('redirection ', notificationTypegetter.transform(this.notification().type!));
