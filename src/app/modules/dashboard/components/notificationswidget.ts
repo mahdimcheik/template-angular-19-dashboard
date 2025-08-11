@@ -17,14 +17,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     template: `<div class="card">
         <div class="flex items-center gap-2 mb-6">
             <div class="font-semibold text-xl">Notifications</div>
-            <!-- <div class="flex items-center gap-2">
-                <p-checkbox inputId="all" [(ngModel)]="showAll" [binary]="true" (onChange)="onFilterAllChange($event)" />
-                <label for="all"> Toutes </label>
-            </div>
-            <div class="flex items-center gap-2">
-                <p-checkbox inputId="read" [(ngModel)]="readOnly" [binary]="true" (onChange)="onFilterReadOnlyChange($event)" />
-                <label for="read"> Non-lues uniquement? </label>
-            </div> -->
             <div class="flex items-center">
                 <p-radiobutton name="mode" value="all" [(ngModel)]="showMode" inputId="all" (onClick)="onFilterChange($event)" />
                 <label for="all" class="ml-2">Toutes</label>
