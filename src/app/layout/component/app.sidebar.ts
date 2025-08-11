@@ -10,5 +10,5 @@ import { AppMenu } from './menu/app.menu';
     </div>`
 })
 export class AppSidebar {
-    constructor(public el: ElementRef) {}
+    constructor() {}
 }

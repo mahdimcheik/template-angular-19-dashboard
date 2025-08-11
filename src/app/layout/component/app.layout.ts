@@ -12,7 +12,7 @@ import { ToastModule } from 'primeng/toast';
     selector: 'app-layout',
     standalone: true,
     imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, ToastModule], //AppFooter,
-    template: `<div class="layout-wrapper" [ngClass]="containerClass">
+    template: `<div class="layout-wrapper" [ngClass]="containerClass" (click)="isOutsideClicked($event)">
         <app-topbar></app-topbar>
         <app-sidebar></app-sidebar>
         <div class="layout-main-container">
@@ -25,10 +25,6 @@ import { ToastModule } from 'primeng/toast';
 })
 export class AppLayout {
     menuOutsideClickListener: any;
-
-    @ViewChild(AppSidebar) appSidebar!: AppSidebar;
-
-    @ViewChild(AppTopbar) appTopBar!: AppTopbar;
 
     constructor(
         public layoutService: LayoutService,
@@ -45,7 +41,9 @@ export class AppLayout {
         const topbarEl = document.querySelector('.layout-menu-button');
         const eventTarget = event.target as Node;
 
-        return !(sidebarEl?.isSameNode(eventTarget) || sidebarEl?.contains(eventTarget) || topbarEl?.isSameNode(eventTarget) || topbarEl?.contains(eventTarget));
+        if (!(sidebarEl?.isSameNode(eventTarget) || sidebarEl?.contains(eventTarget) || topbarEl?.isSameNode(eventTarget) || topbarEl?.contains(eventTarget))) {
+            this.hideMenu();
+        }
     }
 
     hideMenu() {
