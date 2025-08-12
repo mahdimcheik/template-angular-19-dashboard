@@ -7,10 +7,10 @@
 @use 'ag-grid-community/styles/ag-theme-alpine.css';
 
 * {
-    user-select: none; /* Prevents text selection */
+    user-select: none;
     caret-color: transparent;
 }
-// prevent selection caret from being visible
+
 input,
 textarea {
     caret-color: auto;

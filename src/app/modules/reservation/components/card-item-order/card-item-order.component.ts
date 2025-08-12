@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { ResponseDTO } from '../../../../shared/services/userMain.service';
 import { OrderMainService } from '../../../../shared/services/orderMain.service';
 import { EnumBookingStatus } from '../../../../api/models/EnumBookingStatus';
+import { LayoutService } from '../../../../layout/service/layout.service';
 
 @Component({
     selector: 'app-card-item-order',
@@ -21,6 +22,7 @@ import { EnumBookingStatus } from '../../../../api/models/EnumBookingStatus';
     styleUrl: './card-item-order.component.scss'
 })
 export class CardItemOrderComponent {
+    layoutService = inject(LayoutService);
     booking = input.required<BookingResponseDTO>();
     showDetails = signal(false);
     confirmDelete = signal(false);

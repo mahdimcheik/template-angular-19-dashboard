@@ -7,7 +7,9 @@
         </div>
     </div>
 
-    <app-card-item-order *ngFor="let booking of currentOrder().bookings" [booking]="booking" [orderNumber]="currentOrder().orderNumber!" [orderStatus]="currentOrder().status!"></app-card-item-order>
+    @for (booking of currentOrder().bookings; track booking.id) {
+        <app-card-item-order [booking]="booking" [orderNumber]="currentOrder().orderNumber!" [orderStatus]="currentOrder().status!"></app-card-item-order>
+    }
     <div class="flex sm:flex-row sm:items-center p-6 gap-4 justify-between bg-color-surface-100 dark:bg-color-surface-100">
         <span></span>
         <div class="flex flex-col">

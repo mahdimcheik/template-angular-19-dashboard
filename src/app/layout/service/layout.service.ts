@@ -22,12 +22,16 @@ export class LayoutService {
     isSidebarActive = signal(false);
     isMenuMobileActive = signal(false);
     isMenuDesktopInactive = signal(false);
+    isDesktop = signal(window.innerWidth > 991);
 
     // Computed properties
     isDarkTheme = computed(() => this.layoutConfig().darkTheme ?? false);
     isOverlay = computed(() => this.layoutConfig().menuMode === 'overlay');
 
     constructor() {
+        window.addEventListener('resize', () => {
+            this.isDesktop.set(window.innerWidth > 991);
+        });
         // Load saved configuration from localStorage
         const savedConfig = this.localStorageService.getLayoutConfig();
         if (savedConfig && Object.keys(savedConfig).length > 0) {
@@ -80,10 +84,10 @@ export class LayoutService {
         this.isMenuMobileActive.set(false);
     }
 
-    // Utility methods
-    isDesktop(): boolean {
-        return window.innerWidth > 991;
-    }
+    // // Utility methods
+    // isDesktop(): boolean {
+    //     return window.innerWidth > 991;
+    // }
 
     isMobile(): boolean {
         return !this.isDesktop();
