@@ -42,13 +42,12 @@ export class LoginComponent implements OnInit {
         label: 'Connexion',
         hideSubmitButton: true,
         hideCancelButton: true,
+        styleClass: 'max-w-[40rem] ',
         formFieldGroups: [
             {
                 id: 'login',
                 name: 'login',
                 description: 'Veuillez remplir les champs obligatoires',
-                styleClass: 'w-[50rem]',
-
                 fields: [
                     {
                         id: 'email',
