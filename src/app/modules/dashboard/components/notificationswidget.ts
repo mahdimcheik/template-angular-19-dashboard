@@ -15,21 +15,23 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     selector: 'app-notifications-widget',
     imports: [ButtonModule, MenuModule, NotifcationComponent, CommonModule, PaginatorModule, FormsModule, RadioButtonModule],
     template: `<div class="card">
-        <div class="flex items-center gap-2 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-6">
             <div class="font-semibold text-xl">Notifications</div>
-            <div class="flex items-center">
-                <p-radiobutton name="mode" value="all" [(ngModel)]="showMode" inputId="all" (onClick)="onFilterChange($event)" />
-                <label for="all" class="ml-2">Toutes</label>
-            </div>
+            <div class="flex flex-row gap-2">
+                <div class="flex items-center">
+                    <p-radiobutton name="mode" value="all" [(ngModel)]="showMode" inputId="all" (onClick)="onFilterChange($event)" />
+                    <label for="all" class="ml-2">Toutes</label>
+                </div>
 
-            <div class="flex items-center">
-                <p-radiobutton name="mode" value="unseen" [(ngModel)]="showMode" inputId="unseen" (onClick)="onFilterChange($event)" />
-                <label for="unseen" class="ml-2">Non-lues</label>
-            </div>
+                <div class="flex items-center">
+                    <p-radiobutton name="mode" value="unseen" [(ngModel)]="showMode" inputId="unseen" (onClick)="onFilterChange($event)" />
+                    <label for="unseen" class="ml-2">Non-lues</label>
+                </div>
 
-            <div class="flex items-center">
-                <p-radiobutton name="mode" value="seen" [(ngModel)]="showMode" inputId="seen" (onClick)="onFilterChange($event)" />
-                <label for="seen" class="ml-2">Lues</label>
+                <div class="flex items-center">
+                    <p-radiobutton name="mode" value="seen" [(ngModel)]="showMode" inputId="seen" (onClick)="onFilterChange($event)" />
+                    <label for="seen" class="ml-2">Lues</label>
+                </div>
             </div>
         </div>
 
