@@ -79,3 +79,13 @@ Pour cibler les elements HTML du formulaire generic
 }
 ```
 Parfois il est indispensable de cibler le formulaire en partant d'une classe exterieur, pour ne pas cibler les autres formulaire
+
+
+# note capacitor
+install => npm init @capacitor/app@latest
+
+build the project => npm run build --prod
+
+add android => npx cap add android
+sync => npx cap sync android
+run => npx cap open android
