@@ -21,7 +21,7 @@ import type { UserUpdateDTO } from '../models/UserUpdateDTO';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UsersService {
     constructor(public readonly http: HttpClient) {}
@@ -30,12 +30,14 @@ export class UsersService {
      * @returns UserResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public postUsersRegister(requestBody?: UserCreateDTO): Observable<UserResponseDTOResponseDTO> {
+    public postUsersRegister(
+        requestBody?: UserCreateDTO,
+    ): Observable<UserResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/register',
             body: requestBody,
-            mediaType: 'application/json'
+            mediaType: 'application/json',
         });
     }
     /**
@@ -43,12 +45,14 @@ export class UsersService {
      * @returns UserResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public patchUsersUpdate(requestBody?: UserUpdateDTO): Observable<UserResponseDTOResponseDTO> {
+    public patchUsersUpdate(
+        requestBody?: UserUpdateDTO,
+    ): Observable<UserResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'PATCH',
             url: '/users/update',
             body: requestBody,
-            mediaType: 'application/json'
+            mediaType: 'application/json',
         });
     }
     /**
@@ -56,12 +60,16 @@ export class UsersService {
      * @returns UserResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public postUsersUploadAvatar(formData?: { file?: Blob }): Observable<UserResponseDTOResponseDTO> {
+    public postUsersUploadAvatar(
+        formData?: {
+            file?: Blob;
+        },
+    ): Observable<UserResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/upload-avatar',
             formData: formData,
-            mediaType: 'multipart/form-data'
+            mediaType: 'multipart/form-data',
         });
     }
     /**
@@ -69,12 +77,14 @@ export class UsersService {
      * @returns LoginOutputDTOResponseDTO OK
      * @throws ApiError
      */
-    public postUsersLogin(requestBody?: UserLoginDTO): Observable<LoginOutputDTOResponseDTO> {
+    public postUsersLogin(
+        requestBody?: UserLoginDTO,
+    ): Observable<LoginOutputDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/login',
             body: requestBody,
-            mediaType: 'application/json'
+            mediaType: 'application/json',
         });
     }
     /**
@@ -83,14 +93,17 @@ export class UsersService {
      * @returns StringResponseDTO OK
      * @throws ApiError
      */
-    public getUsersEmailConfirmation(userId?: string, confirmationToken?: string): Observable<StringResponseDTO> {
+    public getUsersEmailConfirmation(
+        userId?: string,
+        confirmationToken?: string,
+    ): Observable<StringResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
             url: '/users/email-confirmation',
             query: {
-                userId: userId,
-                confirmationToken: confirmationToken
-            }
+                'userId': userId,
+                'confirmationToken': confirmationToken,
+            },
         });
     }
     /**
@@ -100,7 +113,7 @@ export class UsersService {
     public getUsersResendConfirmationLink(): Observable<UserResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/resend-confirmation-link'
+            url: '/users/resend-confirmation-link',
         });
     }
     /**
@@ -110,7 +123,7 @@ export class UsersService {
     public getUsersMyInformations(): Observable<ObjectResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/my-informations'
+            url: '/users/my-informations',
         });
     }
     /**
@@ -118,13 +131,15 @@ export class UsersService {
      * @returns UserResponseDTOResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public getUsersPublicInformations(userId?: string): Observable<UserResponseDTOResponseDTOResponseDTO> {
+    public getUsersPublicInformations(
+        userId?: string,
+    ): Observable<UserResponseDTOResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
             url: '/users/public-informations',
             query: {
-                userId: userId
-            }
+                'userId': userId,
+            },
         });
     }
     /**
@@ -132,12 +147,14 @@ export class UsersService {
      * @returns PasswordResetResponseDTOResponseDTO OK
      * @throws ApiError
      */
-    public postUsersForgotPassword(requestBody?: ForgotPasswordInput): Observable<PasswordResetResponseDTOResponseDTO> {
+    public postUsersForgotPassword(
+        requestBody?: ForgotPasswordInput,
+    ): Observable<PasswordResetResponseDTOResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/forgot-password',
             body: requestBody,
-            mediaType: 'application/json'
+            mediaType: 'application/json',
         });
     }
     /**
@@ -145,12 +162,14 @@ export class UsersService {
      * @returns StringResponseDTO OK
      * @throws ApiError
      */
-    public postUsersResetPassword(requestBody?: PasswordRecoveryInput): Observable<StringResponseDTO> {
+    public postUsersResetPassword(
+        requestBody?: PasswordRecoveryInput,
+    ): Observable<StringResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/users/reset-password',
             body: requestBody,
-            mediaType: 'application/json'
+            mediaType: 'application/json',
         });
     }
     /**
@@ -160,7 +179,7 @@ export class UsersService {
     public getUsersRefreshToken(): Observable<LoginOutputDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/refresh-token'
+            url: '/users/refresh-token',
         });
     }
     /**
@@ -169,14 +188,17 @@ export class UsersService {
      * @returns UserResponseDTOResponsePaginationResponseDTO OK
      * @throws ApiError
      */
-    public getUsersAll(first?: number, rows?: number): Observable<UserResponseDTOResponsePaginationResponseDTO> {
+    public getUsersAll(
+        first?: number,
+        rows?: number,
+    ): Observable<UserResponseDTOResponsePaginationResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
             url: '/users/all',
             query: {
-                first: first,
-                rows: rows
-            }
+                'first': first,
+                'rows': rows,
+            },
         });
     }
     /**
@@ -186,7 +208,7 @@ export class UsersService {
     public getUsersLogout(): Observable<ObjectResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/logout'
+            url: '/users/logout',
         });
     }
     /**
@@ -196,7 +218,7 @@ export class UsersService {
     public getUsersSeed(): Observable<any> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
-            url: '/users/seed'
+            url: '/users/seed',
         });
     }
 }
