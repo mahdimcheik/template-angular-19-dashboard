@@ -25,6 +25,7 @@ export type { BookingResponseDTOListResponseDTO } from './models/BookingResponse
 export type { Category } from './models/Category';
 export type { CategoryDTO } from './models/CategoryDTO';
 export type { CategoryIEnumerableResponseDTO } from './models/CategoryIEnumerableResponseDTO';
+export type { ChatMessage } from './models/ChatMessage';
 export type { CheckoutRequest } from './models/CheckoutRequest';
 export type { CreateCursusDto } from './models/CreateCursusDto';
 export type { Cursus } from './models/Cursus';

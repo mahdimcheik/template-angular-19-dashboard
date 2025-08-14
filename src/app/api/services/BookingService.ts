@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import type { Observable } from 'rxjs';
 import type { BookingCreateDTO } from '../models/BookingCreateDTO';
 import type { BookingResponseDTOListResponseDTO } from '../models/BookingResponseDTOListResponseDTO';
+import type { ChatMessage } from '../models/ChatMessage';
 import type { QueryPagination } from '../models/QueryPagination';
 import type { StringResponseDTO } from '../models/StringResponseDTO';
 import { OpenAPI } from '../core/OpenAPI';
@@ -45,6 +46,42 @@ export class BookingService {
             query: {
                 'slotId': slotId,
             },
+        });
+    }
+    /**
+     * @param bookingId
+     * @returns ChatMessage OK
+     * @throws ApiError
+     */
+    public getBookingCommunications(
+        bookingId: string,
+    ): Observable<Array<ChatMessage>> {
+        return __request(OpenAPI, this.http, {
+            method: 'GET',
+            url: '/booking/communications/{bookingId}',
+            path: {
+                'bookingId': bookingId,
+            },
+        });
+    }
+    /**
+     * @param bookingId
+     * @param requestBody
+     * @returns boolean OK
+     * @throws ApiError
+     */
+    public postBookingCommunicationsAddMessage(
+        bookingId: string,
+        requestBody?: ChatMessage,
+    ): Observable<boolean> {
+        return __request(OpenAPI, this.http, {
+            method: 'POST',
+            url: '/booking/communications/add-message/{bookingId}',
+            path: {
+                'bookingId': bookingId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
     /**

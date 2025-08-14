@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ChatMessage } from './ChatMessage';
 import type { EnumTypeHelp } from './EnumTypeHelp';
 import type { Order } from './Order';
 import type { Slot } from './Slot';
@@ -18,5 +19,6 @@ export type Booking = {
     subject?: string | null;
     description?: string | null;
     typeHelp?: EnumTypeHelp;
+    communications?: Array<ChatMessage> | null;
 };
 
