@@ -9,9 +9,10 @@ import { SlotUpdateDTO } from '../../api/models/SlotUpdateDTO';
 import { BookingCreateDTO } from '../../api/models/BookingCreateDTO';
 import { BookingResponseDTO } from '../../api/models/BookingResponseDTO';
 import { QueryPagination } from '../../api/models/QueryPagination';
+import { ChatMessage } from '../../api/models/ChatMessage';
 
 // Type aliases for backward compatibility
-export type { SlotResponseDTO, SlotCreateDTO, SlotUpdateDTO, BookingCreateDTO, BookingResponseDTO };
+export type { SlotResponseDTO, SlotCreateDTO, SlotUpdateDTO, BookingCreateDTO, BookingResponseDTO, ChatMessage };
 export type QueryPanigation = QueryPagination;
 
 @Injectable({
@@ -177,6 +178,15 @@ export class SlotMainService {
                 this.totalReservations.set(res.count ?? 0);
             })
         );
+    }
+
+    // Communication methods
+    getMessages(bookingId: string): Observable<ChatMessage[]> {
+        return this.generatedBookingService.getBookingCommunications(bookingId).pipe(map((messages) => messages || []));
+    }
+
+    addMessage(bookingId: string, message: ChatMessage): Observable<boolean> {
+        return this.generatedBookingService.postBookingCommunicationsAddMessage(bookingId, message).pipe(map((response) => response || false));
     }
 
     // Helper method to convert SlotResponseDTO to EventInput
