@@ -1,30 +1,77 @@
-import { Component, computed, inject, input, model, output } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { Component, computed, inject, input, model, output, signal, OnInit, effect } from '@angular/core';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { TooltipModule } from 'primeng/tooltip';
 import { BookingResponseDTO } from '../../../../api/models/BookingResponseDTO';
 import { EnumTypeHelp } from '../../../../api/models/EnumTypeHelp';
-import { Router } from '@angular/router';
+import { ChatMessage } from '../../../../api/models/ChatMessage';
+import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { UserMainService } from '../../../../shared/services/userMain.service';
+import { MessageService } from 'primeng/api';
+import { FormsModule } from '@angular/forms';
+import { finalize, firstValueFrom } from 'rxjs';
+import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 
 @Component({
     selector: 'app-modal-reservation-details',
     standalone: true,
-    imports: [CommonModule, DrawerModule, ButtonModule],
+    imports: [CommonModule, DrawerModule, ButtonModule, InputTextModule, TextareaModule, TooltipModule, FormsModule, DatePipe, HelpTypePipe],
     templateUrl: './modal-reservation-details.component.html',
     styleUrl: './modal-reservation-details.component.scss'
 })
-export class ModalReservationDetailsComponent {
-    private router = inject(Router);
+export class ModalReservationDetailsComponent implements OnInit {
+    private slotService = inject(SlotMainService);
+    private messageService = inject(MessageService);
     authService = inject(UserMainService);
 
     visibleRight = model<boolean>(false);
     reservation = input.required<BookingResponseDTO>();
     onClose = output<boolean>();
 
+    // Chat functionality
+    messages = signal<ChatMessage[]>([]);
+    newMessage = signal<string>('');
+    isLoadingMessages = signal<boolean>(false);
+    isSendingMessage = signal<boolean>(false);
+
+    ngOnInit() {
+        // Watch for modal visibility changes to load messages
+        effect(() => {
+            if (this.visibleRight() && this.reservation().id) {
+                this.loadMessages();
+            }
+        });
+    }
+
+    async loadMessages() {
+        const reservationId = this.reservation().id;
+        if (!reservationId) return;
+
+        this.isLoadingMessages.set(true);
+        try {
+            const messages = await firstValueFrom(this.slotService.getMessages(reservationId));
+            this.messages.set(messages || []);
+        } catch (error) {
+            console.error('Error loading messages:', error);
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'Impossible de charger les messages'
+            });
+        } finally {
+            this.isLoadingMessages.set(false);
+        }
+    }
+
     close() {
         this.visibleRight.set(false);
         this.onClose.emit(false);
+        // Reset chat state when closing
+        this.messages.set([]);
+        this.newMessage.set('');
     }
 
     formatDateTime(dateString: string | undefined): string {
@@ -54,31 +101,59 @@ export class ModalReservationDetailsComponent {
     }
 
     viewCommunications() {
+        // This method is now replaced by sendMessage functionality
+        this.sendMessage();
+    }
+
+    async sendMessage() {
+        const messageText = this.newMessage().trim();
         const reservationId = this.reservation().id;
-        if (reservationId) {
-            this.close();
-            this.router.navigate(['/dashboard/reservation/communications', reservationId]);
+
+        if (!messageText || !reservationId) return;
+
+        this.isSendingMessage.set(true);
+        try {
+            const currentUser = (this.authService as any).userConnected();
+            const message: ChatMessage = {
+                message: messageText,
+                author: `${currentUser?.firstName || ''} ${currentUser?.lastName || ''}`.trim() || 'Utilisateur',
+                date: new Date().toISOString()
+            };
+
+            const success = await firstValueFrom(this.slotService.addMessage(reservationId, message));
+
+            if (success) {
+                this.messages.update((messages) => [...messages, message]);
+                this.newMessage.set('');
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succès',
+                    detail: 'Message envoyé avec succès'
+                });
+            } else {
+                throw new Error('Failed to send message');
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: "Impossible d'envoyer le message"
+            });
+        } finally {
+            this.isSendingMessage.set(false);
         }
     }
 
-    getHelpType(typeHelp: EnumTypeHelp | undefined): string {
-        switch (typeHelp) {
-            case EnumTypeHelp._0:
-                return 'Autre';
-            case EnumTypeHelp._1:
-                return 'Aides aux devoirs';
-            case EnumTypeHelp._2:
-                return 'Péparation aux examens';
-            default:
-                return 'Non défini';
-        }
+    isCurrentUserMessage(message: ChatMessage): boolean {
+        const currentUser = this.authService.userConnected();
+        return currentUser.id === message.userId;
     }
 
-    formatCurrency(amount: number | undefined): string {
-        if (!amount) return '0,00 €';
-        return new Intl.NumberFormat('fr-FR', {
-            style: 'currency',
-            currency: 'EUR'
-        }).format(amount);
+    onKeyDown(event: KeyboardEvent) {
+        if (event.ctrlKey && event.key === 'Enter') {
+            event.preventDefault();
+            this.sendMessage();
+        }
     }
 }

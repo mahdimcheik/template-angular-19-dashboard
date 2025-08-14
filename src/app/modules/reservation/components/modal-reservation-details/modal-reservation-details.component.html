@@ -64,7 +64,7 @@
                     <div class="space-y-2 pl-6">
                         <div class="flex justify-between">
                             <span>Type d'aide:</span>
-                            <span class="font-medium">{{ getHelpType(res.typeHelp) }}</span>
+                            <span class="font-medium">{{ res.typeHelp ?? 0 | helpType }}</span>
                         </div>
                         @if (res.type) {
                             <div class="flex justify-between">
@@ -86,18 +86,18 @@
                     @if (res.price && res.price !== res.discountedPrice) {
                         <div class="flex justify-between">
                             <span>Prix initial:</span>
-                            <span class="line-through text-gray-500">{{ formatCurrency(res.price) }}</span>
+                            <span class="line-through text-gray-500">{{ res.price | currency: 'EUR' }}</span>
                         </div>
                     }
                     @if (res.reduction) {
                         <div class="flex justify-between">
                             <span>Réduction:</span>
-                            <span class="text-red-600 font-medium">-{{ formatCurrency(res.reduction) }}</span>
+                            <span class="text-red-600 font-medium">-{{ res.reduction | currency: 'EUR' }}</span>
                         </div>
                     }
                     <div class="flex justify-between border-t pt-2">
                         <span class="font-semibold">Prix final:</span>
-                        <span class="font-semibold text-lg text-primary">{{ formatCurrency(res.discountedPrice) }}</span>
+                        <span class="font-semibold text-lg text-primary">{{ res.discountedPrice | currency: 'EUR' }}</span>
                     </div>
                 </div>
             </div>
@@ -150,15 +150,72 @@
                     </div>
                 </div>
             }
+
+            <!-- Communications Section -->
+            @if (res.id) {
+                <div class="space-y-3">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-comments text-primary"></i>
+                        Communications
+                    </h5>
+
+                    <!-- Messages Container -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-80 overflow-y-auto">
+                        @if (isLoadingMessages()) {
+                            <div class="flex items-center justify-center py-8">
+                                <i class="pi pi-spin pi-spinner text-primary text-2xl"></i>
+                                <span class="ml-2">Chargement des messages...</span>
+                            </div>
+                        } @else if (messages().length === 0) {
+                            <div class="text-center py-8 text-gray-500">
+                                <i class="pi pi-comment text-4xl mb-2 block"></i>
+                                <p>Aucun message pour le moment</p>
+                                <p class="text-sm">Commencez la conversation ci-dessous</p>
+                            </div>
+                        } @else {
+                            <div class="space-y-3">
+                                @for (message of messages(); track $index) {
+                                    <div class="flex" [class.justify-end]="isCurrentUserMessage(message)" [class.justify-start]="!isCurrentUserMessage(message)">
+                                        <div
+                                            class="max-w-xs lg:max-w-md px-4 py-2 rounded-lg"
+                                            [class.bg-primary]="isCurrentUserMessage(message)"
+                                            [class.text-white]="isCurrentUserMessage(message)"
+                                            [class.bg-white]="!isCurrentUserMessage(message)"
+                                            [class.text-gray-800]="!isCurrentUserMessage(message)"
+                                            [class.shadow-sm]="!isCurrentUserMessage(message)"
+                                        >
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="text-xs font-medium" [class.text-primary-100]="isCurrentUserMessage(message)" [class.text-gray-600]="!isCurrentUserMessage(message)">
+                                                    {{ message.author }}
+                                                </span>
+                                                <span class="text-xs" [class.text-primary-200]="isCurrentUserMessage(message)" [class.text-gray-400]="!isCurrentUserMessage(message)">
+                                                    {{ message.date | date: 'short' }}
+                                                </span>
+                                            </div>
+                                            <p class="text-sm leading-relaxed">{{ message.message }}</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="flex gap-2">
+                        <textarea pTextarea [(ngModel)]="newMessage" placeholder="Tapez votre message..." rows="2" class="flex-1 resize-none" [disabled]="isSendingMessage()" (keydown)="onKeyDown($event)" maxlength="500"> </textarea>
+                        <p-button icon="pi pi-send" [disabled]="!newMessage().trim() || isSendingMessage()" [loading]="isSendingMessage()" (onClick)="sendMessage()" class="self-end" pTooltip="Ctrl + Entrée pour envoyer" tooltipPosition="top">
+                        </p-button>
+                    </div>
+
+                    <p class="text-xs text-gray-500 text-center">Appuyez sur Ctrl + Entrée pour envoyer rapidement</p>
+                </div>
+            }
         </div>
     }
 
     <ng-template pTemplate="footer">
         <div class="flex justify-end gap-3 pt-4 border-t">
             <p-button label="Fermer" severity="secondary" (onClick)="close()" />
-            @if (reservation().id) {
-                <p-button label="Voir les communications" icon="pi pi-comments" (onClick)="viewCommunications()" />
-            }
         </div>
     </ng-template>
 </p-drawer>

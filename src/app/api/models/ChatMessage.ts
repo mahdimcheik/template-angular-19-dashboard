@@ -3,8 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type ChatMessage = {
-    date?: string;
-    auteur?: string | null;
+    date?: string | null;
+    author?: string | null;
+    userId?: string | null;
     message?: string | null;
 };
 
