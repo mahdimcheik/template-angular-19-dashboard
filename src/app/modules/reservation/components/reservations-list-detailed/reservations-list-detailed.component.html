@@ -37,7 +37,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reservation>
-            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer" [pTooltip]="reservation.studentFirstName + ' ' + reservation.studentLastName" [tooltipPosition]="'top'" (click)="showDetailsModal(reservation)">
                 <td class="text-left">{{ reservation.orderNumber }}</td>
                 <td class="text-left">
                     <div class="flex items-center gap-2">
@@ -74,3 +74,6 @@
         </ng-template>
     </p-table>
 </div>
+
+<!-- Reservation Details Modal -->
+<app-modal-reservation-details [(visibleRight)]="visibleDetailsModal" [reservation]="selectedReservation()" (onClose)="closeDetailsModal()"> </app-modal-reservation-details>

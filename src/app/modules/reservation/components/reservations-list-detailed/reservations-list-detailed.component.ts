@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -13,11 +13,12 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
 import { Router } from '@angular/router';
+import { ModalReservationDetailsComponent } from '../modal-reservation-details/modal-reservation-details.component';
 
 @Component({
     selector: 'app-reservations-list-detailed',
     standalone: true,
-    imports: [CommonModule, TableModule, ButtonModule, InputTextModule, PaginatorModule, HelpTypePipe, IconFieldModule, InputIconModule, TooltipModule],
+    imports: [CommonModule, TableModule, ButtonModule, InputTextModule, PaginatorModule, HelpTypePipe, IconFieldModule, InputIconModule, TooltipModule, ModalReservationDetailsComponent],
     templateUrl: './reservations-list-detailed.component.html',
     styleUrls: ['./reservations-list-detailed.component.scss']
 })
@@ -34,6 +35,10 @@ export class ReservationsListDetailedComponent implements OnInit {
 
     first = 0;
     rows = 10;
+
+    // Modal state
+    visibleDetailsModal = signal<boolean>(false);
+    selectedReservation = signal<BookingResponseDTO>({} as BookingResponseDTO);
 
     ngOnInit() {
         this.loadReservations();
@@ -78,5 +83,15 @@ export class ReservationsListDetailedComponent implements OnInit {
 
     onViewDetails(reservation: BookingResponseDTO) {
         this.router.navigate(['/dashboard/reservation/details', reservation.id]);
+    }
+
+    showDetailsModal(reservation: BookingResponseDTO) {
+        this.selectedReservation.set(reservation);
+        this.visibleDetailsModal.set(true);
+        console.log('Showing details for reservation:', reservation);
+    }
+
+    closeDetailsModal() {
+        this.visibleDetailsModal.set(false);
     }
 }

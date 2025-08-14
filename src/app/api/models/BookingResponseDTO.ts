@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ChatMessage } from './ChatMessage';
 import type { EnumSlotType } from './EnumSlotType';
 import type { EnumTypeHelp } from './EnumTypeHelp';
 export type BookingResponseDTO = {
@@ -23,5 +24,6 @@ export type BookingResponseDTO = {
     studentFirstName?: string | null;
     studentLastName?: string | null;
     studentImgUrl?: string | null;
+    communications?: Array<ChatMessage> | null;
 };
 

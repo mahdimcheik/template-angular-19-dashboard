@@ -1,0 +1,164 @@
+<p-drawer [(visible)]="visibleRight" position="right" closable="true" [modal]="true" (onHide)="close()" class="bg-black" styleClass="!w-full md:!w-100 lg:!w-[50rem] md:!mb-0 lg:!mb-0">
+    <ng-template pTemplate="header">
+        <div class="flex items-center gap-3">
+            <i class="pi pi-calendar text-primary text-xl"></i>
+            <h3 class="text-lg font-semibold">Détails de la réservation</h3>
+        </div>
+    </ng-template>
+
+    @if (reservation(); as res) {
+        <div class="space-y-6">
+            <!-- Header Section -->
+            <div class="border-b pb-4">
+                <div class="flex items-center gap-3 mb-3">
+                    @if (res.studentImgUrl) {
+                        <img [src]="res.studentImgUrl" class="w-12 h-12 rounded-full object-cover" [alt]="res.studentFirstName" />
+                    } @else {
+                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center">
+                            <i class="pi pi-user text-lg"></i>
+                        </div>
+                    }
+                    <div>
+                        <h4 class="font-semibold text-lg">{{ res.studentFirstName }} {{ res.studentLastName }}</h4>
+                        <p class="text-sm">{{ res.subject }}</p>
+                    </div>
+                </div>
+                @if (res.orderNumber) {
+                    <div class="inline-flex items-center gap-2 bg-primary-50 text-primary-700 px-3 py-1 rounded-full text-sm">
+                        <i class="pi pi-tag"></i>
+                        <span>Commande: {{ res.orderNumber }}</span>
+                    </div>
+                }
+            </div>
+
+            <!-- Details Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Date et heure -->
+                <div class="space-y-4">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-clock text-primary"></i>
+                        Date et heure
+                    </h5>
+                    <div class="space-y-2 pl-6">
+                        <div class="flex justify-between">
+                            <span>Début:</span>
+                            <span class="font-medium">{{ formatDateTime(res.startAt) }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Fin:</span>
+                            <span class="font-medium">{{ formatDateTime(res.endAt) }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Durée:</span>
+                            <span class="font-medium">{{ calculateDuration(res.startAt, res.endAt) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informations du cours -->
+                <div class="space-y-4">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-book text-primary"></i>
+                        Cours
+                    </h5>
+                    <div class="space-y-2 pl-6">
+                        <div class="flex justify-between">
+                            <span>Type d'aide:</span>
+                            <span class="font-medium">{{ getHelpType(res.typeHelp) }}</span>
+                        </div>
+                        @if (res.type) {
+                            <div class="flex justify-between">
+                                <span>Type de créneau:</span>
+                                <span class="font-medium">{{ res.type }}</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informations financières -->
+            <div class="space-y-3">
+                <h5 class="font-semibold flex items-center gap-2">
+                    <i class="pi pi-euro text-primary"></i>
+                    Tarification
+                </h5>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-2">
+                    @if (res.price && res.price !== res.discountedPrice) {
+                        <div class="flex justify-between">
+                            <span>Prix initial:</span>
+                            <span class="line-through text-gray-500">{{ formatCurrency(res.price) }}</span>
+                        </div>
+                    }
+                    @if (res.reduction) {
+                        <div class="flex justify-between">
+                            <span>Réduction:</span>
+                            <span class="text-red-600 font-medium">-{{ formatCurrency(res.reduction) }}</span>
+                        </div>
+                    }
+                    <div class="flex justify-between border-t pt-2">
+                        <span class="font-semibold">Prix final:</span>
+                        <span class="font-semibold text-lg text-primary">{{ formatCurrency(res.discountedPrice) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informations techniques -->
+            @if (authService.isAdmin() && (res.id || res.slotId || res.orderId)) {
+                <div class="space-y-3">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-info-circle text-primary"></i>
+                        Informations techniques
+                    </h5>
+                    <div class="rounded-lg p-4 space-y-2 text-sm bg-gray-50 dark:bg-gray-700">
+                        @if (res.id) {
+                            <div class="flex justify-between">
+                                <span>ID Réservation:</span>
+                                <span class="font-mono">{{ res.id }}</span>
+                            </div>
+                        }
+                        @if (res.slotId) {
+                            <div class="flex justify-between">
+                                <span>ID Créneau:</span>
+                                <span class="font-mono">{{ res.slotId }}</span>
+                            </div>
+                        }
+                        @if (res.orderId) {
+                            <div class="flex justify-between">
+                                <span>ID Commande:</span>
+                                <span class="font-mono">{{ res.orderId }}</span>
+                            </div>
+                        }
+                        @if (res.createdAt) {
+                            <div class="flex justify-between">
+                                <span>Créé le:</span>
+                                <span>{{ formatDateTime(res.createdAt) }}</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Description -->
+            @if (res.description) {
+                <div class="space-y-3">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-file-text text-primary"></i>
+                        Description
+                    </h5>
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <p class="leading-relaxed">{{ res.description }}</p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-3 pt-4 border-t">
+            <p-button label="Fermer" severity="secondary" (onClick)="close()" />
+            @if (reservation().id) {
+                <p-button label="Voir les communications" icon="pi pi-comments" (onClick)="viewCommunications()" />
+            }
+        </div>
+    </ng-template>
+</p-drawer>
