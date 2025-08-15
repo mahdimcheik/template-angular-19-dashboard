@@ -8,6 +8,7 @@ import type { Observable } from 'rxjs';
 import type { BookingCreateDTO } from '../models/BookingCreateDTO';
 import type { BookingResponseDTOListResponseDTO } from '../models/BookingResponseDTOListResponseDTO';
 import type { ChatMessage } from '../models/ChatMessage';
+import type { ChatMessageListResponseDTO } from '../models/ChatMessageListResponseDTO';
 import type { QueryPagination } from '../models/QueryPagination';
 import type { StringResponseDTO } from '../models/StringResponseDTO';
 import { OpenAPI } from '../core/OpenAPI';
@@ -50,12 +51,12 @@ export class BookingService {
     }
     /**
      * @param bookingId
-     * @returns ChatMessage OK
+     * @returns ChatMessageListResponseDTO OK
      * @throws ApiError
      */
     public getBookingCommunications(
         bookingId: string,
-    ): Observable<Array<ChatMessage>> {
+    ): Observable<ChatMessageListResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'GET',
             url: '/booking/communications/{bookingId}',

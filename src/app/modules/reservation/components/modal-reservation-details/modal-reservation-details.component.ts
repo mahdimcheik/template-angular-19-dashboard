@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, model, output, signal, OnInit, effect, linkedSignal } from '@angular/core';
+import { Component, computed, inject, input, model, output, signal, OnInit, effect, linkedSignal, DestroyRef } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
@@ -12,9 +12,10 @@ import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
-import { finalize, firstValueFrom } from 'rxjs';
+import { finalize, firstValueFrom, interval } from 'rxjs';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { LoaderService } from '../../../../shared/services/loader.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-modal-reservation-details',
@@ -28,6 +29,7 @@ export class ModalReservationDetailsComponent {
     private messageService = inject(MessageService);
     authService = inject(UserMainService);
     isLoading = inject(LoaderService).isLoading;
+    destroyRef = inject(DestroyRef);
 
     visibleRight = model<boolean>(false);
     reservation = input.required<BookingResponseDTO>();
@@ -62,6 +64,12 @@ export class ModalReservationDetailsComponent {
             const reservation = this.reservation();
             this.loadMessages();
         });
+
+        interval(5000)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => {
+                this.loadMessages();
+            });
     }
 
     async loadMessages() {
@@ -69,7 +77,9 @@ export class ModalReservationDetailsComponent {
         if (!reservationId) return;
         try {
             const messages = await firstValueFrom(this.slotService.getMessages(reservationId));
-            this.messages.set(messages || []);
+            if (messages) {
+                this.messages.set([...messages]);
+            }
             console.log('Messages loaded:', messages);
         } catch (error) {
             console.error('Error loading messages:', error);

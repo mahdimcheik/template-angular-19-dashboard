@@ -182,7 +182,7 @@ export class SlotMainService {
 
     // Communication methods
     getMessages(bookingId: string): Observable<ChatMessage[]> {
-        return this.generatedBookingService.getBookingCommunications(bookingId).pipe(map((messages) => messages || []));
+        return this.generatedBookingService.getBookingCommunications(bookingId).pipe(map((messages) => messages.data || []));
     }
 
     addMessage(bookingId: string, message: ChatMessage): Observable<boolean> {
