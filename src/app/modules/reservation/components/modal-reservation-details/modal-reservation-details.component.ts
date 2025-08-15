@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, model, output, signal, OnInit, effect, linkedSignal, DestroyRef } from '@angular/core';
+import { Component, computed, inject, input, model, output, signal, OnInit, effect, linkedSignal, DestroyRef, AfterViewChecked, viewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
@@ -24,7 +24,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     templateUrl: './modal-reservation-details.component.html',
     styleUrl: './modal-reservation-details.component.scss'
 })
-export class ModalReservationDetailsComponent {
+export class ModalReservationDetailsComponent implements AfterViewInit {
     private slotService = inject(SlotMainService);
     private messageService = inject(MessageService);
     authService = inject(UserMainService);
@@ -34,6 +34,8 @@ export class ModalReservationDetailsComponent {
     visibleRight = model<boolean>(false);
     reservation = input.required<BookingResponseDTO>();
     onClose = output<boolean>();
+
+    messageContainer = viewChild<ElementRef<HTMLDivElement>>('messagesContainer');
 
     // Chat functionality
     messages = linkedSignal<ChatMessage[]>(() => {
@@ -70,6 +72,12 @@ export class ModalReservationDetailsComponent {
             .subscribe(() => {
                 this.loadMessages();
             });
+    }
+    ngAfterViewInit(): void {
+        const elementRef = this.messageContainer();
+        setTimeout(() => {
+            elementRef!.nativeElement.scrollTop = elementRef!.nativeElement.scrollHeight;
+        });
     }
 
     async loadMessages() {
