@@ -42,15 +42,15 @@
                     <div class="space-y-2 pl-6">
                         <div class="flex justify-between">
                             <span>Début:</span>
-                            <span class="font-medium">{{ formatDateTime(res.startAt) }}</span>
+                            <span class="font-medium">{{ res.startAt | date: 'dd/MM/yyyy HH:mm' }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Fin:</span>
-                            <span class="font-medium">{{ formatDateTime(res.endAt) }}</span>
+                            <span class="font-medium">{{ res.endAt | date: 'dd/MM/yyyy HH:mm' }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Durée:</span>
-                            <span class="font-medium">{{ calculateDuration(res.startAt, res.endAt) }}</span>
+                            <span class="font-medium">{{ durationComputed() }}</span>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                         @if (res.createdAt) {
                             <div class="flex justify-between">
                                 <span>Créé le:</span>
-                                <span>{{ formatDateTime(res.createdAt) }}</span>
+                                <span>{{ res.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
                             </div>
                         }
                     </div>
@@ -161,12 +161,7 @@
 
                     <!-- Messages Container -->
                     <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-80 overflow-y-auto">
-                        @if (isLoadingMessages()) {
-                            <div class="flex items-center justify-center py-8">
-                                <i class="pi pi-spin pi-spinner text-primary text-2xl"></i>
-                                <span class="ml-2">Chargement des messages...</span>
-                            </div>
-                        } @else if (messages().length === 0) {
+                        @if (messages().length === 0) {
                             <div class="text-center py-8 text-gray-500">
                                 <i class="pi pi-comment text-4xl mb-2 block"></i>
                                 <p>Aucun message pour le moment</p>
@@ -202,9 +197,8 @@
 
                     <!-- Message Input -->
                     <div class="flex gap-2">
-                        <textarea pTextarea [(ngModel)]="newMessage" placeholder="Tapez votre message..." rows="2" class="flex-1 resize-none" [disabled]="isSendingMessage()" (keydown)="onKeyDown($event)" maxlength="500"> </textarea>
-                        <p-button icon="pi pi-send" [disabled]="!newMessage().trim() || isSendingMessage()" [loading]="isSendingMessage()" (onClick)="sendMessage()" class="self-end" pTooltip="Ctrl + Entrée pour envoyer" tooltipPosition="top">
-                        </p-button>
+                        <textarea pTextarea [(ngModel)]="newMessage" placeholder="Tapez votre message..." rows="2" class="flex-1 resize-none" (keydown)="onKeyDown($event)" maxlength="500"> </textarea>
+                        <p-button icon="pi pi-send" (onClick)="sendMessage()" class="self-end" pTooltip="Ctrl + Entrée pour envoyer" tooltipPosition="top"> </p-button>
                     </div>
 
                     <p class="text-xs text-gray-500 text-center">Appuyez sur Ctrl + Entrée pour envoyer rapidement</p>

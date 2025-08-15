@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, model, output, signal, OnInit, effect } from '@angular/core';
+import { Component, computed, inject, input, model, output, signal, OnInit, effect, linkedSignal } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
 import { finalize, firstValueFrom } from 'rxjs';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
+import { LoaderService } from '../../../../shared/services/loader.service';
 
 @Component({
     selector: 'app-modal-reservation-details',
@@ -22,38 +23,54 @@ import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
     templateUrl: './modal-reservation-details.component.html',
     styleUrl: './modal-reservation-details.component.scss'
 })
-export class ModalReservationDetailsComponent implements OnInit {
+export class ModalReservationDetailsComponent {
     private slotService = inject(SlotMainService);
     private messageService = inject(MessageService);
     authService = inject(UserMainService);
+    isLoading = inject(LoaderService).isLoading;
 
     visibleRight = model<boolean>(false);
     reservation = input.required<BookingResponseDTO>();
     onClose = output<boolean>();
 
     // Chat functionality
-    messages = signal<ChatMessage[]>([]);
+    messages = linkedSignal<ChatMessage[]>(() => {
+        return this.reservation() && this.reservation().communications ? this.reservation()!.communications! : [];
+    });
     newMessage = signal<string>('');
-    isLoadingMessages = signal<boolean>(false);
-    isSendingMessage = signal<boolean>(false);
 
-    ngOnInit() {
-        // Watch for modal visibility changes to load messages
+    durationComputed = computed(() => {
+        const start = this.reservation().startAt;
+        const end = this.reservation().endAt;
+        if (!start || !end) return 'N/A';
+
+        const diffMs = new Date(end).getTime() - new Date(start).getTime();
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        if (diffHours > 0) {
+            return diffMinutes > 0 ? `${diffHours}h ${diffMinutes}min` : `${diffHours}h`;
+        }
+        return `${diffMinutes}min`;
+    });
+
+    /**
+     *
+     */
+    constructor() {
         effect(() => {
-            if (this.visibleRight() && this.reservation().id) {
-                this.loadMessages();
-            }
+            const reservation = this.reservation();
+            this.loadMessages();
         });
     }
 
     async loadMessages() {
         const reservationId = this.reservation().id;
         if (!reservationId) return;
-
-        this.isLoadingMessages.set(true);
         try {
             const messages = await firstValueFrom(this.slotService.getMessages(reservationId));
             this.messages.set(messages || []);
+            console.log('Messages loaded:', messages);
         } catch (error) {
             console.error('Error loading messages:', error);
             this.messageService.add({
@@ -62,7 +79,6 @@ export class ModalReservationDetailsComponent implements OnInit {
                 detail: 'Impossible de charger les messages'
             });
         } finally {
-            this.isLoadingMessages.set(false);
         }
     }
 
@@ -74,44 +90,12 @@ export class ModalReservationDetailsComponent implements OnInit {
         this.newMessage.set('');
     }
 
-    formatDateTime(dateString: string | undefined): string {
-        if (!dateString) return 'N/A';
-        return new Date(dateString).toLocaleString('fr-FR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    }
-
-    calculateDuration(startAt: string | undefined, endAt: string | undefined): string {
-        if (!startAt || !endAt) return 'N/A';
-
-        const start = new Date(startAt);
-        const end = new Date(endAt);
-        const diffMs = end.getTime() - start.getTime();
-        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-        const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-        if (diffHours > 0) {
-            return diffMinutes > 0 ? `${diffHours}h ${diffMinutes}min` : `${diffHours}h`;
-        }
-        return `${diffMinutes}min`;
-    }
-
-    viewCommunications() {
-        // This method is now replaced by sendMessage functionality
-        this.sendMessage();
-    }
-
     async sendMessage() {
         const messageText = this.newMessage().trim();
         const reservationId = this.reservation().id;
 
         if (!messageText || !reservationId) return;
 
-        this.isSendingMessage.set(true);
         try {
             const currentUser = (this.authService as any).userConnected();
             const message: ChatMessage = {
@@ -121,9 +105,9 @@ export class ModalReservationDetailsComponent implements OnInit {
             };
 
             const success = await firstValueFrom(this.slotService.addMessage(reservationId, message));
+            await this.loadMessages();
 
             if (success) {
-                this.messages.update((messages) => [...messages, message]);
                 this.newMessage.set('');
                 this.messageService.add({
                     severity: 'success',
@@ -140,8 +124,6 @@ export class ModalReservationDetailsComponent implements OnInit {
                 summary: 'Erreur',
                 detail: "Impossible d'envoyer le message"
             });
-        } finally {
-            this.isSendingMessage.set(false);
         }
     }
 

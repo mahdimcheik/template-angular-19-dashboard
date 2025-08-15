@@ -76,4 +76,6 @@
 </div>
 
 <!-- Reservation Details Modal -->
-<app-modal-reservation-details [(visibleRight)]="visibleDetailsModal" [reservation]="selectedReservation()" (onClose)="closeDetailsModal()"> </app-modal-reservation-details>
+@if (visibleDetailsModal()) {
+    <app-modal-reservation-details [(visibleRight)]="visibleDetailsModal" [reservation]="selectedReservation()" (onClose)="closeDetailsModal()"> </app-modal-reservation-details>
+}
