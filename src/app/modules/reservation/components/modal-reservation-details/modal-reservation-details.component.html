@@ -92,12 +92,12 @@
                     @if (res.reduction) {
                         <div class="flex justify-between">
                             <span>Réduction:</span>
-                            <span class="text-red-600 font-medium">-{{ res.reduction | currency: 'EUR' }}</span>
+                            <span class="text-red-600 font-medium">-{{ res.reduction | percent: '1.0-2' }}</span>
                         </div>
                     }
                     <div class="flex justify-between border-t pt-2">
                         <span class="font-semibold">Prix final:</span>
-                        <span class="font-semibold text-lg text-primary">{{ res.discountedPrice }} %</span>
+                        <span class="font-semibold text-lg text-primary">{{ res.discountedPrice | currency: 'EUR' }}</span>
                     </div>
                 </div>
             </div>
