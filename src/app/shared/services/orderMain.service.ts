@@ -7,7 +7,7 @@ import { OrderPagination as GeneratedOrderPagination } from '../../api/models/Or
 import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { ResponseDTO } from './userMain.service';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 // Type aliases to maintain backward compatibility
 export type OrderResponseDTO = OrderResponseForStudentDTO;

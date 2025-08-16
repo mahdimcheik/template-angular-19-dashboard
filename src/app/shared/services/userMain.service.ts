@@ -2,7 +2,7 @@ import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { LocalstorageService } from './localstorage.service';
 // import { SSEMainService } from './sseMain.service';
 

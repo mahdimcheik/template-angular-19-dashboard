@@ -2,7 +2,7 @@ import { HttpEvent, HttpInterceptorFn, HttpRequest } from '@angular/common/http'
 import { catchError, finalize, Observable, switchMap, throwError } from 'rxjs';
 import { inject } from '@angular/core';
 import { UserMainService } from '../services/userMain.service';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 // Move isRefreshing outside the interceptor function to share across all requests
 let isRefreshing = false;

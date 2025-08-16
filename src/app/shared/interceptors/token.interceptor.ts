@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { UserMainService } from '../services/userMain.service';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(UserMainService);

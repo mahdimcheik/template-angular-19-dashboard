@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 // import { AdresseDTO } from '../models/adresse';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { AddressCreateDTO } from '../../api/models/AddressCreateDTO';
 import { AddressUpdateDTO } from '../../api/models/AddressUpdateDTO';
 import { Address } from '../../api/models/Address';

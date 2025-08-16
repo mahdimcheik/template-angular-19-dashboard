@@ -9,7 +9,7 @@ export type CheckoutResponse = {
     url: string;
 };
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { SlotMainService } from './slotMain.service';
 import { ResponseDTO } from './userMain.service';
 

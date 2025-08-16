@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap, delay } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { CursusService } from '../../api/services/CursusService';
 import { CursusDtoIEnumerableResponseDTO } from '../../api/models/CursusDtoIEnumerableResponseDTO';
 import { CursusDto } from '../../api/models/CursusDto';
