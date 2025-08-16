@@ -33,7 +33,7 @@ jobs:
 
       # Step 2: build the docker image 
       - name: Build the docker image
-        run: docker build --configuration runtime -t mahdimcheik/skill-hive-front:prod .
+        run: docker build --target runtime -t mahdimcheik/skill-hive-front:prod .
 
       # Step 3: Push the docker image to the docker hub
       - name: Push the docker image to the docker hub
