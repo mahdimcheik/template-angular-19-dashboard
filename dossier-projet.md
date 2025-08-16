@@ -122,9 +122,44 @@ En bas de l’application, il propose un mode sombre et un mode clair, que l’u
 4. Consultation de l’historique.
 5. Messagerie.
 6. Gestion des tarifs et disponibilités.
+7. Facturation
 
-### 1.  Inscription et authentification
-Pour l inscription et l authentification 
+### 1. Inscription et authentification
+
+L'inscription constitue le point d'entrée de l'application et s'articule autour d'un processus en deux étapes. Lors de l'inscription, l'utilisateur renseigne ses informations personnelles (nom, prénom, email, mot de passe) via un formulaire sécurisé avec validation en temps réel. Le système vérifie la robustesse du mot de passe (8 caractères minimum, combinaison de majuscules, minuscules, chiffres et caractères spéciaux) et l'unicité de l'adresse email. Deux consentements distincts sont requis : l'acceptation de la politique de confidentialité et l'autorisation de traitement des données personnelles conformément au RGPD. Une fois l'inscription validée, l'utilisateur reçoit un email de confirmation pour activer son compte.
+
+L'authentification repose sur un système dual optimisant sécurité et expérience utilisateur. La connexion initiale génère un JWT court (30 minutes) stocké en mémoire et un refresh token long (7 jours) stocké dans un cookie sécurisé. Lors des visites ultérieures, un mécanisme automatique utilise le refresh token pour régénérer transparentement les credentials, évitant à l'utilisateur de se reconnecter manuellement. Cette approche protège contre les attaques XSS tout en maintenant une session persistante et fluide.
+
+### 2. Réservation de créneaux disponibles
+
+Le système de réservation s'appuie sur un calendrier interactif FullCalendar offrant trois vues (jour, semaine, mois) pour optimiser la visualisation selon les préférences utilisateur. Les créneaux disponibles apparaissent en temps réel avec leurs tarifs respectifs et d'éventuelles promotions. L'élève sélectionne un ou plusieurs créneaux consécutifs, déclenchant une pré-réservation temporaire de 15 minutes. Durant cette période critique, les créneaux choisis disparaissent de la disponibilité publique, évitant les conflits de réservation. 
+
+Le processus intègre une validation intelligente empêchant les réservations en double, les créneaux passés ou les chevauchements. Si le paiement n'est pas finalisé dans le délai imparti, les créneaux redeviennent automatiquement disponibles et une notification de libération est diffusée. Cette mécanique garantit une gestion optimale des disponibilités sans blocages inutiles. Un changement implique une annulation immediate du checkout de paiement.
+
+### 3. Paiement sécurisé
+
+L'intégration Stripe assure un processus de paiement garantissant la sécurité maximale des données bancaires. L'interface de paiement s'adapte automatiquement au montant total (créneaux + promotions/réductions), affiche un récapitulatif détaillé et propose les principales méthodes de paiement européennes.
+
+### 4. Consultation de l'historique
+
+Les réservations sont classées par statut (à venir ou passées) avec pagination. Chaque entrée affiche les détails complets : date, heure, durée, prix payé... En clicquant sur une reservation, un modal detaillant lareservation sera affiche', et qui permettent egalement d avoir un  suivi de la seession de cours via une mini interface de communication de type chat.
+
+Les commandes sont egalement classees par ordre chronologique descendant, et qui permettent a l utilisateur de  telecharger sa facture. 
+
+La fonctionnalité permet le téléchargement groupé de factures par période, l'export des données au format CSV pour la comptabilité personnelle, et l'accès aux communications échangées avec le professeur pour chaque réservation. Un système de recherche textuelle facilite la localisation rapide d'un cours spécifique. Les statistiques personnelles (nombre d'heures de cours, montant total dépensé, fréquence de réservation) enrichissent la vue d'ensemble de l'activité éducative.
+
+### 5. Messagerie
+
+La messagerie intégrée facilite la communication directe entre élève et professeur via Trevo. Il s agit d une simple interface de communication pour les demandes types (remboursement, report, information pédagogique).
+
+### 6. Gestion des tarifs et disponibilités
+
+Cette fonctionnalité, exclusive au professeur, constitue le cœur opérationnel de l'application. Via le claendrier, le professeur peut creer , supprimer ou editer les creneaux. Il peut egelement ajouter des promotions pour promouvoir descreneauux specifique.
+
+### 7. Facturation
+
+Le système de facturation automatisé génère des documents conformes aux obligations légales françaises (numérotation séquentielle et TVA ). La création des factures se fait a la demande, en PDF via PuppeteerSharp, avec template professionnel personnalisable incluant les coordonnées de l auto-entreprise.
+
 ---
 
 ## 4. Architecture technique
