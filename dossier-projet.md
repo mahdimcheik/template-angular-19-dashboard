@@ -123,15 +123,71 @@ En bas de l’application, il propose un mode sombre et un mode clair, que l’u
 5. Messagerie.
 6. Gestion des tarifs et disponibilités.
 
+### 1.  Inscription et authentification
+Pour l inscription et l authentification 
 ---
 
 ## 4. Architecture technique
 ### 4.1 Technologies utilisées
-- **Frontend** : Angular 19
-- **Backend** : .NET 8.0
-- **Base de données** : Postgres 15
-- **Paiement** : Stripe 
-- **Hébergement** : VPS chez Hostinger
+
+#### Frontend : Angular 19
+
+Angular 19 représente la dernière version du framework développé par Google, offrant une approche moderne et robuste pour le développement d'applications web. Le choix d'Angular se justifie par plusieurs avantages significatifs par rapport aux autres frameworks :
+
+- **Architecture structurée** : Angular impose une architecture claire basée sur les composants, services et modules, facilitant la maintenance et l'évolutivité du code
+- **TypeScript natif** : L'intégration native de TypeScript offre une meilleure détection d'erreurs à la compilation et améliore la productivité des développeurs
+- **Écosystème complet** : Angular CLI, Angular Material, et un ensemble d'outils intégrés accélèrent le développement
+- **Performance optimisée** : Le système de détection des changements et la compilation AOT (Ahead-of-Time) garantissent des performances élevées
+- **Support à long terme** : Google assure un support LTS (Long Term Support) offrant une stabilité pour les projets d'entreprise
+
+#### Librairies Frontend utilisées
+
+L'application s'appuie sur un ensemble de librairies spécialisées pour offrir une expérience utilisateur riche :
+
+**PrimeNG (v19.0.5)** : Cette suite de composants UI pour Angular fournit plus de 100 composants prêts à l'emploi (calendriers, tableaux, formulaires, modales). PrimeNG a été choisi pour sa compatibilité native avec Angular, sa documentation exhaustive et ses thèmes personnalisables qui s'intègrent parfaitement avec notre design system.
+
+**Tailwind CSS (v3.4.17) avec tailwindcss-primeui** : Framework CSS utility-first qui permet un développement rapide et une personnalisation fine. L'intégration avec PrimeUI assure une cohérence visuelle entre les composants custom et ceux de PrimeNG.
+
+**FullCalendar (v6.1.15)** : Bibliothèque spécialisée dans l'affichage de calendriers interactifs, essentielle pour la gestion des créneaux de cours. Elle offre des vues multiples (jour, semaine, mois) et une intégration native avec Angular.
+
+
+**openapi-typescript-codegen** : Outil automatisant la génération du code TypeScript client à partir de la spécification OpenAPI du backend. Cette approche garantit une synchronisation parfaite entre l'API et le frontend, élimine les erreurs de typage et accélère le développement en générant automatiquement les services, modèles et types TypeScript correspondant aux endpoints de l'API .NET.
+
+#### Backend : .NET 8.0
+
+.NET 8.0 constitue la plateforme backend, offrant performance, sécurité et maintenabilité. Ses avantages incluent :
+
+- **Performance native** : Compilation native et optimisations avancées
+- **Écosystème riche** : Vaste bibliothèque de packages NuGet
+- **Sécurité intégrée** : Fonctionnalités de sécurité built-in et conformité aux standards
+- **Interopérabilité** : Support multi-plateforme (Windows, Linux, macOS)
+- **Support Microsoft** : Maintenance et évolutions assurées par Microsoft
+
+#### Librairies Backend principales
+
+**Entity Framework Core avec Npgsql.EntityFrameworkCore.PostgreSQL (v8.0.10)** : ORM moderne permettant l'interaction avec PostgreSQL via des objets .NET, avec support des migrations automatiques et optimisations de requêtes.
+
+**ASP.NET Core Identity (v8.0.10)** : Framework d'authentification et d'autorisation intégré gérant les utilisateurs, rôles et politiques de sécurité.
+
+**Stripe.net (v47.3.0)** : SDK officiel pour l'intégration des paiements Stripe, garantissant sécurité et conformité PCI DSS.
+
+**Hangfire (v1.8.18)** : Framework de gestion des tâches en arrière-plan pour le traitement asynchrone (envoi d'emails, nettoyage des réservations expirées).
+
+**Swashbuckle.AspNetCore (v6.9.0)** : Génération automatique de la documentation API OpenAPI/Swagger facilitant l'intégration frontend et les tests.
+
+**PuppeteerSharp (v20.1.3)** : Génération de PDF (factures, récapitulatifs) via contrôle programmatique de navigateur Chrome.
+
+**RazorLight (v2.3.1)** : Moteur de templates pour la génération d'emails HTML et de documents dynamiques.
+
+**Bogus (v35.6.1)** : Générateur de données de test facilitant le développement et les tests avec des jeux de données réalistes.
+
+#### Base de données : PostgreSQL 15
+PostgreSQL a été retenu pour ses performances, sa fiabilité et ses fonctionnalités avancées (JSONB, indexation sophistiquée, contraintes complexes). Sa compatibilité native avec .NET via Npgsql garantit une intégration optimale.
+#### Paiement : Stripe
+Stripe s'impose comme référence pour les paiements en ligne grâce à sa sécurité PCI DSS Level 1, son API intuitive, et son support international. L'intégration avec .NET via le SDK officiel assure fiabilité et conformité réglementaire.
+
+#### Hébergement : VPS chez Hostinger
+Le choix d'un VPS offre flexibilité, contrôle total sur l'environnement, et rapport qualité-prix optimal pour une application de cette envergure. L'architecture conteneurisée avec Docker facilite le déploiement et la scalabilité.
 
 ### 4.2 Schéma d’architecture
 *(Insérer un diagramme)*
@@ -149,10 +205,92 @@ En bas de l’application, il propose un mode sombre et un mode clair, que l’u
 ---
 
 ## 6. Sécurité
-- Authentification sécurisée (hash mot de passe, JWT).
-- HTTPS obligatoire.
-- Conformité RGPD.
-- Protection contre les injections SQL.
+
+La sécurité constitue un enjeu majeur pour une application gérant des données personnelles et des transactions financières.
+
+### 6.1 Authentification et autorisation
+
+#### Système d'authentification dual
+
+L'application implémente un système d'authentification à double mécanisme pour optimiser à la fois la sécurité et l'expérience utilisateur :
+
+**Authentification par identifiants** : Lors de la première connexion, l'utilisateur fournit ses identifiants (email/mot de passe). Le backend valide ces informations et génère :
+- Un **JWT (JSON Web Token)** à durée de vie limitée (30 minutes) contenant les informations utilisateur et ses permissions
+- Un **refresh token** à durée de vie étendue (7 jours) permettant le renouvellement automatique du JWT
+
+**Authentification automatique par cookies** : Pour les sessions ultérieures, le mécanisme fonctionne ainsi :
+1. Le refresh token est stocké dans un cookie **secure**, **strict** et **httpOnly**
+2. Lors du rafraîchissement de la page, un interceptor Angular déclenche automatiquement une requête vers l'endpoint `/auth/refresh-token`
+3. Le backend valide le refresh token et retourne un nouveau JWT avec les données utilisateur
+4. Toutes les requêtes suivantes utilisent ce JWT pour l'authentification
+
+#### Gestion des tokens côté frontend
+
+Le frontend adopte une stratégie de stockage sécurisée :
+- **JWT et données utilisateur** : Stockés en mémoire (variables JavaScript) pour éviter la persistance locale
+- **Refresh token** : Stocké exclusivement dans un cookie avec les attributs de sécurité suivants :
+  - `Secure` : Transmission uniquement via HTTPS
+  - `SameSite=Strict` : Protection contre les attaques CSRF
+  - `HttpOnly` : Inaccessible au JavaScript côté client
+
+Cette approche offre une protection optimale contre les principales vulnérabilités :
+
+### 6.2 Protection contre les attaques courantes
+
+#### Protection XSS (Cross-Site Scripting)
+- **Stockage en mémoire** : Les tokens JWT ne sont jamais persistés dans le localStorage ou sessionStorage, éliminant le risque d'exfiltration via du code JavaScript malveillant
+- **Cookie HttpOnly** : Le refresh token est inaccessible au JavaScript, empêchant son vol par des scripts injectés
+- **Validation des entrées** : Angular intègre nativement une protection contre l'injection de scripts dans les templates
+
+#### Protection CSRF (Cross-Site Request Forgery)
+- **Cookie SameSite=Strict** : Empêche l'envoi automatique du refresh token lors de requêtes cross-origin
+- **JWT en headers** : L'utilisation de JWT dans les headers Authorization nécessite une action JavaScript explicite, impossible depuis un site tiers
+- **Validation d'origine** : Vérification systématique de l'origine des requêtes côté backend
+
+#### Protection contre l'injection SQL
+L'utilisation d'**Entity Framework Core** comme ORM fournit une protection native contre les injections SQL :
+- **Requêtes paramétrées** : Toutes les requêtes utilisent des paramètres typés, empêchant l'injection de code SQL
+- **LINQ to SQL** : Les requêtes LINQ sont automatiquement converties en requêtes SQL sécurisées
+- **Validation des modèles** : Les annotations de validation sur les modèles filtrent les données en amont
+
+### 6.3 Chiffrement et protection des données
+
+#### Gestion des mots de passe
+- **Hachage BCrypt** : Les mots de passe sont hachés avec l'algorithme BCrypt (work factor 12) avant stockage
+- **Salt unique** : Chaque mot de passe dispose d'un salt généré aléatoirement
+- **Politique de mots de passe** : Validation de la complexité (8 caractères minimum, majuscules, minuscules, chiffres, caractères spéciaux)
+
+#### Chiffrement des communications
+- **HTTPS obligatoire** : Toutes les communications sont chiffrées via TLS 1.3
+- **HSTS (HTTP Strict Transport Security)** : Headers configurés pour forcer l'utilisation d'HTTPS
+- **Certificats SSL** : Utilisation de certificats Let's Encrypt avec renouvellement automatique
+
+### 6.4 Conformité RGPD
+
+#### Gestion des consentements
+- **Consentement explicite** : L'application utilise uniquement les cookies essentielles a l'authentification, et c'est marque' explicitement. il faut bien noter que lors de l inscription, l utilisateur doit accepter l utilisation des cookies essentiels , sinon il ne peut pas s inscrire, vu que sans  les cookies, l authentification sera perdu toutes les 30 minutes.
+
+#### Droits des utilisateurs
+- **Droit d'accès** : L utilisateur peut consulter son profil en tout moment, via la page de profil.
+- **Droit de rectification** : Interface de modification des données personnelles
+- **Droit à l'effacement** : En cours.
+
+### 6.5 Sécurité applicative
+
+#### Validation et sanitisation
+- **Validation côté client et serveur** : Double validation avec Angular Validators et FluentValidation (.NET)
+- **Sanitisation des entrées** : Nettoyage automatique des données utilisateur (Angular)
+- **Protection contre le brute force** : Verrouillage temporaire après échecs multiples (Dotnet 5 tentatives avant le blockage de compte)
+
+### 6.6 Sécurité des paiements
+
+#### Intégration Stripe
+- **PCI DSS Level 1** : Conformité aux standards de sécurité des données de cartes de paiement
+- **Tokenisation** : Aucune donnée de carte stockée localement, utilisation des tokens Stripe
+- **3D Secure** : Authentification forte pour les paiements européens
+- **Webhooks sécurisés** : Vérification cryptographique des notifications Stripe
+
+Cette architecture de sécurité multicouche garantit une protection robuste des données utilisateur et des transactions financières, tout en maintenant une expérience utilisateur fluide et conforme aux réglementations en vigueur.
 
 ---
 
