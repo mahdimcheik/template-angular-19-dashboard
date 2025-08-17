@@ -331,8 +331,18 @@ Cette architecture de sécurité multicouche garantit une protection robuste des
 
 ## 7. Déploiement
 - **Environnement de développement** : Windows, Visual Studio, Angular CLI.
-- **Environnement de production** : hébergement web + base SQL.
-- Procédure de mise en ligne.
+- **Environnement de production** : Ubuntu 24, docker.
+- **Deploiment continue** : Github Actions
+
+le processus de deploiment continue passe par plusieurs etapes: une foisle developpement est pret pour etre deployer, un pousse sur le repo declenche les test (CI voir ci)  et ensuite les script de deploiement sur github actions.
+1.  architechture preparee sur le vps
+
+sur le vps , j ai construit un dossier pour le reverse-proxy, et deux dossiers pour la production et le test. 
+chaqu un de ces deux derniers dossiers , ontient un dossier frontend et un dossier backend.
+ces deuxdossier contiennent a leurs tour, un fichier docker-compose.yml contenant le script de hargement et lancement de l image docker prete a l emploi, et in dossier .env contenant les variables secretes.
+
+2.  script et etapes de deploiement
+le fichier cd.yml lance' une foislestest passes, contient lesdetails de deploiement passant de la selection de la version, a la construction de l image en utilisant dockerfile, ensuite la poussede cette image surdockerhub  apres la connection, et ensuite la connection sur le vps en utilisant le protocole ssh, et derniere etape sera le lancement du script docker-compose apresavoir passe, la variable d envoronement contenat la version .
 
 ---
 

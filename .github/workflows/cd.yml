@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get version
+      - name: Set version
         id: set_version
         run: echo "FRONT_IMAGE_VERSION=prod" >> $GITHUB_ENV
 
@@ -31,7 +31,7 @@ jobs:
 
       # Step 2: build the docker image 
       - name: Build the docker image
-        run: docker build -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }} .
+        run: docker build --target prod-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }} .
 
       # Step 3: Push the docker image to the docker hub
       - name: Push the docker image to the docker hub
