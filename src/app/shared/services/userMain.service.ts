@@ -155,21 +155,13 @@ export class UserMainService {
         );
     }
 
-    login(userLoginDTO: UserLoginDTO): Observable<ResponseDTO> {
+    login(userLoginDTO: UserLoginDTO): Observable<LoginOutputDTOResponseDTO> {
         return this.generatedUsersService.postUsersLogin(userLoginDTO).pipe(
-            switchMap((response: LoginOutputDTOResponseDTO) => {
-                const legacyResponse: ResponseDTO = {
-                    message: response.message || '',
-                    status: response.status || 200,
-                    data: response.data
-                };
-                return of(legacyResponse);
-            }),
             tap((res) => {
                 if (res.data) {
                     this.cookieConsentService.acceptAll();
-                    this.userConnected.set(res.data.user);
-                    this.token.set(res.data.token);
+                    this.userConnected.set(res.data.user as UserResponseDTO);
+                    this.token.set(res.data.token ?? '');
                 }
             })
         );

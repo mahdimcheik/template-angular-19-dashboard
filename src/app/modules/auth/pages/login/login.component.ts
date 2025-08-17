@@ -87,11 +87,10 @@ export class LoginComponent implements OnInit {
 
     // Original submit method (now private)
     private loginWithData(loginData: UserLoginDTO) {
-        (this.authService as any)
+        this.authService
             .login(loginData)
             .pipe(
                 catchError((err) => {
-                    console.error('error : ', err);
                     this.messageService.add({
                         summary: 'Erreur',
                         detail: 'Mauvais identifiants',
