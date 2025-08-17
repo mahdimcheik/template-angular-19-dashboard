@@ -8,7 +8,8 @@
 
 # docs
 /docs
-
+# android app
+/android
 # Node
 /node_modules
 npm-debug.log

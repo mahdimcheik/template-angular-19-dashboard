@@ -27,9 +27,7 @@ export class LoginComponent implements OnInit {
     private messageService = inject(MessageService);
     router = inject(Router);
     badCredentials = false;
-    ngOnInit(): void {
-        console.log('LoginComponent initialized', (this.authService as any).userConnected());
-    }
+    ngOnInit(): void {}
 
     userForm = new FormGroup({
         email: new FormControl<string>('', [Validators.email, Validators.required]),
@@ -42,12 +40,13 @@ export class LoginComponent implements OnInit {
         label: 'Connexion',
         hideSubmitButton: true,
         hideCancelButton: true,
-        styleClass: 'max-w-[40rem] ',
+        styleClass: 'md:min-w-[40rem] min-w-[90vw] !p-0',
         formFieldGroups: [
             {
                 id: 'login',
                 name: 'login',
                 description: 'Veuillez remplir les champs obligatoires',
+                styleClass: 'w-full',
                 fields: [
                     {
                         id: 'email',
@@ -57,8 +56,7 @@ export class LoginComponent implements OnInit {
                         placeholder: 'Email',
                         required: true,
                         fullWidth: true,
-                        validation: [Validators.email, Validators.required],
-                        order: 1
+                        validation: [Validators.email, Validators.required]
                     },
                     {
                         id: 'password',
@@ -68,8 +66,7 @@ export class LoginComponent implements OnInit {
                         placeholder: 'Mot de passe',
                         required: true,
                         fullWidth: true,
-                        validation: [Validators.required, Validators.minLength(8)],
-                        order: 2
+                        validation: [Validators.required, Validators.minLength(8)]
                     }
                 ]
             }
@@ -89,14 +86,13 @@ export class LoginComponent implements OnInit {
 
     // Original submit method (now private)
     private loginWithData(loginData: UserLoginDTO) {
-        (this.authService as any)
+        this.authService
             .login(loginData)
             .pipe(
                 catchError((err) => {
-                    console.error(err);
                     this.messageService.add({
                         summary: 'Erreur',
-                        detail: (err as any).error.message,
+                        detail: 'Mauvais identifiants',
                         severity: 'error'
                     });
                     this.badCredentials = true;
@@ -106,7 +102,7 @@ export class LoginComponent implements OnInit {
             .subscribe(() => {
                 this.messageService.add({
                     summary: 'Connexion réussie',
-                    detail: `Bienvenue `,
+                    detail: `Bienvenue`,
                     severity: 'success'
                 });
 
