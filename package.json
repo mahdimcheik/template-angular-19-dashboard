@@ -10,6 +10,7 @@
         "watch": "ng build --watch --configuration development",
         "format": "prettier --write \"**/*.{js,mjs,ts,mts,d.ts,html}\" --cache",
         "test": "ng test",
+        "doc:markdown": "compodoc -p tsconfig.json -e markdown -d docs/markdown",
         "gen-api": "npx openapi-typescript-codegen --client angular -i http://localhost:5113/swagger/v1/swagger.json -o src/app/api "
     },
     "private": true,
@@ -45,6 +46,7 @@
         "@angular-devkit/build-angular": "^19.0.6",
         "@angular/cli": "^19.0.6",
         "@angular/compiler-cli": "^19.0.0",
+        "@compodoc/compodoc": "^1.1.26",
         "@types/jasmine": "~5.1.0",
         "autoprefixer": "^10.4.20",
         "eslint": "^9.14.0",
