@@ -10,7 +10,7 @@
         "watch": "ng build --watch --configuration development",
         "format": "prettier --write \"**/*.{js,mjs,ts,mts,d.ts,html}\" --cache",
         "test": "ng test",
-        "doc:markdown": "compodoc -p tsconfig.json -e markdown -d docs/markdown",
+        "doc": "compodoc -p tsconfig.json -d docs --language fr",
         "gen-api": "npx openapi-typescript-codegen --client angular -i http://localhost:5113/swagger/v1/swagger.json -o src/app/api "
     },
     "private": true,

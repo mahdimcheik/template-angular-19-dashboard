@@ -2,6 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { AddressTypeEnum } from '../../api/models/AddressTypeEnum';
 // import { AddressTypeEnum } from '../models/adresse';
 
+/**
+ * Pipe qui transforme un code de type d'adresse en une chaîne lisible.
+ * Elle s'appuie sur l'énumération AddressTypeEnum pour effectuer la conversion.
+ */
 @Pipe({
     name: 'adresseType'
 })
