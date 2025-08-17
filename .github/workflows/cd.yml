@@ -49,4 +49,4 @@ jobs:
           script: |
             export FRONT_IMAGE_VERSION=${{ env.FRONT_IMAGE_VERSION }}
             docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
-            docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate --remove-orphans
+            docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate

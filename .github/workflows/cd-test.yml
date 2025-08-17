@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Get version
         id: set_version
-        run: echo "FRONT_IMAGE_VERSION_TEST=test" >> $GITHUB_ENV
+        run: echo "FRONT_IMAGE_VERSION_TEST=prod" >> $GITHUB_ENV
 
       - name: Checkout the branch
         uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
 
       # Step 3: Push the docker image to the docker hub
       - name: Push the docker image to the docker hub
-        run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }}
+        run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
 
 
 
@@ -47,6 +47,6 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
           script: |
-            export IMAGE_VERSION=${{ env.FRONT_IMAGE_VERSION_TEST }}
+            export FRONT_IMAGE_VERSION_TEST=${{ env.FRONT_IMAGE_VERSION_TEST }}
             docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }}
-            docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate --remove-orphans
+            docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate
