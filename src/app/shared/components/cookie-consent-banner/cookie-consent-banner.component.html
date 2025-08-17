@@ -18,9 +18,9 @@
                 </div>
 
                 <!-- Actions -->
-                <div class="flex flex-col sm:flex-row gap-2 lg:flex-shrink-0 justify-end justify-end ld:justify-end">
-                    <p-button label="Voir plus" severity="secondary" [outlined]="true" size="small" (onClick)="showSettings()" class="order-2 sm:order-1"> </p-button>
-                    <p-button label="Fermer" severity="primary" size="small" (onClick)="acceptAll()" class="order-1 sm:order-2"> </p-button>
+                <div class="flex flex-col md:flex-row gap-2 md:justify-end">
+                    <p-button label="Voir plus" severity="secondary" [outlined]="true" (onClick)="showSettings()" styleClass="!w-full md:!w-auto"> </p-button>
+                    <p-button label="Fermer" severity="primary" (onClick)="acceptAll()" styleClass="!w-full md:!w-auto"> </p-button>
                 </div>
             </div>
         </div>
@@ -69,7 +69,6 @@
     <ng-template pTemplate="footer">
         <div class="flex flex-col sm:flex-row gap-2 justify-end">
             <p-button label="Fermer" outlined severity="primary" size="small" (onClick)="cancelSettings()"> </p-button>
-            <p-button label="Sauvegarder" severity="primary" size="small" (onClick)="saveCustomSettings()"> </p-button>
         </div>
     </ng-template>
 </p-dialog>

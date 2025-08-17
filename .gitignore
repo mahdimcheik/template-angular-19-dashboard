@@ -6,6 +6,10 @@
 /out-tsc
 /bazel-out
 
+# docs
+/docs
+# android app
+/android
 # Node
 /node_modules
 npm-debug.log
