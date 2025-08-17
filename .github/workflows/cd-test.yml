@@ -31,7 +31,7 @@ jobs:
 
       # Step 2: build the docker image 
       - name: Build the docker image
-        run: docker build -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }} .
+        run: docker build --target test-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION_TEST }} .
 
       # Step 3: Push the docker image to the docker hub
       - name: Push the docker image to the docker hub
