@@ -330,19 +330,231 @@ Cette architecture de sécurité multicouche garantit une protection robuste des
 ---
 
 ## 7. Déploiement
-- **Environnement de développement** : Windows, Visual Studio, Angular CLI.
-- **Environnement de production** : Ubuntu 24, docker.
-- **Deploiment continue** : Github Actions
 
-le processus de deploiment continue passe par plusieurs etapes: une foisle developpement est pret pour etre deployer, un pousse sur le repo declenche les test (CI voir ci)  et ensuite les script de deploiement sur github actions.
-1.  architechture preparee sur le vps
+Le déploiement de l'application suit une approche moderne basée sur la conteneurisation Docker et l'intégration continue via GitHub Actions. Cette stratégie garantit la reproductibilité, la scalabilité et la fiabilité du processus de mise en production.
 
-sur le vps , j ai construit un dossier pour le reverse-proxy, et deux dossiers pour la production et le test. 
-chaqu un de ces deux derniers dossiers , ontient un dossier frontend et un dossier backend.
-ces deuxdossier contiennent a leurs tour, un fichier docker-compose.yml contenant le script de hargement et lancement de l image docker prete a l emploi, et in dossier .env contenant les variables secretes.
+### 7.1 Environnements de déploiement
 
-2.  script et etapes de deploiement
-le fichier cd.yml lance' une foislestest passes, contient lesdetails de deploiement passant de la selection de la version, a la construction de l image en utilisant dockerfile, ensuite la poussede cette image surdockerhub  apres la connection, et ensuite la connection sur le vps en utilisant le protocole ssh, et derniere etape sera le lancement du script docker-compose apresavoir passe, la variable d envoronement contenat la version .
+#### Environnement de développement
+- **Système d'exploitation** : Windows 11
+- **IDE** : Visual Studio Code avec extensions Angular et Docker
+- **Outils** : Angular CLI v19, Node.js v20, Docker Desktop
+- **Base de données** : PostgreSQL 15 en conteneur Docker local
+
+#### Environnement de production
+- **Serveur** : VPS Ubuntu 24.04 LTS chez Hostinger
+- **Orchestration** : Docker Compose pour la gestion des conteneurs
+- **Reverse Proxy** : Nginx Proxy Manager pour la gestion des domaines et certificats SSL
+- **Monitoring** : Logs centralisés et surveillance des performances
+
+### 7.2 Architecture de déploiement sur VPS
+
+L'infrastructure sur le VPS est organisée selon une structure hiérarchique optimisant la séparation des environnements :
+
+```
+/root/
+├── nginx-proxy-manager/     # Reverse proxy centralisé
+│   └── docker-compose.yml
+├── skillhive/         # Environnement de production
+│       ├── frontend/
+│       │   ├── docker-compose.yml
+│       │   └── .env
+│       └── backend/
+│           ├── docker-compose.yml
+│           └── .env
+├── skillhive-test            # Environnement de test
+│       ├── frontend/
+│       │   ├── docker-compose.yml
+│       │   └── .env
+│       └── backend/
+│           ├── docker-compose.yml
+│           └── .env
+```
+
+Cette organisation permet :
+- **Isolation des environnements** : Production et test complètement séparés
+- **Gestion centralisée des proxy** : Un seul point d'entrée pour tous les services
+- **Configuration sécurisée** : Variables d'environnement isolées par contexte
+- **Scalabilité horizontale** : Possibilité d'ajouter facilement de nouveaux environnements
+
+### 7.3 Conteneurisation avec Docker
+
+#### Dockerfile multi-stage
+
+La conteneurisation utilise une approche multi-stage optimisant la taille des images et permettant la génération de plusieurs environnements :
+
+```dockerfile
+# Stage de construction
+FROM node:20 AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+# Stage de production
+FROM build AS production
+COPY . .
+RUN npm run build:prod
+
+# Stage de test
+FROM build AS testing
+COPY . .
+RUN npm run build:test
+
+# Runtime de production
+FROM nginx:alpine as prod-runtime
+COPY --from=production /app/dist/skill-hive/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+# Runtime de test
+FROM nginx:alpine as test-runtime
+COPY --from=testing /app/dist/skill-hive/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+**Avantages de cette approche :**
+- **Optimisation de taille** : Les images finales ne contiennent que le strict nécessaire (nginx + fichiers statiques)
+- **Séparation des environnements** : Builds distincts pour production et test avec configurations appropriées
+- **Sécurité renforcée** : Images basées sur Alpine Linux (surface d'attaque minimale)
+- **Performance** : Nginx optimisé pour le serving de fichiers statiques
+
+### 7.4 Intégration continue avec GitHub Actions
+
+#### Pipeline de déploiement automatisé
+
+Le fichier `.github/workflows/cd.yml` orchestre le processus de déploiement continu :
+
+```yaml
+name: CD Pipeline for Angular Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set version
+        id: set_version
+        run: echo "FRONT_IMAGE_VERSION=prod" >> $GITHUB_ENV
+
+      - name: Checkout the branch
+        uses: actions/checkout@v4
+
+      - name: Login to docker hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build the docker image
+        run: docker build --target prod-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }} .
+
+      - name: Push the docker image to the docker hub
+        run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
+
+      - name: Deploy on VPS via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          script: |
+            export FRONT_IMAGE_VERSION=${{ env.FRONT_IMAGE_VERSION }}
+            docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
+            docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate
+```
+
+### 7.5 Processus de déploiement détaillé
+
+#### Étape 1 : Déclenchement automatique
+Le déploiement s'active automatiquement lors d'un push sur la branche `main` ou `test`, garantissant une mise en production immédiate des changements validés. En fonction de la branche, une serie différente des instructions sera executée.
+
+#### Étape 2 : Gestion des versions
+```bash
+echo "FRONT_IMAGE_VERSION=rc-1.0.1" >> $GITHUB_ENV
+```
+Le système de versioning permet de différencier les builds et facilite les rollbacks si nécessaire.
+
+#### Étape 3 : Construction de l'image Docker
+```bash
+docker build --target prod-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT/BACK_IMAGE_VERSION }} .
+```
+- Dans cet exemple, l'Utilisation du stage `prod-runtime` permet de separer les varaibles lie'es au test de celles liees a la production. remqrquez que dans le dockerfile `FROM nginx:alpine as prod-runtime
+COPY --from=production /app/dist/skill-hive/browser /usr/share/nginx/html` le profil prod-runtime permet preciser a angular de build le profil de production et donc utiliser les varaibles qui y sont liees grace a la configuration 
+```json
+                        "production": {
+                            ...
+                            "fileReplacements": [
+                              {
+                                "replace": "src/environments/environment.ts",
+                                "with": "src/environments/environment.production.ts"
+                              }
+                            ],
+                            ...
+                        },
+```
+un traitement similair est reserve au testing.
+
+Par rapport au backend, les varaibles et secrets sont fournis  graces aux fichiers .env separes.
+
+#### Étape 4 : Publication sur Docker Hub
+```bash
+docker push mahdimcheik/skill-hive-front:${{ env.FRONT/BACK_IMAGE_VERSION }}
+```
+Le registre Docker Hub centralise les images, permettant leur déploiement sur n'importe quel environnement disposant de Docker.
+
+#### Étape 5 : Déploiement sur VPS
+La connexion SSH sécurisée avec clé privée exécute les commandes de déploiement :
+```bash
+docker pull mahdimcheik/skill-hive-front:${{ env.FRONT/BACK_IMAGE_VERSION }}
+docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate
+```
+
+### 7.7 Sécurité du déploiement
+
+#### Gestion des secrets
+- **Variables d'environnement** : Stockage sécurisé dans GitHub Secrets
+- **Clés SSH** : Authentification par clé privée, sans mot de passe
+- **Tokens Docker Hub** : Utilisation de tokens d'accès plutôt que mots de passe
+- **Fichiers .env** : Variables sensibles isolées
+
+#### Réseau et accès
+- **SSL/TLS** : Certificats automatiques via Let's Encrypt
+- **Isolation des conteneurs** : Réseaux Docker dédiés par environnement
+
+### 7.8 Monitoring et maintenance
+
+#### Surveillance automatisée
+- **Health checks** : Vérification automatique de l'état des conteneurs
+- **Logs centralisés** : Agrégation des logs pour analyse et debugging
+- **Alertes** : Notifications en cas de dysfonctionnement
+
+#### Stratégie de rollback
+En cas de problème, le rollback s'effectue en modifiant la variable d'environnement :
+```bash
+export FRONT_IMAGE_VERSION=previous-version
+docker compose up -d --force-recreate
+```
+
+### 7.9 Optimisations et bonnes pratiques
+
+#### Performance
+- **Images multi-architecture** : Support AMD64
+- **Cache Docker** : Optimisation des layers pour accélérer les builds
+- **CDN** : Nginx configuré avec compression gzip et cache headers
+
+#### Fiabilité
+- **Zero-downtime deployment** : Mise à jour sans interruption de service
+- **Configuration immutable** : a venir
+- **Backup automatique** : a venir
+
+Cette architecture de déploiement offre une solution scalable et sécurisée, permettant une mise en production rapide et fiable tout en maintenant une séparation claire entre les environnements de développement, test et production.
 
 ---
 
@@ -351,13 +563,6 @@ le fichier cd.yml lance' une foislestest passes, contient lesdetails de deploiem
 - Tests d’intégration.
 - Tests end-to-end.
 - Validation fonctionnelle.
-
----
-
-## 9. CI/CD
-- Utilisation de GitHub Actions ou Azure DevOps.
-- Automatisation des builds et tests.
-- Déploiement automatique sur l’environnement de test.
 
 ---
 
