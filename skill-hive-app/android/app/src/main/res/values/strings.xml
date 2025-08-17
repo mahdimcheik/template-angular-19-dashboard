@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">skill-hive-app</string>
-    <string name="title_activity_main">skill-hive-app</string>
-    <string name="package_name">com.skillive.app</string>
-    <string name="custom_url_scheme">com.skillive.app</string>
-</resources>
