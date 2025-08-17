@@ -25,7 +25,6 @@ import { PasswordResetSuccessfullyComponent } from './app/modules/auth/pages/pas
 import { MainComponent } from './app/pages/landing/sub-pages/main/main.component';
 import { TeacherPublicProfileComponent } from './app/pages/landing/sub-pages/teacher-public-profile/teacher-public-profile.component';
 import { MentionsLegalesComponent } from './app/pages/landing/sub-pages/mentions-legales/mentions-legales.component';
-import { TestPageComponent } from './app/pages/landing/sub-pages/test-page/test-page.component';
 
 // Profile components
 import { ProfileComponent } from './app/modules/profile/pages/profile/profile.component';
@@ -64,10 +63,6 @@ export const appRoutes: Routes = [
             {
                 path: 'mentions-legales',
                 component: MentionsLegalesComponent
-            },
-            {
-                path: 'test',
-                component: TestPageComponent
             }
         ]
     },
