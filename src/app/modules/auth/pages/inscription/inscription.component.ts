@@ -80,6 +80,8 @@ export class InscriptionComponent {
                         label: 'Email',
                         required: true,
                         placeholder: 'Email',
+                        fullWidth: true,
+
                         validation: [Validators.email, Validators.required]
                     },
                     {
@@ -96,7 +98,6 @@ export class InscriptionComponent {
                         name: 'confirmPassword',
                         type: 'password',
                         label: 'Confirmer le mot de passe',
-                        required: true,
                         placeholder: 'Confirmer le mot de passe',
                         validation: [Validators.required]
                     },

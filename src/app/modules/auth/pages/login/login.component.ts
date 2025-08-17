@@ -40,12 +40,13 @@ export class LoginComponent implements OnInit {
         label: 'Connexion',
         hideSubmitButton: true,
         hideCancelButton: true,
-        styleClass: 'max-w-[40rem] ',
+        styleClass: 'md:min-w-[40rem] min-w-[90vw] !p-0',
         formFieldGroups: [
             {
                 id: 'login',
                 name: 'login',
                 description: 'Veuillez remplir les champs obligatoires',
+                styleClass: 'w-full',
                 fields: [
                     {
                         id: 'email',
@@ -55,8 +56,7 @@ export class LoginComponent implements OnInit {
                         placeholder: 'Email',
                         required: true,
                         fullWidth: true,
-                        validation: [Validators.email, Validators.required],
-                        order: 1
+                        validation: [Validators.email, Validators.required]
                     },
                     {
                         id: 'password',
@@ -66,8 +66,7 @@ export class LoginComponent implements OnInit {
                         placeholder: 'Mot de passe',
                         required: true,
                         fullWidth: true,
-                        validation: [Validators.required, Validators.minLength(8)],
-                        order: 2
+                        validation: [Validators.required, Validators.minLength(8)]
                     }
                 ]
             }
