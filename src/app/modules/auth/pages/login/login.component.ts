@@ -27,9 +27,7 @@ export class LoginComponent implements OnInit {
     private messageService = inject(MessageService);
     router = inject(Router);
     badCredentials = false;
-    ngOnInit(): void {
-        console.log('LoginComponent initialized', (this.authService as any).userConnected());
-    }
+    ngOnInit(): void {}
 
     userForm = new FormGroup({
         email: new FormControl<string>('', [Validators.email, Validators.required]),
@@ -93,10 +91,10 @@ export class LoginComponent implements OnInit {
             .login(loginData)
             .pipe(
                 catchError((err) => {
-                    console.error(err);
+                    console.error('error : ', err);
                     this.messageService.add({
                         summary: 'Erreur',
-                        detail: (err as any).error.message,
+                        detail: 'Mauvais identifiants',
                         severity: 'error'
                     });
                     this.badCredentials = true;
@@ -106,7 +104,7 @@ export class LoginComponent implements OnInit {
             .subscribe(() => {
                 this.messageService.add({
                     summary: 'Connexion réussie',
-                    detail: `Bienvenue `,
+                    detail: `Bienvenue`,
                     severity: 'success'
                 });
 
