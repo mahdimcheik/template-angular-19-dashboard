@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get version
+        id: set_version
+        run: echo "FRONT_IMAGE_VERSION=prod" >> $GITHUB_ENV
+
       - name: Checkout the branch
         uses: actions/checkout@v4
 
@@ -25,19 +29,13 @@ jobs:
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
             password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      # - name: Download build artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: build-files
-
-
       # Step 2: build the docker image 
       - name: Build the docker image
         run: docker build -t mahdimcheik/skill-hive-front:prod .
 
       # Step 3: Push the docker image to the docker hub
       - name: Push the docker image to the docker hub
-        run: docker push mahdimcheik/skill-hive-front:prod
+        run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
 
 
 
@@ -49,5 +47,5 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
           script: |
-            docker pull mahdimcheik/skill-hive-front:prod
+            docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
             docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate --remove-orphans
