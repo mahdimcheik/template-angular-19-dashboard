@@ -130,14 +130,13 @@ L'inscription constitue le point d'entrée de l'application et s'articule autour
 
 L'authentification repose sur un système dual optimisant sécurité et expérience utilisateur. La connexion initiale génère un JWT court (30 minutes) stocké en mémoire et un refresh token long (7 jours) stocké dans un cookie sécurisé. Lors des visites ultérieures, un mécanisme automatique utilise le refresh token pour régénérer transparentement les credentials, évitant à l'utilisateur de se reconnecter manuellement. Cette approche protège contre les attaques XSS tout en maintenant une session persistante et fluide.
 
-Plusde details sont detaillees dans la section Securite'
+Plus de details sont detaillees dans la section Securite'
 
 ### 2. Réservation de créneaux disponibles
 
 Le système de réservation s'appuie sur un calendrier interactif FullCalendar offrant trois vues (jour, semaine, mois) pour optimiser la visualisation selon les préférences utilisateur. Les créneaux disponibles apparaissent en temps réel avec leurs tarifs respectifs et d'éventuelles promotions. L'élève sélectionne un ou plusieurs créneaux consécutifs, déclenchant une pré-réservation temporaire de 15 minutes. Durant cette période critique, les créneaux choisis disparaissent de la disponibilité publique, évitant les conflits de réservation. 
 
 Le processus intègre une validation intelligente empêchant les réservations en double, les créneaux passés ou les chevauchements. Si le paiement n'est pas finalisé dans le délai imparti, les créneaux redeviennent automatiquement disponibles et une notification de libération est diffusée. Cette mécanique garantit une gestion optimale des disponibilités sans blocages inutiles. Un changement implique une annulation immediate du checkout de paiement.
-![alt text](image.png)
 ### 3. Paiement sécurisé
 
 L'intégration Stripe assure un processus de paiement garantissant la sécurité maximale des données bancaires. L'interface de paiement s'adapte automatiquement au montant total (créneaux + promotions/réductions), affiche un récapitulatif détaillé et propose les principales méthodes de paiement européennes.
@@ -227,12 +226,19 @@ La messagerie intégrée facilite la communication directe entre élève et prof
 
 ### 6. Gestion des tarifs et disponibilités
 
-Cette fonctionnalité, exclusive au professeur, constitue le cœur opérationnel de l'application. Via le calendrier, le professeur peut creer , supprimer ou editer les creneaux. Il peut egelement ajouter des promotions pour promouvoir descreneauux specifique.
+Cette fonctionnalité, exclusive au professeur, constitue le cœur opérationnel de l'application. Via le calendrier, le professeur peut creer , supprimer ou editer les creneaux. Il peut egelement ajouter des promotions pour promouvoir des creneauux specifiques.
 
 ### 7. Facturation
 
 Le système de facturation automatisé génère des documents conformes aux obligations légales françaises (numérotation séquentielle et TVA). La création des factures se fait a la demande, en PDF via PuppeteerSharp, avec template professionnel personnalisable incluant les coordonnées de l auto-entreprise.
 
+### Profil 
+La page de gestion et visionnage de profil (professeur), permet aux eleves d' ajouter des donnees personnelles , et des les editer ou les supprimer graces aux fenetres d' edition intuitives
+<div style="width: 100%;">
+  <img  src="profil.png" alt="Texte alternatif" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Modal d' edition du profil personnel</i>
+</div>
+cependant le professeur a la possibilite de visionner les profils des etudiants afin de verifer la conformite'  et de se preparer aux rencontres eleves.
 ---
 
 ## 4. Architecture technique
