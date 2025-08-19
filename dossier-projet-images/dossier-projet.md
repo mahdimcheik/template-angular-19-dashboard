@@ -130,15 +130,84 @@ L'inscription constitue le point d'entrée de l'application et s'articule autour
 
 L'authentification repose sur un système dual optimisant sécurité et expérience utilisateur. La connexion initiale génère un JWT court (30 minutes) stocké en mémoire et un refresh token long (7 jours) stocké dans un cookie sécurisé. Lors des visites ultérieures, un mécanisme automatique utilise le refresh token pour régénérer transparentement les credentials, évitant à l'utilisateur de se reconnecter manuellement. Cette approche protège contre les attaques XSS tout en maintenant une session persistante et fluide.
 
+Plusde details sont detaillees dans la section Securite'
+
 ### 2. Réservation de créneaux disponibles
 
 Le système de réservation s'appuie sur un calendrier interactif FullCalendar offrant trois vues (jour, semaine, mois) pour optimiser la visualisation selon les préférences utilisateur. Les créneaux disponibles apparaissent en temps réel avec leurs tarifs respectifs et d'éventuelles promotions. L'élève sélectionne un ou plusieurs créneaux consécutifs, déclenchant une pré-réservation temporaire de 15 minutes. Durant cette période critique, les créneaux choisis disparaissent de la disponibilité publique, évitant les conflits de réservation. 
 
 Le processus intègre une validation intelligente empêchant les réservations en double, les créneaux passés ou les chevauchements. Si le paiement n'est pas finalisé dans le délai imparti, les créneaux redeviennent automatiquement disponibles et une notification de libération est diffusée. Cette mécanique garantit une gestion optimale des disponibilités sans blocages inutiles. Un changement implique une annulation immediate du checkout de paiement.
-
+![alt text](image.png)
 ### 3. Paiement sécurisé
 
 L'intégration Stripe assure un processus de paiement garantissant la sécurité maximale des données bancaires. L'interface de paiement s'adapte automatiquement au montant total (créneaux + promotions/réductions), affiche un récapitulatif détaillé et propose les principales méthodes de paiement européennes.
+
+#### 3.1 Deroulement
+une fois la commande est prete, le client dispose de 15 minutes pour regler la commande, un compte a rebours est placer pour indiquer le temps restant.
+en cliquant sur payer, laredirection se fait automatiquement apres avoir creer un checkout de paymenent cote serveur de validite de 15 minutes. une fois le delai est passe , le checkout sera annuler automatiquement.
+Linterface de paiement stripe, detaille les articles a payer ainsi que le montant total, a la fin de e paiement et si le paiement est abouti, le client sera redirige vers la page de validation de paiement. strip indique le non reussit du paiement dans le cascontraire.
+
+#### 3.2 precaution et securite'
+le creneaux sont des articles limitee de nombre limmite avec des contairainte de temps, un creneau reserve' est unique et doit etre payer le plus vite possible , sinon ca bloquera le creneau pour les eleves qui en ont besoin. c est pour cela la contrainte de paiement est impose'e. cote serveur le checkout delcenche un background-service qui annulera lareservation si aucun checkout n est cree dans le delai de 15 minutes. le checkout depaiement declenche a son tour un autre service de fonctonnement similaire et qui sera annuler si le paiement est accepte  ou si le delai est terminee. 
+
+j ai pris des precaution supplementaire si une fois le checkout cree, l eleve modife sa commande dans un autre onglet  ou sur un autre appareil, chaque modification au comande annule automatiquement le checkout de paiement et le paimenet sera refuse'' automatiquement.
+```c#
+        public async Task<bool> BookSlot(BookingCreateDTO newBookingCreateDTO, UserApp booker)
+        {
+            ...
+            Order order = await orderService.GetOrCreateCurrentOrderByUserAsync(booker);
+            ...
+            if (order.CheckoutID is not null)
+            {
+                try
+                {
+                    await jobChron.ExpireCheckout(order.CheckoutID);
+                    order.ResetCheckout();
+                }
+                ...
+            }
+```
+*Lors de la reseration, on verifie si un checkout est deja en cours, on l annule*
+```C#
+        public async Task ExpireCheckout(string checkoutId)
+        {
+            try
+            {
+                ...
+                StripeConfiguration.ApiKey = EnvironmentVariables.STRIPE_SECRET_KEY;
+                var service = new Stripe.Checkout.SessionService();
+                Stripe.Checkout.Session session = service.Expire(checkoutId);
+            }
+            ...
+        }
+```
+
+cote serveur , j ai mis en place unwebhook responsable uniquement de l ecoute de stripe  et qui met a jour les commande et reservations en fonction de l aboutissement de paiment.
+```C#
+        public async Task<bool> CheckPaymentAndUpdateOrder(...)
+        {
+                ...
+                // si paiement termine'
+                if (stripeEvent.Type == "checkout.session.completed")
+                {
+                    var session = stripeEvent.Data.Object as Session;
+                    // si paiment accepte'
+                    if (session.PaymentStatus == "paid")
+                    {
+                        ...
+                        if (orderId is not null && session.PaymentIntentId is not null)
+                        {
+                                // notifications
+                                ...
+                                // annulation du service de nettoyage
+                                jobChron.CancelScheuledJob(newOrder.Id.ToString());
+                                // mettre a jour la commande, la marquer comme paye'
+                                return await orderService.UpdateOrderStatus(
+                                    orderGuid,
+                                    EnumBookingStatus.Paid,
+                                    session.PaymentIntentId
+                                );
+```
 
 ### 4. Consultation de l'historique
 
@@ -151,14 +220,18 @@ La fonctionnalité permet le téléchargement groupé de factures par période, 
 ### 5. Messagerie
 
 La messagerie intégrée facilite la communication directe entre élève et professeur via Trevo. Il s agit d une simple interface de communication pour les demandes types (remboursement, report, information pédagogique).
+<div style="width: 100%;">
+  <img  src="image.png" alt="Texte alternatif" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto;">Plusieurs possibilite's de titres et la possibilite' d' avoir un copie dans sa propre boite mail</i>
+</div>
 
 ### 6. Gestion des tarifs et disponibilités
 
-Cette fonctionnalité, exclusive au professeur, constitue le cœur opérationnel de l'application. Via le claendrier, le professeur peut creer , supprimer ou editer les creneaux. Il peut egelement ajouter des promotions pour promouvoir descreneauux specifique.
+Cette fonctionnalité, exclusive au professeur, constitue le cœur opérationnel de l'application. Via le calendrier, le professeur peut creer , supprimer ou editer les creneaux. Il peut egelement ajouter des promotions pour promouvoir descreneauux specifique.
 
 ### 7. Facturation
 
-Le système de facturation automatisé génère des documents conformes aux obligations légales françaises (numérotation séquentielle et TVA ). La création des factures se fait a la demande, en PDF via PuppeteerSharp, avec template professionnel personnalisable incluant les coordonnées de l auto-entreprise.
+Le système de facturation automatisé génère des documents conformes aux obligations légales françaises (numérotation séquentielle et TVA). La création des factures se fait a la demande, en PDF via PuppeteerSharp, avec template professionnel personnalisable incluant les coordonnées de l auto-entreprise.
 
 ---
 
