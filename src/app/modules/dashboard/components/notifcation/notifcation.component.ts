@@ -47,8 +47,9 @@ export class NotifcationComponent {
             }
         }
         const notificationTypegetter = new NotificationUrlPipe();
-        console.log('redirection ', notificationTypegetter.transform(this.notification().type!));
 
-        this.router.navigate([notificationTypegetter.transform(this.notification().type!)]);
+        this.router.navigate([notificationTypegetter.transform(this.notification().type!)], {
+            queryParams: { reservationId: this.notification().bookingId }
+        });
     }
 }
