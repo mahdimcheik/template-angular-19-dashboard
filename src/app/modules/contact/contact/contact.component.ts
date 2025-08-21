@@ -12,6 +12,7 @@ import { ImageModule } from 'primeng/image';
 import { MailMainService } from '../../../shared/services/mailMain.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { SignalRService } from '../../../shared/services/signal-r.service';
 
 @Component({
     selector: 'app-contact',

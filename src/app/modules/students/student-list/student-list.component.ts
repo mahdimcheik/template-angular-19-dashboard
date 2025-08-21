@@ -18,6 +18,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ImageModule } from 'primeng/image';
 import { MessageModule } from 'primeng/message';
+import { SignalRService } from '../../../shared/services/signal-r.service';
 
 @Component({
     selector: 'app-student-list',
@@ -48,6 +49,8 @@ export class StudentListComponent implements OnInit {
     options = ['list', 'grid'];
 
     router = inject(Router);
+    connectedUserCount = signal(0);
+
     adminService = inject(AdminMainService);
     students = signal<UserResponseDTO[]>([]);
 

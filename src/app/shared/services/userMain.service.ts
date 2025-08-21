@@ -19,6 +19,7 @@ import { ObjectResponseDTO } from '../../api/models/ObjectResponseDTO';
 import { CookieConsentService } from './cookie-consent.service';
 import { EnumGender, GenderDropDown } from '../../shared/models/user';
 import { UserResponseDTOResponsePaginationResponseDTO } from '../../api/models/UserResponseDTOResponsePaginationResponseDTO';
+import { SignalRService } from './signal-r.service';
 
 // Type aliases for backward compatibility
 export type { UserResponseDTO, UserCreateDTO, UserUpdateDTO, UserLoginDTO };
@@ -51,6 +52,7 @@ export class UserMainService {
     baseUrl = environment.BACK_URL;
     private generatedUsersService = inject(GeneratedUsersService);
     private localStorageService = inject(LocalstorageService);
+    private signalRService = inject(SignalRService);
 
     router = inject(Router);
     messageService = inject(MessageService);
@@ -162,6 +164,8 @@ export class UserMainService {
                     this.cookieConsentService.acceptAll();
                     this.userConnected.set(res.data.user as UserResponseDTO);
                     this.token.set(res.data.token ?? '');
+
+                    this.signalRService.initiateAndConnect(this.token());
                 }
             })
         );
@@ -181,6 +185,7 @@ export class UserMainService {
                 if (res.data) {
                     this.token.set(res.data.token);
                     this.userConnected.set(res.data.user);
+                    this.signalRService.initiateAndConnect(this.token());
                 }
             })
         );

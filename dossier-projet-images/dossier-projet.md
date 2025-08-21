@@ -232,14 +232,45 @@ Cette fonctionnalité, exclusive au professeur, constitue le cœur opérationnel
 
 Le système de facturation automatisé génère des documents conformes aux obligations légales françaises (numérotation séquentielle et TVA). La création des factures se fait a la demande, en PDF via PuppeteerSharp, avec template professionnel personnalisable incluant les coordonnées de l auto-entreprise.
 
-### Profil 
-La page de gestion et visionnage de profil (professeur), permet aux eleves d' ajouter des donnees personnelles , et des les editer ou les supprimer graces aux fenetres d' edition intuitives
+### 8. Profil 
+
+La gestion du profil constitue l'une des fonctionnalités centrales de l'application, offrant aux utilisateurs un espace personnel complet et modulaire. Cette section permet une personnalisation approfondie des informations utilisateur tout en facilitant les interactions pédagogiques entre professeurs et élèves.
+
+#### 8.1 Interface de gestion du profil
+
+L'interface de profil adopte une approche moderne et intuitive, structurée autour de sections thématiques clairement délimitées. Chaque section dispose de ses propres contrôles d'édition, permettant une gestion granulaire des informations personnelles. L'interface responsive s'adapte parfaitement aux différents formats d'écran, garantissant une expérience utilisateur optimale sur desktop et mobile.
+
 <div style="width: 100%;">
-  <img  src="profil.png" alt="Texte alternatif" width="450" style="display: block; margin: auto;"/>
-  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Modal d' edition du profil personnel</i>
+  <img  src="profil.png" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Modal d'édition du profil personnel avec validation en temps réel</i>
 </div>
-cependant le professeur a la possibilite de visionner les profils des etudiants afin de verifer la conformite'  et de se preparer aux rencontres eleves.
----
+
+Les modales d'édition intègrent une validation en temps réel avec feedback immédiat, guidant l'utilisateur dans la saisie et prévenant les erreurs de format.
+
+#### 8.2 Gestion des adresses multiples
+
+Le système d'adresses offre une flexibilité maximale pour répondre aux besoins variés des utilisateurs. L'architecture modulaire permet la gestion de plusieurs types d'adresses avec des finalités distinctes :
+Adresse de *domicile*, *facturation*, *livraison*, *travail*.
+
+#### 8.3 Gestion des formations et parcours éducatif
+
+La section formations constitue un élément différenciant de l'application, permettant au professeur d'adapter précisément son enseignement au profil et aux objectifs de chaque élève. Cette fonctionnalité dépasse la simple collecte d'informations pour devenir un véritable outil pédagogique.
+
+#### 8.4 Fonctionnalités spécifiques au professeur
+
+Le professeur dispose d'un accès étendu aux profils étudiants, transformant l'application en véritable outil de gestion pédagogique.
+
+#### 8.5 Sécurité et confidentialité des données
+
+La gestion des profils intègre des mesures de sécurité strictes conformes au RGPD :
+
+**Contrôle d'accès granulaire** : Système de permissions permettant aux élèves de contrôler précisément quelles informations sont visibles par le professeur.
+
+**Anonymisation automatique (en cours)** : Processus d'anonymisation des données lors de la suppression de compte, préservant les statistiques globales tout en respectant le droit à l'effacement.
+
+**Chiffrement des données sensibles** : Protection cryptographique des informations personnelles les plus sensibles (adresses précises, données de formation) avec clés de chiffrement rotatives.
+
+Cette architecture complète de gestion de profil transforme l'application en véritable écosystème pédagogique personnalisé, optimisant l'efficacité de l'apprentissage tout en respectant les exigences les plus strictes en matière de protection des données personnelles.
 
 ## 4. Architecture technique
 ### 4.1 Technologies utilisées
