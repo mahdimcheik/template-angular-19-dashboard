@@ -196,13 +196,9 @@ export class SignalRService {
         });
 
         // Message handlers
-        this.hubConnection.on('ReceiveMessage', (message) => {
-            this.messageReceived$.next(message);
-        });
+        this.hubConnection.on('ReceiveMessage', (message) => {});
 
         this.hubConnection.on('Notification', (notification) => {
-            this.messageReceived$.next({ type: 'notification', data: notification });
-            console.log('Notification received:', notification);
             this.notificationService.getNotificationsCount().subscribe();
             console.log('route', this.router.url);
             if (this.router.url === '/dashboard') {
@@ -210,38 +206,24 @@ export class SignalRService {
             }
         });
 
-        this.hubConnection.on('Email', (notification) => {
-            this.messageReceived$.next({ type: 'notification', data: notification });
-            console.log('Email notification received:', notification);
-        });
+        this.hubConnection.on('Email', (notification) => {});
 
-        this.hubConnection.on('Chat', (notification) => {
-            this.messageReceived$.next({ type: 'notification', data: notification });
-            console.log('Chat notification received:', notification);
-        });
+        this.hubConnection.on('Chat', (notification) => {});
 
-        // Respond to server pings
-        this.hubConnection.on('ping', () => {
-            // Server is checking if we're alive - respond immediately
-            console.log('Received ping from server');
-        });
+        this.hubConnection.on('ping', () => {});
     }
 
-    // Client-side heartbeat to detect connection issues
     private startHeartbeat() {
         this.stopHeartbeat();
         this.pingInterval = setInterval(async () => {
             try {
                 if (this.hubConnection.state === signalR.HubConnectionState.Connected) {
-                    // Try to call a server method to verify connection
                     await this.hubConnection.invoke('GetOnlineCount');
                 }
             } catch (error) {
-                console.warn('Heartbeat failed:', error);
-                // Connection might be dead, trigger reconnection
                 this.handleConnectionError();
             }
-        }, 30000); // Ping every 30 seconds
+        }, 30000);
     }
 
     private stopHeartbeat() {
@@ -253,7 +235,7 @@ export class SignalRService {
 
     private scheduleReconnect() {
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
-            const delay = Math.pow(2, this.reconnectAttempts) * 1000; // Exponential backoff
+            const delay = Math.pow(2, this.reconnectAttempts) * 1000;
             this.reconnectAttempts++;
 
             setTimeout(() => {
@@ -261,7 +243,6 @@ export class SignalRService {
                 this.startConnection();
             }, delay);
         } else {
-            console.error('Max reconnection attempts reached');
             this.connectionState$.next(ConnectionState.Error);
         }
     }
@@ -272,7 +253,6 @@ export class SignalRService {
         }
     }
 
-    // Public methods for sending messages
     async sendMessage(message: any) {
         try {
             if (this.hubConnection.state === signalR.HubConnectionState.Connected) {
