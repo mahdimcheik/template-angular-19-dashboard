@@ -98,10 +98,12 @@
 // }
 
 // connection.service.ts
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject, timer, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { NotificationMainService } from './notificationMain.service';
+import { Router } from '@angular/router';
 
 export enum ConnectionState {
     Connected = 'Connected',
@@ -112,6 +114,8 @@ export enum ConnectionState {
 
 @Injectable({ providedIn: 'root' })
 export class SignalRService {
+    private notificationService = inject(NotificationMainService);
+    private router = inject(Router);
     private hubConnection!: signalR.HubConnection;
     private connectionState$ = new BehaviorSubject<ConnectionState>(ConnectionState.Disconnected);
     private messageReceived$ = new Subject<any>();
@@ -141,9 +145,6 @@ export class SignalRService {
 
     private createConnection(token: string) {
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl('/chathub', {
-                accessTokenFactory: () => this.getAuthToken()
-            })
             .withUrl(`${this.baseUrl}/chathub`, {
                 accessTokenFactory: () => token
                 // transport: signalR.HttpTransportType.WebSockets,
@@ -202,6 +203,11 @@ export class SignalRService {
         this.hubConnection.on('Notification', (notification) => {
             this.messageReceived$.next({ type: 'notification', data: notification });
             console.log('Notification received:', notification);
+            this.notificationService.getNotificationsCount().subscribe();
+            console.log('route', this.router.url);
+            if (this.router.url === '/dashboard') {
+                this.notificationService.getNotificationsByUserId({ perPage: 10, offset: 0 }).subscribe();
+            }
         });
 
         this.hubConnection.on('Email', (notification) => {
@@ -264,10 +270,6 @@ export class SignalRService {
         if (this.hubConnection.state !== signalR.HubConnectionState.Disconnected) {
             this.hubConnection.stop();
         }
-    }
-
-    private getAuthToken(): string {
-        return localStorage.getItem('accessToken') || '';
     }
 
     // Public methods for sending messages
