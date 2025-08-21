@@ -37,9 +37,21 @@
                 </a>
                 @if (user().email && !isAdmin()) {
                 <a type="button" class="layout-topbar-action h-[50px] flex items-start" [routerLink]="['/dashboard/reservation/orders-student']">
-                    <i class="pi pi-shopping-cart relative" style="font-size: 1.75rem">
+                    <!-- <i class="pi pi-shopping-cart relative" style="font-size: 1.75rem">
                         <p-badge class="absolute bottom-[5px] left-[3px]" [value]="numberBooking()" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
-                    </i>
+                    </i> -->
+                    <div class="relative">
+                        <svg width="32" height="32" class="">
+                            <g>
+                                <path
+                                    id="svg_1"
+                                    d="m4,7c-0.55,0 -1,0.45 -1,1s0.45,1 1,1l2.219,0l2.625,10.5c0.222,0.89 1.02,1.5 1.937,1.5l12.469,0c0.902,0 1.668,-0.598 1.906,-1.469l2.594,-9.531l-2.094,0l-2.406,9l-12.469,0l-2.625,-10.5a1.983,1.983 0 0 0 -1.936,-1.5l-2.22,0zm18,14c-1.645,0 -3,1.355 -3,3s1.355,3 3,3s3,-1.355 3,-3s-1.355,-3 -3,-3zm-9,0c-1.645,0 -3,1.355 -3,3s1.355,3 3,3s3,-1.355 3,-3s-1.355,-3 -3,-3zm0,2c0.563,0 1,0.438 1,1c0,0.563 -0.438,1 -1,1c-0.563,0 -1,-0.438 -1,-1c0,-0.563 0.438,-1 1,-1zm9,0c0.563,0 1,0.438 1,1c0,0.563 -0.438,1 -1,1c-0.563,0 -1,-0.438 -1,-1c0,-0.563 0.438,-1 1,-1z"
+                                    fill="currentColor"
+                                />
+                            </g>
+                        </svg>
+                        <p-badge class="absolute bottom-[10px] left-[6px]" [value]="numberBooking()" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
+                    </div>
                     <span>Commandes</span>
                 </a>
                 }
