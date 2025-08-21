@@ -201,6 +201,17 @@ export class SignalRService {
 
         this.hubConnection.on('Notification', (notification) => {
             this.messageReceived$.next({ type: 'notification', data: notification });
+            console.log('Notification received:', notification);
+        });
+
+        this.hubConnection.on('Email', (notification) => {
+            this.messageReceived$.next({ type: 'notification', data: notification });
+            console.log('Email notification received:', notification);
+        });
+
+        this.hubConnection.on('Chat', (notification) => {
+            this.messageReceived$.next({ type: 'notification', data: notification });
+            console.log('Chat notification received:', notification);
         });
 
         // Respond to server pings
@@ -263,7 +274,7 @@ export class SignalRService {
     async sendMessage(message: any) {
         try {
             if (this.hubConnection.state === signalR.HubConnectionState.Connected) {
-                await this.hubConnection.invoke('SendMessage', message);
+                await this.hubConnection.invoke('SendMessageByUserEmail', 'professeur@skill-hive.fr', 'Email', message);
             } else {
                 throw new Error('Not connected to server');
             }
