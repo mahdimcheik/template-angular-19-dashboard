@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import type { Observable } from 'rxjs';
 import type { QueryPagination } from '../models/QueryPagination';
 import type { UserBanDTO } from '../models/UserBanDTO';
+import type { UserResponseDTOListResponseDTO } from '../models/UserResponseDTOListResponseDTO';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 @Injectable({
@@ -16,12 +17,12 @@ export class AdminService {
     constructor(public readonly http: HttpClient) {}
     /**
      * @param requestBody
-     * @returns any OK
+     * @returns UserResponseDTOListResponseDTO OK
      * @throws ApiError
      */
     public postAdminAllStudents(
         requestBody?: QueryPagination,
-    ): Observable<any> {
+    ): Observable<UserResponseDTOListResponseDTO> {
         return __request(OpenAPI, this.http, {
             method: 'POST',
             url: '/admin/all-students',

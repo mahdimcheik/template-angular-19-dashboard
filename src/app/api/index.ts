@@ -85,6 +85,7 @@ export type { UserBanDTO } from './models/UserBanDTO';
 export type { UserCreateDTO } from './models/UserCreateDTO';
 export type { UserLoginDTO } from './models/UserLoginDTO';
 export type { UserResponseDTO } from './models/UserResponseDTO';
+export type { UserResponseDTOListResponseDTO } from './models/UserResponseDTOListResponseDTO';
 export type { UserResponseDTOResponseDTO } from './models/UserResponseDTOResponseDTO';
 export type { UserResponseDTOResponseDTOResponseDTO } from './models/UserResponseDTOResponseDTOResponseDTO';
 export type { UserResponseDTOResponsePagination } from './models/UserResponseDTOResponsePagination';
