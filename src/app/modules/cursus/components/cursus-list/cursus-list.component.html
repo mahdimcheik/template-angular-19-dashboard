@@ -96,21 +96,15 @@
     </p-table>
 </div>
 
-<!-- Modals -->
-<app-modal-add-or-edit-cursus
-    *ngIf="visibleAddEdit()"
-    [updateOrAdd]="updateOrAdd()"
-    [(visibleRight)]="visibleAddEdit"
-    [cursusToChange]="selectedCursus()"
-    (onClose)="closeAddEditModal()"
-    (actionEmitter)="onCursusUpdated()"
-></app-modal-add-or-edit-cursus>
-
-<app-modal-confirm-delete-cursus
-    *ngIf="visibleDelete()"
-    [(visible)]="visibleDelete"
-    [title]="'Supprimer le cursus'"
-    [question]="'Êtes-vous sûr de vouloir supprimer le cursus ' + selectedCursus()?.name + ' ?'"
-    (onDeleteConfirmed)="onDeleteConfirmed()"
-    (onCancel)="closeDeleteModal()"
-></app-modal-confirm-delete-cursus>
+@if (visibleAddEdit()) {
+    <app-modal-add-or-edit-cursus [updateOrAdd]="updateOrAdd()" [(visibleRight)]="visibleAddEdit" [cursusToChange]="selectedCursus()" (onClose)="closeAddEditModal()"></app-modal-add-or-edit-cursus>
+}
+@if (visibleDelete()) {
+    <app-modal-confirm-delete-cursus
+        [(visible)]="visibleDelete"
+        [title]="'Supprimer le cursus'"
+        [question]="'Êtes-vous sûr de vouloir supprimer le cursus ' + selectedCursus()?.name + ' ?'"
+        (onDeleteConfirmed)="onDeleteConfirmed()"
+        (onCancel)="closeDeleteModal()"
+    ></app-modal-confirm-delete-cursus>
+}

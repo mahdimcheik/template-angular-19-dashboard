@@ -224,7 +224,6 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                         life: 3000
                     });
                 } else {
-                    console.log('formValue', formValue);
                     const createData: CreateCursusDto = {
                         name: formValue.cursus.name,
                         description: formValue.cursus.description,
@@ -248,6 +247,8 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                     detail: "Une erreur est survenue lors de l'opérations",
                     life: 3000
                 });
+            } finally {
+                const res = await firstValueFrom(this.cursusService.getAllCursus(0, 10));
             }
         }
     }

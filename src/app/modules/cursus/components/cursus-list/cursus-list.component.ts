@@ -69,6 +69,7 @@ export class CursusListComponent implements OnInit {
         try {
             const res = await firstValueFrom(this.cursusService.getAllCursus(this.first(), this.pageSize()));
             this.totalItems.set(res.count ?? 0);
+            this.cursus.set(res.data ?? []);
         } catch (error) {
             console.error('Error loading cursus:', error);
         }
@@ -151,6 +152,7 @@ export class CursusListComponent implements OnInit {
             }
             this.closeAddEditModal();
         }
+        this.loadCursus();
     }
 
     viewDetails(cursus: CursusDto) {

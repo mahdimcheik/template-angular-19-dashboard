@@ -40,7 +40,7 @@ export class ReservationsListDetailedComponent implements OnInit {
 
     first = 0;
     rows = 10;
-    searchWord = new BehaviorSubject<string | undefined>(undefined);
+    searchWord = new BehaviorSubject<string | undefined>('');
     searchWordDebounced = this.searchWord.pipe(debounceTime(300), distinctUntilChanged());
 
     // Modal state
@@ -57,7 +57,7 @@ export class ReservationsListDetailedComponent implements OnInit {
         });
 
         this.activatedRoute.queryParams.subscribe(async (params) => {
-            const reservationId = params['reservationId'];
+            const reservationId = params['reservationId'] ?? '';
             if (reservationId) {
                 this.searchWord.next(reservationId);
                 this.loading = true;
