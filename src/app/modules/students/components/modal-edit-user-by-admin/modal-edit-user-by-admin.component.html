@@ -1,14 +1,176 @@
-<p-dialog [(visible)]="visible" [style]="{ width: '100%', maxWidth: '450px' }" header="Plus d'action" [modal]="true">
+<p-dialog [(visible)]="visible" [style]="{ width: '100%', maxWidth: '650px' }" header="Profil détaillé de l'élève" [modal]="true">
     <ng-template #content>
-        <div class="flex flex-col gap-4 w-full">
-            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 w-full">
-                <img [src]="user().imgUrl" alt="User" class="rounded object-cover w-48 h-48 lg:w-24 lg:h-24" />
-                <div class="flex flex-col gap-2 w-full">
-                    <input pInputText type="text" [value]="user().firstName + ' ' + user().lastName" class="w-full" disabled />
-                    <input pInputText type="text" [value]="(user().dateOfBirth | dobToAge) + ' ans'" class="w-full" disabled />
+        <div class="space-y-6">
+            <!-- Header Section -->
+            <div class="border-b pb-4">
+                <div class="flex items-center gap-4 mb-3">
+                    @if (user().imgUrl) {
+                        <img [src]="user().imgUrl" class="w-16 h-16 rounded-full object-cover" [alt]="user().firstName" />
+                    } @else {
+                        <div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center">
+                            <i class="pi pi-user text-2xl"></i>
+                        </div>
+                    }
+                    <div>
+                        <h4 class="font-semibold text-xl">{{ user().firstName }} {{ user().lastName }}</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">{{ user().email }}</p>
+                        @if (user().dateOfBirth) {
+                            <p class="text-sm text-gray-500">{{ (user().dateOfBirth | dobToAge) }} ans</p>
+                        }
+                    </div>
+                </div>
+                @if (isBanned()) {
+                    <div class="inline-flex items-center gap-2 bg-red-50 text-red-700 px-3 py-2 rounded-lg text-sm">
+                        <i class="pi pi-ban"></i>
+                        <span>{{ isBanned() }} {{ user().bannedUntilDate | date: 'dd MMMM yyyy' }}</span>
+                    </div>
+                }
+            </div>
+
+            <!-- Personal Information Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Basic Information -->
+                <div class="space-y-4">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-user text-primary"></i>
+                        Informations personnelles
+                    </h5>
+                    <div class="space-y-3 pl-6">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Prénom:</span>
+                            <span class="font-medium">{{ user().firstName || 'Non renseigné' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Nom:</span>
+                            <span class="font-medium">{{ user().lastName || 'Non renseigné' }}</span>
+                        </div>
+                        @if (user().dateOfBirth) {
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Date de naissance:</span>
+                                <span class="font-medium">{{ user().dateOfBirth | date: 'dd/MM/yyyy' }}</span>
+                            </div>
+                        }
+                        @if (user().gender !== undefined) {
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Genre:</span>
+                                <span class="font-medium">{{ getGenderDisplay(user().gender) }}</span>
+                            </div>
+                        }
+                        @if (user().phoneNumber) {
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Téléphone:</span>
+                                <span class="font-medium">{{ user().phoneNumber }}</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Account Information -->
+                <div class="space-y-4">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-cog text-primary"></i>
+                        Informations du compte
+                    </h5>
+                    <div class="space-y-3 pl-6">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Email:</span>
+                            <span class="font-medium text-sm break-all">{{ user().email }}</span>
+                        </div>
+                        @if (user().roles) {
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Rôles:</span>
+                                <div class="flex flex-wrap gap-1">
+                                    @for (role of user().roles; track role) {
+                                        <span class="bg-primary-50 text-primary-700 px-2 py-1 rounded text-xs">{{ role }}</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        @if (user().lastLogginAt) {
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Dernière connexion:</span>
+                                <span class="font-medium">{{ user().lastLogginAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
-            <p-message *ngIf="isBanned()" severity="warn" class="w-full"> {{ isBanned() }} {{ user().bannedUntilDate | date: 'dd MMMM yyyy' }} </p-message>
+
+            <!-- Address Information -->
+            @if (user().adresses) {
+                <div class="space-y-4">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-map-marker text-primary"></i>
+                        Adresses
+                    </h5>
+                    <div class="space-y-3">
+                        @for (address of user().adresses; track address.id) {
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="font-medium">{{ getAddressTypeDisplay(address.addressType) }}</span>
+                                </div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                    @if (address.street) {
+                                        <div>{{ address.street }}</div>
+                                    }
+                                    <div>
+                                        @if (address.postalCode) {
+                                            <span>{{ address.postalCode }}</span>
+                                        }
+                                        @if (address.city) {
+                                            <span> {{ address.city }}</span>
+                                        }
+                                    </div>
+                                    @if (address.country) {
+                                        <div>{{ address.country }}</div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Technical Information (Admin only) -->
+            <div class="space-y-3">
+                <h5 class="font-semibold flex items-center gap-2">
+                    <i class="pi pi-info-circle text-primary"></i>
+                    Informations techniques
+                </h5>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-gray-300">ID Utilisateur:</span>
+                        <span class="font-mono">{{ user().id }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-gray-300">Statut:</span>
+                        <span class="font-medium" [class]="user().isBanned ? 'text-red-600' : 'text-green-600'">
+                            {{ user().isBanned ? 'Banni' : 'Actif' }}
+                        </span>
+                    </div>
+                    @if (user().emailConfirmed !== undefined) {
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Email confirmé:</span>
+                            <span class="font-medium" [class]="user().emailConfirmed ? 'text-green-600' : 'text-orange-600'">
+                                {{ user().emailConfirmed ? 'Oui' : 'Non' }}
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Description/Notes -->
+            @if (user().description) {
+                <div class="space-y-3">
+                    <h5 class="font-semibold flex items-center gap-2">
+                        <i class="pi pi-file-text text-primary"></i>
+                        Description
+                    </h5>
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <p class="leading-relaxed text-sm">{{ user().description }}</p>
+                    </div>
+                </div>
+            }
         </div>
     </ng-template>
     <ng-template pTemplate="footer">

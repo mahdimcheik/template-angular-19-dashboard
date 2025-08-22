@@ -15,6 +15,8 @@ import { AdminMainService } from '../../../../shared/services/adminMain.service'
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { ImageModule } from 'primeng/image';
+import { EnumGender } from '../../../../api/models/EnumGender';
+import { AddressTypeEnum } from '../../../../api/models/AddressTypeEnum';
 
 @Component({
     selector: 'app-modal-edit-user-by-admin',
@@ -37,7 +39,6 @@ export class ModalEditUserByAdminComponent {
             .pipe(
                 finalize(() => {
                     console.log('banUnbanUser: finalize');
-
                     this.visible.set(false);
                 })
             )
@@ -50,5 +51,37 @@ export class ModalEditUserByAdminComponent {
     showProfil(id: string) {
         this.visible.set(false);
         this.router.navigate(['dashboard/profile/user', id]);
+    }
+
+    getGenderDisplay(gender?: EnumGender): string {
+        if (!gender) return 'Non renseigné';
+        
+        switch (gender) {
+            case EnumGender._1:
+                return 'Masculin';
+            case EnumGender._2:
+                return 'Féminin';
+            case EnumGender._3:
+                return 'Autre';
+            default:
+                return 'Non renseigné';
+        }
+    }
+
+    getAddressTypeDisplay(addressType?: AddressTypeEnum): string {
+        if (!addressType) return 'Autre';
+        
+        switch (addressType) {
+            case AddressTypeEnum._1:
+                return 'Domicile';
+            case AddressTypeEnum._2:
+                return 'Travail';
+            case AddressTypeEnum._3:
+                return 'Facturation';
+            case AddressTypeEnum._4:
+                return 'Temporaire';
+            default:
+                return 'Autre';
+        }
     }
 }
