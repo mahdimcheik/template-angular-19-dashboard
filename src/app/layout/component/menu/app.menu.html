@@ -11,7 +11,7 @@
     @for (item of model(); track item.label) {
     <li>
         @if (item.routerLink && item.visible !== false) {
-        <a class="menu-link" (click)="item.command" [routerLink]="item.routerLink[0]" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="menu-link" (click)="item.command" [routerLink]="item.routerLink" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true, queryParams: 'subset' }">
             <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
             <span class="layout-menuitem-text">{{ item.label }}</span>
         </a>

@@ -14,9 +14,9 @@ import { ButtonModule } from 'primeng/button';
 export class AppMenu {
     router = inject(Router);
     authService = inject(UserMainService);
-    model = (this.authService as any).model;
+    model = this.authService.model;
     layoutService = inject(LayoutService);
-    isAdmin = computed(() => (this.authService as any).userConnected()?.roles?.includes('Admin'));
+    isAdmin = computed(() => this.authService.userConnected()?.roles?.includes('Admin'));
 
     deconnecionItem = {
         label: 'Déconnexion',
