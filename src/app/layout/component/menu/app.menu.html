@@ -8,7 +8,7 @@
             </div>
         </div>
     </li>
-    @for (item of model(); track item.label) {
+    @for (item of sideNavItems(); track item.label) {
     <li>
         @if (item.routerLink && item.visible !== false) {
         <a class="menu-link" (click)="item.command" [routerLink]="item.routerLink" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true, queryParams: 'subset' }">

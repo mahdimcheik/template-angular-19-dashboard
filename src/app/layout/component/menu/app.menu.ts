@@ -14,7 +14,7 @@ import { ButtonModule } from 'primeng/button';
 export class AppMenu {
     router = inject(Router);
     authService = inject(UserMainService);
-    model = this.authService.model;
+    sideNavItems = this.authService.sideNavItems;
     layoutService = inject(LayoutService);
     isAdmin = computed(() => this.authService.userConnected()?.roles?.includes('Admin'));
 
@@ -28,6 +28,6 @@ export class AppMenu {
     };
 
     deconnect() {
-        (this.authService as any).logout();
+        this.authService.logout();
     }
 }

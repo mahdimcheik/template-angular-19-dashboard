@@ -64,7 +64,7 @@ export class UserMainService {
     isAdmin = computed(() => this.userConnected()?.roles?.includes('Admin'));
 
     // lien de side navbar
-    model = signal<MenuItem[]>([]);
+    sideNavItems = signal<MenuItem[]>([]);
 
     // pour la page qui je suis ?
     teacherDetails = signal({} as UserResponseDTO);
@@ -98,14 +98,14 @@ export class UserMainService {
     constructor() {
         effect(() => {
             this.isAdmin()
-                ? this.model.set([
+                ? this.sideNavItems.set([
                       { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
                       { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
                       { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-teacher'] },
                       { label: 'Utilisateurs', icon: 'pi pi-users', routerLink: ['/dashboard/students-list'] },
                       { label: 'Profil', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/profile/me'] }
                   ])
-                : this.model.set([
+                : this.sideNavItems.set([
                       { label: 'Tableau de bord', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
                       { label: 'Réservations', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/reservation/list'] },
                       { label: 'Calendrier', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/reservation/calendar-for-student'] },
