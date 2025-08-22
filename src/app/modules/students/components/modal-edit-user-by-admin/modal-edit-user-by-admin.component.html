@@ -15,7 +15,7 @@
                         <h4 class="font-semibold text-xl">{{ user().firstName }} {{ user().lastName }}</h4>
                         <p class="text-sm text-gray-600 dark:text-gray-300">{{ user().email }}</p>
                         @if (user().dateOfBirth) {
-                            <p class="text-sm text-gray-500">{{ (user().dateOfBirth | dobToAge) }} ans</p>
+                            <p class="text-sm text-gray-500">{{ user().dateOfBirth | dobToAge }} ans</p>
                         }
                     </div>
                 </div>

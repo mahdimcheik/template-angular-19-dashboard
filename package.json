@@ -11,7 +11,14 @@
         "format": "prettier --write \"**/*.{js,mjs,ts,mts,d.ts,html}\" --cache",
         "test": "ng test",
         "doc": "compodoc -p tsconfig.json -d docs --language fr",
-        "gen-api": "npx openapi-typescript-codegen --client angular -i http://localhost:5113/swagger/v1/swagger.json -o src/app/api "
+        "gen-api": "npx openapi-typescript-codegen --client angular -i http://localhost:5113/swagger/v1/swagger.json -o src/app/api ",
+        "cap:copy": "npx cap copy",
+        "cap:sync": "npx cap sync",
+        "cap:build": "npm run build:prod && npx cap copy",
+        "cap:build:android": "npm run build:prod && npx cap copy && npx cap open android",
+        "cap:run:android": "npx cap run android",
+        "cap:add:android": "npx cap add android",
+        "cap:assets": "npx capacitor-assets generate --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#000000' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#000000'"
     },
     "private": true,
     "dependencies": {
@@ -24,7 +31,6 @@
         "@angular/platform-browser-dynamic": "^19.0.0",
         "@angular/router": "^19.0.0",
         "@capacitor/android": "^7.4.2",
-        "@capacitor/cli": "^7.4.2",
         "@capacitor/core": "^7.4.2",
         "@fullcalendar/angular": "^6.1.16",
         "@fullcalendar/core": "^6.1.15",
@@ -47,6 +53,8 @@
         "@angular-devkit/build-angular": "^19.0.6",
         "@angular/cli": "^19.0.6",
         "@angular/compiler-cli": "^19.0.0",
+        "@capacitor/assets": "^3.0.5",
+        "@capacitor/cli": "^7.4.3",
         "@compodoc/compodoc": "^1.1.26",
         "@types/jasmine": "~5.1.0",
         "autoprefixer": "^10.4.20",

@@ -55,7 +55,7 @@ export class ModalEditUserByAdminComponent {
 
     getGenderDisplay(gender?: EnumGender): string {
         if (!gender) return 'Non renseigné';
-        
+
         switch (gender) {
             case EnumGender._1:
                 return 'Masculin';
@@ -70,7 +70,7 @@ export class ModalEditUserByAdminComponent {
 
     getAddressTypeDisplay(addressType?: AddressTypeEnum): string {
         if (!addressType) return 'Autre';
-        
+
         switch (addressType) {
             case AddressTypeEnum._1:
                 return 'Domicile';
