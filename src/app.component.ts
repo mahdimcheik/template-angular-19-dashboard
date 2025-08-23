@@ -13,6 +13,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { CommonModule } from '@angular/common';
 import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-spinner/overlay-spinner.component';
 import { CookieConsentBannerComponent } from './app/shared/components/cookie-consent-banner/cookie-consent-banner.component';
+import { App } from '@capacitor/app';
 
 @Component({
     selector: 'app-root',
@@ -45,6 +46,13 @@ export class AppComponent implements OnInit {
     connectionService = inject(ConnectionService);
 
     ngOnInit(): void {
+        App.addListener('backButton', ({ canGoBack }) => {
+            if (canGoBack) {
+                window.history.back();
+            } else {
+                App.exitApp();
+            }
+        });
         this.connectionService.checkNetworkStatus();
         (this.authService as any)
             .getprofile()

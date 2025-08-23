@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TopbarWidget } from '../../components/topbar-landing/topbarwidget.component';
 import { HeroWidget } from '../../components/herowidget/herowidget';

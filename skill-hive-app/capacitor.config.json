@@ -1,0 +1,10 @@
+{
+  "appId": "com.skillive.app",
+  "appName": "skill-hive-app",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}
