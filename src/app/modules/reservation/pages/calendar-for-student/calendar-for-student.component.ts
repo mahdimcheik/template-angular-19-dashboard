@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, OnInit, signal, ViewChild, ElementRef, DestroyRef } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventContentArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
@@ -12,6 +12,8 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { HelpTypePipe } from '../../../../shared/pipes/help-type.pipe';
 import { ModalBookOrUnbookComponent } from '../../components/modal-book-or-unbook/modal-book-or-unbook.component';
+import { SizeWatcherService } from '../../../../shared/services/size-watcher.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 type MinimalEvent = {
     start: Date;
@@ -39,11 +41,18 @@ export class CalendarForStudentComponent implements OnInit, AfterViewInit {
     slotService = inject(SlotMainService);
     visibleEvents = this.slotService.visibleEvents; // signal
     userConnected = inject(UserMainService).userConnected; // signal
+    sizeWatcher = inject(SizeWatcherService);
+    destroyRef = inject(DestroyRef);
+    initialView = computed(() => (window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek'));
 
     isVisibleModalBookDelete: boolean = false;
 
     @ViewChild('calendar')
     calendarComponent!: FullCalendarComponent;
+
+    @ViewChild('calendarContainer', { static: true })
+    calendarContainer!: ElementRef;
+
     events: EventInput[] = [];
     dateStart!: string;
     dateEnd!: string;
@@ -71,7 +80,7 @@ export class CalendarForStudentComponent implements OnInit, AfterViewInit {
     }
 
     calendarOptions: CalendarOptions = {
-        initialView: 'timeGridWeek',
+        initialView: this.initialView(),
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
         locale: frLocale,
         headerToolbar: {
@@ -132,14 +141,11 @@ export class CalendarForStudentComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        const calendarApi = this.calendarComponent.getApi();
-        this.dateStart = calendarApi.view.currentStart.toUTCString();
-        this.dateEnd = calendarApi.view.currentEnd.toUTCString();
-        this.currentDate = calendarApi.getDate();
-        this.loadSlot();
-    }
-    // manually add buttons controlling the calendar
-    updateViewDates() {
+        this.sizeWatcher.size$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((size) => {
+            if (size === 'small') {
+                this.calendarComponent.getApi().changeView('timeGridDay');
+            }
+        });
         const calendarApi = this.calendarComponent.getApi();
         this.dateStart = calendarApi.view.currentStart.toUTCString();
         this.dateEnd = calendarApi.view.currentEnd.toUTCString();
@@ -151,6 +157,14 @@ export class CalendarForStudentComponent implements OnInit, AfterViewInit {
         this.calendarComponent.getApi().next();
         this.updateViewDates();
     }
+    updateViewDates() {
+        const calendarApi = this.calendarComponent.getApi();
+        this.dateStart = calendarApi.view.currentStart.toUTCString();
+        this.dateEnd = calendarApi.view.currentEnd.toUTCString();
+        this.currentDate = calendarApi.getDate();
+        this.loadSlot();
+    }
+
     prev(): void {
         this.calendarComponent.getApi().prev();
         this.updateViewDates();

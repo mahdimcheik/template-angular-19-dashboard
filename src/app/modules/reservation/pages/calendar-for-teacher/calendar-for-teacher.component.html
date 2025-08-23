@@ -10,7 +10,7 @@
         <p-button (onClick)="next()" class="control-btn" icon="pi pi-angle-right"> </p-button>
     </div>
 </div>
-<div class="card calendar">
+<div class="card calendar" #calendarContainer>
     <full-calendar [options]="calendarOptions" #calendar [events]="visibleEvents()">
         <ng-template #eventContent let-arg class="custom-event">
             <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available', arg.event.extendedProps?.slot?.status === 0 || arg.event.extendedProps?.slot?.status === 3 ? 'pending' : '']">

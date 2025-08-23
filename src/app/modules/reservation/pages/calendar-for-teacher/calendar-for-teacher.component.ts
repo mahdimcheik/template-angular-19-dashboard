@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, DestroyRef, inject, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
 import { SlotMainService } from '../../../../shared/services/slotMain.service';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
@@ -30,14 +30,18 @@ export class CalendarForTeacherComponent implements AfterViewInit {
     sizeWatcher = inject(SizeWatcherService);
     destroyRef = inject(DestroyRef);
 
+    @ViewChild('calendar')
+    calendarComponent!: FullCalendarComponent;
+
+    @ViewChild('calendarContainer', { static: true })
+    calendarContainer!: ElementRef;
+
     isVisibleModalCreate: boolean = false;
     isVisibleModalUpdate: boolean = false;
 
     showCreateAppointmentModal = signal<boolean>(false);
     showEditAppointmentModal = signal<boolean>(false);
-
-    @ViewChild('calendar')
-    calendarComponent!: FullCalendarComponent;
+    initialView = computed(() => (window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek'));
     displayModal: boolean = false;
     dateStart!: string;
     dateEnd!: string;
@@ -121,7 +125,7 @@ export class CalendarForTeacherComponent implements AfterViewInit {
     }
 
     calendarOptions: CalendarOptions = {
-        initialView: 'timeGridWeek',
+        initialView: this.initialView(),
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
         locale: frLocale,
         headerToolbar: {
@@ -200,26 +204,32 @@ export class CalendarForTeacherComponent implements AfterViewInit {
         this.calendarComponent.getApi().next();
         this.updateViewDates();
     }
+
     prev(): void {
         this.calendarComponent.getApi().prev();
         this.updateViewDates();
     }
+
     getToday(): void {
         this.calendarComponent.getApi().today();
         this.updateViewDates();
     }
+
     weekView() {
         this.calendarComponent.getApi().changeView('timeGridWeek');
         this.updateViewDates();
     }
+
     monthView() {
         this.calendarComponent.getApi().changeView('dayGridMonth');
         this.updateViewDates();
     }
+
     dayView() {
         this.calendarComponent.getApi().changeView('timeGridDay');
         this.updateViewDates();
     }
+
     onModalSubmit() {
         this.loadSlot();
     }
