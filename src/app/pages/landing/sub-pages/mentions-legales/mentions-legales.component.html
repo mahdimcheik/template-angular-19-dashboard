@@ -8,12 +8,12 @@
     <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg mb-8 border border-surface-200 dark:border-surface-600">
         <h3 class="font-semibold mb-3 text-surface-900 dark:text-surface-0">Navigation rapide :</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
-            <a href="#editeur" class="text-primary-500 hover:text-primary-600 underline">1. Éditeur du site</a>
-            <a href="#hebergement" class="text-primary-500 hover:text-primary-600 underline">2. Hébergement</a>
-            <a href="#donnees-personnelles" class="text-primary-500 hover:text-primary-600 underline">3. Données personnelles</a>
-            <a href="#cookies" class="text-primary-500 hover:text-primary-600 underline">4. Politique des cookies</a>
-            <a href="#droits-utilisateurs" class="text-primary-500 hover:text-primary-600 underline">5. Vos droits</a>
-            <a href="#securite" class="text-primary-500 hover:text-primary-600 underline">6. Sécurité des données</a>
+            <a [routerLink]="'/mentions-legales'" fragment="editeur" class="text-primary-500 hover:text-primary-600 underline">1. Éditeur du site</a>
+            <a [routerLink]="'/mentions-legales'" fragment="hebergement" class="text-primary-500 hover:text-primary-600 underline">2. Hébergement</a>
+            <a [routerLink]="'/mentions-legales'" fragment="donnees-personnelles" class="text-primary-500 hover:text-primary-600 underline">3. Données personnelles</a>
+            <a [routerLink]="'/mentions-legales'" fragment="cookies" class="text-primary-500 hover:text-primary-600 underline">4. Politique des cookies</a>
+            <a [routerLink]="'/mentions-legales'" fragment="droits-utilisateurs" class="text-primary-500 hover:text-primary-600 underline">5. Vos droits</a>
+            <a [routerLink]="'/mentions-legales'" fragment="securite" class="text-primary-500 hover:text-primary-600 underline">6. Sécurité des données</a>
         </div>
     </div>
 
