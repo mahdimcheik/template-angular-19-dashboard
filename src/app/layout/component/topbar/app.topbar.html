@@ -31,16 +31,13 @@
 
         <div class="layout-topbar-menu hidden lg:block">
             <div class="layout-topbar-menu-content">
-                <a type="button" class="layout-topbar-action flex items-start" [routerLink]="[calendarLink()]">
-                    <i class="pi pi-calendar"></i>
-                    <span>Réservations</span>
+                <a type="button" class="layout-topbar-action h-[50px] flex items-start" [routerLink]="[calendarLink()]">
+                    <i class="pi pi-calendar" style="font-size: 1.5rem"></i>
+                    <span class="pl-2">Réservations</span>
                 </a>
                 @if (user().email && !isAdmin()) {
                 <a type="button" class="layout-topbar-action h-[50px] flex items-start" [routerLink]="['/dashboard/reservation/orders-student']">
-                    <!-- <i class="pi pi-shopping-cart relative" style="font-size: 1.75rem">
-                        <p-badge class="absolute bottom-[5px] left-[3px]" [value]="numberBooking()" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
-                    </i> -->
-                    <div class="relative">
+                    <div class="relative min-w-[32px]">
                         <svg width="32" height="32" class="">
                             <g>
                                 <path
@@ -52,18 +49,19 @@
                         </svg>
                         <p-badge class="absolute bottom-[10px] left-[6px]" [value]="numberBooking()" severity="info" [style]="{backgroundColor: 'transparent', color: 'var(--primary-color)', fontSize: '16px'}"></p-badge>
                     </div>
-                    <span>Commandes</span>
+                    <span class="pl-2">Commandes</span>
                 </a>
                 }
-                <a type="button" class="layout-topbar-action" [routerLink]="['/dashboard/profile/me']">
-                    @if (user().email) {
-                    <p-avatar [image]="user()?.imgUrl ?? ''" shape="circle"></p-avatar>
-                    } @else {
-                    <i class="pi pi-user"></i>
-                    }
-                    <span>Profil</span>
+                <a type="button" class="layout-topbar-action h-[50px] flex items-start" [routerLink]="['/dashboard/profile/me']">
+                    <div class="relative min-w-[32px]">
+                        @if (user().email) {
+                        <p-avatar [image]="user()?.imgUrl ?? ''" shape="circle"></p-avatar>
+                        } @else {
+                        <i class="pi pi-user" style="font-size: 1.5rem"></i>
+                        }
+                    </div>
+                    <span class="pl-2">Profil</span>
                 </a>
-                <!-- <p-menu #menu [model]="userItems()" [popup]="true"></p-menu> -->
             </div>
         </div>
     </div>

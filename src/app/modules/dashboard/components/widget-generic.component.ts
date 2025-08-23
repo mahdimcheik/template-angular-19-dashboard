@@ -5,11 +5,11 @@ import { Component, input } from '@angular/core';
     selector: 'app-widget-generic',
     imports: [],
     template: `
-        <div class="card mb-0 w-full">
+        <div class="card mb-0 w-full max-h-[126px]">
             <div class="flex justify-between mb-4">
                 <div>
                     <span class="block text-muted-color font-medium mb-4">{{ title() }}</span>
-                    <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ middle() }}</div>
+                    <div class="text-surface-900 dark:text-surface-0 font-medium text-lg  xl:text-xl">{{ middle() }}</div>
                 </div>
                 <div class="flex items-center justify-center bg-purple-100 dark:bg-purple-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
                     <i [class]="icon()"></i>
