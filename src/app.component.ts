@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { OverlaySpinnerComponent } from './app/pages/landing/components/overlay-spinner/overlay-spinner.component';
 import { CookieConsentBannerComponent } from './app/shared/components/cookie-consent-banner/cookie-consent-banner.component';
 import { App } from '@capacitor/app';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
     selector: 'app-root',
@@ -45,7 +46,10 @@ export class AppComponent implements OnInit {
     router = inject(Router);
     connectionService = inject(ConnectionService);
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
+        // permission ios
+        await LocalNotifications.requestPermissions();
+        // eventlistner pour ios et android (button back )
         App.addListener('backButton', ({ canGoBack }) => {
             if (canGoBack) {
                 window.history.back();

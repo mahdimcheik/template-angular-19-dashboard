@@ -104,6 +104,7 @@ import { BehaviorSubject, timer, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { NotificationMainService } from './notificationMain.service';
 import { Router } from '@angular/router';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 export enum ConnectionState {
     Connected = 'Connected',
@@ -204,6 +205,7 @@ export class SignalRService {
             if (this.router.url === '/dashboard') {
                 this.notificationService.getNotificationsByUserId({ perPage: 10, offset: 0 }).subscribe();
             }
+            this.showNotif();
         });
 
         this.hubConnection.on('Email', (notification) => {});
@@ -273,5 +275,18 @@ export class SignalRService {
             console.error('Failed to get online count:', error);
             return 0;
         }
+    }
+
+    async showNotif() {
+        await LocalNotifications.schedule({
+            notifications: [
+                {
+                    title: 'Notification test',
+                    body: 'Ceci est une notification locale 📱',
+                    id: 123,
+                    schedule: { at: new Date(Date.now() + 2000) } // après 2 secondes
+                }
+            ]
+        });
     }
 }

@@ -33,6 +33,7 @@
         "@capacitor/android": "^7.4.2",
         "@capacitor/app": "^7.0.2",
         "@capacitor/core": "^7.4.2",
+        "@capacitor/local-notifications": "^7.0.2",
         "@fullcalendar/angular": "^6.1.16",
         "@fullcalendar/core": "^6.1.15",
         "@fullcalendar/daygrid": "^6.1.15",
