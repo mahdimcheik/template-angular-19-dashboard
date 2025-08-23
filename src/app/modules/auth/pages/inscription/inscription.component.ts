@@ -49,6 +49,8 @@ export class InscriptionComponent {
         label: 'Inscription',
         globalValidators: [Validators.required],
         styleClass: 'max-w-[40rem] ',
+        hideCancelButton: true,
+        hideSubmitButton: true,
         formFieldGroups: [
             {
                 id: 'inscriptionForm',

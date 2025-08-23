@@ -2,9 +2,8 @@
     <app-logo />
     <app-configurable-form [structure]="loginFormStructure" (onFormSubmit)="handleFormSubmit($event)" #formComponent> </app-configurable-form>
     <div class="flex items-center justify-between mb-8 gap-8">
-        <div class="flex items-center">
-            <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" [routerLink]="'/auth/inscription'">Créer un compte</span>
-        </div>
+        <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" [routerLink]="'/auth/inscription'">Créer un compte</span>
+
         <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" [routerLink]="'/auth/forgot-password'">Mot de passe oublié?</span>
     </div>
     <div class="flex justify-center w-full gap-2">

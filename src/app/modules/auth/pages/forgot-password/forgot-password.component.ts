@@ -30,7 +30,9 @@ export class ForgotPasswordComponent {
         name: 'forgotPasswordForm',
         label: 'Mot de passe oublié',
         globalValidators: [Validators.required],
-        styleClass: 'min-w-[30rem] ',
+        styleClass: 'min-w-[25rem] ',
+        hideSubmitButton: true,
+        hideCancelButton: true,
         formFields: [
             {
                 id: 'email',
@@ -39,7 +41,8 @@ export class ForgotPasswordComponent {
                 type: 'email',
                 required: true,
                 placeholder: 'Entrer votre email',
-                validation: [Validators.email, Validators.required]
+                validation: [Validators.email, Validators.required],
+                fullWidth: true
             }
         ]
     };
