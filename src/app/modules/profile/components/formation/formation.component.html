@@ -16,5 +16,9 @@
     </div>
 </div>
 
-<app-modal-edit-or-add-formation (onClose)="close()" *ngIf="visibleRight()" [formationToEdit]="formation()" [updateOrAdd]="'update'" [(visibleRight)]="visibleRight"></app-modal-edit-or-add-formation>
-<app-modal-confirm-delete *ngIf="visibleModalDelete()" [(visible)]="visibleModalDelete" [title]="formation().title ?? ''" (onDeleteConfirmed)="deleteFormation()"></app-modal-confirm-delete>
+@if (visibleRight()) {
+    <app-modal-edit-or-add-formation (onClose)="close()" *ngIf="" [formationToEdit]="formation()" [updateOrAdd]="'update'" [(visibleRight)]="visibleRight"></app-modal-edit-or-add-formation>
+}
+@if (visibleModalDelete()) {
+    <app-modal-confirm-delete [(visible)]="visibleModalDelete" [title]="formation().title ?? ''" (onDeleteConfirmed)="deleteFormation()"></app-modal-confirm-delete>
+}

@@ -1,119 +1,125 @@
 <div class="container mx-auto p-4 max-w-4xl">
     <!-- Loading State -->
-    <div *ngIf="loading()" class="space-y-4">
-        <div class="flex justify-between items-center mb-6">
-            <p-skeleton width="200px" height="2rem"></p-skeleton>
-            <p-skeleton width="100px" height="2.5rem"></p-skeleton>
-        </div>
-
-        <p-card>
-            <div class="space-y-4">
-                <p-skeleton width="100%" height="3rem"></p-skeleton>
-                <p-skeleton width="100%" height="8rem"></p-skeleton>
-                <div class="flex gap-4">
-                    <p-skeleton width="150px" height="2rem"></p-skeleton>
-                    <p-skeleton width="150px" height="2rem"></p-skeleton>
-                </div>
-                <p-skeleton width="200px" height="1.5rem"></p-skeleton>
+    @if (loading()) {
+        <div class="space-y-4">
+            <div class="flex justify-between items-center mb-6">
+                <p-skeleton width="200px" height="2rem"></p-skeleton>
+                <p-skeleton width="100px" height="2.5rem"></p-skeleton>
             </div>
-        </p-card>
-    </div>
+
+            <p-card>
+                <div class="space-y-4">
+                    <p-skeleton width="100%" height="3rem"></p-skeleton>
+                    <p-skeleton width="100%" height="8rem"></p-skeleton>
+                    <div class="flex gap-4">
+                        <p-skeleton width="150px" height="2rem"></p-skeleton>
+                        <p-skeleton width="150px" height="2rem"></p-skeleton>
+                    </div>
+                    <p-skeleton width="200px" height="1.5rem"></p-skeleton>
+                </div>
+            </p-card>
+        </div>
+    }
 
     <!-- Error State -->
-    <div *ngIf="error() && !loading()" class="text-center py-8">
-        <div class="bg-red-50 border border-red-200 rounded-lg p-6">
-            <i class="pi pi-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-            <h3 class="text-xl font-semibold text-red-800 mb-2">Erreur</h3>
-            <p class="text-red-600 mb-4">{{ error() }}</p>
-            <p-button label="Retour à la liste" icon="pi pi-arrow-left" severity="secondary" (onClick)="goBack()"></p-button>
+    @if (error() && !loading()) {
+        <div class="text-center py-8">
+            <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                <i class="pi pi-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                <h3 class="text-xl font-semibold text-red-800 mb-2">Erreur</h3>
+                <p class="text-red-600 mb-4">{{ error() }}</p>
+                <p-button label="Retour à la liste" icon="pi pi-arrow-left" severity="secondary" (onClick)="goBack()"></p-button>
+            </div>
         </div>
-    </div>
+    }
 
     <!-- Content State -->
-    <div *ngIf="cursus() && !loading() && !error()">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">Détails du Cursus</h1>
-            <p-button label="Retour" icon="pi pi-arrow-left" severity="secondary" [outlined]="true" (onClick)="goBack()"></p-button>
-        </div>
+    @if (cursus() && !loading() && !error()) {
+        <div>
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800">Détails du Cursus</h1>
+                <p-button label="Retour" icon="pi pi-arrow-left" severity="secondary" [outlined]="true" (onClick)="goBack()"></p-button>
+            </div>
 
-        <!-- Main Content Card -->
-        <p-card styleClass="mb-6">
-            <ng-template pTemplate="header">
-                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
-                    <div class="flex items-center gap-3">
-                        <i [class]="cursus()!.level | cursusLevelIcon" class="text-2xl text-indigo-600"></i>
+            <!-- Main Content Card -->
+            <p-card styleClass="mb-6">
+                <ng-template pTemplate="header">
+                    <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+                        <div class="flex items-center gap-3">
+                            <i [class]="cursus()!.level | cursusLevelIcon" class="text-2xl text-indigo-600"></i>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">{{ cursus()!.name }}</h2>
+                                <p class="text-gray-600 dark:text-gray-300">{{ cursus()!.category }}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <p-badge [value]="cursus()!.level | cursusLevel" [class]="cursus()!.level | cursusLevelBadge" styleClass="text-sm"></p-badge>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="content">
+                    <div class="space-y-6">
+                        <!-- Description Section -->
                         <div>
-                            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">{{ cursus()!.name }}</h2>
-                            <p class="text-gray-600 dark:text-gray-300">{{ cursus()!.category }}</p>
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
+                                <i class="pi pi-info-circle text-blue-500"></i>
+                                Description
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                {{ cursus()!.description }}
+                            </p>
+                        </div>
+
+                        <!-- Details Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Level Details -->
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i [class]="cursus()!.level | cursusLevelIcon" class="text-indigo-600"></i>
+                                    Niveau
+                                </h4>
+                                <p class="text-gray-600 dark:text-gray-300">{{ cursus()!.level | cursusLevel }}</p>
+                            </div>
+
+                            <!-- Category Details -->
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i class="pi pi-tag text-green-600"></i>
+                                    Catégorie
+                                </h4>
+                                <p class="text-gray-600 dark:text-gray-300">{{ cursus()!.category }}</p>
+                            </div>
+
+                            <!-- Created Date -->
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i class="pi pi-calendar text-blue-600"></i>
+                                    Date de création
+                                </h4>
+                                <p class="text-gray-600 dark:text-gray-300">{{ formatDate(cursus()!.createdAt) }}</p>
+                            </div>
+
+                            <!-- Updated Date -->
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i class="pi pi-clock text-orange-600"></i>
+                                    Dernière modification
+                                </h4>
+                                <p class="text-gray-600 dark:text-gray-300">{{ formatDate(cursus()!.updatedAt) }}</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <p-badge [value]="cursus()!.level | cursusLevel" [class]="cursus()!.level | cursusLevelBadge" styleClass="text-sm"></p-badge>
+                </ng-template>
+
+                <ng-template pTemplate="footer">
+                    <div class="flex justify-end gap-3">
+                        <p-button label="Modifier" icon="pi pi-pencil" severity="warn" [outlined]="true" (onClick)="editCursus()"></p-button>
+                        <p-button label="Retour à la liste" icon="pi pi-list" severity="info" (onClick)="goBack()"></p-button>
                     </div>
-                </div>
-            </ng-template>
-
-            <ng-template pTemplate="content">
-                <div class="space-y-6">
-                    <!-- Description Section -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-                            <i class="pi pi-info-circle text-blue-500"></i>
-                            Description
-                        </h3>
-                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                            {{ cursus()!.description }}
-                        </p>
-                    </div>
-
-                    <!-- Details Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Level Details -->
-                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                            <h4 class="font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
-                                <i [class]="cursus()!.level | cursusLevelIcon" class="text-indigo-600"></i>
-                                Niveau
-                            </h4>
-                            <p class="text-gray-600 dark:text-gray-300">{{ cursus()!.level | cursusLevel }}</p>
-                        </div>
-
-                        <!-- Category Details -->
-                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                            <h4 class="font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
-                                <i class="pi pi-tag text-green-600"></i>
-                                Catégorie
-                            </h4>
-                            <p class="text-gray-600 dark:text-gray-300">{{ cursus()!.category }}</p>
-                        </div>
-
-                        <!-- Created Date -->
-                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                            <h4 class="font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
-                                <i class="pi pi-calendar text-blue-600"></i>
-                                Date de création
-                            </h4>
-                            <p class="text-gray-600 dark:text-gray-300">{{ formatDate(cursus()!.createdAt) }}</p>
-                        </div>
-
-                        <!-- Updated Date -->
-                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                            <h4 class="font-semibold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
-                                <i class="pi pi-clock text-orange-600"></i>
-                                Dernière modification
-                            </h4>
-                            <p class="text-gray-600 dark:text-gray-300">{{ formatDate(cursus()!.updatedAt) }}</p>
-                        </div>
-                    </div>
-                </div>
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <div class="flex justify-end gap-3">
-                    <p-button label="Modifier" icon="pi pi-pencil" severity="warning" [outlined]="true" (onClick)="editCursus()"></p-button>
-                    <p-button label="Retour à la liste" icon="pi pi-list" severity="info" (onClick)="goBack()"></p-button>
-                </div>
-            </ng-template>
-        </p-card>
-    </div>
+                </ng-template>
+            </p-card>
+        </div>
+    }
 </div>

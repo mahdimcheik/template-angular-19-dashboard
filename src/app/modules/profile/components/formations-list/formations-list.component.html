@@ -6,6 +6,10 @@
         }
     </div>
 
-    <app-formation *ngFor="let formation of formations()" [formation]="formation" [canEdit]="canEdit()"></app-formation>
+    @for (formation of formations(); track formation.id) {
+        <app-formation [formation]="formation" [canEdit]="canEdit()"></app-formation>
+    }
 </div>
-<app-modal-edit-or-add-formation (onClose)="close()" *ngIf="visibleRight()" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight"></app-modal-edit-or-add-formation>
+@if (visibleRight()) {
+    <app-modal-edit-or-add-formation (onClose)="close()" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight"></app-modal-edit-or-add-formation>
+}

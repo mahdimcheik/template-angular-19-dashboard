@@ -14,11 +14,9 @@
     </div>
 </div>
 
-<app-modal-add-or-edit-address *ngIf="visibleRight()" [updateOrAdd]="'update'" [(visibleRight)]="visibleRight" (onClose)="close()" [adresseTochange]="address()"></app-modal-add-or-edit-address>
-<app-modal-confirm-delete
-    *ngIf="visibleModalDelete()"
-    [(visible)]="visibleModalDelete"
-    [title]="'Adresse à ' + address().city"
-    (onDeleteConfirmed)="deleteAddress()"
-    [question]="'vous êtes sûr de vouloir supprimer cette adresse?'"
-></app-modal-confirm-delete>
+@if (visibleRight()) {
+    <app-modal-add-or-edit-address [updateOrAdd]="'update'" [(visibleRight)]="visibleRight" (onClose)="close()" [adresseTochange]="address()"></app-modal-add-or-edit-address>
+}
+@if (visibleModalDelete()) {
+    <app-modal-confirm-delete [(visible)]="visibleModalDelete" [title]="'Adresse à ' + address().city" (onDeleteConfirmed)="deleteAddress()" [question]="'vous êtes sûr de vouloir supprimer cette adresse?'"></app-modal-confirm-delete>
+}

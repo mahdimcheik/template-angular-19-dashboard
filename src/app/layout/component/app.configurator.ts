@@ -16,12 +16,6 @@ import { LayoutService } from '../service/layout.service';
                 <span class="text-lg text-muted-color font-bold">Mode sombre</span>
                 <p-selectbutton [ngModel]="isDarkTheme()" (ngModelChange)="onDarkModeChange($event)" [options]="darkModeOptions" [allowEmpty]="false" size="small" />
             </div>
-
-            <!-- Menu Mode Selection -->
-            <!-- <div *ngIf="showMenuModeButton()" class="flex flex-col gap-2 border-2 border-indigo-200 rounded-lg p-4">
-                <span class="text-lg text-muted-color font-bold">Position du menu latéral</span>
-                <p-selectbutton [ngModel]="menuMode()" (ngModelChange)="onMenuModeChange($event)" [options]="menuModeOptions" [allowEmpty]="false" size="small" />
-            </div> -->
         </div>
     `
 })
