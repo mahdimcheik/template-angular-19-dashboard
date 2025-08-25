@@ -8,7 +8,9 @@
                     }
                     {{ fullName() | titlecase }}
                 </h1>
-                <p-button *ngIf="canEdit()" icon="pi pi-pencil" (onClick)="open()"></p-button>
+                @if (canEdit()) {
+                    <p-button icon="pi pi-pencil" (onClick)="open()"></p-button>
+                }
             </div>
             <p>
                 {{ userToDisplay().description ?? 'Aucune description' }}
@@ -25,13 +27,17 @@
                     </a>
                 }
             </div>
-            <div class="" class="media gap-4 mt-4" *ngIf="userToDisplay().isBanned">
-                <p-message variant="text" severity="warn" message>Votre compte est banni jusqu'au {{ userToDisplay().bannedUntilDate | date: 'dd MMMM yy' }}</p-message>
-            </div>
-            <div class="" class="media gap-4 mt-4" *ngIf="userToDisplay().emailConfirmed === false">
-                <p>Votre compte n'est pas confirmé</p>
-                <p-message variant="text" severity="info" message>Renvoyer un mail de confirmation <p-button (onClick)="resendConfirmationLink()" outlined="true" severity="info" variant="text">Renvoyer</p-button></p-message>
-            </div>
+            @if (userToDisplay().isBanned) {
+                <div class="media gap-4 mt-4">
+                    <p-message variant="text" severity="warn" message>Votre compte est banni jusqu'au {{ userToDisplay().bannedUntilDate | date: 'dd MMMM yy' }}</p-message>
+                </div>
+            }
+            @if (userToDisplay().emailConfirmed === false) {
+                <div class="media gap-4 mt-4">
+                    <p>Votre compte n'est pas confirmé</p>
+                    <p-message variant="text" severity="info" message>Renvoyer un mail de confirmation <p-button (onClick)="resendConfirmationLink()" outlined="true" severity="info" variant="text">Renvoyer</p-button></p-message>
+                </div>
+            }
         </div>
     </div>
     <div class="flex flex-col md:flex-row items-center">
@@ -63,4 +69,6 @@
     </div>
 </div>
 
-<app-modal-edit-personnal-infos [user]="userToDisplay()" [(visible)]="isVisibleModalEditPerso" *ngIf="isVisibleModalEditPerso()"></app-modal-edit-personnal-infos>
+@if (isVisibleModalEditPerso()) {
+    <app-modal-edit-personnal-infos [user]="userToDisplay()" [(visible)]="isVisibleModalEditPerso"></app-modal-edit-personnal-infos>
+}

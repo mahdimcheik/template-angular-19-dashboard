@@ -18,58 +18,65 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="slotDetailed()?.['studentId']" class="flex flex-col gap-2">
-                        <div class="flex flex-col flex-wrap w-full">
-                            <div class="flex flex-col gap-2">
-                                <div class="font-semibold text-xl">Sujet : {{ appointment().extendedProps?.['slot']?.['typeHelp'] ?? 0 | helpType }}</div>
-                                <p-message class="text mb-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p-message>
-                            </div>
-
-                            <div class="flex flex-col gap-2">
-                                <div class="font-semibold text-xl">Description</div>
-
-                                <p-message severity="success" styleClass="min-h-[100px]">
-                                    {{ appointment().extendedProps?.['slot']?.['description'] == '' || appointment().extendedProps?.['slot']?.['description'] == null ? 'Sans description' : appointment().extendedProps?.['slot']?.['description'] }}
-                                </p-message>
-                            </div>
-                        </div>
-                        <div class="flex justify-end gap-2 mt-4">
-                            <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
-                            <p-button *ngIf="!passedReservation() && !isPaid()" label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
-                        </div>
-                    </div>
-
-                    <div *ngIf="!slotDetailed()?.['studentId']">
+                    @if (slotDetailed()?.['studentId']) {
                         <div class="flex flex-col gap-2">
-                            <span class="font-semibold text-xl">Sujet</span>
-                            <div class="flex flex-col gap-2 w-full md:justify-between">
-                                <input pInputText id="subject" type="text" formControlName="subject" />
-                                <p-message severity="info" variant="simple" size="small">64 caractères autorisés</p-message>
+                            <div class="flex flex-col flex-wrap w-full">
+                                <div class="flex flex-col gap-2">
+                                    <div class="font-semibold text-xl">Sujet : {{ appointment().extendedProps?.['slot']?.['typeHelp'] ?? 0 | helpType }}</div>
+                                    <p-message class="text mb-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p-message>
+                                </div>
 
-                                <div class="error" *ngIf="form.submitted && userForm.controls['subject'].errors">
-                                    <p-message [hidden]="!userForm.controls['subject'].errors['required']" severity="error" variant="simple" size="small">Ce champs est requis</p-message>
-                                    <p-message [hidden]="!userForm.controls['subject'].errors['maxlength']" severity="error" variant="simple" size="small"
-                                        >Le titre a {{ userForm.controls['subject'].errors['maxlength']?.['actualLength'] }} caractères</p-message
-                                    >
+                                <div class="flex flex-col gap-2">
+                                    <div class="font-semibold text-xl">Description</div>
+
+                                    <p-message severity="success" styleClass="min-h-[100px]">
+                                        {{ appointment().extendedProps?.['slot']?.['description'] == '' || appointment().extendedProps?.['slot']?.['description'] == null ? 'Sans description' : appointment().extendedProps?.['slot']?.['description'] }}
+                                    </p-message>
                                 </div>
                             </div>
-                            <div class="flex flex-wrap gap-2 w-full mt-2">
-                                <label for="state" class="font-semibold text-xl" RequiredAsterisk>Type</label>
-                                <p-select id="state" formControlName="typeHelp" [options]="typesHelp" optionLabel="value" placeholder="Votre choix" class="w-full"></p-select>
+                            <div class="flex justify-end gap-2 mt-4">
+                                <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
+                                @if (!passedReservation() && !isPaid()) {
+                                    <p-button label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
+                                }
                             </div>
                         </div>
+                    }
+                    @if (!slotDetailed()?.['studentId']) {
+                        <div>
+                            <div class="flex flex-col gap-2">
+                                <span class="font-semibold text-xl">Sujet</span>
+                                <div class="flex flex-col gap-2 w-full md:justify-between">
+                                    <input pInputText id="subject" type="text" formControlName="subject" />
+                                    <p-message severity="info" variant="simple" size="small">64 caractères autorisés</p-message>
 
-                        <div class="flex flex-wrap flex-col gap-2 w-full mt-2">
-                            <label for="description" class="font-semibold text-xl">Description</label>
-                            <textarea pTextarea id="description" rows="4" formControlName="description" placeholder="Plus d'informations à fournir au professeur"></textarea>
-                            <p-message severity="info" variant="simple" size="small">255 caractères autorisés</p-message>
-                        </div>
+                                    @if (form.submitted && userForm.controls['subject'].errors) {
+                                        <div class="error">
+                                            <p-message [hidden]="!userForm.controls['subject'].errors['required']" severity="error" variant="simple" size="small">Ce champs est requis</p-message>
+                                            <p-message [hidden]="!userForm.controls['subject'].errors['maxlength']" severity="error" variant="simple" size="small"
+                                                >Le titre a {{ userForm.controls['subject'].errors['maxlength']?.['actualLength'] }} caractères</p-message
+                                            >
+                                        </div>
+                                    }
+                                </div>
+                                <div class="flex flex-wrap gap-2 w-full mt-2">
+                                    <label for="state" class="font-semibold text-xl" RequiredAsterisk>Type</label>
+                                    <p-select id="state" formControlName="typeHelp" [options]="typesHelp" optionLabel="value" placeholder="Votre choix" class="w-full"></p-select>
+                                </div>
+                            </div>
 
-                        <div class="flex justify-end gap-2 mt-4">
-                            <p-button label="Annuler" type="button" icon="pi pi-times" text (onClick)="close()" />
-                            <p-button label="Réserver" type="submit" icon="pi pi-check" />
+                            <div class="flex flex-wrap flex-col gap-2 w-full mt-2">
+                                <label for="description" class="font-semibold text-xl">Description</label>
+                                <textarea pTextarea id="description" rows="4" formControlName="description" placeholder="Plus d'informations à fournir au professeur"></textarea>
+                                <p-message severity="info" variant="simple" size="small">255 caractères autorisés</p-message>
+                            </div>
+
+                            <div class="flex justify-end gap-2 mt-4">
+                                <p-button label="Annuler" type="button" icon="pi pi-times" text (onClick)="close()" />
+                                <p-button label="Réserver" type="submit" icon="pi pi-check" />
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </form>
         </p-fluid>

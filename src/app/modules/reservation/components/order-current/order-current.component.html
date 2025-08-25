@@ -1,23 +1,29 @@
-<div class="card w-full" *ngIf="currentOrder().bookings">
-    <div class="flex sm:flex-row sm:items-center p-6 gap-4 justify-between bg-color-surface-100 dark:bg-color-surface-100">
-        <span>{{ currentOrder().status! | orderStatus }}</span>
-        <div class="flex flex-col">
-            <span class="text-sm text-surface-500 dark:text-surface-400">Passée le {{ currentOrder().createdAt | date: 'd MMMM YY' }}</span>
-            <span class="text-lg font-semibold">Numéro : {{ currentOrder().orderNumber }}</span>
+@if (currentOrder().bookings) {
+    <div class="card w-full">
+        <div class="flex sm:flex-row sm:items-center p-6 gap-4 justify-between bg-color-surface-100 dark:bg-color-surface-100">
+            <span>{{ currentOrder().status! | orderStatus }}</span>
+            <div class="flex flex-col">
+                <span class="text-sm text-surface-500 dark:text-surface-400">Passée le {{ currentOrder().createdAt | date: 'd MMMM YY' }}</span>
+                <span class="text-lg font-semibold">Numéro : {{ currentOrder().orderNumber }}</span>
+            </div>
         </div>
-    </div>
 
-    @for (booking of currentOrder().bookings; track booking.id) {
-        <app-card-item-order [booking]="booking" [orderNumber]="currentOrder().orderNumber!" [orderStatus]="currentOrder().status!"></app-card-item-order>
-    }
-    <div class="flex sm:flex-row sm:items-center p-6 gap-4 justify-between bg-color-surface-100 dark:bg-color-surface-100">
-        <span></span>
-        <div class="flex flex-col">
-            <span class="text-lg font-semibold">Total : {{ currentOrder().totalOriginalPrice }} €</span>
-            <span class="text-lg text-[--primary-color]" *ngIf="currentOrder().totalReduction !== 0">Reduction totale : {{ currentOrder().totalReduction }} €</span>
-            <span class="text-lg font-semibold">Total à payer : {{ currentOrder().totalDiscountedPrice }} €</span>
-            <p-button label="Payer" styleClass="w-full mt-2" (onClick)="getcheckout()"></p-button>
+        @for (booking of currentOrder().bookings; track booking.id) {
+            <app-card-item-order [booking]="booking" [orderNumber]="currentOrder().orderNumber!" [orderStatus]="currentOrder().status!"></app-card-item-order>
+        }
+        <div class="flex sm:flex-row sm:items-center p-6 gap-4 justify-between bg-color-surface-100 dark:bg-color-surface-100">
+            <span></span>
+            <div class="flex flex-col">
+                <span class="text-lg font-semibold">Total : {{ currentOrder().totalOriginalPrice }} €</span>
+                @if (currentOrder().totalReduction !== 0) {
+                    <span class="text-lg text-[--primary-color]">Reduction totale : {{ currentOrder().totalReduction }} €</span>
+                }
+                <span class="text-lg font-semibold">Total à payer : {{ currentOrder().totalDiscountedPrice }} €</span>
+                <p-button label="Payer" styleClass="w-full mt-2" (onClick)="getcheckout()"></p-button>
+            </div>
         </div>
     </div>
-</div>
-<div class="card w-full" *ngIf="currentOrder().bookings?.length === 0">Aucune réservation en cours</div>
+}
+@if (currentOrder().bookings?.length === 0) {
+    <div class="card w-full">Aucune réservation en cours</div>
+}

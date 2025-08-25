@@ -9,12 +9,13 @@
                     </ng-template>
                     <ng-template #end> </ng-template>
                 </p-toolbar>
-                <app-countdown-to-pay
-                    [show]="!!currentOrder().bookings && currentOrder().bookings?.length! > 0"
-                    *ngIf="currentOrder().leftTimeToPay?.seconds || currentOrder().leftTimeToPay?.minutes"
-                    [minutesTotal]="currentOrder().leftTimeToPay?.minutes!"
-                    [secondsTotal]="currentOrder().leftTimeToPay?.seconds!"
-                ></app-countdown-to-pay>
+                @if (currentOrder().leftTimeToPay?.seconds || currentOrder().leftTimeToPay?.minutes) {
+                    <app-countdown-to-pay
+                        [show]="!!currentOrder().bookings && currentOrder().bookings?.length! > 0"
+                        [minutesTotal]="currentOrder().leftTimeToPay?.minutes!"
+                        [secondsTotal]="currentOrder().leftTimeToPay?.seconds!"
+                    ></app-countdown-to-pay>
+                }
             </div>
         </div>
 

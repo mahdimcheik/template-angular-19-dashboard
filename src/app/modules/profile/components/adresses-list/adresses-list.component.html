@@ -9,6 +9,6 @@
         <app-address [address]="address" [canEdit]="canEdit()"></app-address>
     }
 </div>
-@if (canEdit()) {
-    <app-modal-add-or-edit-address *ngIf="visibleRight()" [updateOrAdd]="'add'" [(visibleRight)]="visibleRight" (onClose)="close()"></app-modal-add-or-edit-address>
+@if (canEdit() && visibleRight()) {
+    <app-modal-add-or-edit-address [updateOrAdd]="'add'" [(visibleRight)]="visibleRight" (onClose)="close()"></app-modal-add-or-edit-address>
 }

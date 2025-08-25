@@ -1,85 +1,99 @@
 <p-dialog [(visible)]="visible" [style]="{ width: '450px' }" [header]="isCreatingModal() ? 'Créer un créneau' : appointment().extendedProps?.['slot']?.['studentId'] ? 'Supprimer une réservation' : 'Editer un créneau'" [modal]="true">
     <ng-template #content>
         <p-fluid>
-            <section class="card flex flex-col gap-6 w-full" *ngIf="appointment().extendedProps?.['slot']?.['studentId']">
-                <span class="font-semibold text-xl">Détails de la réservation</span>
-                <div class="flex flex-col flex-wrap w-full">
-                    <h4 class="ml-2 flex flex-wrap justify-center gap-2">
-                        Pour <span class="ml-2 text-primary">{{ studentFullName() | titlecase }}</span>
-                    </h4>
-                    <div class="flex flex-wrap justify-center gap-2 w-full">
-                        <h5 class="inline">
-                            Le <span class="text-primary"> {{ appointment().extendedProps?.['slot']?.['startAt'] | date: 'd MMMM y à HH:mm' }}</span>
-                        </h5>
-                    </div>
-                </div>
-                <div class="flex flex-col gap-2">
-                    <div class="font-semibold text-xl">Sujet : {{ appointment().extendedProps?.['slot']?.['typeHelp'] ?? 0 | helpType }}</div>
-                    <!-- <p class="font-semibold text-l border rounded-md p-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p> -->
-                    <p-message class="text mb-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p-message>
-                </div>
-
-                <div class="flex flex-col gap-2">
-                    <div class="font-semibold text-xl">Description</div>
-
-                    <p-message severity="success" styleClass="min-h-[100px]">
-                        {{ appointment().extendedProps?.['slot']?.['description'] == '' || appointment().extendedProps?.['slot']?.['description'] == null ? 'Sans description' : appointment().extendedProps?.['slot']?.['description'] }}
-                    </p-message>
-                </div>
-
-                <div class="flex justify-end gap-2 mt-4">
-                    <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
-                    <p-button [label]="'Supprimer'" icon="pi pi-check" *ngIf="!passedReservation() && !isPaidOrPending()" />
-                </div>
-            </section>
-            <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm" *ngIf="!appointment().extendedProps?.['slot']?.['studentId']">
-                <div class="card flex flex-col gap-6 w-full">
-                    <span class="font-semibold text-xl">Détails du créneau</span>
-                    <div class="flex flex-col flex-wrap gap-2 w-full">
-                        <label for="startAt" RequiredAsterisk>De</label>
-                        <p-datepicker formControlName="startAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
-                            <ng-template #inputicon let-clickCallBack="clickCallBack">
-                                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
-                            </ng-template>
-                        </p-datepicker>
-                        <div class="error" *ngIf="form.submitted && userForm.controls['startAt'].errors">
-                            <p-message [hidden]="!userForm.controls['startAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+            @if (appointment().extendedProps?.['slot']?.['studentId']) {
+                <section class="card flex flex-col gap-6 w-full">
+                    <span class="font-semibold text-xl">Détails de la réservation</span>
+                    <div class="flex flex-col flex-wrap w-full">
+                        <h4 class="ml-2 flex flex-wrap justify-center gap-2">
+                            Pour <span class="ml-2 text-primary">{{ studentFullName() | titlecase }}</span>
+                        </h4>
+                        <div class="flex flex-wrap justify-center gap-2 w-full">
+                            <h5 class="inline">
+                                Le <span class="text-primary"> {{ appointment().extendedProps?.['slot']?.['startAt'] | date: 'd MMMM y à HH:mm' }}</span>
+                            </h5>
                         </div>
                     </div>
-                    <div class="flex flex-col flex-wrap gap-2 w-full">
-                        <label for="endAt" RequiredAsterisk>À</label>
-                        <p-datepicker formControlName="endAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
-                            <ng-template #inputicon let-clickCallBack="clickCallBack">
-                                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
-                            </ng-template>
-                        </p-datepicker>
-                        <div class="error" *ngIf="form.submitted && userForm.controls['endAt'].errors">
-                            <p-message [hidden]="!userForm.controls['endAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
-                        </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="font-semibold text-xl">Sujet : {{ appointment().extendedProps?.['slot']?.['typeHelp'] ?? 0 | helpType }}</div>
+                        <!-- <p class="font-semibold text-l border rounded-md p-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p> -->
+                        <p-message class="text mb-2">{{ appointment().extendedProps?.['slot']?.['subject'] }}</p-message>
                     </div>
-                    <!-- </div> -->
-                    <span class="font-semibold text-xl">Categorie</span>
 
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="col-span-6">
-                            <label for="price" class="block font-bold mb-3" RequiredAsterisk>Prix (€)</label>
-                            <p-inputnumber id="price" mode="currency" currency="EUR" locale="fr-FR" fluid formControlName="price" />
-                            <div class="error" *ngIf="form.submitted && userForm.controls['price'].errors">
-                                <p-message [hidden]="!userForm.controls['price'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
-                            </div>
-                        </div>
-                        <div class="col-span-6">
-                            <label for="quantity" class="block font-bold mb-3">Réduction (%)</label>
-                            <p-inputnumber id="quantity" fluid formControlName="reduction" />
-                        </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="font-semibold text-xl">Description</div>
+
+                        <p-message severity="success" styleClass="min-h-[100px]">
+                            {{ appointment().extendedProps?.['slot']?.['description'] == '' || appointment().extendedProps?.['slot']?.['description'] == null ? 'Sans description' : appointment().extendedProps?.['slot']?.['description'] }}
+                        </p-message>
                     </div>
+
                     <div class="flex justify-end gap-2 mt-4">
                         <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
-                        <p-button [label]="'Supprimer'" icon="pi pi-trash" *ngIf="!passedReservation() && !isCreatingModal()" type="button" (onClick)="deleteSlot()" />
-                        <p-button [label]="isCreatingModal() ? 'Créer' : 'Editer'" type="submit" icon="pi pi-check" />
+                        @if (!passedReservation() && !isPaidOrPending()) {
+                            <p-button [label]="'Supprimer'" icon="pi pi-check" />
+                        }
                     </div>
-                </div>
-            </form>
+                </section>
+            }
+            @if (!appointment().extendedProps?.['slot']?.['studentId']) {
+                <form class="flex" [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
+                    <div class="card flex flex-col gap-6 w-full">
+                        <span class="font-semibold text-xl">Détails du créneau</span>
+                        <div class="flex flex-col flex-wrap gap-2 w-full">
+                            <label for="startAt" RequiredAsterisk>De</label>
+                            <p-datepicker formControlName="startAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
+                                <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                    <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                                </ng-template>
+                            </p-datepicker>
+                            @if (form.submitted && userForm.controls['startAt'].errors) {
+                                <div class="error">
+                                    <p-message [hidden]="!userForm.controls['startAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                </div>
+                            }
+                        </div>
+                        <div class="flex flex-col flex-wrap gap-2 w-full">
+                            <label for="endAt" RequiredAsterisk>À</label>
+                            <p-datepicker formControlName="endAt" [iconDisplay]="'input'" [showIcon]="true" [timeOnly]="true" inputId="templatedisplay">
+                                <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                    <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                                </ng-template>
+                            </p-datepicker>
+                            @if (form.submitted && userForm.controls['endAt'].errors) {
+                                <div class="error">
+                                    <p-message [hidden]="!userForm.controls['endAt'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                </div>
+                            }
+                        </div>
+                        <!-- </div> -->
+                        <span class="font-semibold text-xl">Categorie</span>
+
+                        <div class="grid grid-cols-12 gap-4">
+                            <div class="col-span-6">
+                                <label for="price" class="block font-bold mb-3" RequiredAsterisk>Prix (€)</label>
+                                <p-inputnumber id="price" mode="currency" currency="EUR" locale="fr-FR" fluid formControlName="price" />
+                                @if (form.submitted && userForm.controls['price'].errors) {
+                                    <div class="error">
+                                        <p-message [hidden]="!userForm.controls['price'].errors['required']" severity="error" variant="simple" size="small" styleClass="mt-2">Ce champs est requis</p-message>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-span-6">
+                                <label for="quantity" class="block font-bold mb-3">Réduction (%)</label>
+                                <p-inputnumber id="quantity" fluid formControlName="reduction" />
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2 mt-4">
+                            <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
+                            @if (!passedReservation() && !isCreatingModal()) {
+                                <p-button [label]="'Supprimer'" icon="pi pi-trash" type="button" (onClick)="deleteSlot()" />
+                            }
+                            <p-button [label]="isCreatingModal() ? 'Créer' : 'Editer'" type="submit" icon="pi pi-check" />
+                        </div>
+                    </div>
+                </form>
+            }
         </p-fluid>
     </ng-template>
 </p-dialog>

@@ -6,7 +6,11 @@ import { interval, Subscription } from 'rxjs';
 @Component({
     imports: [DecimalPipe, CommonModule],
     selector: 'app-countdown-to-pay',
-    template: ` <div *ngIf="show()"><span>Temps restant pour payer </span> {{ minutes() }}:{{ seconds() | number: '2.0' }}</div> `,
+    template: `
+        @if (show()) {
+            <div><span>Temps restant pour payer </span> {{ minutes() }}:{{ seconds() | number: '2.0' }}</div>
+        }
+    `,
     styleUrls: ['./countdown.scss']
 })
 export class CountdownToPayComponent implements OnDestroy {

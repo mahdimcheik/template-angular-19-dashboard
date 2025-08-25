@@ -24,16 +24,20 @@
                 @if (order()?.bookings?.length === 0) {
                     <div class="card w-full">Aucune réservation en cours</div>
                 } @else {
-                    <div *ngFor="let booking of order()?.bookings" class="flex flex-row gap-2 p-4 border-b-2 border-color-primary-100 dark:border-color-primary-100 justify-between">
-                        <div class="details">
-                            <span>Le {{ booking.startAt | date: 'dd MMMM à mm:HH' }}</span>
-                            <span>Sujet : {{ booking.subject }}</span>
+                    @for (booking of order()?.bookings; track booking.id) {
+                        <div class="flex flex-row gap-2 p-4 border-b-2 border-color-primary-100 dark:border-color-primary-100 justify-between">
+                            <div class="details">
+                                <span>Le {{ booking.startAt | date: 'dd MMMM à mm:HH' }}</span>
+                                <span>Sujet : {{ booking.subject }}</span>
+                            </div>
+                            <div class="price">
+                                <span>Prix : {{ booking.discountedPrice }} €</span>
+                                @if (booking.price !== booking.discountedPrice) {
+                                    <span>prix sans réduction : {{ booking.price }}</span>
+                                }
+                            </div>
                         </div>
-                        <div class="price">
-                            <span>Prix : {{ booking.discountedPrice }} €</span>
-                            <span *ngIf="booking.price !== booking.discountedPrice">prix sans réduction : {{ booking.price }}</span>
-                        </div>
-                    </div>
+                    }
 
                     <div class="card flex justify-between items-center">
                         <p-button icon="pi pi-save" label="Télécharger" (onClick)="getBill()"></p-button>

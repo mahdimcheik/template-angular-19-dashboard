@@ -14,17 +14,12 @@
     <full-calendar [options]="calendarOptions" #calendar [events]="visibleEvents()">
         <ng-template #eventContent let-arg class="custom-event">
             <div [ngClass]="['custom-event', arg.event.extendedProps?.slot?.studentId ? 'booked' : 'available', arg.event.extendedProps?.slot?.status === 0 || arg.event.extendedProps?.slot?.status === 3 ? 'pending' : '']">
-                <ng-container *ngIf="arg.event.extendedProps?.slot?.studentId; else availableSlot">
+                @if (arg.event.extendedProps?.slot?.studentId) {
                     <div class="event-type">
                         <span>Type : </span>
                         <span>{{ arg.event.extendedProps?.slot?.typeHelp | helpType }}</span>
                     </div>
-                </ng-container>
-                <p *ngIf="arg.event.title" class="event-title overflow-hidden text-ellipsis">
-                    {{ arg.event.title }}
-                </p>
-
-                <ng-template #availableSlot>
+                } @else {
                     <div class="availability-info">
                         <span>Créneau disponible</span>
                         <div class="pricing">
@@ -36,15 +31,24 @@
                             >
                                 {{ arg.event.extendedProps?.slot?.price }} €
                             </span>
-                            <span class="new-price" *ngIf="arg.event.extendedProps?.slot?.price !== arg.event.extendedProps?.slot?.discountedPrice"> {{ arg.event.extendedProps?.slot?.discountedPrice }} € </span>
+                            @if (arg.event.extendedProps?.slot?.price !== arg.event.extendedProps?.slot?.discountedPrice) {
+                                <span class="new-price"> {{ arg.event.extendedProps?.slot?.discountedPrice }} € </span>
+                            }
                         </div>
                     </div>
-                </ng-template>
+                }
+                @if (arg.event.title) {
+                    <p class="event-title overflow-hidden text-ellipsis">
+                        {{ arg.event.title }}
+                    </p>
+                }
             </div>
         </ng-template>
     </full-calendar>
 </div>
 
-<app-modal-book-or-unbook [appointment]="selectedAppoitment" [(visible)]="visibleModalBookUnbook" (onBooking)="loadSlot()" *ngIf="visibleModalBookUnbook()"></app-modal-book-or-unbook>
+@if (visibleModalBookUnbook()) {
+    <app-modal-book-or-unbook [appointment]="selectedAppoitment" [(visible)]="visibleModalBookUnbook" (onBooking)="loadSlot()"></app-modal-book-or-unbook>
+}
 
 <!-- <app-reservation-list-by-teacher></app-reservation-list-by-teacher> -->

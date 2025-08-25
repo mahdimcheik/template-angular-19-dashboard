@@ -25,12 +25,16 @@
                             </div>
                             <div class="font-semibold text-xl">Sujet : {{ reservation().typeHelp! | helpType }}</div>
                             <p-message class="text mb-2">{{ reservation().subject }}</p-message>
-                            <textarea *ngIf="reservation().description" pTextarea [value]="reservation().description" disabled class="h-[100px]"></textarea>
+                            @if (reservation().description) {
+                                <textarea pTextarea [value]="reservation().description" disabled class="h-[100px]"></textarea>
+                            }
                         </div>
                     </div>
                     <div class="flex justify-end gap-2 mt-4">
                         <p-button label="Quitter" type="button" icon="pi pi-times" text (onClick)="close()" />
-                        <p-button *ngIf="allowDelete()" label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
+                        @if (allowDelete()) {
+                            <p-button label="oui, supprimer" type="button" icon="pi pi-check" (onClick)="unbook()" />
+                        }
                     </div>
                 </div>
             </div>
