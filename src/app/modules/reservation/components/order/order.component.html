@@ -25,16 +25,22 @@
                     <div class="card w-full">Aucune réservation en cours</div>
                 } @else {
                     @for (booking of order()?.bookings; track booking.id) {
-                        <div class="flex flex-row gap-2 p-4 border-b-2 border-color-primary-100 dark:border-color-primary-100 justify-between">
+                        <div class="flex flex-row gap-2 p-4 border-b-2 border-color-primary-100 dark:border-color-primary-100 justify-between items-center">
                             <div class="details">
                                 <span>Le {{ booking.startAt | date: 'dd MMMM à mm:HH' }}</span>
                                 <span>Sujet : {{ booking.subject }}</span>
                             </div>
-                            <div class="price">
-                                <span>Prix : {{ booking.discountedPrice }} €</span>
+                            <div class="price flex flex-col">
                                 @if (booking.price !== booking.discountedPrice) {
-                                    <span>prix sans réduction : {{ booking.price }}</span>
+                                    <div class="flex justify-between">
+                                        <span class="text-[--primary-color]">Réduction : </span>
+                                        <span>{{ booking.price! - booking.discountedPrice! }} €</span>
+                                    </div>
                                 }
+                                <div class="flex justify-between">
+                                    <span class="min-w-[100px]">Prix : </span>
+                                    <span>{{ booking.discountedPrice }} €</span>
+                                </div>
                             </div>
                         </div>
                     }
@@ -49,7 +55,7 @@
                                 </div>
                             }
                             <div class="flex justify-between">
-                                <span>Total : </span>
+                                <span class="min-w-[100px] font-bold">Total : </span>
                                 <span>{{ order()?.totalDiscountedPrice }} €</span>
                             </div>
                         </div>
