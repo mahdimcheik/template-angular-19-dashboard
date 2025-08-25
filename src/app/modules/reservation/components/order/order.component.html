@@ -24,15 +24,31 @@
                 @if (order()?.bookings?.length === 0) {
                     <div class="card w-full">Aucune réservation en cours</div>
                 } @else {
-                    <div *ngFor="let booking of order()?.bookings" class="flex flex-row gap-2 p-4 border-b-2 border-color-primary-100 dark:border-color-primary-100">
-                        <span>Le {{ booking.startAt | date: 'dd MMMM à mm:HH' }}</span>
-                        <span>Sujet : {{ booking.subject }}</span>
-                        <span>Prix : {{ booking.discountedPrice }} €</span>
-                        <span *ngIf="booking.price !== booking.discountedPrice">prix sans réduction : {{ booking.price }}</span>
+                    <div *ngFor="let booking of order()?.bookings" class="flex flex-row gap-2 p-4 border-b-2 border-color-primary-100 dark:border-color-primary-100 justify-between">
+                        <div class="details">
+                            <span>Le {{ booking.startAt | date: 'dd MMMM à mm:HH' }}</span>
+                            <span>Sujet : {{ booking.subject }}</span>
+                        </div>
+                        <div class="price">
+                            <span>Prix : {{ booking.discountedPrice }} €</span>
+                            <span *ngIf="booking.price !== booking.discountedPrice">prix sans réduction : {{ booking.price }}</span>
+                        </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card flex justify-between items-center">
                         <p-button icon="pi pi-save" label="Télécharger" (onClick)="getBill()"></p-button>
+                        <div class="flex flex-col">
+                            @if (order()?.totalReduction) {
+                                <div class="flex justify-between">
+                                    <span class="text-[--primary-color]">Réduction :</span>
+                                    <span>{{ order()?.totalReduction }} €</span>
+                                </div>
+                            }
+                            <div class="flex justify-between">
+                                <span>Total : </span>
+                                <span>{{ order()?.totalDiscountedPrice }} €</span>
+                            </div>
+                        </div>
                     </div>
                 }
             </div>
