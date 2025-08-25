@@ -33,13 +33,13 @@ export class AdresseImagePipe implements PipeTransform {
     transform(adresseTypeNumber: number): string {
         switch (adresseTypeNumber) {
             case AddressTypeEnum._1:
-                return 'assets/home.svg';
+                return 'pi-home';
             case AddressTypeEnum._2:
-                return 'assets/work.svg';
+                return 'pi-briefcase';
             case AddressTypeEnum._3:
-                return 'assets/bill.svg';
+                return 'pi-file';
             case AddressTypeEnum._4:
-                return 'assets/delivery.svg';
+                return 'pi-send';
             default:
                 return 'Non défini';
         }
