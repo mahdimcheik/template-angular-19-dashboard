@@ -142,14 +142,17 @@ Le processus intègre une validation intelligente empêchant les réservations e
 L'intégration Stripe assure un processus de paiement garantissant la sécurité maximale des données bancaires. L'interface de paiement s'adapte automatiquement au montant total (créneaux + promotions/réductions), affiche un récapitulatif détaillé et propose les principales méthodes de paiement européennes.
 
 #### 3.1 Deroulement
-une fois la commande est prete, le client dispose de 15 minutes pour regler la commande, un compte a rebours est placer pour indiquer le temps restant.
-en cliquant sur payer, laredirection se fait automatiquement apres avoir creer un checkout de paymenent cote serveur de validite de 15 minutes. une fois le delai est passe , le checkout sera annuler automatiquement.
-Linterface de paiement stripe, detaille les articles a payer ainsi que le montant total, a la fin de e paiement et si le paiement est abouti, le client sera redirige vers la page de validation de paiement. strip indique le non reussit du paiement dans le cascontraire.
+Une fois la commande prête, le client dispose de 15 minutes pour effectuer le paiement, avec un compte à rebours affichant le temps restant. En cliquant sur « Payer », la redirection vers l’interface Stripe s’effectue automatiquement après la création côté serveur d’un checkout valable 15 minutes. Si le délai expire, le checkout est annulé automatiquement.
 
-#### 3.2 precaution et securite'
-le creneaux sont des articles limitee de nombre limmite avec des contairainte de temps, un creneau reserve' est unique et doit etre payer le plus vite possible , sinon ca bloquera le creneau pour les eleves qui en ont besoin. c est pour cela la contrainte de paiement est impose'e. cote serveur le checkout delcenche un background-service qui annulera lareservation si aucun checkout n est cree dans le delai de 15 minutes. le checkout depaiement declenche a son tour un autre service de fonctonnement similaire et qui sera annuler si le paiement est accepte  ou si le delai est terminee. 
+L’interface Stripe détaille les articles à régler ainsi que le montant total. À l’issue du paiement, si la transaction est validée, le client est redirigé vers la page de confirmation. En cas d’échec, Stripe indique que le paiement n’a pas abouti.
 
-j ai pris des precaution supplementaire si une fois le checkout cree, l eleve modife sa commande dans un autre onglet  ou sur un autre appareil, chaque modification au comande annule automatiquement le checkout de paiement et le paimenet sera refuse'' automatiquement.
+#### 3.2 Précautions et sécurité
+
+Les créneaux constituent des articles à quantité limitée avec des contraintes temporelles strictes. Chaque créneau réservé étant unique, il doit être payé dans les plus brefs délais pour éviter de bloquer l'accès aux autres élèves. Cette contrainte de paiement rapide est donc essentielle au bon fonctionnement du système.
+
+Côté serveur, la création du checkout déclenche automatiquement un service en arrière-plan qui annulera la réservation si aucun paiement n'est initié dans les 15 minutes imparties. De même, le checkout de paiement active un service similaire qui sera annulé soit lors de l'acceptation du paiement, soit à l'expiration du délai.
+
+Des précautions supplémentaires ont été implémentées : si l'élève modifie sa commande dans un autre onglet ou sur un autre appareil après la création du checkout, toute modification entraîne l'annulation automatique du checkout en cours et le refus du paiement.
 ```c#
         public async Task<bool> BookSlot(BookingCreateDTO newBookingCreateDTO, UserApp booker)
         {
@@ -166,7 +169,7 @@ j ai pris des precaution supplementaire si une fois le checkout cree, l eleve mo
                 ...
             }
 ```
-*Lors de la reseration, on verifie si un checkout est deja en cours, on l annule*
+*Lors de la réservation, vérification et annulation d'un checkout existant*
 ```C#
         public async Task ExpireCheckout(string checkoutId)
         {
@@ -181,7 +184,7 @@ j ai pris des precaution supplementaire si une fois le checkout cree, l eleve mo
         }
 ```
 
-cote serveur , j ai mis en place unwebhook responsable uniquement de l ecoute de stripe  et qui met a jour les commande et reservations en fonction de l aboutissement de paiment.
+Côté serveur, un webhook dédié à l'écoute des événements Stripe met à jour les commandes et réservations en fonction de l'aboutissement du paiement.
 ```C#
         public async Task<bool> CheckPaymentAndUpdateOrder(...)
         {
@@ -210,18 +213,18 @@ cote serveur , j ai mis en place unwebhook responsable uniquement de l ecoute de
 
 ### 4. Consultation de l'historique
 
-Les réservations sont classées par statut (à venir ou passées) avec pagination. Chaque entrée affiche les détails complets : date, heure, durée, prix payé... En clicquant sur une reservation, un modal detaillant lareservation sera affiche', et qui permettent egalement d avoir un  suivi de la seession de cours via une mini interface de communication de type chat.
+Les réservations sont organisées par statut (à venir ou passées) avec pagination pour une navigation optimale. Chaque entrée présente les détails complets : date, heure, durée, prix payé et statut de la session. En cliquant sur une réservation, un modal détaillé s'affiche, permettant également le suivi de la session de cours via une interface de communication intégrée de type chat.
 
-Les commandes sont egalement classees par ordre chronologique descendant, et qui permettent a l utilisateur de  telecharger sa facture. 
+Les commandes sont classées par ordre chronologique descendant, offrant à l'utilisateur la possibilité de télécharger ses factures individuellement. 
 
 La fonctionnalité permet le téléchargement groupé de factures par période, l'export des données au format CSV pour la comptabilité personnelle, et l'accès aux communications échangées avec le professeur pour chaque réservation. Un système de recherche textuelle facilite la localisation rapide d'un cours spécifique. Les statistiques personnelles (nombre d'heures de cours, montant total dépensé, fréquence de réservation) enrichissent la vue d'ensemble de l'activité éducative.
 
 ### 5. Messagerie
 
-La messagerie intégrée facilite la communication directe entre élève et professeur via Trevo. Il s agit d une simple interface de communication pour les demandes types (remboursement, report, information pédagogique).
+La messagerie intégrée facilite la communication directe entre élève et professeur via Trevo. Cette interface simplifiée permet de traiter les demandes courantes : demandes de remboursement, reports de cours ou questions pédagogiques.
 <div style="width: 100%;">
-  <img  src="image.png" alt="Texte alternatif" width="450" style="display: block; margin: auto;"/>
-  <i  style="width: 450px;display: block; margin: auto;">Plusieurs possibilite's de titres et la possibilite' d' avoir un copie dans sa propre boite mail</i>
+  <img  src="image.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto;">Plusieurs catégories de demandes prédéfinies avec possibilité de recevoir une copie par email</i>
 </div>
 
 ### 6. Gestion des tarifs et disponibilités
@@ -282,7 +285,6 @@ Angular 19 représente la dernière version du framework développé par Google,
 - **Architecture structurée** : Angular impose une architecture claire basée sur les composants, services et modules, facilitant la maintenance et l'évolutivité du code
 - **TypeScript natif** : L'intégration native de TypeScript offre une meilleure détection d'erreurs à la compilation et améliore la productivité des développeurs
 - **Écosystème complet** : Angular CLI, Angular Material, et un ensemble d'outils intégrés accélèrent le développement
-- **Performance optimisée** : Le système de détection des changements et la compilation AOT (Ahead-of-Time) garantissent des performances élevées
 - **Support à long terme** : Google assure un support LTS (Long Term Support) offrant une stabilité pour les projets d'entreprise
 
 #### Librairies Frontend utilisées
@@ -335,10 +337,47 @@ Stripe s'impose comme référence pour les paiements en ligne grâce à sa sécu
 Le choix d'un VPS offre flexibilité, contrôle total sur l'environnement, et rapport qualité-prix optimal pour une application de cette envergure. L'architecture conteneurisée avec Docker facilite le déploiement et la scalabilité.
 
 ### 4.2 Schéma d’architecture
-*(Insérer un diagramme)*
+L’architecture de l’application repose sur une séparation en trois couches principales.
+Le frontend, développé en Angular, fournit une interface utilisateur interactive et communique avec le backend via des appels REST et des connexions temps réel (SignalR).
+Le backend, développé en .NET, expose une API sécurisée qui gère la logique métier, l’authentification et la validation des données. Il interagit avec la base PostgreSQL via Entity Framework Core, garantissant une bonne abstraction de la couche de persistance.
+Enfin, la base de données stocke les informations métier de manière relationnelle et assure l’intégrité via des contraintes.
 
+voici un diagrame qui illustre ces interactions
+<div style="width: 100%;">
+  <img  src="dataFlow.png" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Schema d'interaction du client au serveur et base de données en passant par le reverse proxy</i>
+</div>
+
+Le reverse proxy joue un rôle crucial dans la communication entre les différents composants de l’application.
+Lorsqu’un client souhaite accéder à l’application, c’est le reverse proxy qui reçoit la première requête. Dans un premier temps, il retourne les fichiers statiques correspondant à la partie frontend Angular, permettant ainsi le chargement de l’interface utilisateur dans le navigateur.
+
+Une fois l’interface Angular chargée, celle-ci effectue des appels aux endpoints exposés par le backend .NET. Là encore, le reverse proxy intervient : il redirige les requêtes entrantes vers le conteneur correspondant au serveur applicatif.
+Cette approche permet d’exposer une seule adresse publique vers l’extérieur, tout en masquant la complexité de l’infrastructure interne (multiples conteneurs).
+
+En interne, le serveur .NET et la base de données PostgreSQL communiquent directement via un réseau privé Docker (bridge network). Cette isolation garantit à la fois des performances optimales et une meilleure sécurité, car la base n’est pas accessible directement depuis l’extérieur.
+
+Enfin, un administrateur peut tout de même interagir avec la base de données grâce à l’outil pgAdmin, également exécuté dans un conteneur. Celui-ci est exposé via le reverse proxy sur un port dédié, permettant ainsi une gestion simplifiée et sécurisée de la base de données sans casser l’isolation interne.
 ### 4.3 Structure de la base de données
-*(Lister les tables principales et relations)*
+La conception de la base de données repose principalement sur deux axes fondamentaux : la gestion des utilisateurs (professeurs et élèves) et la gestion des réservations (créneaux, réservations et paiements).
+
+Chaque utilisateur dispose d’un profil qui regroupe les informations nécessaires à l’interaction entre professeurs et élèves. Ce profil contient notamment des données personnelles (nom, coordonnées, etc.), une liste d’adresses, ainsi qu’un ensemble de formations suivies ou dispensées.
+
+Les professeurs ont la possibilité de créer des créneaux correspondant à une date, une période et un tarif. Ces créneaux constituent l’offre de disponibilité mise à disposition des élèves. De leur côté, les élèves peuvent réserver un ou plusieurs de ces créneaux.
+
+Une réservation contient des informations complémentaires, telles que le sujet de la séance, une description, ainsi que les coordonnées de l’élève concerné. Les réservations sont ensuite regroupées sous la forme d’une commande : une commande représente un ensemble de réservations réglées en une seule transaction. Chaque commande conserve les détails du paiement (provenant de l’API Stripe), incluant le montant total réglé ainsi que la date de paiement.
+
+Pour la gestion de l’authentification et de la sécurité, l’application s’appuie sur la librairie Identity de .NET, ce qui permet de bénéficier nativement d’un ensemble de tables dédiées à la gestion des utilisateurs, rôles, mots de passe et jetons d’accès.
+<div style="width: 100%;">
+  <img  src="profilDB.png" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Illustration des relations utlisateur, formations, réservations et tables d'authentification</i>
+</div>
+
+La figure suivante illustre plus en détail la partie réservation, en mettant en évidence les relations entre les entités principales (utilisateurs, créneaux, réservations et commandes).
+
+<div style="width: 100%;">
+  <img  src="bookingsDB.png" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Illustration des relations utlisateurs, réservations, créneaux et commades</i>
+</div>
 
 ---
 
