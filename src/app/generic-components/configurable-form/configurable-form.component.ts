@@ -12,6 +12,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { CustomUploadFileComponent } from '../custom-upload-file/custom-upload-file.component';
 import { PasswordModule } from 'primeng/password';
 @Component({
@@ -32,7 +34,9 @@ import { PasswordModule } from 'primeng/password';
         RadioButtonModule,
         DatePickerModule,
         ColorPickerModule,
-        ButtonModule
+        ButtonModule,
+        InputGroupModule,
+        InputGroupAddonModule
     ],
     templateUrl: './configurable-form.component.html',
     changeDetection: ChangeDetectionStrategy.Default
@@ -58,6 +62,9 @@ export class ConfigurableFormComponent implements OnInit {
 
     // Error messages map
     errorMessages = errorMessages;
+
+    // Password visibility state signal
+    passwordVisibility = signal<{ [key: string]: boolean }>({});
 
     // Computed signal to track form validity (now properly reactive)
     isFormValid = computed(() => {
@@ -411,5 +418,21 @@ export class ConfigurableFormComponent implements OnInit {
 
     onCancelClick() {
         this.onCancel.emit();
+    }
+
+    togglePasswordVisibility(fieldId: string) {
+        const currentVisibility = this.passwordVisibility();
+        this.passwordVisibility.set({
+            ...currentVisibility,
+            [fieldId]: !currentVisibility[fieldId]
+        });
+    }
+
+    isPasswordVisible(fieldId: string): boolean {
+        return this.passwordVisibility()[fieldId] || false;
+    }
+
+    getPasswordFieldType(fieldId: string): string {
+        return this.isPasswordVisible(fieldId) ? 'text' : 'password';
     }
 }

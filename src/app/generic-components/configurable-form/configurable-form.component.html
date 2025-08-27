@@ -58,7 +58,7 @@
                                     <!-- Input Container -->
                                     <div class="relative configurable-form-input-container">
                                         <!-- All input types -->
-                                        @if (element.type === 'text' || element.type === 'email' || element.type === 'password') {
+                                        @if (element.type === 'text' || element.type === 'email') {
                                             <input
                                                 pInputText
                                                 [id]="element.id"
@@ -69,6 +69,31 @@
                                                 class="w-full configurable-form-input configurable-form-text-input"
                                                 [class.p-invalid]="isDirectFieldInvalid(element.name)"
                                             />
+                                        }
+
+                                        @if (element.type === 'password') {
+                                            <p-inputgroup>
+                                                <input
+                                                    pInputText
+                                                    [id]="element.id"
+                                                    [type]="getPasswordFieldType(element.id)"
+                                                    [formControlName]="element.name"
+                                                    [placeholder]="element.placeholder || ''"
+                                                    [readonly]="element.readonly || false"
+                                                    class="w-full configurable-form-input configurable-form-text-input"
+                                                    [class.p-invalid]="isDirectFieldInvalid(element.name)"
+                                                />
+                                                <p-inputGroupAddon>
+                                                    <button
+                                                        type="button"
+                                                        class="p-button-icon-only p-button-text"
+                                                        (click)="togglePasswordVisibility(element.id)"
+                                                        [attr.aria-label]="isPasswordVisible(element.id) ? 'Hide password' : 'Show password'"
+                                                    >
+                                                        <i [class]="isPasswordVisible(element.id) ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                                                    </button>
+                                                </p-inputGroupAddon>
+                                            </p-inputgroup>
                                         }
 
                                         @if (element.type === 'number') {
@@ -312,9 +337,9 @@
 
                                             <!-- Input Container -->
                                             <div class="relative configurable-form-input-container">
-                                                <!-- Text, Email, Password Inputs -->
                                                 @if (field.type === 'text' || field.type === 'email') {
                                                     <input
+                                                        #inputField
                                                         pInputText
                                                         [id]="field.id"
                                                         [type]="field.type"
@@ -327,15 +352,29 @@
                                                 }
 
                                                 @if (field.type === 'password') {
-                                                    <p-password
-                                                        [feedback]="false"
-                                                        [toggleMask]="true"
-                                                        [id]="field.id"
-                                                        [formControlName]="field.name"
-                                                        [placeholder]="field.placeholder || ''"
-                                                        styleClass="w-full configurable-form-input configurable-form-text-input"
-                                                        [class.p-invalid]="isFieldInvalid(element.id, field.name)"
-                                                    />
+                                                    <p-inputgroup>
+                                                        <input
+                                                            #inputField
+                                                            pInputText
+                                                            [id]="field.id"
+                                                            [type]="getPasswordFieldType(field.id)"
+                                                            [formControlName]="field.name"
+                                                            [placeholder]="field.placeholder || ''"
+                                                            [readonly]="field.readonly || false"
+                                                            class="w-full configurable-form-input configurable-form-text-input"
+                                                            [class.p-invalid]="isFieldInvalid(element.id, field.name)"
+                                                        />
+                                                        <p-inputGroupAddon>
+                                                            <button
+                                                                type="button"
+                                                                class="p-button-icon-only p-button-text"
+                                                                (click)="togglePasswordVisibility(field.id)"
+                                                                [attr.aria-label]="isPasswordVisible(field.id) ? 'Hide password' : 'Show password'"
+                                                            >
+                                                                <i [class]="isPasswordVisible(field.id) ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                                                            </button>
+                                                        </p-inputGroupAddon>
+                                                    </p-inputgroup>
                                                 }
 
                                                 <!-- Number Input -->
