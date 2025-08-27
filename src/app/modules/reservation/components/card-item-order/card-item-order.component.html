@@ -23,7 +23,7 @@
         <div class="p-0 pl-6 md:p-4 flex flex-col md:items-end gap-8 border-t md:border-t-0">
             <span class="text-xl font-semibold flex flex-row gap-2 items-end">
                 <span>{{ booking().discountedPrice !== booking().price ? booking().discountedPrice + '€' : '' }}</span>
-                <span [ngClass]="{ 'muted line-through text-sm ': booking().discountedPrice !== booking().price }">{{ booking().price }}€</span></span
+                <span [ngClass]="{ 'muted line-through text-sm  text-red-500 ': booking().discountedPrice !== booking().price }">{{ booking().price }}€</span></span
             >
             <div class="flex gap-2 justify-center pb-2">
                 <p-button outlined [severity]="'danger'" icon="pi pi-trash" [label]="layoutService.isDesktop() ? 'Supprimer' : ''" (onClick)="confirmDelete.set(true)"></p-button>
