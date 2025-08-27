@@ -84,12 +84,7 @@
                                                     [class.p-invalid]="isDirectFieldInvalid(element.name)"
                                                 />
                                                 <p-inputGroupAddon>
-                                                    <button
-                                                        type="button"
-                                                        class="p-button-icon-only p-button-text"
-                                                        (click)="togglePasswordVisibility(element.id)"
-                                                        [attr.aria-label]="isPasswordVisible(element.id) ? 'Hide password' : 'Show password'"
-                                                    >
+                                                    <button type="button" class="p-button-icon-only p-button-text" (click)="togglePasswordVisibility(element.id)" [attr.aria-label]="isPasswordVisible(element.id) ? 'Hide password' : 'Show password'">
                                                         <i [class]="isPasswordVisible(element.id) ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
                                                     </button>
                                                 </p-inputGroupAddon>
