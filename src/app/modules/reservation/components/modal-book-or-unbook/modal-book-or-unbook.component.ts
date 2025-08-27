@@ -80,8 +80,6 @@ export class ModalBookOrUnbookComponent implements OnInit {
             description: [this.description],
             subject: [this.title, [Validators.required, Validators.maxLength(64)]]
         });
-
-        console.log('detail', this.slotDetailed());
     }
 
     close() {
@@ -90,8 +88,6 @@ export class ModalBookOrUnbookComponent implements OnInit {
 
     submit() {
         try {
-            console.log('errors ', this.userForm.controls?.['subject'].errors);
-
             const newBooking: BookingCreateDTO = {
                 slotId: this.appointment().extendedProps?.['slot']?.['id'],
                 typeHelp: this.userForm.value.typeHelp.id,

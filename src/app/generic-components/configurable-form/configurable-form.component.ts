@@ -13,11 +13,27 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { CustomUploadFileComponent } from '../custom-upload-file/custom-upload-file.component';
+import { PasswordModule } from 'primeng/password';
 @Component({
     selector: 'app-configurable-form',
     styleUrls: ['./configurable-form.component.scss'],
     standalone: true,
-    imports: [ReactiveFormsModule, CustomUploadFileComponent, CommonModule, InputTextModule, InputNumberModule, TextareaModule, SelectModule, MultiSelectModule, CheckboxModule, RadioButtonModule, DatePickerModule, ColorPickerModule, ButtonModule],
+    imports: [
+        ReactiveFormsModule,
+        PasswordModule,
+        CustomUploadFileComponent,
+        CommonModule,
+        InputTextModule,
+        InputNumberModule,
+        TextareaModule,
+        SelectModule,
+        MultiSelectModule,
+        CheckboxModule,
+        RadioButtonModule,
+        DatePickerModule,
+        ColorPickerModule,
+        ButtonModule
+    ],
     templateUrl: './configurable-form.component.html',
     changeDetection: ChangeDetectionStrategy.Default
 })
@@ -141,8 +157,6 @@ export class ConfigurableFormComponent implements OnInit {
 
         // Set up reactivity for form validity and touched state
         this.setupFormReactivity();
-
-        console.log('form created', newForm.value);
     }
 
     private createFieldValidators(field: FormField<any>): any[] {
@@ -169,11 +183,9 @@ export class ConfigurableFormComponent implements OnInit {
     private setupFormReactivity() {
         const currentForm = this.form();
 
-        // Initial state
         this.formValid.set(currentForm.valid);
         this.formTouched.set(currentForm.touched);
 
-        // Subscribe to form status changes
         currentForm.statusChanges.subscribe(() => {
             this.formValid.set(currentForm.valid);
             this.formTouched.set(currentForm.touched);
@@ -201,19 +213,16 @@ export class ConfigurableFormComponent implements OnInit {
             this.onFormSubmit.emit(formInstance);
         } else {
             formInstance.markAllAsTouched();
-            this.form.set(formInstance); // Trigger change detection
-            // Update reactive signals
+            this.form.set(formInstance);
             this.formValid.set(formInstance.valid);
             this.formTouched.set(formInstance.touched);
         }
     }
 
-    // Get FormGroup for a specific section
     getFormGroup(groupId: string): FormGroup {
         return this.form().get(groupId) as FormGroup;
     }
 
-    // Get field error from nested FormGroup
     getFieldError(groupId: string, fieldName: string): string | null {
         const groupForm = this.getFormGroup(groupId);
         if (!groupForm) return null;
@@ -232,7 +241,6 @@ export class ConfigurableFormComponent implements OnInit {
         return null;
     }
 
-    // Get group-level validation errors
     getGroupValidationErrors(groupId: string): string[] {
         const groupForm = this.getFormGroup(groupId);
         if (!groupForm || !groupForm.errors) return [];
@@ -246,7 +254,6 @@ export class ConfigurableFormComponent implements OnInit {
         return errors;
     }
 
-    // Get global-level validation errors
     getGlobalValidationErrors(): string[] {
         const form = this.form();
         if (!form || !form.errors) return [];
@@ -260,19 +267,16 @@ export class ConfigurableFormComponent implements OnInit {
         return errors;
     }
 
-    // Check if form has global validation errors
     hasGlobalValidationErrors(): boolean {
         const form = this.form();
         return !!(form && form.errors && Object.keys(form.errors).length > 0);
     }
 
-    // Check if group has validation errors (not field errors)
     hasGroupValidationErrors(groupId: string): boolean {
         const groupForm = this.getFormGroup(groupId);
         return !!(groupForm && groupForm.errors && Object.keys(groupForm.errors).length > 0);
     }
 
-    // Check if field is invalid in nested FormGroup
     isFieldInvalid(groupId: string, fieldName: string): boolean {
         const groupForm = this.getFormGroup(groupId);
         if (!groupForm) return false;
@@ -281,14 +285,12 @@ export class ConfigurableFormComponent implements OnInit {
         return !!(control && control.invalid && (control.dirty || control.touched));
     }
 
-    // Check if direct field (not in group) is invalid
     isDirectFieldInvalid(fieldName: string): boolean {
         const form = this.form();
         const control = form.get(fieldName);
         return !!(control && control.invalid && (control.dirty || control.touched));
     }
 
-    // Get direct field error (not in group)
     getDirectFieldError(fieldName: string): string | null {
         const form = this.form();
         const control = form.get(fieldName);
@@ -304,30 +306,25 @@ export class ConfigurableFormComponent implements OnInit {
         return null;
     }
 
-    // Check if entire FormGroup (section) is valid
     isGroupValid(groupId: string): boolean {
         const groupForm = this.getFormGroup(groupId);
         return groupForm ? groupForm.valid : false;
     }
 
-    // Check if FormGroup (section) has been touched
     isGroupTouched(groupId: string): boolean {
         const groupForm = this.getFormGroup(groupId);
         return groupForm ? groupForm.touched : false;
     }
 
-    // Get all errors for a FormGroup (section) - includes both field and group errors
     getGroupErrors(groupId: string): string[] {
         const groupForm = this.getFormGroup(groupId);
         if (!groupForm) return [];
 
         const errors: string[] = [];
 
-        // Add group-level validation errors
         const groupValidationErrors = this.getGroupValidationErrors(groupId);
         errors.push(...groupValidationErrors);
 
-        // Add field-level validation errors
         Object.keys(groupForm.controls).forEach((fieldName) => {
             const fieldError = this.getFieldError(groupId, fieldName);
             if (fieldError) {
@@ -338,13 +335,11 @@ export class ConfigurableFormComponent implements OnInit {
         return errors;
     }
 
-    // Get form values in structured format
     getStructuredFormValue(): any {
         const formValue = this.form().value;
         return formValue;
     }
 
-    // Get flattened form values (original single-level structure)
     getFlattenedFormValue(): any {
         const formValue = this.form().value;
         const flattened: any = {};
@@ -362,23 +357,16 @@ export class ConfigurableFormComponent implements OnInit {
     getSelectOptions(field: FormField<any>): any[] {
         if (!field.options) return [];
 
-        // If custom displayKey or compareKey are provided, return options as-is
-        // PrimeNG will use the displayKey/compareKey for display and comparison
         if (field.displayKey || field.compareKey) {
             return field.options;
         }
 
-        // If options are already objects with label/value structure, return as-is
         if (field.options.length > 0 && typeof field.options[0] === 'object' && field.options[0].label) {
             return field.options;
         }
-
-        // For simple arrays or objects without displayKey/compareKey,
-        // return as-is and let PrimeNG handle object comparison
         return field.options;
     }
 
-    // Helper method to get option value based on compareKey or fallback to 'value' property
     getOptionValue(option: any, field: FormField<any>): any {
         if (field.compareKey) {
             return option[field.compareKey];
@@ -386,7 +374,6 @@ export class ConfigurableFormComponent implements OnInit {
         return option.value !== undefined ? option.value : option;
     }
 
-    // Helper method to get option label based on displayKey or fallback to 'label' property
     getOptionLabel(option: any, field: FormField<any>): string {
         if (field.displayKey) {
             return option[field.displayKey];
@@ -394,7 +381,6 @@ export class ConfigurableFormComponent implements OnInit {
         return option.label !== undefined ? option.label : option.toString();
     }
 
-    // Helper method to get sorted fields within a group
     getSortedFieldsInGroup(group: FormFieldGroup): FormField<any>[] {
         return [...group.fields].sort((a, b) => {
             const orderA = a.order ?? 999999;
@@ -403,17 +389,14 @@ export class ConfigurableFormComponent implements OnInit {
         });
     }
 
-    // Helper method to check if an element is a FormField
     isFormField(element: FormField<any> | FormFieldGroup): element is FormField<any> {
         return 'name' in element && 'type' in element;
     }
 
-    // Helper method to check if an element is a FormFieldGroup
     isFormFieldGroup(element: FormField<any> | FormFieldGroup): element is FormFieldGroup {
         return 'fields' in element && Array.isArray((element as FormFieldGroup).fields);
     }
 
-    // Track function for @for loops
     trackByFieldId(index: number, field: FormField<any>): string {
         return field.id;
     }
@@ -422,13 +405,11 @@ export class ConfigurableFormComponent implements OnInit {
         return group.id;
     }
 
-    // Track function for unified elements
     trackByElementId(index: number, element: FormField<any> | FormFieldGroup): string {
         return this.isFormField(element) ? element.id : (element as FormFieldGroup).id;
     }
 
     onCancelClick() {
         this.onCancel.emit();
-        console.log('onCancelClick', this.form().value);
     }
 }

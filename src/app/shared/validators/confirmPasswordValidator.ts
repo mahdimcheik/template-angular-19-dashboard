@@ -40,11 +40,8 @@ export function passwordValidator(password: string, passwordConfirmation: string
 export function ageValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         if (!control.value) {
-            return null; // Handle empty value gracefully
+            return null;
         }
-
-        console.log('from validator', control.value);
-
         const birthdate = new Date(control.value);
         if (isNaN(birthdate.getTime())) {
             return { underage: 'Date invalide' };

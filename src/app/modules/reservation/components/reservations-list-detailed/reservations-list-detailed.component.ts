@@ -120,7 +120,6 @@ export class ReservationsListDetailedComponent implements OnInit {
     showDetailsModal(reservation: BookingResponseDTO) {
         this.selectedReservation.set(reservation);
         this.visibleDetailsModal.set(true);
-        console.log('Showing details for reservation:', reservation);
     }
 
     closeDetailsModal() {

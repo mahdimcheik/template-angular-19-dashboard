@@ -20,11 +20,6 @@ export class ConnectionService implements OnDestroy {
             )
             .subscribe((status) => {
                 this.isOnline.set(status);
-                if (status) {
-                    console.log('You are online!');
-                } else {
-                    console.log('You are offline!');
-                }
             });
     }
 

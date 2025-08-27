@@ -18,7 +18,7 @@
                             </div>
                         </div>
                     </div>
-                    @if (slotDetailed()?.['studentId']) {
+                    @if (slotDetailed()['studentId']) {
                         <div class="flex flex-col gap-2">
                             <div class="flex flex-col flex-wrap w-full">
                                 <div class="flex flex-col gap-2">
@@ -42,7 +42,7 @@
                             </div>
                         </div>
                     }
-                    @if (!slotDetailed()?.['studentId']) {
+                    @if (!slotDetailed()['studentId']) {
                         <div>
                             <div class="flex flex-col gap-2">
                                 <span class="font-semibold text-xl">Sujet</span>

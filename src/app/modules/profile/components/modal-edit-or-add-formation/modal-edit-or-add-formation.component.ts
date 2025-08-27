@@ -41,8 +41,6 @@ export class ModalEditOrAddFormationComponent implements OnInit {
     title = computed(() => (this.updateOrAdd() == 'update' ? 'Editer la formation suivante' : 'Ajouter une nouvelle formation'));
 
     ngOnInit(): void {
-        console.log('formationToEdit ' + this.formationToEdit());
-
         if (this.updateOrAdd() == 'update') {
             this.formationStructure = {
                 id: 'formation',

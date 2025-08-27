@@ -38,12 +38,10 @@ export class ModalEditUserByAdminComponent {
             .banUnbanUser({ userId: this.user().id ?? '', isBanned: !this.user().isBanned })
             .pipe(
                 finalize(() => {
-                    console.log('banUnbanUser: finalize');
                     this.visible.set(false);
                 })
             )
             .subscribe((res) => {
-                console.log(res.data);
                 this.onUpdate.emit(res.data);
             });
     }

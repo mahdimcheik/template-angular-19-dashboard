@@ -37,11 +37,7 @@ export class InscriptionComponent {
     router = inject(Router);
     cookieConsentService = inject(CookieConsentService);
     typesGenderList: GenderDropDown[] = this.authService.typesGenderList;
-    selectedGender: GenderDropDown = {
-        id: '3',
-        name: 'Autre',
-        value: EnumGender.Autre
-    };
+    selectedGender: GenderDropDown = this.typesGenderList[3];
 
     inscriptionFormStructure: Structure = {
         id: 'inscriptionForm',
@@ -204,9 +200,8 @@ export class InscriptionComponent {
 
     async submit(e: FormGroup) {
         const formValue = e.value;
-        console.log('formValue', formValue);
 
-        const newUser = {
+        const newUser: UserCreateDTO = {
             email: formValue.inscriptionForm.email,
             password: formValue.inscriptionForm.password,
             firstName: formValue.inscriptionForm.firstName,
@@ -219,17 +214,11 @@ export class InscriptionComponent {
             privacyPolicyConsent: formValue.privacy.privacyPolicyConsent,
             dataProcessingConsent: formValue.privacy.dataProcessingConsent
         };
-        // const newUser = {
-        //     ...this.userForm.value,
-        //     gender: this.userForm.value['gender']?.value,
-        //     dateOfBirth: this.userForm.value['dateOfBirth']?.toISOString()
-        // } as UserCreateDTO;
 
         try {
             await firstValueFrom(
                 this.authService.register(newUser).pipe(
                     tap((res) => {
-                        console.log('res', res);
                         this.router.navigate(['auth/account-created-successfully']);
                     })
                 )

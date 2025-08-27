@@ -51,7 +51,6 @@ export class ModalEditPersonnalInfosComponent {
 
     ngOnInit(): void {
         this.selectedGender = this.typesGenderList.find((x) => x.value == this.user().gender) ?? this.typesGenderList[3];
-        console.log('dateOfBirth', this.user());
 
         this.userForm = this.fb.group({
             firstName: [this.user().firstName, [Validators.required]],
@@ -211,7 +210,6 @@ export class ModalEditPersonnalInfosComponent {
         };
     }
     async submit(event: FormGroup<any>) {
-        console.log('event', event.value);
         const data = event.value;
         const newUser = {
             id: this.user().id!,

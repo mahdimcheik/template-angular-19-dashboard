@@ -88,7 +88,6 @@ export class ModalReservationDetailsComponent implements AfterViewInit {
             if (messages) {
                 this.messages.set([...messages]);
             }
-            console.log('Messages loaded:', messages);
         } catch (error) {
             console.error('Error loading messages:', error);
             this.messageService.add({
@@ -103,7 +102,6 @@ export class ModalReservationDetailsComponent implements AfterViewInit {
     close() {
         this.visibleRight.set(false);
         this.onClose.emit(false);
-        // Reset chat state when closing
         this.messages.set([]);
         this.newMessage.set('');
     }

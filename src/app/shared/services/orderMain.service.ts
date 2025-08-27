@@ -9,7 +9,6 @@ import { HttpClient } from '@angular/common/http';
 import { ResponseDTO } from './userMain.service';
 import { environment } from '../../../environments/environment';
 
-// Type aliases to maintain backward compatibility
 export type OrderResponseDTO = OrderResponseForStudentDTO;
 export type OrderPagination = GeneratedOrderPagination;
 
@@ -58,12 +57,10 @@ export class OrderMainService {
     getBill(orderId: string): Observable<Blob> {
         return this.http.get(`${environment.BACK_URL}/bill/export?orderId=${orderId}`, { responseType: 'blob' }).pipe(
             tap((blob) => {
-                console.log('telechargment');
-
                 const url = window.URL.createObjectURL(blob as Blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'facture.pdf'; // Nom du fichier
+                a.download = 'facture.pdf';
                 a.click();
                 window.URL.revokeObjectURL(url);
 

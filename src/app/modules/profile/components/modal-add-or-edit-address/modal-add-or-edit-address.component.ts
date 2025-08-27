@@ -258,7 +258,6 @@ export class ModalAddOrEditAddressComponent implements OnInit {
 
     async submit(event: FormGroup<any>) {
         const formValue = event.value.address;
-        console.log('formValue', formValue);
 
         this.visibleRight.set(false);
         if (this.updateOrAdd() == 'update') {
@@ -267,7 +266,6 @@ export class ModalAddOrEditAddressComponent implements OnInit {
                 addressType: +formValue['addressType'].id,
                 id: this.adresseTochange().id
             };
-            console.log('newAdresse', newAdresse);
 
             this.actionEmitter.emit();
             await firstValueFrom(this.adresseService.updateAddresse(newAdresse));
@@ -276,7 +274,6 @@ export class ModalAddOrEditAddressComponent implements OnInit {
                 ...formValue,
                 addressType: +formValue['addressType'].id
             };
-            console.log('newAdresse', newAdresse);
             this.actionEmitter.emit();
             await firstValueFrom(this.adresseService.addAddresse(newAdresse));
         }

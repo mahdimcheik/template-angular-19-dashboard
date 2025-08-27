@@ -49,13 +49,11 @@ export class NotificationsWidget implements OnInit {
     notificationService = inject(NotificationMainService);
     notifications = this.notificationService.notifications;
     totalRecords = this.notificationService.notificationsCount;
-    first = 0; // premier element
-    rows = 10; // reservations par page
+    first = 0;
+    rows = 10;
 
-    // filter
     showMode = signal<'all' | 'seen' | 'unseen'>('all');
 
-    // paginator ref
     paginator = viewChild<Paginator>('paginator');
 
     filter = {
@@ -77,8 +75,6 @@ export class NotificationsWidget implements OnInit {
     }
 
     onFilterChange(event: any) {
-        console.log(event);
-        // this.showMode.set(event.value);
         if (this.showMode() === 'seen') {
             this.filter.isRead = true;
         } else if (this.showMode() === 'unseen') {
@@ -95,15 +91,4 @@ export class NotificationsWidget implements OnInit {
 
         this.notificationService.getNotificationsByUserId(this.filter).subscribe();
     }
-    // onFilterReadOnlyChange(event: any) {
-    //     this.showAll = false;
-    //     this.filter.isRead = !event.checked;
-    //     this.filter.offset = 0;
-    //     this.filter.perPage = this.rows;
-
-    //     this.first = 0;
-    //     this.rows = 10;
-
-    //     this.notificationService.getNotificationsByUserId(this.filter).subscribe();
-    // }
 }

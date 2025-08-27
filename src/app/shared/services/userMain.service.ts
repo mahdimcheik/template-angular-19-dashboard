@@ -74,22 +74,22 @@ export class UserMainService {
 
     typesGenderList: GenderDropDown[] = [
         {
-            id: '0',
+            id: '1',
             name: 'Homme',
             value: EnumGender.Homme
         },
         {
-            id: '1',
+            id: '2',
             name: 'Femme',
             value: EnumGender.Femme
         },
         {
-            id: '2',
+            id: '3',
             name: 'Non-binaire',
             value: EnumGender.NonBinaire
         },
         {
-            id: '3',
+            id: '4',
             name: 'Autre',
             value: EnumGender.Autre
         }

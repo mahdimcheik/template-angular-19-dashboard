@@ -240,7 +240,6 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                     });
                 }
             } catch (error) {
-                console.log('error', error);
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Erreur',

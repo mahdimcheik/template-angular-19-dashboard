@@ -184,24 +184,24 @@
 
                                         <!-- Field Status Icon -->
                                         @if (isFormTouched()) {
-                                            <div class="absolute right-3 top-3 configurable-form-field-status">
+                                            <!-- <div class="absolute right-3 top-3 configurable-form-field-status">
                                                 @if (!isDirectFieldInvalid(element.name) && element.type !== 'checkbox' && element.type !== 'radio' && element.type !== 'file') {
                                                     <i class="pi pi-check-circle text-green-500 text-sm configurable-form-field-status-valid"></i>
                                                 }
                                                 @if (isDirectFieldInvalid(element.name)) {
                                                     <i class="pi pi-exclamation-circle text-red-500 text-sm configurable-form-field-status-invalid"></i>
                                                 }
-                                            </div>
+                                            </div> -->
                                         }
                                     </div>
 
                                     <!-- Individual Field Error Message -->
-                                    @if (getDirectFieldError(element.name); as errorMessage) {
+                                    <!-- @if (getDirectFieldError(element.name); as errorMessage) {
                                         <div class="flex items-start gap-2 mt-2 configurable-form-field-error">
                                             <i class="pi pi-exclamation-circle text-red-500 text-sm mt-0.5 flex-shrink-0 configurable-form-field-error-icon"></i>
                                             <p class="text-sm text-red-600 leading-relaxed configurable-form-field-error-message">{{ errorMessage }}</p>
                                         </div>
-                                    }
+                                    } -->
                                 </div>
                             </div>
                         }
@@ -313,7 +313,7 @@
                                             <!-- Input Container -->
                                             <div class="relative configurable-form-input-container">
                                                 <!-- Text, Email, Password Inputs -->
-                                                @if (field.type === 'text' || field.type === 'email' || field.type === 'password') {
+                                                @if (field.type === 'text' || field.type === 'email') {
                                                     <input
                                                         pInputText
                                                         [id]="field.id"
@@ -322,6 +322,18 @@
                                                         [placeholder]="field.placeholder || ''"
                                                         [readonly]="field.readonly || false"
                                                         class="w-full configurable-form-input configurable-form-text-input"
+                                                        [class.p-invalid]="isFieldInvalid(element.id, field.name)"
+                                                    />
+                                                }
+
+                                                @if (field.type === 'password') {
+                                                    <p-password
+                                                        [feedback]="false"
+                                                        [toggleMask]="true"
+                                                        [id]="field.id"
+                                                        [formControlName]="field.name"
+                                                        [placeholder]="field.placeholder || ''"
+                                                        styleClass="w-full configurable-form-input configurable-form-text-input"
                                                         [class.p-invalid]="isFieldInvalid(element.id, field.name)"
                                                     />
                                                 }
@@ -446,7 +458,7 @@
                                                 }
 
                                                 <!-- Field Status Icon -->
-                                                @if (isGroupTouched(element.id)) {
+                                                <!-- @if (isGroupTouched(element.id)) {
                                                     <div class="absolute right-3 top-3 configurable-form-field-status">
                                                         @if (!isFieldInvalid(element.id, field.name) && field.type !== 'checkbox' && field.type !== 'radio' && field.type !== 'file') {
                                                             <i class="pi pi-check-circle text-green-500 text-sm configurable-form-field-status-valid"></i>
@@ -455,7 +467,7 @@
                                                             <i class="pi pi-exclamation-circle text-red-500 text-sm configurable-form-field-status-invalid"></i>
                                                         }
                                                     </div>
-                                                }
+                                                } -->
                                             </div>
 
                                             <!-- Individual Field Error Message -->
@@ -479,7 +491,7 @@
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 configurable-form-actions-content">
                             <!-- Form Status Summary -->
                             <div class="flex items-center gap-2 configurable-form-status">
-                                @if (isFormValid()) {
+                                <!-- @if (isFormValid()) {
                                     <div class="flex items-center gap-2 text-green-600 configurable-form-status-valid">
                                         <i class="pi pi-check-circle text-lg"></i>
                                         <span class="text-sm font-medium">Formulaire valide</span>
@@ -491,7 +503,7 @@
                                             <span class="text-sm font-medium">Veuillez corriger les erreurs</span>
                                         </div>
                                     }
-                                }
+                                } -->
                             </div>
 
                             <!-- Action Buttons -->

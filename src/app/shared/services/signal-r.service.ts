@@ -1,103 +1,3 @@
-// // src/app/services/chat.service.ts
-// import { Injectable } from '@angular/core';
-// import * as signalR from '@microsoft/signalr';
-// import { BehaviorSubject } from 'rxjs';
-// import { environment } from '../../../environments/environment';
-
-// @Injectable({
-//     providedIn: 'root'
-// })
-// export class SignalRService {
-//     baseUrl = environment.BACK_URL;
-//     private hubConnection!: signalR.HubConnection;
-//     private messagesSubject = new BehaviorSubject<{ user: string; message: string }[]>([]);
-//     messages$ = this.messagesSubject.asObservable();
-//     pingInterval: any;
-
-//     constructor() {
-//         // this.startConnection();
-//     }
-
-//     startConnection(token: string) {
-//         this.hubConnection = new signalR.HubConnectionBuilder()
-//             .withUrl(`${this.baseUrl}/chathub`, {
-//                 accessTokenFactory: () => token
-//                 // transport: signalR.HttpTransportType.WebSockets,
-//             })
-//             .withAutomaticReconnect({
-//         nextRetryDelayInMilliseconds: (retryContext) => {
-//           // Custom retry delays: 0, 2s, 10s, 30s, then stop
-//           const delays = [0, 2000, 10000, 30000];
-//           return delays[retryContext.previousRetryCount] || null;
-//         }
-//       })
-//             .build();
-
-//         this.hubConnection.start().catch((err) => console.error('Error while starting connection: ' + err));
-
-//         this.hubConnection.on('ReceiveMessage', (user: string, message: string) => {
-//             console.log('ReceiveMessage', user, message);
-
-//             this.hubConnection.onreconnecting((error) => {
-//                 console.log('Reconnecting...', error);
-//             });
-//             this.hubConnection.onreconnected((connectionId) => {
-//                 console.log('Reconnected with connectionId: ' + connectionId);
-//             });
-//             this.hubConnection.onreconnected((connectionId) => {
-//                 console.log('Reconnected with connectionId: ' + connectionId);
-//             });
-
-//             const current = this.messagesSubject.value;
-//             this.messagesSubject.next([...current, { user, message }]);
-//             this.getOnlineCount();
-//         });
-//     }
-
-//       // Client-side heartbeat to detect connection issues
-//   private startHeartbeat() {
-//     this.stopHeartbeat();
-//     this.pingInterval = setInterval(async () => {
-//       try {
-//         if (this.hubConnection.state === signalR.HubConnectionState.Connected) {
-//           // Try to call a server method to verify connection
-//           await this.hubConnection.invoke('GetOnlineCount');
-//         }
-//       } catch (error) {
-//         console.warn('Heartbeat failed:', error);
-//         // Connection might be dead, trigger reconnection
-//         this.handleConnectionError();
-//       }
-//     }, 30000); // Ping every 30 seconds
-//   }
-
-//   private stopHeartbeat() {
-//     if (this.pingInterval) {
-//       clearInterval(this.pingInterval);
-//       this.pingInterval = null;
-//     }
-//   }
-
-//     stopConnection() {
-//         this.hubConnection.stop();
-//     }
-
-//     sendMessage(user: string, message: string) {
-//         if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
-//             this.hubConnection.invoke('SendMessage', user, message).catch((err) => console.error(err));
-//         } else {
-//             console.log('Connection not established');
-//         }
-//     }
-
-//     getOnlineCount() {
-//         this.hubConnection.invoke('GetOnlineCount').then((count) => {
-//             console.log('Clients connectés :', count);
-//         });
-//     }
-// }
-
-// connection.service.ts
 import { inject, Injectable, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject, timer, Subject } from 'rxjs';
@@ -167,10 +67,8 @@ export class SignalRService {
             this.connectionState$.next(ConnectionState.Connected);
             this.reconnectAttempts = 0;
             this.startHeartbeat();
-            console.log('SignalR Connected');
         } catch (error) {
             this.connectionState$.next(ConnectionState.Error);
-            console.error('SignalR Connection Error:', error);
             this.scheduleReconnect();
         }
     }
@@ -180,20 +78,17 @@ export class SignalRService {
         this.hubConnection.onclose(() => {
             this.connectionState$.next(ConnectionState.Disconnected);
             this.stopHeartbeat();
-            console.log('SignalR Disconnected');
             this.scheduleReconnect();
         });
 
         this.hubConnection.onreconnecting(() => {
             this.connectionState$.next(ConnectionState.Reconnecting);
-            console.log('SignalR Reconnecting...');
         });
 
         this.hubConnection.onreconnected(() => {
             this.connectionState$.next(ConnectionState.Connected);
             this.reconnectAttempts = 0;
             this.startHeartbeat();
-            console.log('SignalR Reconnected');
         });
 
         // Message handlers
@@ -201,7 +96,6 @@ export class SignalRService {
 
         this.hubConnection.on('Notification', (notification) => {
             this.notificationService.getNotificationsCount().subscribe();
-            console.log('route', this.router.url);
             if (this.router.url === '/dashboard') {
                 this.notificationService.getNotificationsByUserId({ perPage: 10, offset: 0 }).subscribe();
             }
@@ -241,7 +135,6 @@ export class SignalRService {
             this.reconnectAttempts++;
 
             setTimeout(() => {
-                console.log(`Attempting reconnection ${this.reconnectAttempts}/${this.maxReconnectAttempts}`);
                 this.startConnection();
             }, delay);
         } else {

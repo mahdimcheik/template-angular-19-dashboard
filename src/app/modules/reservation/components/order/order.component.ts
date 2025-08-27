@@ -22,12 +22,8 @@ export class OrderComponent {
     messageService = inject(MessageService);
 
     getBill() {
-        console.log('Get Bill');
-
         if (this.order() && this.order()?.id && this.order()?.id !== '') {
-            this.orderService.getBill(this.order()?.id ?? '').subscribe((res: Blob) => {
-                console.log('Bill', res);
-            });
+            this.orderService.getBill(this.order()?.id ?? '').subscribe();
         }
     }
 
