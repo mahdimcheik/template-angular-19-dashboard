@@ -386,6 +386,93 @@ La figure suivante illustre plus en détail la partie réservation, en mettant e
 - Maquettes écran.
 - Modèle de données.
 
+### Modèle de données 
+### MCD
+Le MCD représente la structure conceptuelle de notre système de gestion de formations et réservations en ligne. Il illustre les entités principales et leurs relations métier (voir annexe).
+
+### MLD 
+Dans les diagrames suivant, j'ulistre les relations principales en les differentes entités
+
+<div style="width: 100%;">
+  <img  src="user-profile.svg" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Profil de l'Utilisateur: roles, adresses et formations</i>
+</div>
+
+Les entités liées à la logique de réservation sont illustrées dans le diagram suivant
+<div style="width: 100%;">
+  <img  src="booking-notification.svg" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Utilisateur et réservation : créneaux, réeservation, commande et notification</i>
+</div>
+
+#### Spécifications Techniques
+
+**Système d'Authentification** : Utilisation d'ASP.NET Core Identity avec tables `AspNetUsers`, `AspNetRoles` et `AspNetUserRoles` pour la gestion des utilisateurs et des autorisations.
+
+**Types de Données** :
+
+- `uuid` : Identifiants uniques pour les entités métier
+- `timestamptz` : Horodatage avec fuseau horaire pour PostgreSQL
+- `decimal(18,2)` : Précision monétaire pour les prix et taux
+- `jsonb` : Stockage JSON binaire pour les communications chat
+- `text` : Texte de longueur variable pour les descriptions
+
+**Contraintes d'Intégrité** :
+
+- Clés étrangères avec actions de suppression configurées (`CASCADE`, `RESTRICT`, `SET NULL`)
+- Contraintes de longueur sur les champs texte
+- Valeurs par défaut pour les champs optionnels
+- Index sur les clés étrangères pour optimiser les performances
+
+**Particularités du Modèle** :
+
+- Relation 1:1 entre `Slot` et `Booking` (un créneau ne peut être réservé qu'une fois)
+- Relation N:M entre `User` et `Role` via la table de liaison `AspNetUserRoles`
+- Système de notifications polymorphe pouvant référencer différents types d'entités
+- Gestion des adresses multiples par utilisateur avec typage (domicile, travail, facturation)
+- Système de réductions et calculs de prix avec propriétés calculées
+
+
+
+### Description des Entités Principales
+
+**USER (Utilisateur)** : Entité centrale du système représentant les utilisateurs (étudiants, formateurs, administrateurs). Chaque utilisateur peut avoir plusieurs rôles et possède un profil complet avec informations personnelles et professionnelles.
+
+**SLOT (Créneau)** : Représente les créneaux horaires disponibles créés par les formateurs. Chaque créneau a un prix, peut avoir une réduction et est typé selon le service proposé.
+
+**BOOKING (Réservation)** : Entité de liaison entre un utilisateur et un créneau. Une réservation contient les détails de la demande d'aide et peut inclure des communications via chat.
+
+**ORDER (Commande)** : Regroupe une ou plusieurs réservations pour le processus de paiement. Gère le cycle de vie commercial avec statuts, méthodes de paiement et TVA.
+
+**CURSUS** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
+
+
+#### Spécifications Techniques
+
+**Système d'Authentification** : Utilisation d'ASP.NET Core Identity avec tables `AspNetUsers`, `AspNetRoles` et `AspNetUserRoles` pour la gestion des utilisateurs et des autorisations.
+
+**Types de Données** :
+
+- `uuid` : Identifiants uniques pour les entités métier
+- `timestamptz` : Horodatage avec fuseau horaire pour PostgreSQL
+- `decimal(18,2)` : Précision monétaire pour les prix et taux
+- `jsonb` : Stockage JSON binaire pour les communications chat
+- `text` : Texte de longueur variable pour les descriptions
+
+**Contraintes d'Intégrité** :
+
+- Clés étrangères avec actions de suppression configurées (`CASCADE`, `RESTRICT`, `SET NULL`)
+- Contraintes de longueur sur les champs texte
+- Valeurs par défaut pour les champs optionnels
+- Index sur les clés étrangères pour optimiser les performances
+
+**Particularités du Modèle** :
+
+- Relation 1:1 entre `Slot` et `Booking` (un créneau ne peut être réservé qu'une fois)
+- Relation N:M entre `User` et `Role` via la table de liaison `AspNetUserRoles`
+- Système de notifications polymorphe pouvant référencer différents types d'entités
+- Gestion des adresses multiples par utilisateur avec typage (domicile, travail, facturation)
+- Système de réductions et calculs de prix avec propriétés calculées
+
 ---
 
 ## 6. Sécurité
@@ -740,3 +827,5 @@ Cette architecture de déploiement offre une solution scalable et sécurisée, p
 - Captures d’écran.
 - Documentation API.
 - Schéma BDD.
+
+
