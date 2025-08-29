@@ -41,6 +41,29 @@ Il est donc nécessaire de mettre en place une application centralisée, offrant
 ### 2.1 Description fonctionnelle
 L’application se présente sous la forme d’un site web ergonomique et intuitif, composé d’une page d’accueil (landing page), d’un profil public du professeur, et d’un espace utilisateur sécurisé appelé dashboard, qui regroupe l’ensemble des fonctionnalités interactives.
 
+```mermaid
+---
+config:
+      theme: redux
+---
+flowchart TD
+        A(["Professeur"])
+        A -->|Supplement de revenu| B{"Aller à Skill hive"}
+        B --> C["Proposer des créneaux"]
+        B --> E["Gérer les utilisateurs"]
+        B --> D["Consulter les réservations"]
+        B --> F["Ajuster son profil"]
+
+         A1(["Elève"])
+        A1 -->|Supplement de revenu| B1{"Aller à Skill hive"}
+        B1 --> C1["Réserver un/des créneaux"]
+        B1 --> D["Consulter les réservations"]
+        B1 --> E1["Envoyer un mail/demande"]
+        B1 --> F["Ajuster son profil"]
+        C1 --> C12["Payer"]
+        C1 --> C13["Télécharger ses factures"]
+```
+
 #### Page d’accueil (Landing page)
 La page d’accueil, accessible à tous, présente brièvement le principe de fonctionnement de l’application et ses avantages. Elle intègre un menu de navigation permettant :
 
@@ -382,15 +405,16 @@ La figure suivante illustre plus en détail la partie réservation, en mettant e
 ---
 
 ## 5. Conception
-- Diagrammes UML : cas d’utilisation, séquence, classes.
 - Maquettes écran.
 - Modèle de données.
 
+### Cas d’utilisation
+
 ### Modèle de données 
-### MCD
+#### MCD
 Le MCD représente la structure conceptuelle de notre système de gestion de formations et réservations en ligne. Il illustre les entités principales et leurs relations métier (voir annexe).
 
-### MLD 
+#### MLD 
 Dans les diagrames suivant, j'ulistre les relations principales en les differentes entités
 
 <div style="width: 100%;">
@@ -433,7 +457,7 @@ Les entités liées à la logique de réservation sont illustrées dans le diagr
 
 
 
-### Description des Entités Principales
+#### Description des Entités Principales
 
 **USER (Utilisateur)** : Entité centrale du système représentant les utilisateurs (étudiants, formateurs, administrateurs). Chaque utilisateur peut avoir plusieurs rôles et possède un profil complet avec informations personnelles et professionnelles.
 
@@ -827,5 +851,4 @@ Cette architecture de déploiement offre une solution scalable et sécurisée, p
 - Captures d’écran.
 - Documentation API.
 - Schéma BDD.
-
 
