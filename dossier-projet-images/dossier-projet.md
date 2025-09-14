@@ -74,8 +74,65 @@ L'infrastructure de test s'appuie sur un ensemble d'outils robustes :
 - **Microsoft.EntityFrameworkCore.InMemory** : Base de données en mémoire pour les tests d'intégration des repositories
 
 
-### 8.2 Tests d'intégration
-*À développer*
+### 8.2 Tests d'Intégration
+Les tests d'intégration de notre API servent a mettre réellement notre application à l'épreuve dans des conditions quasi-réelles. Contrairement aux tests unitaires qui isolent chaque composant comme dans un laboratoire stérilisé, nos tests d'intégration imitent la complexité du monde réel en faisant interagir tous les éléments ensemble : contrôleurs, services, base de données, authentification, autorisation, et même la sérialisation JSON. Ce qui rend cette approche particulièrement puissante, c'est l'utilisation intelligente de conteneurs Docker avec Testcontainers pour PostgreSQL, nous permettant de créer un environnement de test complètement isolé et reproductible. Chaque fois qu'un test s'exécute, une nouvelle base PostgreSQL fraîche est créée dans un conteneur, peuplée avec des données de test soigneusement préparées, puis détruite une fois les tests terminés. Cette approche nous donne une confiance énorme : si nos tests d'intégration passent, nous savons que notre API fonctionnera en production, car nous testons avec une vraie base de données PostgreSQL, de vrais appels HTTP, et une vraie pile d'authentification JWT.
+
+#### Technologies Utilisées
+##### Framework de Test
+* xUnit - Framework de test moderne pour .NET
+* ASP.NET Core Test Host - Hébergement en mémoire de l'application
+* WebApplicationFactory - Factory personnalisée pour configurer l'environnement de test
+##### Conteneurisation et Base de Données
+* Testcontainers - Gestion automatique des conteneurs Docker pour les tests
+* PostgreSQL Container - Base de données PostgreSQL isolée et éphémère
+* Docker - Plateforme de conteneurisation pour l'isolation des environnements
+##### Services et Mocking
+* MockEmailService - Service d'email mocké pour éviter l'envoi réel d'emails
+* Entity Framework Core - ORM pour les interactions avec la base de données
+* Moq - Framework de mocking (utilisé indirectement)
+
+```CSharp
+
+        [Fact]
+        public async Task Login_ValidCredentials_ReturnsSuccess()
+        {
+            // Arrange
+            var userLoginDTO = new UserLoginDTO
+            {
+                Email = "admin@skillhive.fr",
+                Password = "Admin123!"
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(userLoginDTO, jsonOptions), Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await httpClient.PostAsync("/users/login", content);
+            var responseContent = await response.Content.ReadFromJsonAsync<ResponseDTO<LoginOutputDTO>>();
+
+            // Assert
+            Assert.True(response.IsSuccessStatusCode);
+            Assert.NotNull(responseContent);
+            Assert.NotNull(responseContent.Data);
+            Assert.NotNull(responseContent.Data.Token);
+            Assert.NotNull(responseContent.Data.User);
+            Assert.Equal("admin@skillhive.fr", responseContent.Data.User.Email);
+        }
+```
+Cette méthode de test d’intégration vérifie le bon fonctionnement du processus de connexion lorsqu’un utilisateur fournit des identifiants valides.
+Elle commence par créer un UserLoginDTO avec l’adresse email et le mot de passe d’un utilisateur connu (dans ce cas, l’administrateur admin@skillhive.fr).
+Ce DTO est ensuite sérialisé en JSON et envoyé via une requête HTTP POST à l’endpoint /users/login de l’API.
+La réponse est désérialisée en un `ResponseDTO<LoginOutputDTO>` pour faciliter l’accès aux données de retour.
+Plusieurs assertions sont ensuite effectuées pour garantir que :
+
+* la réponse HTTP est bien un succès (IsSuccessStatusCode est true),
+
+* le corps de la réponse n’est pas nul,
+
+* un jeton d’authentification (Token) est présent,
+
+* l’objet User retourné n’est pas nul,
+
+* et que l’email de l’utilisateur retourné correspond bien à celui utilisé pour la connexion.
 
 ### 8.3 Tests end-to-end
 *À développer*
