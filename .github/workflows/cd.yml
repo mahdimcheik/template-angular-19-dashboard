@@ -33,7 +33,7 @@ jobs:
       - name: Build the docker image
         run: docker build --target prod-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }} .
 
-      # Step 3: Push the docker image to the docker hub
+      # Step 3: Push the docker image to the docker  hub
       - name: Push the docker image to the docker hub
         run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
 
