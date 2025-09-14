@@ -7,138 +7,7 @@ L’objectif est donc de concevoir un outil simple et intuitif permettant :
 
 .   Aux élèves de s’inscrire, réserver un créneau disponible, effectuer un paiement sécurisé et consulter l’historique de leurs cours.
 
-.   Au ## 8. Tests et assurance qualité
-
-## 8. Tests et assurance qualité
-
-L'assurance qualité de l'application repose sur une stratégie de test complète et rigoureuse, couvrant l'ensemble des couches applicatives depuis les services métier jusqu'à l'expérience utilisateur finale. Cette approche multicouche garantit la fiabilité, la performance et la conformité fonctionnelle de l'application.
-
-L'API .NET a fait l'objet d'une couverture indispensable par des tests unitaires. Cette stratégie de test cible les composants critiques de l'application pour assurer leur bon fonctionnement dans différents scénarios d'utilisation. L'AuthService bénéficie d'une validation complète du système d'authentification incluant la génération et validation des JWT, la gestion des refresh tokens, le processus de connexion/déconnexion, et la vérification des politiques de sécurité. Les tests couvrent notamment les cas d'échec (tokens expirés, identifiants incorrects) et les scénarios de sécurité (tentatives de brute force, tokens malformés). Le NotificationsService fait l'objet d'une vérification du système de notifications temps réel avec tests de création, envoi, marquage comme lue, et suppression des notifications. Les tests valident également le filtrage par utilisateur, la pagination des résultats, et l'intégration avec SignalR pour les notifications en temps réel.
-
-### 8.2 Tests d'intégration
-Les tests unitaires suivent les meilleures pratiques du framework xUnit pour .NET avec une isolation complète utilisant des mocks et stubs pour isoler les unités testées de leurs dépendances, une couverture qui cible des cas nominaux, cas d'erreur, et cas limites, une convention de nommage claire décrivant le scénario testé et le résultat attendu. EntityFrameworkCore.
-
-Techno : **XUnit**, **Moq** et **InMemory(entity Framework)**
-
-```CSharp
-        [Fact]
-        public async Task Login_UserNotFound_ReturnsErrorResponse()
-        {
-            Environment.SetEnvironmentVariable("JWT_KEY", "verylongj...key");
-
-            var userLoginDTO = new UserLoginDTO
-            {
-                Email = "nonexistent@example.com",
-                Password = "TestPassword123!"
-            };
-
-            var mockResponse = new Mock<HttpResponse>();
-            // configurer le UserManager pour retourner "null"
-            _mockUserManager.Setup(x => x.FindByEmailAsync(userLoginDTO.Email))
-                .ReturnsAsync((UserApp?)null);
-
-            var result = await _authService.Login(userLoginDTO, mockResponse.Object);
-            // verifier les resultats
-            Assert.NotNull(result);
-            Assert.Equal(404, result.Status);
-            Assert.Equal("L'utilisateur n'existe pas ", result.Message);
-            Assert.Null(result.Data);
-        }
-```
-Cette méthode de test vérifie le comportement du service d’authentification lorsqu’un utilisateur inexistant tente de se connecter.
-Elle commence par définir la variable d’environnement JWT_KEY pour garantir que la génération de jetons JWT est possible même en contexte de test.
-Un objet UserLoginDTO est ensuite créé avec un email et un mot de passe fictifs.
-Le UserManager est configuré pour retourner null lorsque la méthode FindByEmailAsync est appelée avec cet email, simulant ainsi l’absence de l’utilisateur en base de données.
-La méthode Login du service d’authentification est ensuite invoquée.
-Enfin, plusieurs assertions vérifient que :
-
-* la réponse n’est pas nulle
-* le statut est bien 404 (ressource non trouvée)
-* le message renvoyé est "L'utilisateur n'existe pas "
-* et qu’aucune donnée (Data) n’est retournée.
-
-#### Services testés
-
-**AuthService** : Validation complète du système d'authentification incluant la génération et validation des JWT, la gestion des refresh tokens, le processus de connexion/déconnexion, et la vérification des politiques de sécurité. Les tests couvrent notamment les cas d'échec (tokens expirés, identifiants incorrects) et les scénarios de sécurité (tentatives de brute force, tokens malformés).
-
-**FormationsService** : Validation de la gestion du catalogue de formations incluant la création, modification, suppression et recherche de formations. Les tests couvrent la validation des données métier, la gestion des relations avec les cursus, et les contrôles d'autorisation pour les différents rôles utilisateur.
-
-**CursusService** : Validation de la structuration des parcours pédagogiques avec tests de création de cursus, gestion des niveaux, association avec les formations, et système de prérequis. Les tests vérifient également la cohérence des données et les contraintes métier.
-
-#### Outils et frameworks
-
-L'infrastructure de test s'appuie sur un ensemble d'outils robustes :
-
-- **xUnit** : Framework de test principal pour .NET Core
-- **Moq** : Bibliothèque de mocking pour simuler les dépendances
-- **Microsoft.EntityFrameworkCore.InMemory** : Base de données en mémoire pour les tests d'intégration des repositories
-
-
-### 8.2 Tests d'Intégration
-Les tests d'intégration de notre API servent a mettre réellement notre application à l'épreuve dans des conditions quasi-réelles. Contrairement aux tests unitaires qui isolent chaque composant comme dans un laboratoire stérilisé, nos tests d'intégration imitent la complexité du monde réel en faisant interagir tous les éléments ensemble : contrôleurs, services, base de données, authentification, autorisation, et même la sérialisation JSON. Ce qui rend cette approche particulièrement puissante, c'est l'utilisation intelligente de conteneurs Docker avec Testcontainers pour PostgreSQL, nous permettant de créer un environnement de test complètement isolé et reproductible. Chaque fois qu'un test s'exécute, une nouvelle base PostgreSQL fraîche est créée dans un conteneur, peuplée avec des données de test soigneusement préparées, puis détruite une fois les tests terminés. Cette approche nous donne une confiance énorme : si nos tests d'intégration passent, nous savons que notre API fonctionnera en production, car nous testons avec une vraie base de données PostgreSQL, de vrais appels HTTP, et une vraie pile d'authentification JWT.
-
-#### Technologies Utilisées
-##### Framework de Test
-* xUnit - Framework de test moderne pour .NET
-* ASP.NET Core Test Host - Hébergement en mémoire de l'application
-* WebApplicationFactory - Factory personnalisée pour configurer l'environnement de test
-##### Conteneurisation et Base de Données
-* Testcontainers - Gestion automatique des conteneurs Docker pour les tests
-* PostgreSQL Container - Base de données PostgreSQL isolée et éphémère
-* Docker - Plateforme de conteneurisation pour l'isolation des environnements
-##### Services et Mocking
-* MockEmailService - Service d'email mocké pour éviter l'envoi réel d'emails
-* Entity Framework Core - ORM pour les interactions avec la base de données
-* Moq - Framework de mocking (utilisé indirectement)
-
-```CSharp
-
-        [Fact]
-        public async Task Login_ValidCredentials_ReturnsSuccess()
-        {
-            // Arrange
-            var userLoginDTO = new UserLoginDTO
-            {
-                Email = "admin@skillhive.fr",
-                Password = "Admin123!"
-            };
-
-            var content = new StringContent(JsonSerializer.Serialize(userLoginDTO, jsonOptions), Encoding.UTF8, "application/json");
-
-            // Act
-            var response = await httpClient.PostAsync("/users/login", content);
-            var responseContent = await response.Content.ReadFromJsonAsync<ResponseDTO<LoginOutputDTO>>();
-
-            // Assert
-            Assert.True(response.IsSuccessStatusCode);
-            Assert.NotNull(responseContent);
-            Assert.NotNull(responseContent.Data);
-            Assert.NotNull(responseContent.Data.Token);
-            Assert.NotNull(responseContent.Data.User);
-            Assert.Equal("admin@skillhive.fr", responseContent.Data.User.Email);
-        }
-```
-Cette méthode de test d’intégration vérifie le bon fonctionnement du processus de connexion lorsqu’un utilisateur fournit des identifiants valides.
-Elle commence par créer un UserLoginDTO avec l’adresse email et le mot de passe d’un utilisateur connu (dans ce cas, l’administrateur admin@skillhive.fr).
-Ce DTO est ensuite sérialisé en JSON et envoyé via une requête HTTP POST à l’endpoint /users/login de l’API.
-La réponse est désérialisée en un `ResponseDTO<LoginOutputDTO>` pour faciliter l’accès aux données de retour.
-Plusieurs assertions sont ensuite effectuées pour garantir que :
-
-* la réponse HTTP est bien un succès (IsSuccessStatusCode est true),
-
-* le corps de la réponse n’est pas nul,
-
-* un jeton d’authentification (Token) est présent,
-
-* l’objet User retourné n’est pas nul,
-
-* et que l’email de l’utilisateur retourné correspond bien à celui utilisé pour la connexion.
-
-### 8.3 Tests end-to-end
-*À développer*
-
-### 8.4 Validation fonctionnelle
-*À développer*sseur, également administrateur de la plateforme, de gérer son planning, ses tarifs, les inscriptions et la communication avec ses élèves à partir d’un espace unique.
+.   Au Professeur de creer, modifier et supprimer des creneaux, de verifier et consulter ses reservations.
 
 Ce projet s’inscrit dans une démarche de digitalisation des services éducatifs, en offrant un gain de temps, une meilleure traçabilité et une expérience utilisateur moderne.
 
@@ -172,28 +41,10 @@ Il est donc nécessaire de mettre en place une application centralisée, offrant
 ### 2.1 Description fonctionnelle
 L’application se présente sous la forme d’un site web ergonomique et intuitif, composé d’une page d’accueil (landing page), d’un profil public du professeur, et d’un espace utilisateur sécurisé appelé dashboard, qui regroupe l’ensemble des fonctionnalités interactives.
 
-```mermaid
----
-config:
-      theme: redux
----
-flowchart TD
-        A(["Professeur"])
-        A -->|Supplement de revenu| B{"Aller à Skill hive"}
-        B --> C["Proposer des créneaux"]
-        B --> E["Gérer les utilisateurs"]
-        B --> D["Consulter les réservations"]
-        B --> F["Ajuster son profil"]
-
-         A1(["Elève"])
-        A1 -->|Supplement de revenu| B1{"Aller à Skill hive"}
-        B1 --> C1["Réserver un/des créneaux"]
-        B1 --> D["Consulter les réservations"]
-        B1 --> E1["Envoyer un mail/demande"]
-        B1 --> F["Ajuster son profil"]
-        C1 --> C12["Payer"]
-        C1 --> C13["Télécharger ses factures"]
-```
+<div style="width: 100%;">
+  <img  src="presentationSite.svg" alt="Interface de messagerie Trevo" width="6500" height="300" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto;">Plusieurs catégories de demandes prédéfinies avec possibilité de recevoir une copie par email</i>
+</div>
 
 #### Page d’accueil (Landing page)
 La page d’accueil, accessible à tous, présente brièvement le principe de fonctionnement de l’application et ses avantages. Elle intègre un menu de navigation permettant :
@@ -954,6 +805,135 @@ Cette architecture de déploiement offre une solution scalable et sécurisée, p
 - Tests d’intégration.
 - Tests end-to-end.
 - Validation fonctionnelle.
+
+L'assurance qualité de l'application repose sur une stratégie de test complète et rigoureuse, couvrant l'ensemble des couches applicatives depuis les services métier jusqu'à l'expérience utilisateur finale. Cette approche multicouche garantit la fiabilité, la performance et la conformité fonctionnelle de l'application.
+
+L'API .NET a fait l'objet d'une couverture indispensable par des tests unitaires. Cette stratégie de test cible les composants critiques de l'application pour assurer leur bon fonctionnement dans différents scénarios d'utilisation. L'AuthService bénéficie d'une validation complète du système d'authentification incluant la génération et validation des JWT, la gestion des refresh tokens, le processus de connexion/déconnexion, et la vérification des politiques de sécurité. Les tests couvrent notamment les cas d'échec (tokens expirés, identifiants incorrects) et les scénarios de sécurité (tentatives de brute force, tokens malformés). Le NotificationsService fait l'objet d'une vérification du système de notifications temps réel avec tests de création, envoi, marquage comme lue, et suppression des notifications. Les tests valident également le filtrage par utilisateur, la pagination des résultats, et l'intégration avec SignalR pour les notifications en temps réel.
+
+### 8.2 Tests d'intégration
+Les tests unitaires suivent les meilleures pratiques du framework xUnit pour .NET avec une isolation complète utilisant des mocks et stubs pour isoler les unités testées de leurs dépendances, une couverture qui cible des cas nominaux, cas d'erreur, et cas limites, une convention de nommage claire décrivant le scénario testé et le résultat attendu. EntityFrameworkCore.
+
+Techno : **XUnit**, **Moq** et **InMemory(entity Framework)**
+
+```CSharp
+        [Fact]
+        public async Task Login_UserNotFound_ReturnsErrorResponse()
+        {
+            Environment.SetEnvironmentVariable("JWT_KEY", "verylongj...key");
+
+            var userLoginDTO = new UserLoginDTO
+            {
+                Email = "nonexistent@example.com",
+                Password = "TestPassword123!"
+            };
+
+            var mockResponse = new Mock<HttpResponse>();
+            // configurer le UserManager pour retourner "null"
+            _mockUserManager.Setup(x => x.FindByEmailAsync(userLoginDTO.Email))
+                .ReturnsAsync((UserApp?)null);
+
+            var result = await _authService.Login(userLoginDTO, mockResponse.Object);
+            // verifier les resultats
+            Assert.NotNull(result);
+            Assert.Equal(404, result.Status);
+            Assert.Equal("L'utilisateur n'existe pas ", result.Message);
+            Assert.Null(result.Data);
+        }
+```
+Cette méthode de test vérifie le comportement du service d’authentification lorsqu’un utilisateur inexistant tente de se connecter.
+Elle commence par définir la variable d’environnement JWT_KEY pour garantir que la génération de jetons JWT est possible même en contexte de test.
+Un objet UserLoginDTO est ensuite créé avec un email et un mot de passe fictifs.
+Le UserManager est configuré pour retourner null lorsque la méthode FindByEmailAsync est appelée avec cet email, simulant ainsi l’absence de l’utilisateur en base de données.
+La méthode Login du service d’authentification est ensuite invoquée.
+Enfin, plusieurs assertions vérifient que :
+
+* la réponse n’est pas nulle
+* le statut est bien 404 (ressource non trouvée)
+* le message renvoyé est "L'utilisateur n'existe pas "
+* et qu’aucune donnée (Data) n’est retournée.
+
+#### Services testés
+
+**AuthService** : Validation complète du système d'authentification incluant la génération et validation des JWT, la gestion des refresh tokens, le processus de connexion/déconnexion, et la vérification des politiques de sécurité. Les tests couvrent notamment les cas d'échec (tokens expirés, identifiants incorrects) et les scénarios de sécurité (tentatives de brute force, tokens malformés).
+
+**FormationsService** : Validation de la gestion du catalogue de formations incluant la création, modification, suppression et recherche de formations. Les tests couvrent la validation des données métier, la gestion des relations avec les cursus, et les contrôles d'autorisation pour les différents rôles utilisateur.
+
+**CursusService** : Validation de la structuration des parcours pédagogiques avec tests de création de cursus, gestion des niveaux, association avec les formations, et système de prérequis. Les tests vérifient également la cohérence des données et les contraintes métier.
+
+#### Outils et frameworks
+
+L'infrastructure de test s'appuie sur un ensemble d'outils robustes :
+
+- **xUnit** : Framework de test principal pour .NET Core
+- **Moq** : Bibliothèque de mocking pour simuler les dépendances
+- **Microsoft.EntityFrameworkCore.InMemory** : Base de données en mémoire pour les tests d'intégration des repositories
+
+
+### 8.2 Tests d'Intégration
+Les tests d'intégration de notre API servent a mettre réellement notre application à l'épreuve dans des conditions quasi-réelles. Contrairement aux tests unitaires qui isolent chaque composant comme dans un laboratoire stérilisé, nos tests d'intégration imitent la complexité du monde réel en faisant interagir tous les éléments ensemble : contrôleurs, services, base de données, authentification, autorisation, et même la sérialisation JSON. Ce qui rend cette approche particulièrement puissante, c'est l'utilisation intelligente de conteneurs Docker avec Testcontainers pour PostgreSQL, nous permettant de créer un environnement de test complètement isolé et reproductible. Chaque fois qu'un test s'exécute, une nouvelle base PostgreSQL fraîche est créée dans un conteneur, peuplée avec des données de test soigneusement préparées, puis détruite une fois les tests terminés. Cette approche nous donne une confiance énorme : si nos tests d'intégration passent, nous savons que notre API fonctionnera en production, car nous testons avec une vraie base de données PostgreSQL, de vrais appels HTTP, et une vraie pile d'authentification JWT.
+
+#### Technologies Utilisées
+##### Framework de Test
+* xUnit - Framework de test moderne pour .NET
+* ASP.NET Core Test Host - Hébergement en mémoire de l'application
+* WebApplicationFactory - Factory personnalisée pour configurer l'environnement de test
+##### Conteneurisation et Base de Données
+* Testcontainers - Gestion automatique des conteneurs Docker pour les tests
+* PostgreSQL Container - Base de données PostgreSQL isolée et éphémère
+* Docker - Plateforme de conteneurisation pour l'isolation des environnements
+##### Services et Mocking
+* MockEmailService - Service d'email mocké pour éviter l'envoi réel d'emails
+* Entity Framework Core - ORM pour les interactions avec la base de données
+* Moq - Framework de mocking (utilisé indirectement)
+
+```CSharp
+
+        [Fact]
+        public async Task Login_ValidCredentials_ReturnsSuccess()
+        {
+            // Arrange
+            var userLoginDTO = new UserLoginDTO
+            {
+                Email = "admin@skillhive.fr",
+                Password = "Admin123!"
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(userLoginDTO, jsonOptions), Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await httpClient.PostAsync("/users/login", content);
+            var responseContent = await response.Content.ReadFromJsonAsync<ResponseDTO<LoginOutputDTO>>();
+
+            // Assert
+            Assert.True(response.IsSuccessStatusCode);
+            Assert.NotNull(responseContent);
+            Assert.NotNull(responseContent.Data);
+            Assert.NotNull(responseContent.Data.Token);
+            Assert.NotNull(responseContent.Data.User);
+            Assert.Equal("admin@skillhive.fr", responseContent.Data.User.Email);
+        }
+```
+Cette méthode de test d’intégration vérifie le bon fonctionnement du processus de connexion lorsqu’un utilisateur fournit des identifiants valides.
+Elle commence par créer un UserLoginDTO avec l’adresse email et le mot de passe d’un utilisateur connu (dans ce cas, l’administrateur admin@skillhive.fr).
+Ce DTO est ensuite sérialisé en JSON et envoyé via une requête HTTP POST à l’endpoint /users/login de l’API.
+La réponse est désérialisée en un `ResponseDTO<LoginOutputDTO>` pour faciliter l’accès aux données de retour.
+Plusieurs assertions sont ensuite effectuées pour garantir que :
+
+* la réponse HTTP est bien un succès (IsSuccessStatusCode est true),
+
+* le corps de la réponse n’est pas nul,
+
+* un jeton d’authentification (Token) est présent,
+
+* l’objet User retourné n’est pas nul,
+
+* et que l’email de l’utilisateur retourné correspond bien à celui utilisé pour la connexion.
+
+### 8.3 Tests end-to-end
+*À développer*
+
+### 8.4 Validation fonctionnelle
+*À développer*sseur, également administrateur de la plateforme, de gérer son planning, ses tarifs, les inscriptions et la communication avec ses élèves à partir d’un espace unique.
 
 ---
 
