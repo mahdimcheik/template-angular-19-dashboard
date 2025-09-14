@@ -7,7 +7,94 @@ L’objectif est donc de concevoir un outil simple et intuitif permettant :
 
 .   Aux élèves de s’inscrire, réserver un créneau disponible, effectuer un paiement sécurisé et consulter l’historique de leurs cours.
 
-.   Au professeur, également administrateur de la plateforme, de gérer son planning, ses tarifs, les inscriptions et la communication avec ses élèves à partir d’un espace unique.
+.   Au ## 8. Tests et assurance qualité
+
+### 8## 8. Tests et assurance qualité
+
+L'assurance qualité de l'application repose sur une stratégie de test complète et rigoureuse, couvrant l'ensemble des couches applicatives depuis les services métier jusqu'à l'expérience utilisateur finale. Cette approche multicouche garantit la fiabilité, la performance et la conformité fonctionnelle de l'application.
+
+L'API .NET a fait l'objet d'une couverture indispensable par des tests unitaires. Cette stratégie de test cible les composants critiques de l'application pour assurer leur bon fonctionnement dans différents scénarios d'utilisation. L'AuthService bénéficie d'une validation complète du système d'authentification incluant la génération et validation des JWT, la gestion des refresh tokens, le processus de connexion/déconnexion, et la vérification des politiques de sécurité. Les tests couvrent notamment les cas d'échec (tokens expirés, identifiants incorrects) et les scénarios de sécurité (tentatives de brute force, tokens malformés). Le NotificationsService fait l'objet d'une vérification du système de notifications temps réel avec tests de création, envoi, marquage comme lue, et suppression des notifications. Les tests valident également le filtrage par utilisateur, la pagination des résultats, et l'intégration avec SignalR pour les notifications en temps réel.
+
+Les tests unitaires suivent les meilleures pratiques du framework xUnit pour .NET avec une isolation complète utilisant des mocks et stubs pour isoler les unités testées de leurs dépendances, une couverture qui cible des cas nominaux, cas d'erreur, et cas limites, une convention de nommage claire décrivant le scénario testé et le résultat attendu. EntityFrameworkCore.
+
+Les tests end-to-end, implémentés avec Cypress, valident les parcours utilisateur complets depuis l'interface Angular jusqu'à la persistance en base de données. Ces tests automatisés couvrent les scénarios critiques comme l'inscription et l'authentification, la réservation et le paiement de créneaux, la consultation de l'historique et la communication avec le professeur. L'approche end-to-end garantit que l'ensemble des fonctionnalités s'intègrent correctement et offrent une expérience utilisateur fluide et conforme aux spécifications.
+
+Techno : **XUnit**, **Moq** et **InMemory(entity Framework)**
+
+```CSharp
+        [Fact]
+        public async Task Login_UserNotFound_ReturnsErrorResponse()
+        {
+            Environment.SetEnvironmentVariable("JWT_KEY", "verylongj...key");
+
+            var userLoginDTO = new UserLoginDTO
+            {
+                Email = "nonexistent@example.com",
+                Password = "TestPassword123!"
+            };
+
+            var mockResponse = new Mock<HttpResponse>();
+            // configurer le UserManager pour retourner "null"
+            _mockUserManager.Setup(x => x.FindByEmailAsync(userLoginDTO.Email))
+                .ReturnsAsync((UserApp?)null);
+
+            var result = await _authService.Login(userLoginDTO, mockResponse.Object);
+            // verifier les resultats
+            Assert.NotNull(result);
+            Assert.Equal(404, result.Status);
+            Assert.Equal("L'utilisateur n'existe pas ", result.Message);
+            Assert.Null(result.Data);
+        }
+```
+Cette méthode de test vérifie le comportement du service d’authentification lorsqu’un utilisateur inexistant tente de se connecter.
+Elle commence par définir la variable d’environnement JWT_KEY pour garantir que la génération de jetons JWT est possible même en contexte de test.
+Un objet UserLoginDTO est ensuite créé avec un email et un mot de passe fictifs.
+Le UserManager est configuré pour retourner null lorsque la méthode FindByEmailAsync est appelée avec cet email, simulant ainsi l’absence de l’utilisateur en base de données.
+La méthode Login du service d’authentification est ensuite invoquée.
+Enfin, plusieurs assertions vérifient que :
+
+* la réponse n’est pas nulle
+* le statut est bien 404 (ressource non trouvée)
+* le message renvoyé est "L'utilisateur n'existe pas "
+* et qu’aucune donnée (Data) n’est retournée.
+
+
+#### Services testés
+
+**AuthService** : Validation complète du système d'authentification incluant la génération et validation des JWT, la gestion des refresh tokens, le processus de connexion/déconnexion, et la vérification des politiques de sécurité. Les tests couvrent notamment les cas d'échec (tokens expirés, identifiants incorrects) et les scénarios de sécurité (tentatives de brute force, tokens malformés).
+
+**FormationsService** : Validation de la gestion du catalogue de formations incluant la création, modification, suppression et recherche de formations. Les tests couvrent la validation des données métier, la gestion des relations avec les cursus, et les contrôles d'autorisation pour les différents rôles utilisateur.
+
+**CursusService** : Validation de la structuration des parcours pédagogiques avec tests de création de cursus, gestion des niveaux, association avec les formations, et système de prérequis. Les tests vérifient également la cohérence des données et les contraintes métier.
+
+#### Méthodologie de test
+
+Les tests unitaires suivent les meilleures pratiques du framework xUnit pour .NET :
+
+- **Isolation complète** : Utilisation de mocks et stubs pour isoler les unités testées de leurs dépendances
+- **Couverture exhaustive** : Tests des cas nominaux, cas d'erreur, et cas limites
+- **Nommage expressif** : Convention de nommage claire décrivant le scénario testé et le résultat attendu
+- **Assertions précises** : Vérification détaillée des résultats et des effets de bord
+- **Setup minimal** : Configuration des données de test optimisée pour la lisibilité et la maintenance
+
+#### Outils et frameworks
+
+L'infrastructure de test s'appuie sur un ensemble d'outils robustes :
+
+- **xUnit** : Framework de test principal pour .NET Core
+- **Moq** : Bibliothèque de mocking pour simuler les dépendances
+- **FluentAssertions** : API fluide pour des assertions plus expressives
+- **Microsoft.EntityFrameworkCore.InMemory** : Base de données en mémoire pour les tests d'intégration des repositories
+
+
+### 8.2 Tests d'intégration
+*À développer*
+
+### 8.3 Tests end-to-end
+*À développer*
+
+### 8.4 Validation fonctionnelle
+*À développer*sseur, également administrateur de la plateforme, de gérer son planning, ses tarifs, les inscriptions et la communication avec ses élèves à partir d’un espace unique.
 
 Ce projet s’inscrit dans une démarche de digitalisation des services éducatifs, en offrant un gain de temps, une meilleure traçabilité et une expérience utilisateur moderne.
 
