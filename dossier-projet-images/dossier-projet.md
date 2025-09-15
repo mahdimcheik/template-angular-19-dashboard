@@ -234,11 +234,49 @@ La messagerie intégrée facilite la communication directe entre élève et prof
 
 ### 6. Gestion des tarifs et disponibilités
 
-Cette fonctionnalité, exclusive au professeur, constitue le cœur opérationnel de l'application. Via le calendrier, le professeur peut creer , supprimer ou editer les creneaux. Il peut egelement ajouter des promotions pour promouvoir des creneauux specifiques.
+Cette fonctionnalité, réservée exclusivement au professeur, constitue le véritable cœur opérationnel de l’application. Elle centralise l’organisation et la planification des séances.
+
+* Grâce à un calendrier interactif, le professeur peut :
+
+* Créer de nouveaux créneaux horaires pour proposer des séances aux élèves.
+
+* Modifier les créneaux existants en ajustant la date, l’horaire ou le tarif.
+
+* Supprimer un créneau si celui-ci n’est plus disponible.
+
+Ajouter des promotions pour mettre en avant des créneaux spécifiques et encourager les réservations.
+
+Cette interface permet une gestion souple et rapide de l’emploi du temps. L’enseignant garde un contrôle complet sur la disponibilité des séances, tout en pouvant réagir immédiatement aux imprévus (par exemple en ajustant le prix d’un créneau ou en créant une offre spéciale pour remplir les places vacantes).
+
+<div style="width: 100%;">
+  <img  src="edit-price.png" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Exemple de popup permettant de modifier le prix d’un créneau : le professeur peut ajuster le tarif en quelques clics sans quitter le calendrier.</i>
+</div>
+Cette approche améliore considérablement l’efficacité de la gestion des cours : les modifications sont instantanément prises en compte dans le système, garantissant une information toujours à jour pour les élèves.
 
 ### 7. Facturation
 
-Le système de facturation automatisé génère des documents conformes aux obligations légales françaises (numérotation séquentielle et TVA). La création des factures se fait a la demande, en PDF via PuppeteerSharp, avec template professionnel personnalisable incluant les coordonnées de l auto-entreprise.
+Afin de répondre aux exigences légales françaises, le système de facturation a été conçu pour générer des documents conformes aux normes en vigueur. Chaque facture produite respecte :
+
+* Une numérotation séquentielle afin de garantir la traçabilité et l’unicité des documents.
+
+* L’affichage de la TVA.
+
+La génération des factures se fait à la demande, ce qui évite d’occuper inutilement de l’espace de stockage avec des fichiers inutilisés. Les factures sont créées dynamiquement au format PDF grâce à la librairie QuestPDF. Cette bibliothèque est particulièrement adaptée aux environnements de production car elle :
+
+Offre des performances très élevées avec un temps de génération quasi instantané.
+
+Consomme peu de ressources système par rapport à des solutions plus lourdes comme Puppeteer + Chromium.
+
+Permet une flexibilité importante : le développeur peut facilement adapter le modèle de facture en cas d’évolution légale ou de correction nécessaire.
+
+Ce fonctionnement permet de garantir un système à la fois rapide, économique en stockage et évolutif. Le résultat est une expérience fluide pour l’utilisateur, tout en maintenant une conformité réglementaire stricte.
+
+
+<div style="width: 100%;">
+  <img  src="facture.png" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Exemple de facture générée automatiquement avec QuestPDF, conforme aux obligations légales (numérotation séquentielle et TVA).</i>
+</div>
 
 ### 8. Profil 
 
@@ -276,9 +314,45 @@ La gestion des profils intègre des mesures de sécurité strictes conformes au 
 
 **Anonymisation automatique (en cours)** : Processus d'anonymisation des données lors de la suppression de compte, préservant les statistiques globales tout en respectant le droit à l'effacement.
 
-**Chiffrement des données sensibles** : Protection cryptographique des informations personnelles les plus sensibles (adresses précises, données de formation) avec clés de chiffrement rotatives.
+**Chiffrement des données sensibles** : La protection des informations personnelles est une priorité essentielle dans notre projet. Parmi les données les plus critiques se trouvent les adresses précises des étudiants, qui ne doivent en aucun cas être accessibles en clair dans la base de données.
 
-Cette architecture complète de gestion de profil transforme l'application en véritable écosystème pédagogique personnalisé, optimisant l'efficacité de l'apprentissage tout en respectant les exigences les plus strictes en matière de protection des données personnelles.
+Pour répondre à cet enjeu, un mécanisme de chiffrement symétrique a été mis en place en utilisant l’algorithme AES (Advanced Encryption Standard), fourni nativement par la bibliothèque System.Security.Cryptography de .NET. Lorsqu’une nouvelle adresse est enregistrée, seules les parties sensibles — comme le nom de la rue et le numéro — sont chiffrées avant d’être stockées. Cela signifie que même en cas de fuite de la base de données, il est impossible pour un attaquant de déduire l’adresse exacte d’un étudiant.
+
+Dans l’application, seules deux parties ont la capacité de déchiffrer ces données :
+
+* L’élève lui-même, lorsqu’il consulte ou modifie son profil.
+
+* Le propriétaire du site, pour des besoins d’administration ou de support.
+
+Ce fonctionnement est illustré dans l’exemple suivant : 
+
+```csharp
+     public async Task<AddressResponseDTO> AddAddress(AddressCreateDTO addressCreate, string userId)
+{
+    try
+    {
+        // ..
+        // Chiffrement des données sensibles avant l'insertion en base
+        var encryptedAddress = AddressEncryptionHelper.EncryptAddressDto(addressCreate, encryptionService);
+        var address = encryptedAddress.ToAddress(userId);
+        
+        //..
+        // Déchiffrement lorsque l'information doit être lue
+        AddressEncryptionHelper.DecryptAddress(address, encryptionService);
+        
+        return address.ToAddressDTO();
+    }
+    // ..
+}
+
+```
+Ici, le service encryptionService encapsule la logique de chiffrement et de déchiffrement. L’algorithme AES est utilisé avec une clé de chiffrement sécurisée, générée et stockée de manière à empêcher tout accès non autorisé.
+
+Visuellement, la différence est nette : dans l’interface, l’utilisateur voit son adresse en clair, mais dans la base de données, la rue et la ville apparaissent sous forme de texte chiffré, ce qui les rend incompréhensibles sans la clé : 
+
+<div style="width: 100%;"> <img src="adresse.png" alt="Interface de gestion du profil" style="width: 100%; display: block; margin: auto;"/> <i style="width: 450px; display: block; margin: auto; margin-top: 8px;"> Exemple : la ville et la rue sont chiffrées — la base de données ne contient donc pas l’adresse en clair. </i> </div>
+
+Cette approche répond aux bonnes pratiques de sécurité (notamment celles recommandées par l’OWASP), en minimisant l’impact potentiel d’une fuite de données et en renforçant la confidentialité des étudiants.
 
 ## 4. Architecture technique
 ### 4.1 Technologies utilisées
