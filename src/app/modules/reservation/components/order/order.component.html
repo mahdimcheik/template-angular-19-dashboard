@@ -27,7 +27,7 @@
                     @for (booking of order()?.bookings; track booking.id) {
                         <div class="flex flex-row gap-2 p-4 border-b-2 border-color-primary-100 dark:border-color-primary-100 justify-between items-center">
                             <div class="details">
-                                <span>Le {{ booking.startAt | date: 'dd MMMM à mm:HH' }}</span>
+                                <span>Le {{ booking.startAt | date: 'dd MMMM à mm:HH' }}, </span>
                                 <span>Sujet : {{ booking.subject }}</span>
                             </div>
                             <div class="price flex flex-col">

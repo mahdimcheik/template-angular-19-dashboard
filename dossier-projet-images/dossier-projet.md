@@ -218,11 +218,22 @@ Côté serveur, un webhook dédié à l'écoute des événements Stripe met à j
 
 ### 4. Consultation de l'historique
 
-Les réservations sont organisées par statut (à venir ou passées) avec pagination pour une navigation optimale. Chaque entrée présente les détails complets : date, heure, durée, prix payé et statut de la session. En cliquant sur une réservation, un modal détaillé s'affiche, permettant également le suivi de la session de cours via une interface de communication intégrée de type chat.
+Les réservations sont organisées par statut (à payer ou passées) avec pagination pour une navigation optimale. Chaque entrée présente les détails complets : date, heure, durée, prix payé et statut de la session. En cliquant sur une réservation, un modal s'affiche, permettant également la modification de la commande en cours.
 
-Les commandes sont classées par ordre chronologique descendant, offrant à l'utilisateur la possibilité de télécharger ses factures individuellement. 
+<div style="width: 100%;">
+  <img  src="orders.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 90%;display: block; margin: auto;">La page des commandes présente plusieurs éléments visuels pour faciliter la gestion :
 
-La fonctionnalité permet le téléchargement groupé de factures par période, l'export des données au format CSV pour la comptabilité personnelle, et l'accès aux communications échangées avec le professeur pour chaque réservation. Un système de recherche textuelle facilite la localisation rapide d'un cours spécifique. Les statistiques personnelles (nombre d'heures de cours, montant total dépensé, fréquence de réservation) enrichissent la vue d'ensemble de l'activité éducative.
+En noir : la commande en cours, avec son temps restant pour effectuer le paiement, les détails complets de la commande ainsi que les boutons de contrôle associés.
+
+En rouge : le champ de recherche permettant de retrouver les anciennes commandes.
+
+En vert foncé : le bouton de téléchargement de la facture au format PDF.
+
+En vert clair : le bouton qui permet de copier les détails techniques de la commande, afin que le client puisse les transmettre facilement à l’administrateur en cas de besoin.</i>
+</div>
+
+Les commandes passées sont classées par ordre chronologique descendant, offrant à l'utilisateur la possibilité de télécharger ses factures individuellement, mais également un système de recherche textuelle est mis en place pour faciliter la recherche. 
 
 ### 5. Messagerie
 
