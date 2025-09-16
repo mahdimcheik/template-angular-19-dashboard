@@ -313,11 +313,17 @@ Les commandes passées sont classées par ordre chronologique descendant, offran
 
 ### 5. Messagerie
 
-La messagerie intégrée facilite la communication directe entre élève et professeur via Trevo. Cette interface simplifiée permet de traiter les demandes courantes : demandes de remboursement, reports de cours ou questions pédagogiques.
-<div style="width: 100%;">
-  <img  src="image.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
-  <i  style="width: 450px;display: block; margin: auto;">Plusieurs catégories de demandes prédéfinies avec possibilité de recevoir une copie par email</i>
-</div>
+La messagerie intégrée de Trevo facilite la communication directe entre l’élève et le professeur. Cette interface simplifiée est conçue pour traiter efficacement les demandes courantes, telles que :
+
+* Les demandes de remboursement.
+
+* Les reports ou annulations de cours.
+
+* Les questions pédagogiques.
+
+<div style="width: 100%;"> <img src="image.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/> <i style="width: 450px; display: block; margin: auto; margin-top: 6px;"> Plusieurs catégories de demandes prédéfinies avec possibilité de recevoir une copie par email pour plus de traçabilité. </i> </div>
+
+En complément de la messagerie interne, le système propose également l’envoi par email. Cette fonctionnalité permet de garantir la traçabilité des échanges et d’assurer que les messages puissent être reçus même si le serveur de l’application rencontre un problème. Ainsi, l’élève et le professeur disposent toujours d’un canal de communication fiable.
 
 ### 6. Gestion des tarifs et disponibilités
 
@@ -389,11 +395,8 @@ Adresse de *domicile*, *facturation*, *livraison*, *travail*.
 
 La section formations constitue un élément différenciant de l'application, permettant au professeur d'adapter précisément son enseignement au profil et aux objectifs de chaque élève. Cette fonctionnalité dépasse la simple collecte d'informations pour devenir un véritable outil pédagogique.
 
-#### 8.4 Fonctionnalités spécifiques au professeur
 
-Le professeur dispose d'un accès étendu aux profils étudiants, transformant l'application en véritable outil de gestion pédagogique.
-
-#### 8.5 Sécurité et confidentialité des données
+#### 8.4 Sécurité et confidentialité des données
 
 La gestion des profils intègre des mesures de sécurité strictes conformes au RGPD :
 
@@ -931,32 +934,6 @@ docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recr
 - **SSL/TLS** : Certificats automatiques via Let's Encrypt
 - **Isolation des conteneurs** : Réseaux Docker dédiés par environnement
 
-### 7.8 Monitoring et maintenance
-
-#### Surveillance automatisée
-- **Health checks** : Vérification automatique de l'état des conteneurs
-- **Logs centralisés** : Agrégation des logs pour analyse et debugging
-- **Alertes** : Notifications en cas de dysfonctionnement
-
-#### Stratégie de rollback
-En cas de problème, le rollback s'effectue en modifiant la variable d'environnement :
-```bash
-export FRONT_IMAGE_VERSION=previous-version
-docker compose up -d --force-recreate
-```
-
-### 7.9 Optimisations et bonnes pratiques
-
-#### Performance
-- **Images multi-architecture** : Support AMD64
-- **Cache Docker** : Optimisation des layers pour accélérer les builds
-- **CDN** : Nginx configuré avec compression gzip et cache headers
-
-#### Fiabilité
-- **Zero-downtime deployment** : Mise à jour sans interruption de service
-- **Configuration immutable** : a venir
-- **Backup automatique** : a venir
-
 Cette architecture de déploiement offre une solution scalable et sécurisée, permettant une mise en production rapide et fiable tout en maintenant une séparation claire entre les environnements de développement, test et production.
 
 ---
@@ -965,7 +942,7 @@ Cette architecture de déploiement offre une solution scalable et sécurisée, p
 - Tests unitaires.
 - Tests d’intégration.
 - Tests end-to-end.
-- Validation fonctionnelle.
+- Tests de charge.
 
 L'assurance qualité de l'application repose sur une stratégie de test complète et rigoureuse, couvrant l'ensemble des couches applicatives depuis les services métier jusqu'à l'expérience utilisateur finale. Cette approche multicouche garantit la fiabilité, la performance et la conformité fonctionnelle de l'application.
 
