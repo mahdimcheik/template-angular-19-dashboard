@@ -91,20 +91,57 @@ L’onglet Contact permet d’envoyer un message directement au professeur pour 
 *   Obtenir des renseignements divers.
 
 ##### Notifications
-La page par défaut du dashboard est la page Notifications, affichant :
-*   Toutes les notifications par ordre chronologique.
-*   Un système de filtrage (par notifications vues / non vues).
-*   Un résumé synthétique de l’activité de la semaine.
+Page par défaut du dashboard : Notifications
+La page de notifications est la page d’accueil du dashboard, permettant à l’utilisateur de voir en un coup d’œil l’activité récente. Elle présente :
 
-Des extras information sont affihces pour le professeur
+* Toutes les notifications, classées par ordre chronologique afin de ne manquer aucun événement important.
+
+* Un système de filtrage permettant de distinguer rapidement les notifications vues de celles non vues.
+
+* Un résumé synthétique de l’activité hebdomadaire, offrant une vision d’ensemble sur les événements récents (paiements, réservations, modifications de créneaux…).
+
+<div style="width: 100%; margin-bottom: 8px;">
+  <img  src="notif.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i>En en-tête de la page, un petit résumé de l’activité hebdomadaire permet d’avoir une vue d’ensemble des événements récents (créneaux créés, réservations, paiements, etc.). Les notifications détaillées sont affichées en bas de la page, sous forme de liste paginée. L’utilisateur dispose également d’un système de filtrage pour afficher uniquement les notifications vues ou non vues.</i>
+</div>
+
+
+**Notifications en temps réel avec SignalR**
+Pour offrir une expérience utilisateur fluide et réactive, le système de notifications utilise SignalR, la bibliothèque temps réel de .NET. Grâce à cette technologie, les notifications sont transmises instantanément depuis le serveur vers le client, sans que ce dernier ait besoin d’actualiser la page.
+
+Ce mécanisme permet au professeur et aux élèves d’être informés en direct des événements importants, comme :
+
+* La création ou la modification d’un créneau.
+
+* La confirmation de la réservation.
+
+* L’arrivée d’un nouveau message ou d’une nouvelle réservation.
+
+* La mise a jour du profil.
+
+L’utilisation de SignalR garantit donc un flux d’informations en temps réel, améliorant la réactivité de l’application et réduisant les risques de décalage entre l’état du serveur et ce que l’utilisateur voit à l’écran.
 
 ##### Onglet Utilisateurs (professeur)
-Le professeur, également administrateur, dispose de fonctionnalités supplémentaires :
+Fonctionnalités administratives pour le professeur
+Le professeur dispose également des droits d’administrateur, il accède à des fonctionnalités avancées via l’onglet Utilisateurs. Cet onglet lui permet de :
 
-Onglet Utilisateurs qui permet de lister tous les élèves, rechercher un profil, consulter leurs informations.
+<div style="width: 100%; margin-bottom: 8px;">
+  <img  src="students.png" alt="students" width="450" style="display: block; margin: auto;"/>
+</div>
 
-##### Personnalisation visuelle
-En bas de l’application, il propose un mode sombre et un mode clair, que l’utilisateur peut sélectionner selon ses préférences. Le choix est conservé tant qu’il n’est pas modifié.
+* Lister tous les élèves inscrits sur la plateforme.
+
+* Rechercher un profil spécifique grâce à un champ de recherche.
+
+* Consulter les informations détaillées de chaque élève (coordonnées, historique de réservations…).
+
+* Bannir un compte si nécessaire, en cas de comportement inapproprié ou de problème de sécurité.
+
+Pour plus de confort, j'ai mis en place deux modes d’affichage :
+
+* Une vue en liste, compacte et adaptée à un grand nombre d’élèves.
+
+* Une vue en grille, où chaque étudiant est présenté sous forme de carte, ce qui facilite la lecture des informations principales d’un coup d’œil.
 
 ### 2.2 Cas d’usage principaux
 - Réserver un cours.
@@ -132,22 +169,56 @@ En bas de l’application, il propose un mode sombre et un mode clair, que l’u
 ### 1. Inscription et authentification
 
 L'inscription constitue le point d'entrée de l'application et s'articule autour d'un processus en deux étapes. Lors de l'inscription, l'utilisateur renseigne ses informations personnelles (nom, prénom, email, mot de passe) via un formulaire sécurisé avec validation en temps réel. Le système vérifie la robustesse du mot de passe (8 caractères minimum, combinaison de majuscules, minuscules, chiffres et caractères spéciaux) et l'unicité de l'adresse email. Deux consentements distincts sont requis : l'acceptation de la politique de confidentialité et l'autorisation de traitement des données personnelles conformément au RGPD. Une fois l'inscription validée, l'utilisateur reçoit un email de confirmation pour activer son compte.
+<div style="width: 100%;">
+  <img  src="login.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 90%;display: block; margin: auto;">Les formulaires sont construits à partir d’un modèle unique qui guide l’utilisateur à chaque étape. Ils affichent des indices contextuels pour faciliter la saisie et mettent en évidence les erreurs, à la fois au niveau de chaque champ de saisie et, si nécessaire, au niveau de la section entière, comme illustré dans cette image.
+</i>
+</div>
 
 L'authentification repose sur un système dual optimisant sécurité et expérience utilisateur. La connexion initiale génère un JWT court (30 minutes) stocké en mémoire et un refresh token long (7 jours) stocké dans un cookie sécurisé. Lors des visites ultérieures, un mécanisme automatique utilise le refresh token pour régénérer transparentement les credentials, évitant à l'utilisateur de se reconnecter manuellement. Cette approche protège contre les attaques XSS tout en maintenant une session persistante et fluide.
 
-Plus de details sont detaillees dans la section Securite'
+**Gestion sécurisée des tokens de connexion** : Pour des raisons de sécurité, le token d’accès n’est pas stocké dans le localStorage ni dans le sessionStorage, afin d’éviter toute exposition aux attaques de type XSS (Cross-Site Scripting). À la place, il est conservé en mémoire active (en RAM) pendant toute la durée de la session. Ce token est volontairement de courte durée de vie : une fois expiré, il est automatiquement renouvelé grâce à un refresh token.
+
+Le refresh token, quant à lui, est stocké de manière sécurisée dans un cookie HTTP-only, configuré avec les attributs Secure, SameSite=Strict et HttpOnly. Cela permet d’éviter qu’il soit accessible depuis le JavaScript du navigateur et le protège contre les attaques de type CSRF.
+
+Ce mécanisme permet d’assurer un équilibre optimal entre sécurité et expérience utilisateur : les utilisateurs restent connectés sans avoir à ressaisir leurs identifiants trop fréquemment, tout en minimisant les risques liés à la compromission d’un token.
+
+Plus de détails techniques sur la mise en place de ce système sont présentés dans la section Sécurité du dossier.
 
 ### 2. Réservation de créneaux disponibles
 
 Le système de réservation s'appuie sur un calendrier interactif FullCalendar offrant trois vues (jour, semaine, mois) pour optimiser la visualisation selon les préférences utilisateur. Les créneaux disponibles apparaissent en temps réel avec leurs tarifs respectifs et d'éventuelles promotions. L'élève sélectionne un ou plusieurs créneaux consécutifs, déclenchant une pré-réservation temporaire de 15 minutes. Durant cette période critique, les créneaux choisis disparaissent de la disponibilité publique, évitant les conflits de réservation. 
 
+<div style="width: 100%; margin-bottom: 8px;">
+  <img  src="book.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i>Le modal de réservation permet de saisir un titre pour le problème, de choisir une catégorie (aide aux devoirs, préparation d’examen, etc.) et de décrire le problème en détail.</i>
+</div>
+
 Le processus intègre une validation intelligente empêchant les réservations en double, les créneaux passés ou les chevauchements. Si le paiement n'est pas finalisé dans le délai imparti, les créneaux redeviennent automatiquement disponibles et une notification de libération est diffusée. Cette mécanique garantit une gestion optimale des disponibilités sans blocages inutiles. Un changement implique une annulation immediate du checkout de paiement.
+
+
+**Échange d’informations après réservation**
+Une fois la réservation payée, l’élève peut consulter la notification associée et fournir des informations complémentaires grâce à une petite fenêtre de discussion intégrée. De son côté, le professeur peut lire ces messages et y répondre directement.
+
+<div style="width: 100%; margin-bottom: 8px;">
+  <img  src="chat.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+</div>
+
+Ce système n’a pas vocation à devenir une application de messagerie complète : il est conçu pour des échanges ponctuels et exceptionnels, par exemple pour préciser le sujet de la séance, signaler un changement de disponibilité ou permettre au professeur de laisser des commentaires et suivis après le cours.
+
+Plus de détails techniques dans la prtie paiement.
 ### 3. Paiement sécurisé
 
 L'intégration Stripe assure un processus de paiement garantissant la sécurité maximale des données bancaires. L'interface de paiement s'adapte automatiquement au montant total (créneaux + promotions/réductions), affiche un récapitulatif détaillé et propose les principales méthodes de paiement européennes.
 
 #### 3.1 Deroulement
 Une fois la commande prête, le client dispose de 15 minutes pour effectuer le paiement, avec un compte à rebours affichant le temps restant. En cliquant sur « Payer », la redirection vers l’interface Stripe s’effectue automatiquement après la création côté serveur d’un checkout valable 15 minutes. Si le délai expire, le checkout est annulé automatiquement.
+
+<div style="width: 100%;">
+  <img  src="pay.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 90%;display: block; margin: auto;">Le temps restant pour effectuer le paiement est affiché en orange afin d’attirer l’attention de l’utilisateur. Ce compte à rebours est automatiquement réinitialisé dès que la commande est modifiée (par exemple lorsqu’elle est incrémentée) ou lorsqu’un nouveau checkout est créé.
+</i>
+</div>
 
 L’interface Stripe détaille les articles à régler ainsi que le montant total. À l’issue du paiement, si la transaction est validée, le client est redirigé vers la page de confirmation. En cas d’échec, Stripe indique que le paiement n’a pas abouti.
 
@@ -215,6 +286,11 @@ Côté serveur, un webhook dédié à l'écoute des événements Stripe met à j
                                     session.PaymentIntentId
                                 );
 ```
+Suite à l’acceptation ou au refus d’un paiement, le serveur est directement informé par Stripe via un webhook. Cette approche garantit que l’information provient d’une source fiable et qu’elle ne peut pas être falsifiée par le client.
+
+Dès réception de cet événement, le serveur met à jour l’état de la commande (par exemple, marquée comme payée ou échouée) puis notifie le client en temps réel, généralement via un mécanisme comme SignalR ou WebSocket.
+
+Il est important de noter que le client ne communique jamais lui-même le résultat du paiement au serveur : cela évite toute tentative de fraude (comme le fait d’envoyer manuellement une requête prétendant qu’un paiement a été validé).
 
 ### 4. Consultation de l'historique
 
