@@ -114,4 +114,11 @@ export class LoginComponent implements OnInit {
     submit() {
         this.loginWithData(this.userForm.value as UserLoginDTO);
     }
+
+    loginAsStudent() {
+        this.loginWithData({ email: 'mahdi.mcheik@hotmail.fr', password: 'Olitec1>' } as UserLoginDTO);
+    }
+    loginAsTeacher() {
+        this.loginWithData({ email: 'professeur@skill-hive.fr', password: 'Admin123!' } as UserLoginDTO);
+    }
 }
