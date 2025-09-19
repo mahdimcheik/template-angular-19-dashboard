@@ -11,11 +11,11 @@
         </span>
     </div>
 
+    <!-- [loading]="loading" -->
     <p-table
         #dt
         [value]="reservations()"
         [rows]="rows"
-        [loading]="loading"
         [totalRecords]="totalRecords()"
         [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]"
@@ -62,7 +62,7 @@
                 </td>
             </tr>
         </ng-template>
-        <ng-template pTemplate="loadingbody">
+        <!-- <ng-template pTemplate="loadingbody">
             <tr>
                 <td colspan="8" class="text-center p-4">
                     <div class="flex flex-col items-center justify-center">
@@ -71,7 +71,7 @@
                     </div>
                 </td>
             </tr>
-        </ng-template>
+        </ng-template> -->
     </p-table>
     <div class="card w-full !mb-2">
         <p-paginator

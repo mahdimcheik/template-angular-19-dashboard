@@ -172,7 +172,9 @@ export class ModalEditPersonnalInfosComponent {
                             cancelLabel: 'Annuler',
                             emptyMessage: 'Glissez et déposez votre image ici',
                             order: 1,
-                            fullWidth: true
+                            showUploadButton: false,
+                            fullWidth: true,
+                            url: (this.user()?.imgUrl ? this.user()?.imgUrl : undefined) ?? undefined
                         }
                     ]
                 },

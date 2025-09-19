@@ -19,14 +19,14 @@ import { FileUploadModule } from 'primeng/fileupload';
             [id]="id"
             [name]="name"
             [chooseLabel]="chooseLabel"
-            [cancelLabel]="cancelLabel"
+            [showUploadButton]="showUploadButton"
             [uploadLabel]="uploadLabel"
+            [cancelLabel]="cancelLabel"
             [multiple]="multiple"
             [accept]="accept"
             [maxFileSize]="maxFileSize"
             [mode]="mode"
             [url]="url"
-            [showUploadButton]="showUploadButton"
             [showCancelButton]="showCancelButton"
             [auto]="auto"
             [disabled]="disabled()"
@@ -38,8 +38,16 @@ import { FileUploadModule } from 'primeng/fileupload';
             [class.p-invalid]="invalid"
         >
             <ng-template #empty>
-                <div class="text-center p-4 text-gray-500">
-                    {{ emptyMessage }}
+                <div class="text-center p-4 text-gray-500 flex flex-row items-center justify-center rounded border border-dashed border-gray-300 p-4">
+                    <span class="flex-1  text-center flex items-center justify-center ">
+                        {{ emptyMessage }}
+                    </span>
+                    @if (url) {
+                        <div class="flex flex-col items-center ml-4 flex-1 justify-center">
+                            <span>Votre avatar</span>
+                            <img src="{{ url }}" alt="" class=" mx-auto mt-2 max-h-24 object-contain border rounded-2" />
+                        </div>
+                    }
                 </div>
             </ng-template>
             <ng-template #content>
@@ -76,7 +84,7 @@ export class CustomUploadFileComponent implements ControlValueAccessor, OnInit {
     @Input() emptyMessage: string = 'Sélectionnez et glissez vos fichiers ici';
     @Input() mode: 'basic' | 'advanced' = 'advanced';
     @Input() url: string = '';
-    @Input() showUploadButton: boolean = true;
+    @Input() showUploadButton: boolean = false;
     @Input() showCancelButton: boolean = true;
     @Input() auto: boolean = false;
     @Input() invalid: boolean = false;
