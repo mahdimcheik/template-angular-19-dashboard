@@ -5,5 +5,6 @@ export const environment = {
     // BACK_URL: 'https://api-test.skill-hive.fr',
 
     // BACK_URL: 'https://192.168.1.19:7113',
-    TEACHER_ID: '1'
+    TEACHER_ID: '1',
+    showTestCode: true
 };

@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 import { Structure } from '../../../../generic-components/configurable-form/related-models';
 import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
     selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private messageService = inject(MessageService);
     router = inject(Router);
     badCredentials = false;
+    showTestCode = environment.showTestCode;
     ngOnInit(): void {}
 
     userForm = new FormGroup({
