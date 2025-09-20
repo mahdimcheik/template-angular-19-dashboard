@@ -1075,6 +1075,157 @@ Plusieurs assertions sont ensuite effectuées pour garantir que :
 
 ---
 
+
+## 9. Documentation
+
+La documentation de l'API constitue un pilier fondamental du projet, garantissant la maintenabilité, la facilité d'intégration et la collaboration efficace entre les équipes de développement. Notre approche de documentation s'appuie sur des standards modernes et des outils automatisés pour assurer une cohérence parfaite entre le code source et la documentation technique.
+
+### 9.1 Architecture de documentation automatisée
+
+L'architecture de documentation repose sur une génération automatique à partir du code source, éliminant les risques de désynchronisation entre l'implémentation et la documentation. Cette approche garantit que chaque modification du code est immédiatement reflétée dans la documentation, maintenant ainsi une fiabilité constante des informations techniques.
+
+Le processus de génération utilise les commentaires XML intégrés directement dans le code source .NET, qui sont ensuite traités par Swagger/OpenAPI pour produire une documentation interactive et navigable. Cette méthode présente l'avantage de centraliser la maintenance de la documentation au niveau du code, réduisant considérablement les efforts de synchronisation et minimisant les erreurs humaines.
+
+### 9.2 Technologies et outils utilisés
+
+#### Swashbuckle.AspNetCore
+Swashbuckle.AspNetCore (v6.9.0) constitue la pierre angulaire de notre système de documentation. Cette bibliothèque .NET transforme automatiquement les contrôleurs, modèles et commentaires XML en spécification OpenAPI 3.0, créant une documentation standardisée et interopérable. L'intégration native avec ASP.NET Core permet une configuration transparente et une génération automatique lors du démarrage de l'application.
+
+La configuration de Swashbuckle inclut la prise en charge complète des schémas de sécurité JWT, des types de données complexes, et de la validation des modèles. Cette configuration assure que tous les aspects de l'API sont correctement documentés, depuis les endpoints publics jusqu'aux mécanismes d'authentification les plus sophistiqués.
+
+#### Commentaires XML (.NET)
+Les commentaires XML constituent le socle de notre documentation technique. Chaque contrôleur, action, modèle et propriété est documenté selon la syntaxe XML standard de .NET, permettant une intégration native avec l'environnement de développement et les outils de génération de documentation.
+
+```xml
+/// <summary>
+/// Authentifie un utilisateur et génère un JWT avec refresh token
+/// </summary>
+/// <param name="userLoginDTO">Informations de connexion de l'utilisateur</param>
+/// <returns>Token JWT et informations utilisateur si succès</returns>
+/// <response code="200">Connexion réussie</response>
+/// <response code="401">Identifiants incorrects</response>
+/// <response code="404">Utilisateur inexistant</response>
+[HttpPost("login")]
+[ProducesResponseType(typeof(ResponseDTO<LoginOutputDTO>), 200)]
+[ProducesResponseType(typeof(ResponseDTO<object>), 401)]
+[ProducesResponseType(typeof(ResponseDTO<object>), 404)]
+public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginDTO)
+```
+
+Cette approche garantit que chaque endpoint dispose d'une documentation complète incluant la description fonctionnelle, les paramètres d'entrée, les types de retour, et les codes de statut HTTP possibles avec leurs significations respectives.
+
+#### Interface Swagger UI
+L'interface Swagger UI offre une expérience interactive pour explorer et tester l'API directement depuis le navigateur. Cette interface auto-générée présente l'ensemble des endpoints organisés par contrôleurs, avec la possibilité d'exécuter des requêtes en temps réel et de visualiser les réponses correspondantes.
+
+L'interface inclut des fonctionnalités avancées telles que l'authentification JWT intégrée, permettant aux développeurs de tester les endpoints sécurisés directement depuis l'interface de documentation. Cette capacité de test intégré accélère significativement le processus de développement et de debugging.
+
+### 9.3 Processus de documentation des endpoints
+
+#### Documentation des contrôleurs
+Chaque contrôleur est documenté avec une description générale de ses fonctionnalités et de son domaine métier. Les tags Swagger permettent de regrouper logiquement les endpoints par domaine fonctionnel, facilitant la navigation dans une API comprenant de nombreux services.
+
+```csharp
+/// <summary>
+/// Contrôleur de gestion de l'authentification et des utilisateurs
+/// </summary>
+[ApiController]
+[Route("api/[controller]")]
+[Tags("Authentication")]
+public class UsersController : ControllerBase
+```
+
+#### Documentation des modèles de données
+Les DTOs (Data Transfer Objects) et modèles de domaine sont exhaustivement documentés, incluant la description de chaque propriété, les contraintes de validation, et les exemples de valeurs. Cette documentation détaillée facilite l'intégration frontend et la compréhension des structures de données.
+
+```csharp
+/// <summary>
+/// Modèle de données pour la connexion utilisateur
+/// </summary>
+public class UserLoginDTO
+{
+    /// <summary>
+    /// Adresse email de l'utilisateur (format email valide requis)
+    /// </summary>
+    /// <example>utilisateur@exemple.com</example>
+    [Required(ErrorMessage = "L'email est requis")]
+    [EmailAddress(ErrorMessage = "Format d'email invalide")]
+    public string Email { get; set; }
+
+    /// <summary>
+    /// Mot de passe (minimum 8 caractères avec majuscules, minuscules, chiffres)
+    /// </summary>
+    /// <example>MonMotDePasse123!</example>
+    [Required(ErrorMessage = "Le mot de passe est requis")]
+    [MinLength(8, ErrorMessage = "Le mot de passe doit contenir au moins 8 caractères")]
+    public string Password { get; set; }
+}
+```
+
+### 9.4 Gestion des schémas de sécurité
+
+La documentation Swagger intègre complètement le système de sécurité JWT de l'application. La configuration inclut la définition des schémas de sécurité Bearer Token, permettant aux utilisateurs de l'interface Swagger de s'authentifier et de tester les endpoints protégés.
+
+```csharp
+services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+```
+
+Cette configuration permet à Swagger de reconnaître automatiquement les endpoints nécessitant une authentification et d'afficher les contrôles appropriés dans l'interface utilisateur.
+
+### 9.5 Génération automatique du client TypeScript
+
+Un aspect particulièrement innovant de notre approche documentation concerne la génération automatique du client TypeScript pour le frontend Angular. Utilisant openapi-typescript-codegen, la spécification OpenAPI générée par Swagger sert de base pour créer automatiquement l'ensemble des services, modèles et types TypeScript correspondant exactement aux endpoints de l'API.
+
+Ce processus de génération automatique présente plusieurs avantages majeurs : la synchronisation parfaite entre backend et frontend élimine les erreurs de typage, la productivité de développement est considérablement accélérée par l'auto-complétion native, et la maintenance est simplifiée car toute modification de l'API se répercute automatiquement dans le client TypeScript.
+
+```bash
+npx openapi-typescript-codegen --input http://localhost:5000/swagger/v1/swagger.json --output ./src/app/api --client angular
+```
+
+### 9.6 Bonnes pratiques et standards adoptés
+
+#### Conventions de nommage
+Les conventions de nommage suivent les standards .NET et OpenAPI, garantissant une cohérence dans toute la documentation. Les endpoints utilisent des verbes HTTP appropriés, les modèles suivent la nomenclature Pascal Case, et les paramètres respectent la convention camelCase pour assurer une intégration fluide avec les clients JavaScript/TypeScript.
+
+#### Gestion des versions
+La documentation Swagger intègre la gestion des versions de l'API, permettant de maintenir plusieurs versions en parallèle lors des évolutions majeures. Cette approche assure la compatibilité avec les clients existants tout en permettant l'innovation continue.
+
+#### Exemples et cas d'usage
+Chaque endpoint est accompagné d'exemples concrets d'utilisation, incluant des exemples de requêtes et de réponses typiques. Ces exemples facilitent considérablement l'adoption de l'API par les développeurs externes et réduisent le temps d'intégration.
+
+### 9.7 Déploiement et accessibilité de la documentation
+
+La documentation Swagger est automatiquement déployée avec l'application et accessible via l'endpoint `/swagger` en environnement de développement et de test. Cette accessibilité garantit que les équipes de développement disposent toujours de la documentation la plus récente et peuvent tester les endpoints en temps réel.
+
+En production, l'accès à la documentation peut être restreint pour des raisons de sécurité, mais reste disponible pour les équipes autorisées via des mécanismes d'authentification appropriés. Cette approche balance parfaitement les besoins de collaboration et les exigences de sécurité.
+
+L'ensemble de cette infrastructure de documentation constitue un avantage concurrentiel significatif, facilitant l'onboarding des nouveaux développeurs, accélérant les intégrations, et maintenant une qualité de code élevée grâce à la synchronisation automatique entre implémentation et documentation.
+
+
 ## 10. Maintenance et évolutivité
 - Correctifs de bugs.
 - Ajout futur de nouvelles fonctionnalités.
