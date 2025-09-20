@@ -1097,22 +1097,24 @@ La configuration de Swashbuckle inclut la prise en charge complète des schémas
 Les commentaires XML constituent le socle de notre documentation technique. Chaque contrôleur, action, modèle et propriété est documenté selon la syntaxe XML standard de .NET, permettant une intégration native avec l'environnement de développement et les outils de génération de documentation.
 
 ```xml
-/// <summary>
-/// Authentifie un utilisateur et génère un JWT avec refresh token
-/// </summary>
-/// <param name="userLoginDTO">Informations de connexion de l'utilisateur</param>
-/// <returns>Token JWT et informations utilisateur si succès</returns>
-/// <response code="200">Connexion réussie</response>
-/// <response code="401">Identifiants incorrects</response>
-/// <response code="404">Utilisateur inexistant</response>
-[HttpPost("login")]
-[ProducesResponseType(typeof(ResponseDTO<LoginOutputDTO>), 200)]
-[ProducesResponseType(typeof(ResponseDTO<object>), 401)]
-[ProducesResponseType(typeof(ResponseDTO<object>), 404)]
-public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginDTO)
+            /// <summary>
+        /// Connecte un utilisateur.
+        /// </summary>
+        /// <param name="model">Données de connexion de l'utilisateur.</param>
+        /// <returns>Résultat de l'opération.</returns>
+        [AllowAnonymous]
+        [Route("login")]
+        [HttpPost]
 ```
 
 Cette approche garantit que chaque endpoint dispose d'une documentation complète incluant la description fonctionnelle, les paramètres d'entrée, les types de retour, et les codes de statut HTTP possibles avec leurs significations respectives.
+
+<div style="width: 100%;">
+  <img  src="doc.png"  width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 90%;display: block; margin: auto;">
+Un exempled d'endpoint qui permet de modifier le statut d’une notification (lue ou non lue). Deux paramètres d’entrée (via FromRoute) sont obligatoires : l’ID de la notification et la nouvelle valeur de type booléen. Et en vert, un exemple de retour.
+</i>
+</div>
 
 #### Interface Swagger UI
 L'interface Swagger UI offre une expérience interactive pour explorer et tester l'API directement depuis le navigateur. Cette interface auto-générée présente l'ensemble des endpoints organisés par contrôleurs, avec la possibilité d'exécuter des requêtes en temps réel et de visualiser les réponses correspondantes.
@@ -1125,13 +1127,17 @@ L'interface inclut des fonctionnalités avancées telles que l'authentification 
 Chaque contrôleur est documenté avec une description générale de ses fonctionnalités et de son domaine métier. Les tags Swagger permettent de regrouper logiquement les endpoints par domaine fonctionnel, facilitant la navigation dans une API comprenant de nombreux services.
 
 ```csharp
-/// <summary>
-/// Contrôleur de gestion de l'authentification et des utilisateurs
-/// </summary>
-[ApiController]
-[Route("api/[controller]")]
-[Tags("Authentication")]
-public class UsersController : ControllerBase
+
+    /// <summary>
+    /// Contrôleur pour gérer les utilisateurs.
+    /// </summary>
+    [Route("[controller]")]
+    [Authorize]
+    [ApiController]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    public class UsersController : ControllerBase
+    ....
 ```
 
 #### Documentation des modèles de données
@@ -1149,15 +1155,8 @@ public class UserLoginDTO
     /// <example>utilisateur@exemple.com</example>
     [Required(ErrorMessage = "L'email est requis")]
     [EmailAddress(ErrorMessage = "Format d'email invalide")]
-    public string Email { get; set; }
-
-    /// <summary>
-    /// Mot de passe (minimum 8 caractères avec majuscules, minuscules, chiffres)
-    /// </summary>
-    /// <example>MonMotDePasse123!</example>
-    [Required(ErrorMessage = "Le mot de passe est requis")]
-    [MinLength(8, ErrorMessage = "Le mot de passe doit contenir au moins 8 caractères")]
-    public string Password { get; set; }
+    public string Email { get; set; }\
+    ...
 }
 ```
 
@@ -1203,28 +1202,25 @@ Un aspect particulièrement innovant de notre approche documentation concerne la
 Ce processus de génération automatique présente plusieurs avantages majeurs : la synchronisation parfaite entre backend et frontend élimine les erreurs de typage, la productivité de développement est considérablement accélérée par l'auto-complétion native, et la maintenance est simplifiée car toute modification de l'API se répercute automatiquement dans le client TypeScript.
 
 ```bash
-npx openapi-typescript-codegen --input http://localhost:5000/swagger/v1/swagger.json --output ./src/app/api --client angular
+npx openapi-typescript-codegen --input http://localhost:7113/swagger/v1/swagger.json --output ./src/app/api --client angular
 ```
-
-### 9.6 Bonnes pratiques et standards adoptés
-
-#### Conventions de nommage
-Les conventions de nommage suivent les standards .NET et OpenAPI, garantissant une cohérence dans toute la documentation. Les endpoints utilisent des verbes HTTP appropriés, les modèles suivent la nomenclature Pascal Case, et les paramètres respectent la convention camelCase pour assurer une intégration fluide avec les clients JavaScript/TypeScript.
-
-#### Gestion des versions
-La documentation Swagger intègre la gestion des versions de l'API, permettant de maintenir plusieurs versions en parallèle lors des évolutions majeures. Cette approche assure la compatibilité avec les clients existants tout en permettant l'innovation continue.
-
-#### Exemples et cas d'usage
-Chaque endpoint est accompagné d'exemples concrets d'utilisation, incluant des exemples de requêtes et de réponses typiques. Ces exemples facilitent considérablement l'adoption de l'API par les développeurs externes et réduisent le temps d'intégration.
-
-### 9.7 Déploiement et accessibilité de la documentation
+### 9.6 Déploiement et accessibilité de la documentation
 
 La documentation Swagger est automatiquement déployée avec l'application et accessible via l'endpoint `/swagger` en environnement de développement et de test. Cette accessibilité garantit que les équipes de développement disposent toujours de la documentation la plus récente et peuvent tester les endpoints en temps réel.
 
-En production, l'accès à la documentation peut être restreint pour des raisons de sécurité, mais reste disponible pour les équipes autorisées via des mécanismes d'authentification appropriés. Cette approche balance parfaitement les besoins de collaboration et les exigences de sécurité.
+En production, l'accès à la documentation peut être restreint pour des raisons de sécurité.
 
-L'ensemble de cette infrastructure de documentation constitue un avantage concurrentiel significatif, facilitant l'onboarding des nouveaux développeurs, accélérant les intégrations, et maintenant une qualité de code élevée grâce à la synchronisation automatique entre implémentation et documentation.
-
+```csharp
+ app.UseSwagger();
+ if (!app.Environment.IsProduction())
+ {
+     app.UseSwaggerUI(c =>
+     {
+         c.SwaggerEndpoint("/swagger/v1/swagger.json", "data_lib v1");
+         c.RoutePrefix = "swagger";
+     });
+ }
+```
 
 ## 10. Maintenance et évolutivité
 - Correctifs de bugs.
