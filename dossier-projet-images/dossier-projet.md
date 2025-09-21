@@ -72,11 +72,22 @@ La page d’accueil, accessible à tous, présente brièvement le principe de fo
 #### Espace utilisateur (Dashboard)
 Une fois connecté, l’eleve accède au tableau de bord. Par défaut, le menu principal est affiché à gauche et permet de naviguer entre les différentes sections.
 
-1.  Gestion des informations personnelles.
+1.  Notifications/Activités
+1.  Calendrier interactif
 2.  Historique des réservations.
 3.  Communication avec le professeur.
-4.  Calendrier interactif
 5.  Commandes et paiement
+6.  Gestion des informations personnelles.
+
+##### Notifications
+Page par défaut du dashboard : Notifications
+La page de notifications est la page d’accueil du dashboard, permettant à l’utilisateur de voir en un coup d’œil l’activité récente. Elle présente :
+
+* Toutes les notifications, classées par ordre chronologique afin de ne manquer aucun événement important.
+
+* Un système de filtrage permettant de distinguer rapidement les notifications vues de celles non vues.
+
+* Un résumé synthétique de l’activité hebdomadaire, offrant une vision d’ensemble sur les événements récents (paiements, réservations, modifications de créneaux…).
 
 ##### Le calendrier interactif
 
@@ -91,7 +102,7 @@ Un onglet dédié permet de consulter :
 *   Les réservations à venir.
 *   Les réservations passées.
 
-##### Profil élève
+##### Profil élève/Professeur
 L’onglet Profil regroupe :
 *   Les informations personnelles (nom, prénom, coordonnées…).
 *   Les informations de formation (utiles au professeur pour préparer les cours).
@@ -107,36 +118,6 @@ L’onglet Contact permet d’envoyer un message directement au professeur pour 
 *   Poser une question.
 *   Obtenir des renseignements divers.
 
-##### Notifications
-Page par défaut du dashboard : Notifications
-La page de notifications est la page d’accueil du dashboard, permettant à l’utilisateur de voir en un coup d’œil l’activité récente. Elle présente :
-
-* Toutes les notifications, classées par ordre chronologique afin de ne manquer aucun événement important.
-
-* Un système de filtrage permettant de distinguer rapidement les notifications vues de celles non vues.
-
-* Un résumé synthétique de l’activité hebdomadaire, offrant une vision d’ensemble sur les événements récents (paiements, réservations, modifications de créneaux…).
-
-<div style="width: 100%; margin-bottom: 8px;">
-  <img  src="notif.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
-  <i>En en-tête de la page, un petit résumé de l’activité hebdomadaire permet d’avoir une vue d’ensemble des événements récents (créneaux créés, réservations, paiements, etc.). Les notifications détaillées sont affichées en bas de la page, sous forme de liste paginée. L’utilisateur dispose également d’un système de filtrage pour afficher uniquement les notifications vues ou non vues.</i>
-</div>
-
-
-**Notifications en temps réel avec SignalR**
-Pour offrir une expérience utilisateur fluide et réactive, le système de notifications utilise SignalR, la bibliothèque temps réel de .NET. Grâce à cette technologie, les notifications sont transmises instantanément depuis le serveur vers le client, sans que ce dernier ait besoin d’actualiser la page.
-
-Ce mécanisme permet au professeur et aux élèves d’être informés en direct des événements importants, comme :
-
-* La création ou la modification d’un créneau.
-
-* La confirmation de la réservation.
-
-* L’arrivée d’un nouveau message ou d’une nouvelle réservation.
-
-* La mise a jour du profil.
-
-L’utilisation de SignalR garantit donc un flux d’informations en temps réel, améliorant la réactivité de l’application et réduisant les risques de décalage entre l’état du serveur et ce que l’utilisateur voit à l’écran.
 
 ##### Onglet Utilisateurs (professeur)
 Fonctionnalités administratives pour le professeur
@@ -182,6 +163,8 @@ Pour plus de confort, j'ai mis en place deux modes d’affichage :
 5. Messagerie.
 6. Gestion des tarifs et disponibilités.
 7. Facturation
+8. Notification/signalR
+
 
 ### 1. Inscription et authentification
 
@@ -201,6 +184,7 @@ Le refresh token, quant à lui, est stocké de manière sécurisée dans un cook
 Ce mécanisme permet d’assurer un équilibre optimal entre sécurité et expérience utilisateur : les utilisateurs restent connectés sans avoir à ressaisir leurs identifiants trop fréquemment, tout en minimisant les risques liés à la compromission d’un token.
 
 Plus de détails techniques sur la mise en place de ce système sont présentés dans la section Sécurité du dossier.
+Plus de détails techniques sur le profil dans le RGPD.
 
 ### 2. Réservation de créneaux disponibles
 
@@ -388,7 +372,37 @@ Ce fonctionnement permet de garantir un système à la fois rapide, économique 
   <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Exemple de facture générée automatiquement avec QuestPDF, conforme aux obligations légales (numérotation séquentielle et TVA).</i>
 </div>
 
-### 8. Profil 
+
+### 8. Notifications
+La page Notifications constitue l’accueil du dashboard. Elle offre à l’utilisateur une vue immédiate sur l’activité récente et met en avant :
+
+L’ensemble des notifications, organisées par ordre chronologique pour garantir qu’aucun événement important ne soit manqué.
+
+Un système de filtrage permettant de différencier facilement les notifications déjà consultées de celles encore non lues.
+
+Un récapitulatif hebdomadaire clair et concis, donnant une vision globale des événements récents (paiements, réservations, modifications de créneaux, etc.).
+
+<div style="width: 100%; margin-bottom: 8px;">
+  <img  src="notif.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i>En en-tête de la page, un petit résumé de l’activité hebdomadaire permet d’avoir une vue d’ensemble des événements récents (créneaux créés, réservations, paiements, etc.). Les notifications détaillées sont affichées en bas de la page, sous forme de liste paginée. L’utilisateur dispose également d’un système de filtrage pour afficher uniquement les notifications vues ou non vues.</i>
+</div>
+
+
+**Notifications en temps réel avec SignalR**
+Pour offrir une expérience utilisateur fluide et réactive, le système de notifications utilise SignalR, la bibliothèque temps réel de .NET. Grâce à cette technologie, les notifications sont transmises instantanément depuis le serveur vers le client, sans que ce dernier ait besoin d’actualiser la page.
+
+Ce mécanisme permet au professeur et aux élèves d’être informés en direct des événements importants, comme :
+
+* La création ou la modification d’un créneau.
+
+* La confirmation de la réservation.
+
+* L’arrivée d’un nouveau message ou d’une nouvelle réservation.
+
+* La mise a jour du profil.
+
+L’utilisation de SignalR garantit donc un flux d’informations en temps réel, améliorant la réactivité de l’application et réduisant les risques de décalage entre l’état du serveur et ce que l’utilisateur voit à l’écran.
+
 
 La gestion du profil constitue l'une des fonctionnalités centrales de l'application, offrant aux utilisateurs un espace personnel complet et modulaire. Cette section permet une personnalisation approfondie des informations utilisateur tout en facilitant les interactions pédagogiques entre professeurs et élèves.
 
@@ -508,11 +522,9 @@ L'application s'appuie sur un ensemble de librairies spécialisées pour offrir 
 
 **Swashbuckle.AspNetCore (v6.9.0)** : Génération automatique de la documentation API OpenAPI/Swagger facilitant l'intégration frontend et les tests.
 
-**PuppeteerSharp (v20.1.3)** : Génération de PDF (factures, récapitulatifs) via contrôle programmatique de navigateur Chrome.
+**QuestPdf** : Génération de PDF (factures).
 
-**RazorLight (v2.3.1)** : Moteur de templates pour la génération d'emails HTML et de documents dynamiques.
-
-**Bogus (v35.6.1)** : Générateur de données de test facilitant le développement et les tests avec des jeux de données réalistes.
+**Bogus (v35.6.1)** : Générateur de données de test facilitant le développement et les tests de charge avec des jeux de données réalistes.
 
 #### Base de données : PostgreSQL 15
 PostgreSQL a été retenu pour ses performances, sa fiabilité et ses fonctionnalités avancées (JSONB, indexation sophistiquée, contraintes complexes). Sa compatibilité native avec .NET via Npgsql garantit une intégration optimale.
