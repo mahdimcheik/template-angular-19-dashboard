@@ -42,8 +42,25 @@ Il est donc nécessaire de mettre en place une application centralisée, offrant
 L’application se présente sous la forme d’un site web ergonomique et intuitif, composé d’une page d’accueil (landing page), d’un profil public du professeur, et d’un espace utilisateur sécurisé appelé dashboard, qui regroupe l’ensemble des fonctionnalités interactives.
 
 <div style="width: 100%;">
-  <img  src="presentationSite.svg" alt="Interface de messagerie Trevo" width="6500" height="300" style="display: block; margin: auto;"/>
-  <i  style="width: 450px;display: block; margin: auto;">Plusieurs catégories de demandes prédéfinies avec possibilité de recevoir une copie par email</i>
+  <img  src="illustration-generale.png" alt="Interface de messagerie Trevo" width="6500" height="300" style="display: block; margin: auto;"/>
+<i style="width: 100%; display: block; margin: auto; padding-left: 8px;">
+  En fonction de son rôle, l’utilisateur peut accéder à des fonctionnalités différentes.
+
+  En tant que professeur / admin :
+  <ul>
+    <li>Créer, consulter, supprimer ou éditer des créneaux</li>
+    <li>Consulter la liste des élèves et leurs profils</li>
+    <li>Consulter les réservations ou communiquer avec les élèves</li>
+  </ul>
+
+  En tant qu’élève :
+  <ul>
+    <li>Réserver et payer un créneau</li>
+    <li>Consulter les réservations et commandes</li>
+    <li>Communiquer avec les professeurs ou laisser des notes</li>
+    <li>Envoyer des mails, suggestions ou réclamations</li>
+  </ul>
+</i>
 </div>
 
 #### Page d’accueil (Landing page)
@@ -948,7 +965,7 @@ L'assurance qualité de l'application repose sur une stratégie de test complèt
 
 L'API .NET a fait l'objet d'une couverture indispensable par des tests unitaires. Cette stratégie de test cible les composants critiques de l'application pour assurer leur bon fonctionnement dans différents scénarios d'utilisation. L'AuthService bénéficie d'une validation complète du système d'authentification incluant la génération et validation des JWT, la gestion des refresh tokens, le processus de connexion/déconnexion, et la vérification des politiques de sécurité. Les tests couvrent notamment les cas d'échec (tokens expirés, identifiants incorrects) et les scénarios de sécurité (tentatives de brute force, tokens malformés). Le NotificationsService fait l'objet d'une vérification du système de notifications temps réel avec tests de création, envoi, marquage comme lue, et suppression des notifications. Les tests valident également le filtrage par utilisateur, la pagination des résultats, et l'intégration avec SignalR pour les notifications en temps réel.
 
-### 8.2 Tests d'intégration
+### 8.2 Tests unitaires
 Les tests unitaires suivent les meilleures pratiques du framework xUnit pour .NET avec une isolation complète utilisant des mocks et stubs pour isoler les unités testées de leurs dépendances, une couverture qui cible des cas nominaux, cas d'erreur, et cas limites, une convention de nommage claire décrivant le scénario testé et le résultat attendu. EntityFrameworkCore.
 
 Techno : **XUnit**, **Moq** et **InMemory(entity Framework)**
@@ -1066,15 +1083,6 @@ Plusieurs assertions sont ensuite effectuées pour garantir que :
 * l’objet User retourné n’est pas nul,
 
 * et que l’email de l’utilisateur retourné correspond bien à celui utilisé pour la connexion.
-
-### 8.3 Tests end-to-end
-*À développer*
-
-### 8.4 Validation fonctionnelle
-*À développer*sseur, également administrateur de la plateforme, de gérer son planning, ses tarifs, les inscriptions et la communication avec ses élèves à partir d’un espace unique.
-
----
-
 
 ## 9. Documentation
 
