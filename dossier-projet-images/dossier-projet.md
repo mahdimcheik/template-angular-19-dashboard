@@ -643,35 +643,6 @@ Les entités liées à la logique de réservation sont illustrées dans le diagr
 **ORDER (Commande)** : Regroupe une ou plusieurs réservations pour le processus de paiement. Gère le cycle de vie commercial avec statuts, méthodes de paiement et TVA.
 
 **CURSUS** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
-
-
-#### Spécifications Techniques
-
-**Système d'Authentification** : Utilisation d'ASP.NET Core Identity avec tables `AspNetUsers`, `AspNetRoles` et `AspNetUserRoles` pour la gestion des utilisateurs et des autorisations.
-
-**Types de Données** :
-
-- `uuid` : Identifiants uniques pour les entités métier
-- `timestamptz` : Horodatage avec fuseau horaire pour PostgreSQL
-- `decimal(18,2)` : Précision monétaire pour les prix et taux
-- `jsonb` : Stockage JSON binaire pour les communications chat
-- `text` : Texte de longueur variable pour les descriptions
-
-**Contraintes d'Intégrité** :
-
-- Clés étrangères avec actions de suppression configurées (`CASCADE`, `RESTRICT`, `SET NULL`)
-- Contraintes de longueur sur les champs texte
-- Valeurs par défaut pour les champs optionnels
-- Index sur les clés étrangères pour optimiser les performances
-
-**Particularités du Modèle** :
-
-- Relation 1:1 entre `Slot` et `Booking` (un créneau ne peut être réservé qu'une fois)
-- Relation N:M entre `User` et `Role` via la table de liaison `AspNetUserRoles`
-- Système de notifications polymorphe pouvant référencer différents types d'entités
-- Gestion des adresses multiples par utilisateur avec typage (domicile, travail, facturation)
-- Système de réductions et calculs de prix avec propriétés calculées
-
 ---
 
 ## 6. Sécurité
@@ -780,7 +751,6 @@ Le déploiement de l'application suit une approche moderne basée sur la contene
 - **Serveur** : VPS Ubuntu 24.04 LTS chez Hostinger
 - **Orchestration** : Docker Compose pour la gestion des conteneurs
 - **Reverse Proxy** : Nginx Proxy Manager pour la gestion des domaines et certificats SSL
-- **Monitoring** : Logs centralisés et surveillance des performances
 
 ### 7.2 Architecture de déploiement sur VPS
 
@@ -831,9 +801,7 @@ COPY . .
 RUN npm run build:prod
 
 # Stage de test
-FROM build AS testing
-COPY . .
-RUN npm run build:test
+...
 
 # Runtime de production
 FROM nginx:alpine as prod-runtime
@@ -843,18 +811,10 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 # Runtime de test
-FROM nginx:alpine as test-runtime
-COPY --from=testing /app/dist/skill-hive/browser /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+...
 ```
 
-**Avantages de cette approche :**
-- **Optimisation de taille** : Les images finales ne contiennent que le strict nécessaire (nginx + fichiers statiques)
-- **Séparation des environnements** : Builds distincts pour production et test avec configurations appropriées
-- **Sécurité renforcée** : Images basées sur Alpine Linux (surface d'attaque minimale)
-- **Performance** : Nginx optimisé pour le serving de fichiers statiques
+Cette approche présente plusieurs avantages. Elle permet d’abord une optimisation de la taille des images, qui ne contiennent que les éléments indispensables : Nginx et les fichiers statiques. Elle garantit également une séparation claire des environnements, avec des builds distincts pour la production et les tests, chacun bénéficiant de configurations adaptées. Sur le plan de la sécurité, les images s’appuient sur Alpine Linux, réduisant ainsi la surface d’attaque au minimum. Enfin, l’utilisation de Nginx assure des performances élevées pour la diffusion rapide et efficace des fichiers statiques.
 
 ### 7.4 Intégration continue avec GitHub Actions
 
@@ -864,35 +824,21 @@ Le fichier `.github/workflows/cd.yml` orchestre le processus de déploiement con
 
 ```yaml
 name: CD Pipeline for Angular Project
-
-on:
-  push:
-    branches:
-      - main
-
+...
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  ...
     steps:
       - name: Set version
         id: set_version
         run: echo "FRONT_IMAGE_VERSION=prod" >> $GITHUB_ENV
-
-      - name: Checkout the branch
-        uses: actions/checkout@v4
-
+      ... # checkout
       - name: Login to docker hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      - name: Build the docker image
-        run: docker build --target prod-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }} .
-
-      - name: Push the docker image to the docker hub
-        run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
-
+        ... # build image docker
+        ... # Push sur docker hub
       - name: Deploy on VPS via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -908,7 +854,7 @@ jobs:
 ### 7.5 Processus de déploiement détaillé
 
 #### Étape 1 : Déclenchement automatique
-Le déploiement s'active automatiquement lors d'un push sur la branche `main` ou `test`, garantissant une mise en production immédiate des changements validés. En fonction de la branche, une serie différente des instructions sera executée.
+Le déploiement s'active automatiquement lors d'un push sur la branche `main` ou `test` ou apres les tests de CI, garantissant une mise en production immédiate des changements validés. En fonction de la branche, une serie différente des instructions sera executée.
 
 #### Étape 2 : Gestion des versions
 ```bash
@@ -934,9 +880,7 @@ COPY --from=production /app/dist/skill-hive/browser /usr/share/nginx/html` le pr
                             ...
                         },
 ```
-un traitement similair est reserve au testing.
-
-Par rapport au backend, les varaibles et secrets sont fournis  graces aux fichiers .env separes.
+Un traitement similaire est appliqué au profil de test, afin de garantir une cohérence avec l’environnement de production tout en conservant ses spécificités. Du côté du backend, les variables et secrets nécessaires au fonctionnement de l’application sont fournis via des fichiers .env distincts, permettant ainsi une gestion claire et sécurisée des configurations selon l’environnement ciblé.
 
 #### Étape 4 : Publication sur Docker Hub
 ```bash
@@ -970,7 +914,6 @@ Cette architecture de déploiement offre une solution scalable et sécurisée, p
 ## 8. Tests et assurance qualité
 - Tests unitaires.
 - Tests d’intégration.
-- Tests end-to-end.
 - Tests de charge.
 
 L'assurance qualité de l'application repose sur une stratégie de test complète et rigoureuse, couvrant l'ensemble des couches applicatives depuis les services métier jusqu'à l'expérience utilisateur finale. Cette approche multicouche garantit la fiabilité, la performance et la conformité fonctionnelle de l'application.
@@ -1038,6 +981,29 @@ L'infrastructure de test s'appuie sur un ensemble d'outils robustes :
 
 ### 8.2 Tests d'Intégration
 Les tests d'intégration de notre API servent a mettre réellement notre application à l'épreuve dans des conditions quasi-réelles. Contrairement aux tests unitaires qui isolent chaque composant comme dans un laboratoire stérilisé, nos tests d'intégration imitent la complexité du monde réel en faisant interagir tous les éléments ensemble : contrôleurs, services, base de données, authentification, autorisation, et même la sérialisation JSON. Ce qui rend cette approche particulièrement puissante, c'est l'utilisation intelligente de conteneurs Docker avec Testcontainers pour PostgreSQL, nous permettant de créer un environnement de test complètement isolé et reproductible. Chaque fois qu'un test s'exécute, une nouvelle base PostgreSQL fraîche est créée dans un conteneur, peuplée avec des données de test soigneusement préparées, puis détruite une fois les tests terminés. Cette approche nous donne une confiance énorme : si nos tests d'intégration passent, nous savons que notre API fonctionnera en production, car nous testons avec une vraie base de données PostgreSQL, de vrais appels HTTP, et une vraie pile d'authentification JWT.
+### 8.3 Tests de charge
+Pour les tests de charge, j’ai utilisé la librairie Bogus pour générer des jeux de données synthétiques et réalistes. Bogus permet de créer rapidement de grands volumes d’entités (utilisateurs, réservations, commandes, etc.) avec des règles configurables (noms, emails, adresses, dates, valeurs aléatoires).
+```csharp
+        public Faker<SlotCreateDTO> GenerateSlotCreateDTO()
+        {
+            return new Faker<SlotCreateDTO>()
+                .RuleFor(u => u.Price, f => f.PickRandom<decimal>(40, 100))
+                .RuleFor(u => u.CreatedAt, f => f.Date.Past(1, DateTime.Now).ToUniversalTime())
+                .RuleFor(u => u.StartAt, f => f.Date.Past(1, DateTime.Now.AddDays(-10)).ToUniversalTime())
+                .RuleFor(u => u.EndAt, (f, t) => t.StartAt.AddHours(1))
+                .RuleFor(u => u.Reduction, f => f.PickRandom(0, 50));
+        }
+```
+<i>Cet exemple montre l’utilisation de la librairie <b>Bogus</b> pour générer aléatoirement
+des données de type <code>SlotCreateDTO</code>.  
+Chaque règle définit un champ précis :  
+- <b>Price</b> : un prix choisi aléatoirement entre 40 et 100.  
+- <b>CreatedAt</b> : une date de création générée dans l’année passée.  
+- <b>StartAt</b> : une date de début aléatoire dans les 10 derniers jours.  
+- <b>EndAt</b> : automatiquement fixée à une heure après le début.  
+- <b>Reduction</b> : une réduction aléatoire comprise entre 0 et 50.</i>
+
+J'ai mis en place des enpoints qui generer a la demande un nombre precis des creneaux ou utilisateurs / adresses ... et ensuite j ai  teste'' l application pour 10000 utilisateurs avec 3000 creneaux, 3 adresses  et 3 formations par utilisateurs. 
 
 #### Technologies Utilisées
 ##### Framework de Test
