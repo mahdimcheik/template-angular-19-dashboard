@@ -5,9 +5,8 @@
 Dans le cadre d’une demande réelle émanant d’un professeur particulier, le projet vise à développer une application web permettant de gérer de manière centralisée les cours particuliers, de la réservation au paiement en ligne. Actuellement, la gestion des cours, des inscriptions et des paiements se fait de manière dispersée (échanges par téléphone, messages, virements manuels), ce qui entraîne des pertes de temps, un risque d’erreur et une expérience utilisateur peu fluide.
 L’objectif est donc de concevoir un outil simple et intuitif permettant :
 
-.   Aux élèves de s’inscrire, réserver un créneau disponible, effectuer un paiement sécurisé et consulter l’historique de leurs cours.
-
-.   Au Professeur de creer, modifier et supprimer des creneaux, de verifier et consulter ses reservations.
+*   Aux élèves de s’inscrire, réserver un créneau disponible, effectuer un paiement sécurisé et consulter l’historique de leurs cours.
+*   Au Professeur de creer, modifier et supprimer des creneaux, de verifier et consulter ses reservations.
 
 Ce projet s’inscrit dans une démarche de digitalisation des services éducatifs, en offrant un gain de temps, une meilleure traçabilité et une expérience utilisateur moderne.
 
@@ -15,7 +14,7 @@ Ce projet s’inscrit dans une démarche de digitalisation des services éducati
 - Permettre aux élèves de réserver et payer leurs cours en ligne.
 - Centraliser la gestion des plannings pour le professeur.
 - Faciliter la communication entre professeur et élèves.
-- Permettre aux eleves de telecharger leurs factures a la demande
+- Permettre aux élèves de télécharger leurs factures.
 
 ### 1.3 Public cible
 - **Professeur/Administrateur** : gestion complète des cours, des paiements et des élèves.
@@ -208,6 +207,7 @@ Une fois la réservation payée, l’élève peut consulter la notification asso
 Ce système n’a pas vocation à devenir une application de messagerie complète : il est conçu pour des échanges ponctuels et exceptionnels, par exemple pour préciser le sujet de la séance, signaler un changement de disponibilité ou permettre au professeur de laisser des commentaires et suivis après le cours.
 
 Plus de détails techniques dans la prtie paiement.
+
 ### 3. Paiement sécurisé
 
 L'intégration Stripe assure un processus de paiement garantissant la sécurité maximale des données bancaires. L'interface de paiement s'adapte automatiquement au montant total (créneaux + promotions/réductions), affiche un récapitulatif détaillé et propose les principales méthodes de paiement européennes.
@@ -406,6 +406,7 @@ L’utilisation de SignalR garantit donc un flux d’informations en temps réel
 
 La gestion du profil constitue l'une des fonctionnalités centrales de l'application, offrant aux utilisateurs un espace personnel complet et modulaire. Cette section permet une personnalisation approfondie des informations utilisateur tout en facilitant les interactions pédagogiques entre professeurs et élèves.
 
+### 9. Profil et RGPD
 #### 8.1 Interface de gestion du profil
 
 L'interface de profil adopte une approche moderne et intuitive, structurée autour de sections thématiques clairement délimitées. Chaque section dispose de ses propres contrôles d'édition, permettant une gestion granulaire des informations personnelles. L'interface responsive s'adapte parfaitement aux différents formats d'écran, garantissant une expérience utilisateur optimale sur desktop et mobile.
@@ -819,6 +820,16 @@ Cette approche présente plusieurs avantages. Elle permet d’abord une optimisa
 
 ### 7.4 Intégration continue avec GitHub Actions
 
+#### Pipeline de l'intégration continue
+
+Avant chaque déploiement, le système exécute automatiquement une série de vérifications pour s'assurer que le code est prêt pour la production. Ce processus se déroule en trois étapes importantes.
+
+D'abord, tous les tests unitaires sont lancés pour vérifier que chaque composant de l'application fonctionne correctement de façon isolée. Ces tests vérifient rapidement que les services essentiels, les contrôleurs et la logique métier se comportent comme prévu.
+
+Ensuite, les tests d'intégration prennent le relais pour s'assurer que tous les éléments fonctionnent bien ensemble : base de données, API, authentification et communications entre les différentes parties de l'application. Ces tests utilisent de vrais environnements Docker pour reproduire fidèlement les conditions de production.
+
+Si toutes ces vérifications passent avec succès, alors seulement le déploiement automatique peut commencer. Cette approche garantit qu'aucune version défectueuse n'arrive en production et maintient la qualité de l'application en permanence. Les détails techniques de ce processus sont disponibles en annexe [Voir la section CI Annexe](#ci-annexe).
+
 #### Pipeline de déploiement automatisé
 
 Le fichier `.github/workflows/cd.yml` orchestre le processus de déploiement continu :
@@ -851,7 +862,7 @@ jobs:
             docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
             docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate
 ```
-
+[Voir la section CI Annexe](#cd-annexe)
 ### 7.5 Processus de déploiement détaillé
 
 #### Étape 1 : Déclenchement automatique
@@ -896,7 +907,7 @@ docker pull mahdimcheik/skill-hive-front:${{ env.FRONT/BACK_IMAGE_VERSION }}
 docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate
 ```
 
-### 7.7 Sécurité du déploiement
+### 7.6 Sécurité du déploiement
 
 #### Gestion des secrets
 - **Variables d'environnement** : Stockage sécurisé dans GitHub Secrets
@@ -1223,7 +1234,7 @@ Au final, cette façon de travailler qui mélange l'autonomie du développement 
 
 ---
 
-## 12. Conclusion
+## 11. Conclusion
 
 ### Bilan
 
@@ -1249,3 +1260,105 @@ Pour renforcer la qualité, je prévois de mettre en place des tests automatique
 
 
 
+
+## 12 Annexes
+
+### CI Annexe
+```yml
+name: CI pipeline for the API
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-unitaire:
+    name: Tests Unitaires
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Lancer les tests unitaires
+        run: dotnet test --no-build --verbosity normal ./TerminalTest/TerminalTest.csproj
+
+  test-integration:
+    name: Tests d'Intégration
+    runs-on: ubuntu-latest
+    needs: test-unitaire
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Lancer les tests d'intégration
+        run: dotnet test --no-build --verbosity detailed  ./TerminalTestIntegration/TerminalTestIntegration.csproj
+```
+<i>Les tests sont exécutés en série : les tests unitaires d’abord, puis les tests d’intégration, à condition que les tests unitaires réussissent.</i>
+
+### CD Annexe 
+
+```yml
+name: Deploy Develop API
+
+on:
+   workflow_run:
+     workflows: ["CI pipeline for the API"]
+     types:
+       - completed
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Get version
+        id: set_version
+        run: echo "IMAGE_VERSION=rc-1.0.0" >> $GITHUB_ENV
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          
+      - name: Build Docker image
+        run: docker build -t mahdimcheik/skill-hive-api:${{ env.IMAGE_VERSION }} ./TerminalApi
+        # run: docker build -t mahdimcheik/skill-hive-api:prod ./TerminalApi
+
+      - name: Push image to Docker Hub
+        run: docker push mahdimcheik/skill-hive-api:${{ env.IMAGE_VERSION }}
+        # run: docker push mahdimcheik/skill-hive-api:prod
+
+      - name: Deploy on VPS via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          script: |
+            export IMAGE_VERSION=${{ env.IMAGE_VERSION }}
+            docker pull mahdimcheik/skill-hive-api:${{ env.IMAGE_VERSION }}
+            docker compose -f /root/skillhive/backend/docker-compose.yml up -d --force-recreate
+          # script: |
+          #   docker pull mahdimcheik/skill-hive-api:prod
+          #   docker compose -f /root/skillhive/backend/docker-compose.yml up --build -d --force-recreate 
+
+```
+<i>Le déploiement se lance une fois que les tests sont passés.</i>
