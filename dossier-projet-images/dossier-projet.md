@@ -1,3 +1,49 @@
+<div style="text-align: center; padding: 50px 0;">
+  
+  <!-- Logo de l'application -->
+  <div style="margin-bottom: 40px;">
+    <img src="main.png" alt="Logo Skill Hive"  style="display: block; margin: auto;"/>
+  </div>
+  
+  <!-- Titre principal -->
+  <h1 style="font-size: 3em; color: #2c3e50; margin: 30px 0; font-weight: bold;display: block; margin: auto;width: 50%">
+    SKILL HIVE
+  </h1>
+  
+  <!-- Sous-titre -->
+  <h2 style="font-size: 1.8em; color: #7f8c8d; margin: 20px 0; font-weight: normal;display: block; margin: auto;width: 50%">
+    Plateforme de soutien scolaire
+  </h2> 
+  
+  
+  <!-- Informations auteur -->
+  <div style="margin: 40px 0;display: block; margin: auto; width: 50%">
+    <p style="font-size: 1.3em; color: #2c3e50; margin: 25px 0;">
+      <strong>Fait par :</strong> Mahdi Mcheik
+    </p>
+    <p style="font-size: 1.1em; color: #7f8c8d; margin: 25px 0;">
+      Concepteur Développeur d'Applications
+    </p>
+  </div>
+  
+  <!-- Logo Simplon -->
+  <div style="margin-top: 50px;">
+    <img src="simplon.png" alt="Logo Simplon" width="150" style="display: block; margin: 0 auto;"/>
+    <p style="font-size: 1em; color: #7f8c8d; margin-top: 10px; display: flex; justify-content: center">
+      2024-2025
+    </p>
+  </div>
+  
+</div>
+
+<div style="page-break-after: always;"></div>
+<h5 style="color: transparent;">divider</h5>
+<div style="page-break-after: always;"></div>
+<h5 style="color: transparent;">divider</h5>
+<div style="page-break-after: always;"></div>
+<h5 style="color: transparent;">divider</h5>
+<div style="page-break-after: always;"></div>
+
 - [📚 Dossier Projet – Application de gestion de cours particuliers](#-dossier-projet--application-de-gestion-de-cours-particuliers)
   - [1. Introduction](#1-introduction)
   - [2. Présentation générale](#2-présentation-générale)
