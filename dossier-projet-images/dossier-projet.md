@@ -1,3 +1,20 @@
+- [📚 Dossier Projet – Application de gestion de cours particuliers](#-dossier-projet--application-de-gestion-de-cours-particuliers)
+  - [1. Introduction](#1-introduction)
+  - [2. Présentation générale](#2-présentation-générale)
+  - [3. Fonctionnalités détaillées](#3-fonctionnalités-détaillées)
+  - [4. Architecture technique](#4-architecture-technique)
+  - [5. Conception](#5-conception)
+  - [6. Sécurité](#6-sécurité)
+  - [7. Déploiement](#7-déploiement)
+  - [8. Tests et assurance qualité](#8-tests-et-assurance-qualité)
+  - [9. Documentation](#9-documentation)
+  - [10. Gestion de projet](#10-gestion-de-projet)
+  - [11. Conclusion](#11-conclusion)
+  - [12 Annexes](#12-annexes)
+
+<div style="page-break-after: always;"></div>
+
+
 # 📚 Dossier Projet – Application de gestion de cours particuliers
 
 ## 1. Introduction
