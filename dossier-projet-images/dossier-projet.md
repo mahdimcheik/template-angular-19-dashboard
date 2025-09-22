@@ -1,3 +1,66 @@
+<div style="text-align: center; padding: 50px 0;">
+  
+  <!-- Logo de l'application -->
+  <div style="margin-bottom: 40px;">
+    <img src="main.png" alt="Logo Skill Hive"  style="display: block; margin: auto;"/>
+  </div>
+  
+  <!-- Titre principal -->
+  <h1 style="font-size: 3em; color: #2c3e50; margin: 30px 0; font-weight: bold;display: block; margin: auto;width: 50%">
+    SKILL HIVE
+  </h1>
+  
+  <!-- Sous-titre -->
+  <h2 style="font-size: 1.8em; color: #7f8c8d; margin: 20px 0; font-weight: normal;display: block; margin: auto;width: 50%">
+    Plateforme de soutien scolaire
+  </h2> 
+  
+  
+  <!-- Informations auteur -->
+  <div style="margin: 40px 0;display: block; margin: auto; width: 50%">
+    <p style="font-size: 1.3em; color: #2c3e50; margin: 25px 0;">
+      <strong>Fait par :</strong> Mahdi Mcheik
+    </p>
+    <p style="font-size: 1.1em; color: #7f8c8d; margin: 25px 0;">
+      Concepteur Développeur d'Applications
+    </p>
+  </div>
+  
+  <!-- Logo Simplon -->
+  <div style="margin-top: 50px;">
+    <img src="simplon.png" alt="Logo Simplon" width="150" style="display: block; margin: 0 auto;"/>
+    <p style="font-size: 1em; color: #7f8c8d; margin-top: 10px; display: flex; justify-content: center">
+      2024-2025
+    </p>
+  </div>
+  
+</div>
+
+<div style="page-break-after: always;"></div>
+<h5 style="color: transparent;">divider</h5>
+<div style="page-break-after: always;"></div>
+<h5 style="color: transparent;">divider</h5>
+<div style="page-break-after: always;"></div>
+<h5 style="color: transparent;">divider</h5>
+<div style="page-break-after: always;"></div>
+
+- [📚 Dossier Projet – Application de gestion de cours particuliers](#-dossier-projet--application-de-gestion-de-cours-particuliers)
+  - [1. Introduction](#1-introduction)
+  - [2. Présentation générale](#2-présentation-générale)
+  - [3. Fonctionnalités détaillées](#3-fonctionnalités-détaillées)
+  - [4. Architecture technique](#4-architecture-technique)
+  - [5. Conception](#5-conception)
+  - [6. Sécurité](#6-sécurité)
+  - [7. Déploiement](#7-déploiement)
+  - [8. Tests et assurance qualité](#8-tests-et-assurance-qualité)
+  - [9. Documentation](#9-documentation)
+  - [10. Gestion de projet](#10-gestion-de-projet)
+  - [11. Conclusion](#11-conclusion)
+  - [12 Annexes](#12-annexes)
+
+<div style="page-break-after: always;"></div>
+
+
 # 📚 Dossier Projet – Application de gestion de cours particuliers
 
 ## 1. Introduction
@@ -5,9 +68,8 @@
 Dans le cadre d’une demande réelle émanant d’un professeur particulier, le projet vise à développer une application web permettant de gérer de manière centralisée les cours particuliers, de la réservation au paiement en ligne. Actuellement, la gestion des cours, des inscriptions et des paiements se fait de manière dispersée (échanges par téléphone, messages, virements manuels), ce qui entraîne des pertes de temps, un risque d’erreur et une expérience utilisateur peu fluide.
 L’objectif est donc de concevoir un outil simple et intuitif permettant :
 
-.   Aux élèves de s’inscrire, réserver un créneau disponible, effectuer un paiement sécurisé et consulter l’historique de leurs cours.
-
-.   Au Professeur de creer, modifier et supprimer des creneaux, de verifier et consulter ses reservations.
+*   Aux élèves de s’inscrire, réserver un créneau disponible, effectuer un paiement sécurisé et consulter l’historique de leurs cours.
+*   Au Professeur de creer, modifier et supprimer des creneaux, de verifier et consulter ses reservations.
 
 Ce projet s’inscrit dans une démarche de digitalisation des services éducatifs, en offrant un gain de temps, une meilleure traçabilité et une expérience utilisateur moderne.
 
@@ -15,7 +77,7 @@ Ce projet s’inscrit dans une démarche de digitalisation des services éducati
 - Permettre aux élèves de réserver et payer leurs cours en ligne.
 - Centraliser la gestion des plannings pour le professeur.
 - Faciliter la communication entre professeur et élèves.
-- Permettre aux eleves de telecharger leurs factures a la demande
+- Permettre aux élèves de télécharger leurs factures.
 
 ### 1.3 Public cible
 - **Professeur/Administrateur** : gestion complète des cours, des paiements et des élèves.
@@ -42,8 +104,25 @@ Il est donc nécessaire de mettre en place une application centralisée, offrant
 L’application se présente sous la forme d’un site web ergonomique et intuitif, composé d’une page d’accueil (landing page), d’un profil public du professeur, et d’un espace utilisateur sécurisé appelé dashboard, qui regroupe l’ensemble des fonctionnalités interactives.
 
 <div style="width: 100%;">
-  <img  src="presentationSite.svg" alt="Interface de messagerie Trevo" width="6500" height="300" style="display: block; margin: auto;"/>
-  <i  style="width: 450px;display: block; margin: auto;">Plusieurs catégories de demandes prédéfinies avec possibilité de recevoir une copie par email</i>
+  <img  src="illustration-generale.png" alt="Interface de messagerie Trevo" width="6500" height="300" style="display: block; margin: auto;"/>
+<i style="width: 100%; display: block; margin: auto; padding-left: 8px;">
+  En fonction de son rôle, l’utilisateur peut accéder à des fonctionnalités différentes.
+
+  En tant que professeur / admin :
+  <ul>
+    <li>Créer, consulter, supprimer ou éditer des créneaux</li>
+    <li>Consulter la liste des élèves et leurs profils</li>
+    <li>Consulter les réservations ou communiquer avec les élèves</li>
+  </ul>
+
+  En tant qu’élève :
+  <ul>
+    <li>Réserver et payer un créneau</li>
+    <li>Consulter les réservations et commandes</li>
+    <li>Communiquer avec les professeurs ou laisser des notes</li>
+    <li>Envoyer des mails, suggestions ou réclamations</li>
+  </ul>
+</i>
 </div>
 
 #### Page d’accueil (Landing page)
@@ -55,11 +134,22 @@ La page d’accueil, accessible à tous, présente brièvement le principe de fo
 #### Espace utilisateur (Dashboard)
 Une fois connecté, l’eleve accède au tableau de bord. Par défaut, le menu principal est affiché à gauche et permet de naviguer entre les différentes sections.
 
-1.  Gestion des informations personnelles.
+1.  Notifications/Activités
+1.  Calendrier interactif
 2.  Historique des réservations.
 3.  Communication avec le professeur.
-4.  Calendrier interactif
 5.  Commandes et paiement
+6.  Gestion des informations personnelles.
+
+##### Notifications
+Page par défaut du dashboard : Notifications
+La page de notifications est la page d’accueil du dashboard, permettant à l’utilisateur de voir en un coup d’œil l’activité récente. Elle présente :
+
+* Toutes les notifications, classées par ordre chronologique afin de ne manquer aucun événement important.
+
+* Un système de filtrage permettant de distinguer rapidement les notifications vues de celles non vues.
+
+* Un résumé synthétique de l’activité hebdomadaire, offrant une vision d’ensemble sur les événements récents (paiements, réservations, modifications de créneaux…).
 
 ##### Le calendrier interactif
 
@@ -74,7 +164,7 @@ Un onglet dédié permet de consulter :
 *   Les réservations à venir.
 *   Les réservations passées.
 
-##### Profil élève
+##### Profil élève/Professeur
 L’onglet Profil regroupe :
 *   Les informations personnelles (nom, prénom, coordonnées…).
 *   Les informations de formation (utiles au professeur pour préparer les cours).
@@ -90,36 +180,6 @@ L’onglet Contact permet d’envoyer un message directement au professeur pour 
 *   Poser une question.
 *   Obtenir des renseignements divers.
 
-##### Notifications
-Page par défaut du dashboard : Notifications
-La page de notifications est la page d’accueil du dashboard, permettant à l’utilisateur de voir en un coup d’œil l’activité récente. Elle présente :
-
-* Toutes les notifications, classées par ordre chronologique afin de ne manquer aucun événement important.
-
-* Un système de filtrage permettant de distinguer rapidement les notifications vues de celles non vues.
-
-* Un résumé synthétique de l’activité hebdomadaire, offrant une vision d’ensemble sur les événements récents (paiements, réservations, modifications de créneaux…).
-
-<div style="width: 100%; margin-bottom: 8px;">
-  <img  src="notif.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
-  <i>En en-tête de la page, un petit résumé de l’activité hebdomadaire permet d’avoir une vue d’ensemble des événements récents (créneaux créés, réservations, paiements, etc.). Les notifications détaillées sont affichées en bas de la page, sous forme de liste paginée. L’utilisateur dispose également d’un système de filtrage pour afficher uniquement les notifications vues ou non vues.</i>
-</div>
-
-
-**Notifications en temps réel avec SignalR**
-Pour offrir une expérience utilisateur fluide et réactive, le système de notifications utilise SignalR, la bibliothèque temps réel de .NET. Grâce à cette technologie, les notifications sont transmises instantanément depuis le serveur vers le client, sans que ce dernier ait besoin d’actualiser la page.
-
-Ce mécanisme permet au professeur et aux élèves d’être informés en direct des événements importants, comme :
-
-* La création ou la modification d’un créneau.
-
-* La confirmation de la réservation.
-
-* L’arrivée d’un nouveau message ou d’une nouvelle réservation.
-
-* La mise a jour du profil.
-
-L’utilisation de SignalR garantit donc un flux d’informations en temps réel, améliorant la réactivité de l’application et réduisant les risques de décalage entre l’état du serveur et ce que l’utilisateur voit à l’écran.
 
 ##### Onglet Utilisateurs (professeur)
 Fonctionnalités administratives pour le professeur
@@ -165,6 +225,8 @@ Pour plus de confort, j'ai mis en place deux modes d’affichage :
 5. Messagerie.
 6. Gestion des tarifs et disponibilités.
 7. Facturation
+8. Notification/signalR
+
 
 ### 1. Inscription et authentification
 
@@ -183,7 +245,9 @@ Le refresh token, quant à lui, est stocké de manière sécurisée dans un cook
 
 Ce mécanisme permet d’assurer un équilibre optimal entre sécurité et expérience utilisateur : les utilisateurs restent connectés sans avoir à ressaisir leurs identifiants trop fréquemment, tout en minimisant les risques liés à la compromission d’un token.
 
-Plus de détails techniques sur la mise en place de ce système sont présentés dans la section Sécurité du dossier.
+Plus de détails techniques sur la mise en place de ce système sont présentés dans la section Sécurité du dossier [Voir la section Sécurité](#6-sécurité).
+Plus de détails techniques sur le profil dans le RGPD [Voir la section Profil et RGPD](#9-profil-et-rgpd)
+.
 
 ### 2. Réservation de créneaux disponibles
 
@@ -207,6 +271,7 @@ Une fois la réservation payée, l’élève peut consulter la notification asso
 Ce système n’a pas vocation à devenir une application de messagerie complète : il est conçu pour des échanges ponctuels et exceptionnels, par exemple pour préciser le sujet de la séance, signaler un changement de disponibilité ou permettre au professeur de laisser des commentaires et suivis après le cours.
 
 Plus de détails techniques dans la prtie paiement.
+
 ### 3. Paiement sécurisé
 
 L'intégration Stripe assure un processus de paiement garantissant la sécurité maximale des données bancaires. L'interface de paiement s'adapte automatiquement au montant total (créneaux + promotions/réductions), affiche un récapitulatif détaillé et propose les principales méthodes de paiement européennes.
@@ -371,11 +436,42 @@ Ce fonctionnement permet de garantir un système à la fois rapide, économique 
   <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Exemple de facture générée automatiquement avec QuestPDF, conforme aux obligations légales (numérotation séquentielle et TVA).</i>
 </div>
 
-### 8. Profil 
+
+### 8. Notifications
+La page Notifications constitue l’accueil du dashboard. Elle offre à l’utilisateur une vue immédiate sur l’activité récente et met en avant :
+
+L’ensemble des notifications, organisées par ordre chronologique pour garantir qu’aucun événement important ne soit manqué.
+
+Un système de filtrage permettant de différencier facilement les notifications déjà consultées de celles encore non lues.
+
+Un récapitulatif hebdomadaire clair et concis, donnant une vision globale des événements récents (paiements, réservations, modifications de créneaux, etc.).
+
+<div style="width: 100%; margin-bottom: 8px;">
+  <img  src="notif.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i>En en-tête de la page, un petit résumé de l’activité hebdomadaire permet d’avoir une vue d’ensemble des événements récents (créneaux créés, réservations, paiements, etc.). Les notifications détaillées sont affichées en bas de la page, sous forme de liste paginée. L’utilisateur dispose également d’un système de filtrage pour afficher uniquement les notifications vues ou non vues.</i>
+</div>
+
+
+**Notifications en temps réel avec SignalR**
+Pour offrir une expérience utilisateur fluide et réactive, le système de notifications utilise SignalR, la bibliothèque temps réel de .NET. Grâce à cette technologie, les notifications sont transmises instantanément depuis le serveur vers le client, sans que ce dernier ait besoin d’actualiser la page.
+
+Ce mécanisme permet au professeur et aux élèves d’être informés en direct des événements importants, comme :
+
+* La création ou la modification d’un créneau.
+
+* La confirmation de la réservation.
+
+* L’arrivée d’un nouveau message ou d’une nouvelle réservation.
+
+* La mise a jour du profil.
+
+L’utilisation de SignalR garantit donc un flux d’informations en temps réel, améliorant la réactivité de l’application et réduisant les risques de décalage entre l’état du serveur et ce que l’utilisateur voit à l’écran.
+
 
 La gestion du profil constitue l'une des fonctionnalités centrales de l'application, offrant aux utilisateurs un espace personnel complet et modulaire. Cette section permet une personnalisation approfondie des informations utilisateur tout en facilitant les interactions pédagogiques entre professeurs et élèves.
 
-#### 8.1 Interface de gestion du profil
+### 9. Profil et RGPD
+#### 9.1 Interface de gestion du profil
 
 L'interface de profil adopte une approche moderne et intuitive, structurée autour de sections thématiques clairement délimitées. Chaque section dispose de ses propres contrôles d'édition, permettant une gestion granulaire des informations personnelles. L'interface responsive s'adapte parfaitement aux différents formats d'écran, garantissant une expérience utilisateur optimale sur desktop et mobile.
 
@@ -386,17 +482,17 @@ L'interface de profil adopte une approche moderne et intuitive, structurée auto
 
 Les modales d'édition intègrent une validation en temps réel avec feedback immédiat, guidant l'utilisateur dans la saisie et prévenant les erreurs de format.
 
-#### 8.2 Gestion des adresses multiples
+#### 9.2 Gestion des adresses multiples
 
 Le système d'adresses offre une flexibilité maximale pour répondre aux besoins variés des utilisateurs. L'architecture modulaire permet la gestion de plusieurs types d'adresses avec des finalités distinctes :
 Adresse de *domicile*, *facturation*, *livraison*, *travail*.
 
-#### 8.3 Gestion des formations et parcours éducatif
+#### 9.3 Gestion des formations et parcours éducatif
 
 La section formations constitue un élément différenciant de l'application, permettant au professeur d'adapter précisément son enseignement au profil et aux objectifs de chaque élève. Cette fonctionnalité dépasse la simple collecte d'informations pour devenir un véritable outil pédagogique.
 
 
-#### 8.4 Sécurité et confidentialité des données
+#### 9.4 Sécurité et confidentialité des données
 
 La gestion des profils intègre des mesures de sécurité strictes conformes au RGPD :
 
@@ -491,11 +587,9 @@ L'application s'appuie sur un ensemble de librairies spécialisées pour offrir 
 
 **Swashbuckle.AspNetCore (v6.9.0)** : Génération automatique de la documentation API OpenAPI/Swagger facilitant l'intégration frontend et les tests.
 
-**PuppeteerSharp (v20.1.3)** : Génération de PDF (factures, récapitulatifs) via contrôle programmatique de navigateur Chrome.
+**QuestPdf** : Génération de PDF (factures).
 
-**RazorLight (v2.3.1)** : Moteur de templates pour la génération d'emails HTML et de documents dynamiques.
-
-**Bogus (v35.6.1)** : Générateur de données de test facilitant le développement et les tests avec des jeux de données réalistes.
+**Bogus (v35.6.1)** : Générateur de données de test facilitant le développement et les tests de charge avec des jeux de données réalistes.
 
 #### Base de données : PostgreSQL 15
 PostgreSQL a été retenu pour ses performances, sa fiabilité et ses fonctionnalités avancées (JSONB, indexation sophistiquée, contraintes complexes). Sa compatibilité native avec .NET via Npgsql garantit une intégration optimale.
@@ -613,35 +707,7 @@ Les entités liées à la logique de réservation sont illustrées dans le diagr
 
 **ORDER (Commande)** : Regroupe une ou plusieurs réservations pour le processus de paiement. Gère le cycle de vie commercial avec statuts, méthodes de paiement et TVA.
 
-**CURSUS** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
-
-
-#### Spécifications Techniques
-
-**Système d'Authentification** : Utilisation d'ASP.NET Core Identity avec tables `AspNetUsers`, `AspNetRoles` et `AspNetUserRoles` pour la gestion des utilisateurs et des autorisations.
-
-**Types de Données** :
-
-- `uuid` : Identifiants uniques pour les entités métier
-- `timestamptz` : Horodatage avec fuseau horaire pour PostgreSQL
-- `decimal(18,2)` : Précision monétaire pour les prix et taux
-- `jsonb` : Stockage JSON binaire pour les communications chat
-- `text` : Texte de longueur variable pour les descriptions
-
-**Contraintes d'Intégrité** :
-
-- Clés étrangères avec actions de suppression configurées (`CASCADE`, `RESTRICT`, `SET NULL`)
-- Contraintes de longueur sur les champs texte
-- Valeurs par défaut pour les champs optionnels
-- Index sur les clés étrangères pour optimiser les performances
-
-**Particularités du Modèle** :
-
-- Relation 1:1 entre `Slot` et `Booking` (un créneau ne peut être réservé qu'une fois)
-- Relation N:M entre `User` et `Role` via la table de liaison `AspNetUserRoles`
-- Système de notifications polymorphe pouvant référencer différents types d'entités
-- Gestion des adresses multiples par utilisateur avec typage (domicile, travail, facturation)
-- Système de réductions et calculs de prix avec propriétés calculées
+**Curus** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
 
 ---
 
@@ -751,7 +817,6 @@ Le déploiement de l'application suit une approche moderne basée sur la contene
 - **Serveur** : VPS Ubuntu 24.04 LTS chez Hostinger
 - **Orchestration** : Docker Compose pour la gestion des conteneurs
 - **Reverse Proxy** : Nginx Proxy Manager pour la gestion des domaines et certificats SSL
-- **Monitoring** : Logs centralisés et surveillance des performances
 
 ### 7.2 Architecture de déploiement sur VPS
 
@@ -802,9 +867,7 @@ COPY . .
 RUN npm run build:prod
 
 # Stage de test
-FROM build AS testing
-COPY . .
-RUN npm run build:test
+...
 
 # Runtime de production
 FROM nginx:alpine as prod-runtime
@@ -814,20 +877,22 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 # Runtime de test
-FROM nginx:alpine as test-runtime
-COPY --from=testing /app/dist/skill-hive/browser /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+...
 ```
 
-**Avantages de cette approche :**
-- **Optimisation de taille** : Les images finales ne contiennent que le strict nécessaire (nginx + fichiers statiques)
-- **Séparation des environnements** : Builds distincts pour production et test avec configurations appropriées
-- **Sécurité renforcée** : Images basées sur Alpine Linux (surface d'attaque minimale)
-- **Performance** : Nginx optimisé pour le serving de fichiers statiques
+Cette approche présente plusieurs avantages. Elle permet d’abord une optimisation de la taille des images, qui ne contiennent que les éléments indispensables : Nginx et les fichiers statiques. Elle garantit également une séparation claire des environnements, avec des builds distincts pour la production et les tests, chacun bénéficiant de configurations adaptées. Sur le plan de la sécurité, les images s’appuient sur Alpine Linux, réduisant ainsi la surface d’attaque au minimum. Enfin, l’utilisation de Nginx assure des performances élevées pour la diffusion rapide et efficace des fichiers statiques.
 
 ### 7.4 Intégration continue avec GitHub Actions
+
+#### Pipeline de l'intégration continue
+
+Avant chaque déploiement, le système exécute automatiquement une série de vérifications pour s'assurer que le code est prêt pour la production. Ce processus se déroule en trois étapes importantes.
+
+D'abord, tous les tests unitaires sont lancés pour vérifier que chaque composant de l'application fonctionne correctement de façon isolée. Ces tests vérifient rapidement que les services essentiels, les contrôleurs et la logique métier se comportent comme prévu.
+
+Ensuite, les tests d'intégration prennent le relais pour s'assurer que tous les éléments fonctionnent bien ensemble : base de données, API, authentification et communications entre les différentes parties de l'application. Ces tests utilisent de vrais environnements Docker pour reproduire fidèlement les conditions de production.
+
+Si toutes ces vérifications passent avec succès, alors seulement le déploiement automatique peut commencer. Cette approche garantit qu'aucune version défectueuse n'arrive en production et maintient la qualité de l'application en permanence. Les détails techniques de ce processus sont disponibles en annexe [Voir la section CI Annexe](#ci-annexe).
 
 #### Pipeline de déploiement automatisé
 
@@ -835,35 +900,21 @@ Le fichier `.github/workflows/cd.yml` orchestre le processus de déploiement con
 
 ```yaml
 name: CD Pipeline for Angular Project
-
-on:
-  push:
-    branches:
-      - main
-
+...
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  ...
     steps:
       - name: Set version
         id: set_version
         run: echo "FRONT_IMAGE_VERSION=prod" >> $GITHUB_ENV
-
-      - name: Checkout the branch
-        uses: actions/checkout@v4
-
+      ... # checkout
       - name: Login to docker hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      - name: Build the docker image
-        run: docker build --target prod-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }} .
-
-      - name: Push the docker image to the docker hub
-        run: docker push mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
-
+        ... # build image docker
+        ... # Push sur docker hub
       - name: Deploy on VPS via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -875,11 +926,11 @@ jobs:
             docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
             docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate
 ```
-
+[Voir la section CD Annexe](#cd-annexe)
 ### 7.5 Processus de déploiement détaillé
 
 #### Étape 1 : Déclenchement automatique
-Le déploiement s'active automatiquement lors d'un push sur la branche `main` ou `test`, garantissant une mise en production immédiate des changements validés. En fonction de la branche, une serie différente des instructions sera executée.
+Le déploiement s'active automatiquement lors d'un push sur la branche `main` ou `test` ou apres les tests de CI, garantissant une mise en production immédiate des changements validés. En fonction de la branche, une serie différente des instructions sera executée.
 
 #### Étape 2 : Gestion des versions
 ```bash
@@ -905,9 +956,7 @@ COPY --from=production /app/dist/skill-hive/browser /usr/share/nginx/html` le pr
                             ...
                         },
 ```
-un traitement similair est reserve au testing.
-
-Par rapport au backend, les varaibles et secrets sont fournis  graces aux fichiers .env separes.
+Un traitement similaire est appliqué au profil de test, afin de garantir une cohérence avec l’environnement de production tout en conservant ses spécificités. Du côté du backend, les variables et secrets nécessaires au fonctionnement de l’application sont fournis via des fichiers .env distincts, permettant ainsi une gestion claire et sécurisée des configurations selon l’environnement ciblé.
 
 #### Étape 4 : Publication sur Docker Hub
 ```bash
@@ -922,7 +971,7 @@ docker pull mahdimcheik/skill-hive-front:${{ env.FRONT/BACK_IMAGE_VERSION }}
 docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate
 ```
 
-### 7.7 Sécurité du déploiement
+### 7.6 Sécurité du déploiement
 
 #### Gestion des secrets
 - **Variables d'environnement** : Stockage sécurisé dans GitHub Secrets
@@ -941,14 +990,13 @@ Cette architecture de déploiement offre une solution scalable et sécurisée, p
 ## 8. Tests et assurance qualité
 - Tests unitaires.
 - Tests d’intégration.
-- Tests end-to-end.
 - Tests de charge.
 
 L'assurance qualité de l'application repose sur une stratégie de test complète et rigoureuse, couvrant l'ensemble des couches applicatives depuis les services métier jusqu'à l'expérience utilisateur finale. Cette approche multicouche garantit la fiabilité, la performance et la conformité fonctionnelle de l'application.
 
 L'API .NET a fait l'objet d'une couverture indispensable par des tests unitaires. Cette stratégie de test cible les composants critiques de l'application pour assurer leur bon fonctionnement dans différents scénarios d'utilisation. L'AuthService bénéficie d'une validation complète du système d'authentification incluant la génération et validation des JWT, la gestion des refresh tokens, le processus de connexion/déconnexion, et la vérification des politiques de sécurité. Les tests couvrent notamment les cas d'échec (tokens expirés, identifiants incorrects) et les scénarios de sécurité (tentatives de brute force, tokens malformés). Le NotificationsService fait l'objet d'une vérification du système de notifications temps réel avec tests de création, envoi, marquage comme lue, et suppression des notifications. Les tests valident également le filtrage par utilisateur, la pagination des résultats, et l'intégration avec SignalR pour les notifications en temps réel.
 
-### 8.2 Tests d'intégration
+### 8.2 Tests unitaires
 Les tests unitaires suivent les meilleures pratiques du framework xUnit pour .NET avec une isolation complète utilisant des mocks et stubs pour isoler les unités testées de leurs dépendances, une couverture qui cible des cas nominaux, cas d'erreur, et cas limites, une convention de nommage claire décrivant le scénario testé et le résultat attendu. EntityFrameworkCore.
 
 Techno : **XUnit**, **Moq** et **InMemory(entity Framework)**
@@ -1009,6 +1057,29 @@ L'infrastructure de test s'appuie sur un ensemble d'outils robustes :
 
 ### 8.2 Tests d'Intégration
 Les tests d'intégration de notre API servent a mettre réellement notre application à l'épreuve dans des conditions quasi-réelles. Contrairement aux tests unitaires qui isolent chaque composant comme dans un laboratoire stérilisé, nos tests d'intégration imitent la complexité du monde réel en faisant interagir tous les éléments ensemble : contrôleurs, services, base de données, authentification, autorisation, et même la sérialisation JSON. Ce qui rend cette approche particulièrement puissante, c'est l'utilisation intelligente de conteneurs Docker avec Testcontainers pour PostgreSQL, nous permettant de créer un environnement de test complètement isolé et reproductible. Chaque fois qu'un test s'exécute, une nouvelle base PostgreSQL fraîche est créée dans un conteneur, peuplée avec des données de test soigneusement préparées, puis détruite une fois les tests terminés. Cette approche nous donne une confiance énorme : si nos tests d'intégration passent, nous savons que notre API fonctionnera en production, car nous testons avec une vraie base de données PostgreSQL, de vrais appels HTTP, et une vraie pile d'authentification JWT.
+### 8.3 Tests de charge
+Pour les tests de charge, j’ai utilisé la librairie Bogus pour générer des jeux de données synthétiques et réalistes. Bogus permet de créer rapidement de grands volumes d’entités (utilisateurs, réservations, commandes, etc.) avec des règles configurables (noms, emails, adresses, dates, valeurs aléatoires).
+```csharp
+        public Faker<SlotCreateDTO> GenerateSlotCreateDTO()
+        {
+            return new Faker<SlotCreateDTO>()
+                .RuleFor(u => u.Price, f => f.PickRandom<decimal>(40, 100))
+                .RuleFor(u => u.CreatedAt, f => f.Date.Past(1, DateTime.Now).ToUniversalTime())
+                .RuleFor(u => u.StartAt, f => f.Date.Past(1, DateTime.Now.AddDays(-10)).ToUniversalTime())
+                .RuleFor(u => u.EndAt, (f, t) => t.StartAt.AddHours(1))
+                .RuleFor(u => u.Reduction, f => f.PickRandom(0, 50));
+        }
+```
+<i>Cet exemple montre l’utilisation de la librairie <b>Bogus</b> pour générer aléatoirement
+des données de type <code>SlotCreateDTO</code>.  
+Chaque règle définit un champ précis :  
+- <b>Price</b> : un prix choisi aléatoirement entre 40 et 100.  
+- <b>CreatedAt</b> : une date de création générée dans l’année passée.  
+- <b>StartAt</b> : une date de début aléatoire dans les 10 derniers jours.  
+- <b>EndAt</b> : automatiquement fixée à une heure après le début.  
+- <b>Reduction</b> : une réduction aléatoire comprise entre 0 et 50.</i>
+
+J'ai mis en place des enpoints qui generer a la demande un nombre precis des creneaux ou utilisateurs / adresses ... et ensuite j ai  teste'' l application pour 10000 utilisateurs avec 3000 creneaux, 3 adresses  et 3 formations par utilisateurs. 
 
 #### Technologies Utilisées
 ##### Framework de Test
@@ -1067,37 +1138,291 @@ Plusieurs assertions sont ensuite effectuées pour garantir que :
 
 * et que l’email de l’utilisateur retourné correspond bien à celui utilisé pour la connexion.
 
-### 8.3 Tests end-to-end
-*À développer*
+## 9. Documentation
 
-### 8.4 Validation fonctionnelle
-*À développer*sseur, également administrateur de la plateforme, de gérer son planning, ses tarifs, les inscriptions et la communication avec ses élèves à partir d’un espace unique.
+La documentation de l'API constitue un pilier fondamental du projet, garantissant la maintenabilité, la facilité d'intégration et la collaboration efficace entre les équipes de développement. Notre approche de documentation s'appuie sur des standards modernes et des outils automatisés pour assurer une cohérence parfaite entre le code source et la documentation technique.
+
+### 9.1 Architecture de documentation automatisée
+
+L'architecture de documentation repose sur une génération automatique à partir du code source, éliminant les risques de désynchronisation entre l'implémentation et la documentation. Cette approche garantit que chaque modification du code est immédiatement reflétée dans la documentation, maintenant ainsi une fiabilité constante des informations techniques.
+
+Le processus de génération utilise les commentaires XML intégrés directement dans le code source .NET, qui sont ensuite traités par Swagger/OpenAPI pour produire une documentation interactive et navigable. Cette méthode présente l'avantage de centraliser la maintenance de la documentation au niveau du code, réduisant considérablement les efforts de synchronisation et minimisant les erreurs humaines.
+
+### 9.2 Technologies et outils utilisés
+
+#### Swashbuckle.AspNetCore
+Swashbuckle.AspNetCore (v6.9.0) constitue la pierre angulaire de notre système de documentation. Cette bibliothèque .NET transforme automatiquement les contrôleurs, modèles et commentaires XML en spécification OpenAPI 3.0, créant une documentation standardisée et interopérable. L'intégration native avec ASP.NET Core permet une configuration transparente et une génération automatique lors du démarrage de l'application.
+
+La configuration de Swashbuckle inclut la prise en charge complète des schémas de sécurité JWT, des types de données complexes, et de la validation des modèles. Cette configuration assure que tous les aspects de l'API sont correctement documentés, depuis les endpoints publics jusqu'aux mécanismes d'authentification les plus sophistiqués.
+
+#### Commentaires XML (.NET)
+Les commentaires XML constituent le socle de notre documentation technique. Chaque contrôleur, action, modèle et propriété est documenté selon la syntaxe XML standard de .NET, permettant une intégration native avec l'environnement de développement et les outils de génération de documentation.
+
+```xml
+            /// <summary>
+        /// Connecte un utilisateur.
+        /// </summary>
+        /// <param name="model">Données de connexion de l'utilisateur.</param>
+        /// <returns>Résultat de l'opération.</returns>
+        [AllowAnonymous]
+        [Route("login")]
+        [HttpPost]
+```
+
+Cette approche garantit que chaque endpoint dispose d'une documentation complète incluant la description fonctionnelle, les paramètres d'entrée, les types de retour, et les codes de statut HTTP possibles avec leurs significations respectives.
+
+<div style="width: 100%;">
+  <img  src="doc.png"  width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 90%;display: block; margin: auto;">
+Un exempled d'endpoint qui permet de modifier le statut d’une notification (lue ou non lue). Deux paramètres d’entrée (via FromRoute) sont obligatoires : l’ID de la notification et la nouvelle valeur de type booléen. Et en vert, un exemple de retour.
+</i>
+</div>
+
+#### Interface Swagger UI
+L'interface Swagger UI offre une expérience interactive pour explorer et tester l'API directement depuis le navigateur. Cette interface auto-générée présente l'ensemble des endpoints organisés par contrôleurs, avec la possibilité d'exécuter des requêtes en temps réel et de visualiser les réponses correspondantes.
+
+L'interface inclut des fonctionnalités avancées telles que l'authentification JWT intégrée, permettant aux développeurs de tester les endpoints sécurisés directement depuis l'interface de documentation. Cette capacité de test intégré accélère significativement le processus de développement et de debugging.
+
+### 9.3 Processus de documentation des endpoints
+
+#### Documentation des contrôleurs
+Chaque contrôleur est documenté avec une description générale de ses fonctionnalités et de son domaine métier. Les tags Swagger permettent de regrouper logiquement les endpoints par domaine fonctionnel, facilitant la navigation dans une API comprenant de nombreux services.
+
+```csharp
+
+    /// <summary>
+    /// Contrôleur pour gérer les utilisateurs.
+    /// </summary>
+    [Route("[controller]")]
+    [Authorize]
+    [ApiController]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    public class UsersController : ControllerBase
+    ....
+```
+
+#### Documentation des modèles de données
+Les DTOs (Data Transfer Objects) et modèles de domaine sont exhaustivement documentés, incluant la description de chaque propriété, les contraintes de validation, et les exemples de valeurs. Cette documentation détaillée facilite l'intégration frontend et la compréhension des structures de données.
+
+```csharp
+/// <summary>
+/// Modèle de données pour la connexion utilisateur
+/// </summary>
+public class UserLoginDTO
+{
+    /// <summary>
+    /// Adresse email de l'utilisateur (format email valide requis)
+    /// </summary>
+    /// <example>utilisateur@exemple.com</example>
+    [Required(ErrorMessage = "L'email est requis")]
+    [EmailAddress(ErrorMessage = "Format d'email invalide")]
+    public string Email { get; set; }\
+    ...
+}
+```
+
+### 9.4 Gestion des schémas de sécurité
+
+La documentation Swagger intègre complètement le système de sécurité JWT de l'application. La configuration inclut la définition des schémas de sécurité Bearer Token, permettant aux utilisateurs de l'interface Swagger de s'authentifier et de tester les endpoints protégés.
+
+```csharp
+services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+```
+
+Cette configuration permet à Swagger de reconnaître automatiquement les endpoints nécessitant une authentification et d'afficher les contrôles appropriés dans l'interface utilisateur.
+
+### 9.5 Génération automatique du client TypeScript
+
+Un aspect particulièrement innovant de notre approche documentation concerne la génération automatique du client TypeScript pour le frontend Angular. Utilisant openapi-typescript-codegen, la spécification OpenAPI générée par Swagger sert de base pour créer automatiquement l'ensemble des services, modèles et types TypeScript correspondant exactement aux endpoints de l'API.
+
+Ce processus de génération automatique présente plusieurs avantages majeurs : la synchronisation parfaite entre backend et frontend élimine les erreurs de typage, la productivité de développement est considérablement accélérée par l'auto-complétion native, et la maintenance est simplifiée car toute modification de l'API se répercute automatiquement dans le client TypeScript.
+
+```bash
+npx openapi-typescript-codegen --input http://localhost:7113/swagger/v1/swagger.json --output ./src/app/api --client angular
+```
+### 9.6 Déploiement et accessibilité de la documentation
+
+La documentation Swagger est automatiquement déployée avec l'application et accessible via l'endpoint `/swagger` en environnement de développement et de test. Cette accessibilité garantit que les équipes de développement disposent toujours de la documentation la plus récente et peuvent tester les endpoints en temps réel.
+
+En production, l'accès à la documentation peut être restreint pour des raisons de sécurité.
+
+```csharp
+ app.UseSwagger();
+ if (!app.Environment.IsProduction())
+ {
+     app.UseSwaggerUI(c =>
+     {
+         c.SwaggerEndpoint("/swagger/v1/swagger.json", "data_lib v1");
+         c.RoutePrefix = "swagger";
+     });
+ }
+```
+
+## 10. Gestion de projet
+
+Pour gérer ce projet, j'ai mélangé deux façons de travailler : d'un côté, j'étais seul pour développer l'application, et de l'autre, j'ai utilisé des méthodes que j'avais apprises au travail avec mes collègues. Comme j'étais le seul développeur, j'ai adapté les principes Scrum que je connaissais déjà, grâce à mon expérience professionnelle avec Jira et le travail en équipe.
+
+Pour m'organiser, j'ai utilisé Trello comme outil principal. Cela m'a aidé à planifier mon travail de façon flexible et à voir clairement où j'en étais. J'ai travaillé par périodes de deux semaines (qu'on appelle des "sprints"), et avant chaque période, je définissais les fonctionnalités à développer et comment je saurais qu'elles étaient terminées. Au début de chaque sprint, je prenais le temps de découper mes tâches en petits morceaux, d'estimer combien de temps ça allait me prendre, et de décider dans quel ordre les faire. Cette façon de faire, que j'avais apprise avec Jira au bureau, m'a permis de garder un bon rythme de travail même tout seul.
+
+Le plus difficile dans ce projet, c'est que le client changeait souvent d'avis et demandait régulièrement de nouvelles fonctionnalités auxquelles on n'avait pas pensé au début. Il y a eu beaucoup d'allers-retours, ce qui m'obligeait à revoir mes plans constamment et à changer l'ordre des priorités. C'était un vrai défi, mais ça m'a appris l'importance de bien communiquer avec le client et de savoir s'adapter quand les demandes changent, des compétences que j'avais déjà développées au travail en équipe.
+
+Pour gérer tous ces changements, j'ai mis en place une méthode simple : avant d'ajouter une nouvelle fonctionnalité, je validais toujours avec le client en créant des maquettes rapides ou des prototypes. Comme ça, on vérifiait ensemble que c'était faisable techniquement et que ça correspondait vraiment à ce qu'il voulait. Cette approche pas à pas m'a évité de développer des choses inutiles et m'a permis de rester aligné avec ce que le client attendait vraiment. À la fin de chaque sprint, je prenais aussi le temps de faire le bilan : qu'est-ce qui avait bien marché, qu'est-ce qui avait posé problème, et comment améliorer la fois suivante.
+
+Au final, cette façon de travailler qui mélange l'autonomie du développement en solo et la rigueur des méthodes que j'avais apprises en équipe m'a permis de livrer une application qui fonctionne et qui répond aux besoins du client, même avec tous les changements demandés en cours de route. Utiliser Trello comme base de mon organisation, combiné avec une communication régulière avec le client et une documentation de toutes mes décisions techniques, ça a été la clé du succès de ce projet.
 
 ---
 
-## 10. Maintenance et évolutivité
-- Correctifs de bugs.
-- Ajout futur de nouvelles fonctionnalités.
-- Amélioration de l’expérience utilisateur.
+## 11. Conclusion
 
----
+### Bilan
 
-## 11. Gestion de projet
-- Méthodologie : Agile/Scrum.
-- Planning.
-- Suivi des tâches.
+Ce projet a été un vrai succès. J'ai réussi à créer une application complète et fonctionnelle qui répond parfaitement aux besoins du client et qui tient toutes les promesses faites au départ.
 
----
+L'application fonctionne de manière fluide et stable, avec toutes les fonctionnalités demandées : gestion des utilisateurs, système de réservation, paiements sécurisés, notifications en temps réel, et une interface intuitive. Le client peut maintenant gérer ses cours particuliers de façon moderne et efficace, ce qui était exactement l'objectif fixé au début.
 
-## 12. Conclusion
-- Bilan.
-- Limites.
-- Perspectives.
+Sur le plan technique, j'ai mis en place une architecture solide et sécurisée. L'application respecte les bonnes pratiques de sécurité, protège les données personnelles des utilisateurs, et gère les paiements de manière conforme aux normes bancaires. Le système peut supporter de nombreux utilisateurs simultanés et s'adapte facilement aux évolutions futures.
 
----
+Le déploiement automatique fonctionne parfaitement : chaque nouvelle version se met en ligne sans intervention manuelle, ce qui facilite grandement la maintenance et les mises à jour. L'application est accessible 24h/24 et offre une expérience utilisateur de qualité sur tous les appareils.
 
-## 13. Annexes
-- Captures d’écran.
-- Documentation API.
-- Schéma BDD.
+Au final, le client dispose maintenant d'un outil professionnel qui améliore concrètement sa façon de travailler et qui satisfait pleinement ses attentes. C'est exactement le résultat qu'on visait ensemble dès le début du projet.
 
+### Axes d'amélioration
+
+Même si l'application fonctionne bien, il reste quelques améliorations à apporter pour la rendre encore meilleure :
+
+J'ai identifié plusieurs petits bugs à corriger et des améliorations de style à faire pour rendre l'interface encore plus agréable. Un des prochains chantiers sera de rendre toutes les fenêtres de création et de modification (qu'on appelle des "modals") encore plus cohérentes entre elles pour une expérience utilisateur parfaitement uniforme.
+
+Il serait aussi intéressant d'ajouter la possibilité de se connecter avec son compte Google, Microsoft ou GitHub. Cela faciliterait encore plus l'inscription et la connexion pour les utilisateurs qui n'auraient plus besoin de créer un nouveau mot de passe.
+
+Pour renforcer la qualité, je prévois de mettre en place des tests automatiques supplémentaires qui simulent de vrais utilisateurs naviguant dans l'application (ce qu'on appelle des tests "end-to-end") et d'augmenter la couverture des tests existants pour couvrir encore plus de situations possibles.
+
+
+
+
+## 12 Annexes
+
+### CI Annexe
+```yml
+name: CI pipeline for the API
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-unitaire:
+    name: Tests Unitaires
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Lancer les tests unitaires
+        run: dotnet test --no-build --verbosity normal ./TerminalTest/TerminalTest.csproj
+
+  test-integration:
+    name: Tests d'Intégration
+    runs-on: ubuntu-latest
+    needs: test-unitaire
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Lancer les tests d'intégration
+        run: dotnet test --no-build --verbosity detailed  ./TerminalTestIntegration/TerminalTestIntegration.csproj
+```
+<i>Les tests sont exécutés en série : les tests unitaires d’abord, puis les tests d’intégration, à condition que les tests unitaires réussissent.</i>
+
+### CD Annexe 
+
+```yml
+name: Deploy Develop API
+
+on:
+   workflow_run:
+     workflows: ["CI pipeline for the API"]
+     types:
+       - completed
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Get version
+        id: set_version
+        run: echo "IMAGE_VERSION=rc-1.0.0" >> $GITHUB_ENV
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          
+      - name: Build Docker image
+        run: docker build -t mahdimcheik/skill-hive-api:${{ env.IMAGE_VERSION }} ./TerminalApi
+        # run: docker build -t mahdimcheik/skill-hive-api:prod ./TerminalApi
+
+      - name: Push image to Docker Hub
+        run: docker push mahdimcheik/skill-hive-api:${{ env.IMAGE_VERSION }}
+        # run: docker push mahdimcheik/skill-hive-api:prod
+
+      - name: Deploy on VPS via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          script: |
+            export IMAGE_VERSION=${{ env.IMAGE_VERSION }}
+            docker pull mahdimcheik/skill-hive-api:${{ env.IMAGE_VERSION }}
+            docker compose -f /root/skillhive/backend/docker-compose.yml up -d --force-recreate
+          # script: |
+          #   docker pull mahdimcheik/skill-hive-api:prod
+          #   docker compose -f /root/skillhive/backend/docker-compose.yml up --build -d --force-recreate 
+
+```
+<i>Le déploiement se lance une fois que les tests sont passés.</i>

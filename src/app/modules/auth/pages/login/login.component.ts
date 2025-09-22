@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { LogoComponent } from '../../../../pages/landing/components/logo/logo.component';
 import { Structure } from '../../../../generic-components/configurable-form/related-models';
 import { ConfigurableFormComponent } from '../../../../generic-components/configurable-form/configurable-form.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
     selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private messageService = inject(MessageService);
     router = inject(Router);
     badCredentials = false;
+    showTestCode = environment.showTestCode;
     ngOnInit(): void {}
 
     userForm = new FormGroup({
@@ -113,5 +115,12 @@ export class LoginComponent implements OnInit {
     // Keep the original submit method for backward compatibility (if needed)
     submit() {
         this.loginWithData(this.userForm.value as UserLoginDTO);
+    }
+
+    loginAsStudent() {
+        this.loginWithData({ email: 'mahdi.mcheik@hotmail.fr', password: 'Olitec1>' } as UserLoginDTO);
+    }
+    loginAsTeacher() {
+        this.loginWithData({ email: environment.teacherEmail, password: 'Admin123!' } as UserLoginDTO);
     }
 }
