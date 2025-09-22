@@ -182,8 +182,9 @@ Le refresh token, quant à lui, est stocké de manière sécurisée dans un cook
 
 Ce mécanisme permet d’assurer un équilibre optimal entre sécurité et expérience utilisateur : les utilisateurs restent connectés sans avoir à ressaisir leurs identifiants trop fréquemment, tout en minimisant les risques liés à la compromission d’un token.
 
-Plus de détails techniques sur la mise en place de ce système sont présentés dans la section Sécurité du dossier.
-Plus de détails techniques sur le profil dans le RGPD.
+Plus de détails techniques sur la mise en place de ce système sont présentés dans la section Sécurité du dossier [Voir la section Sécurité](#6-sécurité).
+Plus de détails techniques sur le profil dans le RGPD [Voir la section Profil et RGPD](#9-profil-et-rgpd)
+.
 
 ### 2. Réservation de créneaux disponibles
 
@@ -407,7 +408,7 @@ L’utilisation de SignalR garantit donc un flux d’informations en temps réel
 La gestion du profil constitue l'une des fonctionnalités centrales de l'application, offrant aux utilisateurs un espace personnel complet et modulaire. Cette section permet une personnalisation approfondie des informations utilisateur tout en facilitant les interactions pédagogiques entre professeurs et élèves.
 
 ### 9. Profil et RGPD
-#### 8.1 Interface de gestion du profil
+#### 9.1 Interface de gestion du profil
 
 L'interface de profil adopte une approche moderne et intuitive, structurée autour de sections thématiques clairement délimitées. Chaque section dispose de ses propres contrôles d'édition, permettant une gestion granulaire des informations personnelles. L'interface responsive s'adapte parfaitement aux différents formats d'écran, garantissant une expérience utilisateur optimale sur desktop et mobile.
 
@@ -418,17 +419,17 @@ L'interface de profil adopte une approche moderne et intuitive, structurée auto
 
 Les modales d'édition intègrent une validation en temps réel avec feedback immédiat, guidant l'utilisateur dans la saisie et prévenant les erreurs de format.
 
-#### 8.2 Gestion des adresses multiples
+#### 9.2 Gestion des adresses multiples
 
 Le système d'adresses offre une flexibilité maximale pour répondre aux besoins variés des utilisateurs. L'architecture modulaire permet la gestion de plusieurs types d'adresses avec des finalités distinctes :
 Adresse de *domicile*, *facturation*, *livraison*, *travail*.
 
-#### 8.3 Gestion des formations et parcours éducatif
+#### 9.3 Gestion des formations et parcours éducatif
 
 La section formations constitue un élément différenciant de l'application, permettant au professeur d'adapter précisément son enseignement au profil et aux objectifs de chaque élève. Cette fonctionnalité dépasse la simple collecte d'informations pour devenir un véritable outil pédagogique.
 
 
-#### 8.4 Sécurité et confidentialité des données
+#### 9.4 Sécurité et confidentialité des données
 
 La gestion des profils intègre des mesures de sécurité strictes conformes au RGPD :
 
@@ -862,7 +863,7 @@ jobs:
             docker pull mahdimcheik/skill-hive-front:${{ env.FRONT_IMAGE_VERSION }}
             docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recreate
 ```
-[Voir la section CI Annexe](#cd-annexe)
+[Voir la section CD Annexe](#cd-annexe)
 ### 7.5 Processus de déploiement détaillé
 
 #### Étape 1 : Déclenchement automatique
