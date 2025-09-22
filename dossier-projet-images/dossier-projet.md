@@ -642,7 +642,8 @@ Les entités liées à la logique de réservation sont illustrées dans le diagr
 
 **ORDER (Commande)** : Regroupe une ou plusieurs réservations pour le processus de paiement. Gère le cycle de vie commercial avec statuts, méthodes de paiement et TVA.
 
-**CURSUS** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
+**Curus** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
+
 ---
 
 ## 6. Sécurité
