@@ -1208,29 +1208,43 @@ En production, l'accès à la documentation peut être restreint pour des raison
  }
 ```
 
-## 10. Maintenance et évolutivité
-- Correctifs de bugs.
-- Ajout futur de nouvelles fonctionnalités.
-- Amélioration de l’expérience utilisateur.
+## 10. Gestion de projet
 
----
+Pour gérer ce projet, j'ai mélangé deux façons de travailler : d'un côté, j'étais seul pour développer l'application, et de l'autre, j'ai utilisé des méthodes que j'avais apprises au travail avec mes collègues. Comme j'étais le seul développeur, j'ai adapté les principes Scrum que je connaissais déjà, grâce à mon expérience professionnelle avec Jira et le travail en équipe.
 
-## 11. Gestion de projet
-- Méthodologie : Agile/Scrum.
-- Planning.
-- Suivi des tâches.
+Pour m'organiser, j'ai utilisé Trello comme outil principal. Cela m'a aidé à planifier mon travail de façon flexible et à voir clairement où j'en étais. J'ai travaillé par périodes de deux semaines (qu'on appelle des "sprints"), et avant chaque période, je définissais les fonctionnalités à développer et comment je saurais qu'elles étaient terminées. Au début de chaque sprint, je prenais le temps de découper mes tâches en petits morceaux, d'estimer combien de temps ça allait me prendre, et de décider dans quel ordre les faire. Cette façon de faire, que j'avais apprise avec Jira au bureau, m'a permis de garder un bon rythme de travail même tout seul.
+
+Le plus difficile dans ce projet, c'est que le client changeait souvent d'avis et demandait régulièrement de nouvelles fonctionnalités auxquelles on n'avait pas pensé au début. Il y a eu beaucoup d'allers-retours, ce qui m'obligeait à revoir mes plans constamment et à changer l'ordre des priorités. C'était un vrai défi, mais ça m'a appris l'importance de bien communiquer avec le client et de savoir s'adapter quand les demandes changent, des compétences que j'avais déjà développées au travail en équipe.
+
+Pour gérer tous ces changements, j'ai mis en place une méthode simple : avant d'ajouter une nouvelle fonctionnalité, je validais toujours avec le client en créant des maquettes rapides ou des prototypes. Comme ça, on vérifiait ensemble que c'était faisable techniquement et que ça correspondait vraiment à ce qu'il voulait. Cette approche pas à pas m'a évité de développer des choses inutiles et m'a permis de rester aligné avec ce que le client attendait vraiment. À la fin de chaque sprint, je prenais aussi le temps de faire le bilan : qu'est-ce qui avait bien marché, qu'est-ce qui avait posé problème, et comment améliorer la fois suivante.
+
+Au final, cette façon de travailler qui mélange l'autonomie du développement en solo et la rigueur des méthodes que j'avais apprises en équipe m'a permis de livrer une application qui fonctionne et qui répond aux besoins du client, même avec tous les changements demandés en cours de route. Utiliser Trello comme base de mon organisation, combiné avec une communication régulière avec le client et une documentation de toutes mes décisions techniques, ça a été la clé du succès de ce projet.
 
 ---
 
 ## 12. Conclusion
-- Bilan.
-- Limites.
-- Perspectives.
 
----
+### Bilan
 
-## 13. Annexes
-- Captures d’écran.
-- Documentation API.
-- Schéma BDD.
+Ce projet a été un vrai succès. J'ai réussi à créer une application complète et fonctionnelle qui répond parfaitement aux besoins du client et qui tient toutes les promesses faites au départ.
+
+L'application fonctionne de manière fluide et stable, avec toutes les fonctionnalités demandées : gestion des utilisateurs, système de réservation, paiements sécurisés, notifications en temps réel, et une interface intuitive. Le client peut maintenant gérer ses cours particuliers de façon moderne et efficace, ce qui était exactement l'objectif fixé au début.
+
+Sur le plan technique, j'ai mis en place une architecture solide et sécurisée. L'application respecte les bonnes pratiques de sécurité, protège les données personnelles des utilisateurs, et gère les paiements de manière conforme aux normes bancaires. Le système peut supporter de nombreux utilisateurs simultanés et s'adapte facilement aux évolutions futures.
+
+Le déploiement automatique fonctionne parfaitement : chaque nouvelle version se met en ligne sans intervention manuelle, ce qui facilite grandement la maintenance et les mises à jour. L'application est accessible 24h/24 et offre une expérience utilisateur de qualité sur tous les appareils.
+
+Au final, le client dispose maintenant d'un outil professionnel qui améliore concrètement sa façon de travailler et qui satisfait pleinement ses attentes. C'est exactement le résultat qu'on visait ensemble dès le début du projet.
+
+### Axes d'amélioration
+
+Même si l'application fonctionne bien, il reste quelques améliorations à apporter pour la rendre encore meilleure :
+
+J'ai identifié plusieurs petits bugs à corriger et des améliorations de style à faire pour rendre l'interface encore plus agréable. Un des prochains chantiers sera de rendre toutes les fenêtres de création et de modification (qu'on appelle des "modals") encore plus cohérentes entre elles pour une expérience utilisateur parfaitement uniforme.
+
+Il serait aussi intéressant d'ajouter la possibilité de se connecter avec son compte Google, Microsoft ou GitHub. Cela faciliterait encore plus l'inscription et la connexion pour les utilisateurs qui n'auraient plus besoin de créer un nouveau mot de passe.
+
+Pour renforcer la qualité, je prévois de mettre en place des tests automatiques supplémentaires qui simulent de vrais utilisateurs naviguant dans l'application (ce qu'on appelle des tests "end-to-end") et d'augmenter la couverture des tests existants pour couvrir encore plus de situations possibles.
+
+
 
