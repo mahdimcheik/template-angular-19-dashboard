@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { EnumGender } from '../models/user';
-
+/**
+ * Pipe qui transforme un numéro de genre en chaîne de caractères.
+ * Utilisation : {{ genderNumber | genderTransform }}
+ */
 @Pipe({
     name: 'genderTransform'
 })

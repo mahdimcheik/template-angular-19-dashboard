@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
+/**
+ * Pipe qui convertit une date de naissance en âge.
+ * Utilisation : {{ dateOfBirth | dobToAge }}
+ */
 @Pipe({
     name: 'dobToAge'
 })

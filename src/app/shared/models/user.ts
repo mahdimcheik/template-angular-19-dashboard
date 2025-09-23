@@ -1,3 +1,6 @@
+/**
+ * Enumération représentant les genres possibles pour un utilisateur.
+ */
 export enum EnumGender {
     Homme = 0,
     Femme = 1,

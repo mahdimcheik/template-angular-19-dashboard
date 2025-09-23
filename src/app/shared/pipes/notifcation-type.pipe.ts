@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
+/**
+ * Pipe qui transforme un numéro de type de notification en icône.
+ * Utilisation : {{ notificationTypeNumber | notifcationType }}
+ */
 @Pipe({
     name: 'notifcationType'
 })

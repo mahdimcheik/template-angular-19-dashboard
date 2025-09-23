@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { EnumBookingStatus } from '../../api/models/EnumBookingStatus';
-
+/**
+ * Pipe qui transforme un statut de commande en chaîne de caractères.
+ * Utilisation : {{ orderStatus | orderStatus }}
+ */
 @Pipe({
     name: 'orderStatus'
 })

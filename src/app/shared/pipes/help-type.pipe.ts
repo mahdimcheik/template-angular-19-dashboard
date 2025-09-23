@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { EnumTypeHelp } from '../../api/models/EnumTypeHelp';
-
+/**
+ * Pipe qui transforme un numéro de type d'aide en chaîne de caractères.
+ * Utilisation : {{ typeHelpNumber | helpType }}
+ */
 @Pipe({
     name: 'helpType'
 })

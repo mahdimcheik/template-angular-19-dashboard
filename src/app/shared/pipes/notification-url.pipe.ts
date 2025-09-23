@@ -1,7 +1,10 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
 import { EnumNotificationType } from '../../api';
 import { UserMainService } from '../services/userMain.service';
-
+/**
+ * Pipe qui transforme un type de notification en URL de redirection.
+ * Utilisation : {{ notificationType | notificationUrl }}
+ */
 @Pipe({
     name: 'notificationUrl'
 })
