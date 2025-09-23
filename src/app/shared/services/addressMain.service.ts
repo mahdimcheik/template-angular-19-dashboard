@@ -12,7 +12,12 @@ import { AddressResponseDTOResponseDTO } from '../../api/models/AddressResponseD
 import { StringResponseDTO } from '../../api/models/StringResponseDTO';
 import { AddressDropDown } from '../models/adresseOption';
 import { AddressTypeEnum } from '../../api/models/AddressTypeEnum';
-
+/**
+ * Service pour gérer les adresses des utilisateurs.
+ * Fournit des méthodes pour récupérer, ajouter, mettre à jour et supprimer des adresses via l'API.
+ * Utilise AddressService généré par OpenAPI pour les appels API.
+ * Stocke les adresses dans un signal pour une réactivité facile dans les composants Angular.
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -45,7 +50,12 @@ export class AddressMainService {
         }
     ];
     constructor() {}
-
+/**
+ * Récupère toutes les adresses d'un utilisateur.
+ * @param userId L'ID de l'utilisateur
+ * @param forOwner Indique si la requête est pour le propriétaire
+ * @returns Un observable contenant la liste des adresses
+ */
     getAllAddresses(userId: string, forOwner: boolean = true): Observable<AddressResponseDTOListResponseDTO> {
         return this.addressService.getAddressAll(userId).pipe(
             tap((res) => {
@@ -57,6 +67,12 @@ export class AddressMainService {
         );
     }
 
+    /**
+     * Met à jour une adresse existante.
+     * @param adresseDTO Les données de l'adresse à mettre à jour
+     * @param forOwner Indique si la requête est pour le propriétaire
+     * @returns Un observable contenant la réponse de l'API
+     */
     updateAddresse(adresseDTO: AddressUpdateDTO, forOwner: boolean = true): Observable<AddressResponseDTOResponseDTO> {
         return this.addressService.putAddress(adresseDTO).pipe(
             tap((res) => {
@@ -71,6 +87,12 @@ export class AddressMainService {
         );
     }
 
+    /**
+     * Ajoute une nouvelle adresse.
+     * @param adresseDTO Les données de l'adresse à ajouter
+     * @param forOwner Indique si la requête est pour le propriétaire
+     * @returns Un observable contenant la réponse de l'API
+     */
     addAddresse(adresseDTO: AddressCreateDTO, forOwner: boolean = true): Observable<AddressResponseDTOResponseDTO> {
         return this.addressService.postAddress(adresseDTO).pipe(
             tap((res) => {
@@ -83,6 +105,12 @@ export class AddressMainService {
         );
     }
 
+    /**
+     * Supprime une adresse existante.
+     * @param adresseId L'ID de l'adresse à supprimer
+     * @param forOwner Indique si la requête est pour le propriétaire
+     * @returns Un observable contenant la réponse de l'API
+     */
     deleteAddresse(adresseId: string, forOwner: boolean = true): Observable<StringResponseDTO> {
         return this.addressService.deleteAddress(adresseId).pipe(
             tap((res) => {

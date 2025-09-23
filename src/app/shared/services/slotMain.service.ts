@@ -11,10 +11,19 @@ import { BookingResponseDTO } from '../../api/models/BookingResponseDTO';
 import { QueryPagination } from '../../api/models/QueryPagination';
 import { ChatMessage } from '../../api/models/ChatMessage';
 
-// Type aliases for backward compatibility
+/**
+ * Type aliases pour la compatibilité ascendante.
+ */
 export type { SlotResponseDTO, SlotCreateDTO, SlotUpdateDTO, BookingCreateDTO, BookingResponseDTO, ChatMessage };
 export type QueryPanigation = QueryPagination;
-
+/**
+ * Service pour gérer les créneaux et les réservations.
+ * Fournit des méthodes pour récupérer, ajouter, mettre à jour et supprimer des créneaux, ainsi que pour gérer les réservations et les communications via l'API.
+ * Utilise SlotService et BookingService générés par OpenAPI pour les appels API.
+ * Stocke les créneaux visibles, les réservations et leur nombre dans des signaux pour une réactivité facile dans les composants Angular.
+ * Fournit également des méthodes de communication pour récupérer et envoyer des messages liés aux réservations.
+ * Utilise FullCalendar pour la gestion des événements de calendrier.
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -29,6 +38,11 @@ export class SlotMainService {
     start = signal(new Date());
     end = signal(new Date());
 
+    /**
+     * Récupère un créneau par son ID.
+     * @param slotId ID du créneau à récupérer
+     * @returns Un observable contenant le créneau correspondant
+     */
     getSlotById(slotId: string): Observable<EventInput> {
         return this.generatedSlotService.getSlotSlotid(slotId).pipe(
             map((response) => {
@@ -38,6 +52,13 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Récupère les créneaux d'un utilisateur par son ID.
+     * @param userId ID de l'utilisateur
+     * @param fromDate Date de début de la plage de recherche
+     * @param toDate Date de fin de la plage de recherche
+     * @returns Un observable contenant la liste des créneaux correspondants
+     */
     getSlotByCreator(userId: string, fromDate: string, toDate: string): Observable<EventInput[]> {
         return this.generatedSlotService.getSlot(userId, fromDate, toDate).pipe(
             map((response) => {
@@ -49,6 +70,12 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Ajoute un créneau par le créateur.
+     * Met à jour le signal visibleEvents avec le nouveau créneau ajouté.
+     * @param slotCreateDTO Les données du créneau à ajouter
+     * @returns Un observable contenant la réponse de l'API
+     */
     addSlotByCreator(slotCreateDTO: SlotCreateDTO) {
         return this.generatedSlotService.postSlot(slotCreateDTO).pipe(
             map((response) => ({
@@ -64,6 +91,11 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Met à jour un créneau par le créateur.
+     * @param slotUpdateDTO Les données du créneau à mettre à jour
+     * @returns Un observable contenant la réponse de l'API
+     */
     updateSlotByCreator(slotUpdateDTO: SlotUpdateDTO) {
         return this.generatedSlotService.putSlot(slotUpdateDTO).pipe(
             map((response) => ({
@@ -82,6 +114,11 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Supprime un créneau par le créateur.
+     * @param slotId ID du créneau à supprimer
+     * @returns Un observable contenant la réponse de l'API
+     */
     deleteSlotByCreator(slotId: string) {
         return this.generatedSlotService.deleteSlot(slotId).pipe(
             map((response) => ({
@@ -93,6 +130,11 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Annule une réservation par le professeur.
+     * @param slotId ID du créneau à annuler par le professeur
+     * @returns Un observable contenant la réponse de l'API
+     */
     unbookReservationByTeacher(slotId: string) {
         return this.generatedBookingService.deleteBookingUnbook(slotId).pipe(
             map((response) => ({
@@ -114,6 +156,12 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Récupère les créneaux disponibles pour un étudiant.
+     * @param fromDate Date de début de la plage de dates
+     * @param toDate Date de fin de la plage de dates
+     * @returns Un observable contenant la liste des créneaux disponibles
+     */
     getSlotByStudent(fromDate: string, toDate: string): Observable<EventInput[]> {
         return this.generatedSlotService.getSlotStudent(fromDate, toDate).pipe(
             map((response) => {
@@ -128,6 +176,11 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Réserve un créneau.
+     * @param newBooking Les données de la réservation à créer
+     * @returns Un observable contenant la réponse de l'API
+     */
     bookSlot(newBooking: BookingCreateDTO) {
         return this.generatedBookingService.postBookingBook(newBooking).pipe(
             map((response) => ({
@@ -139,6 +192,11 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Annule une réservation par l'étudiant.
+     * @param slotId ID du créneau à annuler par l'étudiant
+     * @returns Un observable contenant la réponse de l'API
+     */
     unbookReservationByStudent(slotId: string) {
         return this.generatedBookingService.deleteBookingStudentUnbook(slotId).pipe(
             map((response) => ({
@@ -150,6 +208,11 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Récupère les réservations d'un étudiant.
+     * @param query Les paramètres de pagination pour la requête
+     * @returns Un observable contenant la réponse de l'API
+     */
     getReservationsByStudent(query: QueryPagination) {
         return this.generatedBookingService.postBookingReservationsStudent(query).pipe(
             map((response) => ({
@@ -165,6 +228,11 @@ export class SlotMainService {
         );
     }
 
+    /**
+     * Récupère les réservations d'un professeur.
+     * @param query Les paramètres de pagination pour la requête
+     * @returns Un observable contenant la réponse de l'API
+     */
     getReservationsByTeacher(query: QueryPagination) {
         return this.generatedBookingService.postBookingReservationsTeacher(query).pipe(
             map((response) => ({
@@ -180,16 +248,31 @@ export class SlotMainService {
         );
     }
 
-    // Communication methods
+    /**
+     * Récupère les messages d'une réservation (suivi de cours/discussions).
+     * @param bookingId ID de la réservation pour laquelle on veut les messages
+     * @returns Un observable contenant la liste des messages
+     */
     getMessages(bookingId: string): Observable<ChatMessage[]> {
         return this.generatedBookingService.getBookingCommunications(bookingId).pipe(map((messages) => messages.data || []));
     }
 
+    /**
+     * Ajoute un message à une réservation (suivi de cours/discussions).
+     * @param bookingId ID de la réservation à laquelle on veut ajouter un message
+     * @param message Le message à ajouter
+     * @returns Un observable contenant le statut de l'opération
+     */
     addMessage(bookingId: string, message: ChatMessage): Observable<boolean> {
         return this.generatedBookingService.postBookingCommunicationsAddMessage(bookingId, message).pipe(map((response) => response || false));
     }
 
-    // Helper method to convert SlotResponseDTO to EventInput
+   /**
+    * Convertit un créneau de réservation en entrée d'événement.
+    * pour fullCalendar
+    * @param slot Le créneau à convertir
+    * @returns 
+    */
     convertSlotResponseToEventInput(slot: SlotResponseDTO): EventInput {
         return {
             start: new Date(slot.startAt!),

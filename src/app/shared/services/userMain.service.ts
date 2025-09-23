@@ -25,6 +25,7 @@ import { SignalRService } from './signal-r.service';
 export type { UserResponseDTO, UserCreateDTO, UserUpdateDTO, UserLoginDTO };
 export type UserChangePasswordDTO = PasswordRecoveryInput;
 
+
 type ResponseRegister = {
     succeeded: boolean;
     errors: string[];
@@ -44,7 +45,12 @@ export type ResponseDTO = {
     data?: any;
     count?: number;
 };
-
+/**
+ * service pour gérer les utilisateurs.
+ * en fonction de leurs roles, les liens de la sidebar changent.
+ * Fournit des méthodes pour l'authentification, l'inscription, la gestion des profils, etc. via l'API.
+ * Utilise UsersService généré par OpenAPI pour les appels API.
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -116,6 +122,12 @@ export class UserMainService {
         });
     }
 
+    /**
+     * Récupère la liste des utilisateurs.
+     * @param first Indice du premier utilisateur à récupérer
+     * @param rows Nombre d'utilisateurs à récupérer
+     * @returns Un observable contenant la réponse de l'API
+     */
     getUsers(first: number, rows: number): Observable<ResponseDTO> {
         return this.generatedUsersService.getUsersAll(first, rows).pipe(
             switchMap((response: UserResponseDTOResponsePaginationResponseDTO) => {
@@ -129,7 +141,11 @@ export class UserMainService {
             })
         );
     }
-
+/**
+ * Enregistre un nouvel utilisateur.
+ * @param userDTO les données de l'utilisateur à enregistrer
+ * @returns Un observable contenant la réponse de l'API
+ */
     register(userDTO: UserCreateDTO): Observable<ResponseRegister> {
         return this.generatedUsersService.postUsersRegister(userDTO).pipe(
             switchMap((response: any) => {
@@ -142,7 +158,10 @@ export class UserMainService {
             })
         );
     }
-
+/**
+ * Renvoyer le lien de confirmation. si le client n' a pas reçu le mail de confirmation ou que l' email de confirmation est perimée.
+ * @returns Un observable contenant la réponse de l'API
+ */
     resendConfirmationLink(): Observable<ResponseDTO> {
         return this.generatedUsersService.getUsersResendConfirmationLink().pipe(
             switchMap((response: any) => {
@@ -157,6 +176,11 @@ export class UserMainService {
         );
     }
 
+    /**
+     * Authentifie un utilisateur.
+     * @param userLoginDTO les données de connexion de l'utilisateur
+     * @returns Un observable contenant la réponse de l'API
+     */
     login(userLoginDTO: UserLoginDTO): Observable<LoginOutputDTOResponseDTO> {
         return this.generatedUsersService.postUsersLogin(userLoginDTO).pipe(
             tap((res) => {
@@ -170,7 +194,10 @@ export class UserMainService {
             })
         );
     }
-
+    /**
+     * Rafraîchit le token d'authentification.
+     * @returns Un observable contenant la réponse de l'API
+     */
     refreshToken(): Observable<ResponseDTO> {
         return this.generatedUsersService.getUsersRefreshToken().pipe(
             switchMap((response: any) => {
@@ -190,7 +217,11 @@ export class UserMainService {
             })
         );
     }
-
+    /**
+     * Déconnecte l'utilisateur.
+     * Réinitialise les données utilisateur et redirige vers la page d'accueil.
+     * @returns void
+     */
     logout(): void {
         this.generatedUsersService
             .getUsersLogout()
@@ -204,7 +235,10 @@ export class UserMainService {
                 this.cookieConsentService.withdrawConsent();
             });
     }
-
+    /**
+     * Récupère les informations du profil de l'utilisateur. en utilisant le refresh-token
+     * @returns Un observable contenant la réponse de l'API
+     */
     getprofile(): Observable<ResponseDTO> {
         return this.generatedUsersService.getUsersMyInformations().pipe(
             switchMap((response: ObjectResponseDTO) => {
@@ -224,6 +258,11 @@ export class UserMainService {
         );
     }
 
+    /**
+     * Permet au professeur, de consulter les profils etudiants
+     * @param userId ID de l'utilisateur dont on veut les informations publiques
+     * @returns 
+     */
     getprofileById(userId: string): Observable<ResponseDTO> {
         return this.generatedUsersService.getUsersPublicInformations(userId).pipe(
             switchMap((response: ObjectResponseDTO) => {
@@ -237,6 +276,10 @@ export class UserMainService {
         );
     }
 
+    /**
+     * Récupère le profil de l'enseignant.
+     * @returns Un observable contenant la réponse de l'API
+     */
     getTeacherProfile(): Observable<ResponseDTO> {
         return this.generatedUsersService.getUsersPublicInformations('teacher').pipe(
             switchMap((response: ObjectResponseDTO) => {
@@ -250,7 +293,11 @@ export class UserMainService {
             tap((res) => this.teacherDetails.set(res.data))
         );
     }
-
+    /**
+     * Récupère le profil public d'un utilisateur par son ID.
+     * @param userId ID de l'utilisateur dont on veut les informations publiques
+     * @returns Un observable contenant la réponse de l'API
+     */
     getPublicProfile(userId: string): Observable<ResponseDTO> {
         return this.generatedUsersService.getUsersPublicInformations(userId).pipe(
             switchMap((response: ObjectResponseDTO) => {
@@ -264,7 +311,11 @@ export class UserMainService {
             tap((res) => this.teacherDetails.set(res.data))
         );
     }
-
+    /**
+     * Récupère le profil public d'un utilisateur par son ID.
+     * @param input les données pour réinitialiser le mot de passe (email)
+     * @returns Un observable contenant la réponse de l'API
+     */
     forgotPassword(input: { email: string }): Observable<ResponseDTO> {
         const forgotPasswordInput: ForgotPasswordInput = {
             email: input.email
@@ -281,6 +332,11 @@ export class UserMainService {
         );
     }
 
+    /**
+     * Récupère le profil public d'un utilisateur par son ID.
+     * @param changePassword les données pour réinitialiser le mot de passe (token, newPassword)
+     * @returns Un observable contenant la réponse de l'API
+     */
     resetPassword(changePassword: UserChangePasswordDTO): Observable<ResponseDTO> {
         return this.generatedUsersService.postUsersResetPassword(changePassword).pipe(
             switchMap((response: ObjectResponseDTO) => {
@@ -294,12 +350,22 @@ export class UserMainService {
         );
     }
 
+    /**
+     * Réinitialise les données utilisateur stockées localement.
+     * Utilisé lors de la déconnexion.
+     * @returns void
+     */
     reset(): void {
         this.localStorageService.reset();
         this.userConnected.set({} as UserResponseDTO);
         this.token.set('');
     }
 
+    /**
+     * Met à jour les informations personnelles de l'utilisateur.
+     * @param userUpdated les données de l'utilisateur à mettre à jour
+     * @returns Un observable contenant la réponse de l'API
+     */
     updatePersonnalInfos(userUpdated: UserUpdateDTO): Observable<ResponseDTO> {
         return this.generatedUsersService.patchUsersUpdate(userUpdated).pipe(
             switchMap((response: any) => {
@@ -320,6 +386,11 @@ export class UserMainService {
         );
     }
 
+    /**
+     * Met à jour l'avatar de l'utilisateur.
+     * @param file le fichier image à uploader
+     * @returns Un observable contenant la réponse de l'API
+     */
     updateAvatar(file: File): Observable<ResponseDTO> {
         if (file) {
             const formData = {

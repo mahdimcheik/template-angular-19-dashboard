@@ -5,7 +5,12 @@ export type Theme = {
     name: string;
     value: string;
 };
-
+/**
+ * @obsolete 
+ * Service pour gérer les thèmes de l'application.
+ * Fournit des méthodes pour changer et obtenir le thème actif.
+ * Gère une liste de thèmes disponibles.
+ */
 @Injectable({
     providedIn: 'root'
 })

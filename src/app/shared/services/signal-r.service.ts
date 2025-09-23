@@ -12,7 +12,12 @@ export enum ConnectionState {
     Reconnecting = 'Reconnecting',
     Error = 'Error'
 }
-
+/**
+ * Service pour gérer la connexion SignalR.
+ * Fournit des méthodes pour se connecter, envoyer des messages et gérer les notifications en temps réel.
+ * Utilise SignalR pour la communication en temps réel avec le serveur.
+ * Gère les états de connexion et les tentatives de reconnexion avec des délais exponentiels.
+ */
 @Injectable({ providedIn: 'root' })
 export class SignalRService {
     private notificationService = inject(NotificationMainService);
@@ -28,6 +33,10 @@ export class SignalRService {
 
     constructor() {}
 
+    /**
+     * Initialise et établit la connexion SignalR.
+     * @param token Token d'authentification pour la connexion SignalR
+     */
     initiateAndConnect(token: string) {
         this.createConnection(token);
         this.startConnection();
@@ -44,6 +53,14 @@ export class SignalRService {
         return this.messageReceived$.asObservable();
     }
 
+    /**
+     * 
+     * @param token Token d'authentification pour la connexion SignalR
+     * Crée la connexion SignalR avec les paramètres appropriés.
+     * Configure la reconnexion automatique avec des délais personnalisés.
+     * Configure le logging pour la connexion.
+     * @note Le transport WebSockets est utilisé par défaut si disponible.
+     */
     private createConnection(token: string) {
         this.hubConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${this.baseUrl}/chathub`, {
@@ -61,6 +78,11 @@ export class SignalRService {
             .build();
     }
 
+    /**
+     * Démarre la connexion SignalR.
+     * Gère les états de connexion et les tentatives de reconnexion avec des délais exponentiels.
+     * Démarre un mécanisme de "heartbeat" pour maintenir la connexion active.
+     */
     private async startConnection() {
         try {
             await this.hubConnection.start();

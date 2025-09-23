@@ -1,6 +1,10 @@
 import { Injectable, OnDestroy, signal } from '@angular/core';
 import { auditTime, distinctUntilChanged, fromEvent, map, merge, of, startWith, Subscription } from 'rxjs';
-
+/**
+ * Service pour surveiller l'état de la connexion réseau.
+ * Utilise les événements 'online' et 'offline' du navigateur pour détecter les changements de statut.
+ * Expose un signal isOnline pour que les composants Angular puissent réagir aux changements de statut.
+ */
 @Injectable({
     providedIn: 'root'
 })

@@ -3,7 +3,11 @@ import { Injectable, signal, effect } from '@angular/core';
 export interface CookieConsentSettings {
     essential: boolean;
 }
-
+/**
+ * Service pour gérer le consentement aux cookies conformément au RGPD.
+ * Utilise des signaux pour suivre l'état du consentement et les paramètres.
+ * Stocke les décisions de consentement dans le localStorage avec une date d'expiration.
+ */
 export interface ConsentDecision {
     timestamp: Date;
     version: string;
