@@ -1142,6 +1142,11 @@ Plusieurs assertions sont ensuite effectuées pour garantir que :
 
 La documentation de l'API constitue un pilier fondamental du projet, garantissant la maintenabilité, la facilité d'intégration et la collaboration efficace entre les équipes de développement. Notre approche de documentation s'appuie sur des standards modernes et des outils automatisés pour assurer une cohérence parfaite entre le code source et la documentation technique.
 
+Pour la partie front-end de l’application, j’ai utilisé Compodoc afin de générer automatiquement la documentation du code Angular. Cette documentation couvre l’ensemble des composants, services, modules et directives, et est produite sous forme de fichiers HTML statiques, facilement consultables via un navigateur.
+
+Bien que la documentation du front est décrite dans l'annexe, elle est également déployée sur le serveur et accessible à l’adresse : docs.skill-hive.fr.
+Ce paragraphe permet simplement de présenter brièvement la démarche et les outils utilisés pour le front-end, avant de passer à la documentation de l’API.
+
 ### 9.1 Architecture de documentation automatisée
 
 L'architecture de documentation repose sur une génération automatique à partir du code source, éliminant les risques de désynchronisation entre l'implémentation et la documentation. Cette approche garantit que chaque modification du code est immédiatement reflétée dans la documentation, maintenant ainsi une fiabilité constante des informations techniques.
@@ -1326,6 +1331,42 @@ Pour renforcer la qualité, je prévois de mettre en place des tests automatique
 
 
 ## 12 Annexes
+
+### Documentation Front-End
+
+Pour générer la documentation du front-end, j’ai utilisé la librairie Compodoc, qui permet de produire des fichiers HTML basés sur les commentaires associés aux services, composants et classes Angular.
+
+Bien que la majorité des services soient générés automatiquement via la librairie openapi-typescript-codegen et leurs commentaires le sont egalement, les autres commentaires sont ajoutés manuellement pour fournir des explications claires et illustrer l’utilisation des fonctionnalités.
+
+Par exemple, pour une Pipe personnalisée :
+```ts
+import { Pipe, PipeTransform } from '@angular/core';
+
+/**
+ * Pipe qui convertit une date de naissance en âge.
+ * Utilisation : {{ dateOfBirth | dobToAge }}
+ */
+@Pipe({
+    name: 'dobToAge'
+})
+export class DobToAgePipe implements PipeTransform {
+...
+}
+```
+
+<i>Cette Pipe convertit une date de naissance en âge numérique. Les commentaires montrent un exemple simple de son utilisation.</i>
+
+Une fois les commentaires ajoutés, il suffit de lancer la commande :
+
+`npm run docs`
+
+
+Celle-ci exécute le script de génération de la documentation et produit l’ensemble des fichiers HTML, CSS et JS nécessaires à un site statique présentant la documentation de manière professionnelle et lisible.
+
+**Déploiement**
+
+Pour le déploiement, j’ai mis en place l’URL docs.skill-hive.fr, qui sert le site de documentation. Actuellement, les fichiers sont copiés manuellement sur le serveur, mais une automatisation via CI/CD est envisagée pour faciliter les mises à jour futures.
+
 
 ### CI Annexe
 ```yml
