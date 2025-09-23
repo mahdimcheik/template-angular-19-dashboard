@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant Client
+    participant Application
+    participant Serveur
+    participant Stripe
+
+    Client->>Application: Sélectionne un créneau
+    Application->>Serveur: Crée un checkout (valable 15 min)
+    Serveur-->>Application: Retourne l'URL de paiement
+    Application->>Client: Affiche le compte à rebours (15 min)
+
+    Client->>Application: Clique sur "Payer"
+    Application->>Stripe: Redirection vers l'interface Stripe
+    Stripe-->>Client: Page de paiement
+
+    alt Paiement validé avant 15 min
+        Stripe-->>Serveur: Confirmation de paiement
+        Serveur-->>Application: Met à jour la réservation
+    else Délai expiré (15 min)
+        Stripe-->>Serveur: Checkout expiré
+        Serveur-->>Application: Annulation automatique
+        Application-->>Client: Créneau libéré
+    end

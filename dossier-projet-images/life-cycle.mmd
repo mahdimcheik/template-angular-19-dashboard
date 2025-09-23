@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant Client as Angular (Frontend)
+    participant API as .NET API (Backend)
+    participant DB as PostgreSQL
+
+    Client->>API: Envoie une requête HTTP (GET/POST/PUT/DELETE)
+    API->>API: Middleware (auth, logging, validation, etc.)
+    API->>DB: Exécute une requête SQL
+    DB-->>API: Retourne le résultat
+    API->>API: Traitement métier, mapping DTO
+    API-->>Client: Réponse HTTP (JSON/Status Code)
+    Client->>Client: Met à jour l’UI (affichage données / message)

@@ -49,7 +49,7 @@
   - [2. Présentation générale](#2-présentation-générale)
   - [3. Fonctionnalités détaillées](#3-fonctionnalités-détaillées)
   - [4. Architecture technique](#4-architecture-technique)
-  - [5. Conception](#5-conception)
+  - [5. Conception de la base de données](#5-conception-de-la-base-de-données)
   - [6. Sécurité](#6-sécurité)
   - [7. Déploiement](#7-déploiement)
   - [8. Tests et assurance qualité](#8-tests-et-assurance-qualité)
@@ -311,6 +311,33 @@ L'intégration Stripe assure un processus de paiement garantissant la sécurité
 
 #### 3.1 Deroulement
 
+<div style="width: 100%; margin-bottom: 8px;">
+  <img  src="diagram-stripe.png" alt="Interface de messagerie Trevo"  style="display: block; margin: auto;"/>
+  <i>
+
+**Client** : l’utilisateur final qui réserve et paie son créneau.
+
+**Application** : l’interface front (par ex. Angular) qui gère l’affichage (compte à rebours, bouton « Payer »).
+
+**Serveur** : le backend qui crée et gère les sessions de paiement (checkout).
+
+**Stripe** : la plateforme de paiement externe utilisée pour finaliser la transaction.
+
+**Étapes principales**
+
+- Le client sélectionne un créneau et un checkout de 15 minutes est généré côté serveur.
+
+- L’application affiche un compte à rebours du temps restant.
+
+- Si le client clique sur « Payer », il est redirigé vers l’interface Stripe.
+
+Deux scénarios possibles :
+
+- ✅ Paiement validé dans les 15 minutes : Stripe confirme au serveur, qui valide la réservation.
+
+- ❌ Délai expiré : le checkout est annulé automatiquement et le créneau redevient disponible.</i>
+  </div>
+
 Une fois la commande prête, le client dispose de 15 minutes pour effectuer le paiement, avec un compte à rebours affichant le temps restant. En cliquant sur « Payer », la redirection vers l’interface Stripe s’effectue automatiquement après la création côté serveur d’un checkout valable 15 minutes. Si le délai expire, le checkout est annulé automatiquement.
 
 <div style="width: 100%;">
@@ -404,13 +431,15 @@ Les réservations sont organisées par statut (à payer ou passées) avec pagina
   <img  src="orders.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
   <i  style="width: 90%;display: block; margin: auto;">La page des commandes présente plusieurs éléments visuels pour faciliter la gestion :
 
-En noir : la commande en cours, avec son temps restant pour effectuer le paiement, les détails complets de la commande ainsi que les boutons de contrôle associés.
+- En noir : la commande en cours, avec son temps restant pour effectuer le paiement, les détails complets de la commande ainsi que les boutons de contrôle associés.
 
-En rouge : le champ de recherche permettant de retrouver les anciennes commandes.
+- En rouge : le champ de recherche permettant de retrouver les anciennes commandes.
 
-En vert foncé : le bouton de téléchargement de la facture au format PDF.
+- En vert foncé : le bouton de téléchargement de la facture au format PDF.
 
-En vert clair : le bouton qui permet de copier les détails techniques de la commande, afin que le client puisse les transmettre facilement à l’administrateur en cas de besoin.</i>
+- En vert clair : le bouton qui permet de copier les détails techniques de la commande, afin que le client puisse les transmettre facilement à l’administrateur en cas de besoin.
+
+</i>
 
 </div>
 
@@ -434,7 +463,7 @@ En complément de la messagerie interne, le système propose également l’envo
 
 Cette fonctionnalité, réservée exclusivement au professeur, constitue le véritable cœur opérationnel de l’application. Elle centralise l’organisation et la planification des séances.
 
-- Grâce à un calendrier interactif, le professeur peut :
+Grâce à un calendrier interactif, le professeur peut :
 
 - Créer de nouveaux créneaux horaires pour proposer des séances aux élèves.
 
@@ -452,6 +481,18 @@ Cette interface permet une gestion souple et rapide de l’emploi du temps. L’
 </div>
 Cette approche améliore considérablement l’efficacité de la gestion des cours : les modifications sont instantanément prises en compte dans le système, garantissant une information toujours à jour pour les élèves.
 
+<div style="width: 100%;margin: 8px">
+  <img  src="algo-edition.png" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Ce diagramme illustre :
+
+- Première vérification (avant d’ouvrir le pop-up).
+
+- Seconde vérification côté serveur (avant d’appliquer les changements).
+
+Les cas d’échec et de succès.</i>
+
+</div>
+
 ### 7. Facturation
 
 Afin de répondre aux exigences légales françaises, le système de facturation a été conçu pour générer des documents conformes aux normes en vigueur. Chaque facture produite respecte :
@@ -462,11 +503,11 @@ Afin de répondre aux exigences légales françaises, le système de facturation
 
 La génération des factures se fait à la demande, ce qui évite d’occuper inutilement de l’espace de stockage avec des fichiers inutilisés. Les factures sont créées dynamiquement au format PDF grâce à la librairie QuestPDF. Cette bibliothèque est particulièrement adaptée aux environnements de production car elle :
 
-Offre des performances très élevées avec un temps de génération quasi instantané.
+- Offre des performances très élevées avec un temps de génération quasi instantané.
 
-Consomme peu de ressources système par rapport à des solutions plus lourdes comme Puppeteer + Chromium.
+- Consomme peu de ressources système par rapport à des solutions plus lourdes comme Puppeteer + Chromium.
 
-Permet une flexibilité importante : le développeur peut facilement adapter le modèle de facture en cas d’évolution légale ou de correction nécessaire.
+- Permet une flexibilité importante : le développeur peut facilement adapter le modèle de facture en cas d’évolution légale ou de correction nécessaire.
 
 Ce fonctionnement permet de garantir un système à la fois rapide, économique en stockage et évolutif. Le résultat est une expérience fluide pour l’utilisateur, tout en maintenant une conformité réglementaire stricte.
 
@@ -479,13 +520,13 @@ Ce fonctionnement permet de garantir un système à la fois rapide, économique 
 
 La page Notifications constitue l’accueil du dashboard. Elle offre à l’utilisateur une vue immédiate sur l’activité récente et met en avant :
 
-L’ensemble des notifications, organisées par ordre chronologique pour garantir qu’aucun événement important ne soit manqué.
+- L’ensemble des notifications, organisées par ordre chronologique pour garantir qu’aucun événement important ne soit manqué.
 
-Un système de filtrage permettant de différencier facilement les notifications déjà consultées de celles encore non lues.
+- Un système de filtrage permettant de différencier facilement les notifications déjà consultées de celles encore non lues.
 
-Un récapitulatif hebdomadaire clair et concis, donnant une vision globale des événements récents (paiements, réservations, modifications de créneaux, etc.).
+- Un récapitulatif hebdomadaire clair et concis, donnant une vision globale des événements récents (paiements, réservations, modifications de créneaux, etc.).
 
-<div style="width: 100%; margin-bottom: 8px;">
+<div style="width: 100%; margin: 8px;">
   <img  src="notif.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
   <i>En en-tête de la page, un petit résumé de l’activité hebdomadaire permet d’avoir une vue d’ensemble des événements récents (créneaux créés, réservations, paiements, etc.). Les notifications détaillées sont affichées en bas de la page, sous forme de liste paginée. L’utilisateur dispose également d’un système de filtrage pour afficher uniquement les notifications vues ou non vues.</i>
 </div>
@@ -501,7 +542,7 @@ Ce mécanisme permet au professeur et aux élèves d’être informés en direct
 
 - L’arrivée d’un nouveau message ou d’une nouvelle réservation.
 
-- La mise a jour du profil.
+- La mise à jour du profil.
 
 L’utilisation de SignalR garantit donc un flux d’informations en temps réel, améliorant la réactivité de l’application et réduisant les risques de décalage entre l’état du serveur et ce que l’utilisateur voit à l’écran.
 
@@ -533,11 +574,11 @@ La section formations constitue un élément différenciant de l'application, pe
 
 La gestion des profils intègre des mesures de sécurité strictes conformes au RGPD :
 
-**Contrôle d'accès granulaire** : Système de permissions permettant aux élèves de contrôler précisément quelles informations sont visibles par le professeur.
+- **Contrôle d'accès granulaire** : Système de permissions permettant aux élèves de contrôler précisément quelles informations sont visibles par le professeur.
 
-**Anonymisation automatique (en cours)** : Processus d'anonymisation des données lors de la suppression de compte, préservant les statistiques globales tout en respectant le droit à l'effacement.
+- **Anonymisation automatique (en cours)** : Processus d'anonymisation des données lors de la suppression de compte, préservant les statistiques globales tout en respectant le droit à l'effacement.
 
-**Chiffrement des données sensibles** : La protection des informations personnelles est une priorité essentielle dans notre projet. Parmi les données les plus critiques se trouvent les adresses précises des étudiants, qui ne doivent en aucun cas être accessibles en clair dans la base de données.
+- **Chiffrement des données sensibles** : La protection des informations personnelles est une priorité essentielle dans notre projet. Parmi les données les plus critiques se trouvent les adresses précises des étudiants, qui ne doivent en aucun cas être accessibles en clair dans la base de données.
 
 Pour répondre à cet enjeu, un mécanisme de chiffrement symétrique a été mis en place en utilisant l’algorithme AES (Advanced Encryption Standard), fourni nativement par la bibliothèque System.Security.Cryptography de .NET. Lorsqu’une nouvelle adresse est enregistrée, seules les parties sensibles — comme le nom de la rue et le numéro — sont chiffrées avant d’être stockées. Cela signifie que même en cas de fuite de la base de données, il est impossible pour un attaquant de déduire l’adresse exacte d’un étudiant.
 
@@ -590,6 +631,7 @@ Angular 19 représente la dernière version du framework développé par Google,
 - **TypeScript natif** : L'intégration native de TypeScript offre une meilleure détection d'erreurs à la compilation et améliore la productivité des développeurs
 - **Écosystème complet** : Angular CLI, Angular Material, et un ensemble d'outils intégrés accélèrent le développement
 - **Support à long terme** : Google assure un support LTS (Long Term Support) offrant une stabilité pour les projets d'entreprise
+- **Fonctionnalités avancées** : Inversion de dépendance, POO, et Injection de dépendance.
 
 #### Librairies Frontend utilisées
 
@@ -612,6 +654,7 @@ L'application s'appuie sur un ensemble de librairies spécialisées pour offrir 
 - **Sécurité intégrée** : Fonctionnalités de sécurité built-in et conformité aux standards
 - **Interopérabilité** : Support multi-plateforme (Windows, Linux, macOS)
 - **Support Microsoft** : Maintenance et évolutions assurées par Microsoft
+- **Fonctionnalités avancées** : Inversion de dépendance, POO, et Injection de dépendance.
 
 #### Librairies Backend principales
 
@@ -648,11 +691,13 @@ Le frontend, développé en Angular, fournit une interface utilisateur interacti
 Le backend, développé en .NET, expose une API sécurisée qui gère la logique métier, l’authentification et la validation des données. Il interagit avec la base PostgreSQL via Entity Framework Core, garantissant une bonne abstraction de la couche de persistance.
 Enfin, la base de données stocke les informations métier de manière relationnelle et assure l’intégrité via des contraintes.
 
-voici un diagrame qui illustre ces interactions
+#### Interactions et infrastructure
+
+voici un diagrame qui illustre ces interactions et qui inclut également l'infrastrusture
 
 <div style="width: 100%;">
-  <img  src="dataFlow.png" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
-  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Schema d'interaction du client au serveur et base de données en passant par le reverse proxy</i>
+  <img  src="dataFlow.png" alt="Interface de gestion du profil"  style="display: block; margin: auto;"/>
+  <i  style="display: block; margin: auto; margin-top: 8px">Schema d'interaction du client au serveur et base de données en passant par le reverse proxy</i>
 </div>
 
 Le reverse proxy joue un rôle crucial dans la communication entre les différents composants de l’application.
@@ -664,6 +709,26 @@ Cette approche permet d’exposer une seule adresse publique vers l’extérieur
 En interne, le serveur .NET et la base de données PostgreSQL communiquent directement via un réseau privé Docker (bridge network). Cette isolation garantit à la fois des performances optimales et une meilleure sécurité, car la base n’est pas accessible directement depuis l’extérieur.
 
 Enfin, un administrateur peut tout de même interagir avec la base de données grâce à l’outil pgAdmin, également exécuté dans un conteneur. Celui-ci est exposé via le reverse proxy sur un port dédié, permettant ainsi une gestion simplifiée et sécurisée de la base de données sans casser l’isolation interne.
+
+#### Fonctionnement type
+
+Si on essaie de suivre un appel HTTP type, le client clique sur le bouton, une requête HTTP est envoyée depuis l’application Angular vers l’API .NET. La requête passe d’abord par les middlewares (authentification, validation, logging), puis le backend exécute une requête SQL vers la base de données PostgreSQL. Une fois la réponse obtenue, l’API applique la logique métier, formate les données en JSON et renvoie la réponse au client. Enfin, Angular traite cette réponse et le client-Angular met à jour la vue.
+
+<div style="width: 100%;">
+  <img  src="life-cycle.png" alt="Interface de gestion du profil"  style="display: block; margin: auto;"/>
+  <i  style="display: block; margin: auto; margin: 8px">
+  Client (Angular) : envoie une requête HTTP via HttpClient (GET, POST, etc.).
+
+1.  API (.NET) : reçoit la requête, passe par les middlewares (authentification, validation, logging).
+
+2.  Accès base (Postgres) : la couche repository / ORM (ex : Entity Framework) interroge la base.
+
+3.  Retour : le résultat SQL est renvoyé à l’API, qui applique la logique métier.
+
+4.  Réponse : l’API renvoie un objet JSON + code HTTP (200, 400, 500, …).
+
+5.  Angular : consomme la réponse et met à jour l’UI (ex. affichage du planning, message d’erreur, etc.).</i>
+</div>
 
 ### 4.3 Structure de la base de données
 
@@ -691,12 +756,7 @@ La figure suivante illustre plus en détail la partie réservation, en mettant e
 
 ---
 
-## 5. Conception
-
-- Maquettes écran.
-- Modèle de données.
-
-### Cas d’utilisation
+## 5. Conception de la base de données
 
 ### Modèle de données
 
@@ -717,7 +777,7 @@ Les entités liées à la logique de réservation sont illustrées dans le diagr
 
 <div style="width: 100%;">
   <img  src="booking-notification.svg" alt="Interface de gestion du profil" width="450" style="display: block; margin: auto;"/>
-  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Utilisateur et réservation : créneaux, réeservation, commande et notification</i>
+  <i  style="width: 450px;display: block; margin: auto; margin-top: 8px">Utilisateur et réservation : créneaux, réservation, commande et notification</i>
 </div>
 
 #### Spécifications Techniques
@@ -1016,7 +1076,7 @@ docker build --target prod-runtime -t mahdimcheik/skill-hive-front:${{ env.FRONT
 ```
 
 - Dans cet exemple, l'utilisation du stage `prod-runtime` permet de séparer les variables liées au test de celles liées à la production. Remarquez que dans le dockerfile `FROM nginx:alpine as prod-runtime
-COPY --from=production /app/dist/skill-hive/browser /usr/share/nginx/html` le profil prod-runtime permet de préciser à angular de build le profil de production et donc utiliser les variables qui y sont liées grâce à la configuration
+COPY --from=production /app/dist/skill-hive/browser /usr/share/nginx/html` le profil prod-runtime permet de préciser à Angular de build le profil de production et donc utiliser les variables qui y sont liées grâce à la configuration
 
 ```json
                         "production": {
@@ -1030,6 +1090,8 @@ COPY --from=production /app/dist/skill-hive/browser /usr/share/nginx/html` le pr
                             ...
                         },
 ```
+
+<i>Configuration Angular qui permet de remplacer les variables d'environement</i>
 
 Un traitement similaire est appliqué au profil de test, afin de garantir une cohérence avec l’environnement de production tout en conservant ses spécificités. Du côté du backend, les variables et secrets nécessaires au fonctionnement de l’application sont fournis via des fichiers .env distincts, permettant ainsi une gestion claire et sécurisée des configurations selon l’environnement ciblé.
 

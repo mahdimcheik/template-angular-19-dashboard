@@ -1,0 +1,13 @@
+---
+config:
+  theme: mc
+---
+flowchart TD
+    A[Professeur clique sur un créneau ] --> B{Créneau disponible ?}
+    B -- Non --> X[Message : modal de consultation]
+    B -- Oui --> C[Ouverture du modal d'édition]
+    C --> D[Professeur modifie et valide]
+    D --> E{Vérification serveur : créneau toujours valide ?}
+    E -- Non --> Y[Erreur : créneau non valide ou déjà pris]
+    E -- Oui --> F[Enregistrement des modifications]
+    F --> G[Confirmation et mise à jour du calendrier]
