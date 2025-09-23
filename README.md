@@ -1,4 +1,17 @@
-# install ssl
+# Note de developpement de Skill-hive
+
+## docs 
+Pour générer la documentation en local :
+
+`npm run docs`
+
+
+Pour mettre à jour la documentation sur le serveur :
+
+`scp -r ./documentation root@<IP_DU_SERVEUR>:/root/skillhive/frontend/documentation`
+
+## install ssl
+
 1.  install choco `Set-ExecutionPolicy Bypass -Scope Process -Force; `
 [System.Net.ServicePointManager]::SecurityProtocol = `
   [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
