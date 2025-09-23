@@ -205,12 +205,13 @@ L’onglet Contact permet d’envoyer un message directement au professeur pour 
 
 ##### Onglet Utilisateurs (professeur)
 
-Fonctionnalités administratives pour le professeur
-Le professeur dispose également des droits d’administrateur, il accède à des fonctionnalités avancées via l’onglet Utilisateurs. Cet onglet lui permet de :
-
 <div style="width: 100%; margin-bottom: 8px;">
-  <img  src="students.png" alt="students" width="450" style="display: block; margin: auto;"/>
+  <img  src="students.png" alt="students"  style="display: block; margin: auto;"/>
+  <i>Une fenêtre modale qui permet d’avoir un aperçu rapide du profil de l’élève, et offre au professeur la possibilité d’accéder au profil complet, de bannir ou d’autoriser le profil.</i>
 </div>
+
+Fonctionnalités administratives pour le professeur.
+Le professeur dispose également des droits d’administrateur, il accède à des fonctionnalités avancées via l’onglet Utilisateurs. Cet onglet lui permet de :
 
 - Lister tous les élèves inscrits sur la plateforme.
 
@@ -251,11 +252,11 @@ Pour plus de confort, j'ai mis en place deux modes d’affichage :
 5. Messagerie.
 6. Gestion des tarifs et disponibilités.
 7. Facturation
-8. Notification/signalR
+8. Notification /Websocket
 
 ### 1. Inscription et authentification
 
-L'inscription constitue le point d'entrée de l'application et s'articule autour d'un processus en deux étapes. Lors de l'inscription, l'utilisateur renseigne ses informations personnelles (nom, prénom, email, mot de passe) via un formulaire sécurisé avec validation en temps réel. Le système vérifie la robustesse du mot de passe (8 caractères minimum, combinaison de majuscules, minuscules, chiffres et caractères spéciaux) et l'unicité de l'adresse email. Deux consentements distincts sont requis : l'acceptation de la politique de confidentialité et l'autorisation de traitement des données personnelles conformément au RGPD. Une fois l'inscription validée, l'utilisateur reçoit un email de confirmation pour activer son compte.
+L'inscription constitue le point d'entrée de l'application et s'articule autour d'un processus en deux étapes. Lors de l'inscription, l'utilisateur renseigne ses informations personnelles (nom, prénom, email, mot de passe) via un formulaire sécurisé avec validation en temps réel. Le système vérifie la robustesse du mot de passe (un nombre de caractères minimum, combinaison de majuscules, minuscules, chiffres et caractères spéciaux) et l'unicité de l'adresse email. Deux consentements distincts sont requis : l'acceptation de la politique de confidentialité et l'autorisation de traitement des données personnelles conformément au RGPD. Une fois l'inscription validée, l'utilisateur reçoit un email de confirmation pour activer son compte.
 
 <div style="width: 100%;">
   <img  src="login.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
@@ -263,11 +264,17 @@ L'inscription constitue le point d'entrée de l'application et s'articule autour
 </i>
 </div>
 
-L'authentification repose sur un système dual optimisant sécurité et expérience utilisateur. La connexion initiale génère un JWT court (30 minutes) stocké en mémoire et un refresh token long (7 jours) stocké dans un cookie sécurisé. Lors des visites ultérieures, un mécanisme automatique utilise le refresh token pour régénérer transparentement les credentials, évitant à l'utilisateur de se reconnecter manuellement. Cette approche protège contre les attaques XSS tout en maintenant une session persistante et fluide.
+#### Principe
 
-**Gestion sécurisée des tokens de connexion** : Pour des raisons de sécurité, le token d’accès n’est pas stocké dans le localStorage ni dans le sessionStorage, afin d’éviter toute exposition aux attaques de type XSS (Cross-Site Scripting). À la place, il est conservé en mémoire active (en RAM) pendant toute la durée de la session. Ce token est volontairement de courte durée de vie : une fois expiré, il est automatiquement renouvelé grâce à un refresh token.
+L'authentification repose sur un système qui optimise la sécurité et l'expérience utilisateur. La connexion initiale génère un JWT court (30 minutes) stocké en mémoire et un refresh token long (7 jours) stocké dans un cookie sécurisé. Lors des visites ultérieures, un mécanisme automatique utilise le refresh token pour régénérer transparentement les infos de connexion, évitant à l'utilisateur de se reconnecter manuellement. Cette approche protège contre les attaques XSS tout en maintenant une session persistante et fluide.
 
-Le refresh token, quant à lui, est stocké de manière sécurisée dans un cookie HTTP-only, configuré avec les attributs Secure, SameSite=Strict et HttpOnly. Cela permet d’éviter qu’il soit accessible depuis le JavaScript du navigateur et le protège contre les attaques de type CSRF.
+#### Gestion sécurisée des tokens de connexion
+
+Pour des raisons de sécurité, le token d’accès n’est pas stocké dans le localStorage ni dans le sessionStorage, afin d’éviter toute exposition aux attaques de type XSS (Cross-Site Scripting). À la place, il est conservé en mémoire active (en RAM) pendant toute la durée de la session. Ce token est volontairement de courte durée de vie : une fois expiré, il est automatiquement renouvelé grâce à un refresh token.
+
+#### Le refresh token
+
+Quant à lui, est stocké de manière sécurisée dans un cookie HTTP-only, configuré avec les attributs Secure, SameSite=Strict et HttpOnly. Cela permet d’éviter qu’il soit accessible depuis le JavaScript du navigateur et le protège contre les attaques de type CSRF.
 
 Ce mécanisme permet d’assurer un équilibre optimal entre sécurité et expérience utilisateur : les utilisateurs restent connectés sans avoir à ressaisir leurs identifiants trop fréquemment, tout en minimisant les risques liés à la compromission d’un token.
 
@@ -290,7 +297,8 @@ Le processus intègre une validation intelligente empêchant les réservations e
 Une fois la réservation payée, l’élève peut consulter la notification associée et fournir des informations complémentaires grâce à une petite fenêtre de discussion intégrée. De son côté, le professeur peut lire ces messages et y répondre directement.
 
 <div style="width: 100%; margin-bottom: 8px;">
-  <img  src="chat.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <img  src="chat1.png" alt="Interface de messagerie Trevo" width="450" style="display: block; margin: auto;"/>
+  <i>Discussion entre professeur et élève.</i>
 </div>
 
 Ce système n’a pas vocation à devenir une application de messagerie complète : il est conçu pour des échanges ponctuels et exceptionnels, par exemple pour préciser le sujet de la séance, signaler un changement de disponibilité ou permettre au professeur de laisser des commentaires et suivis après le cours.
