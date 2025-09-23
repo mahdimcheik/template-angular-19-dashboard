@@ -1144,7 +1144,8 @@ La documentation de l'API constitue un pilier fondamental du projet, garantissan
 
 Pour la partie front-end de l’application, j’ai utilisé Compodoc afin de générer automatiquement la documentation du code Angular. Cette documentation couvre l’ensemble des composants, services, modules et directives, et est produite sous forme de fichiers HTML statiques, facilement consultables via un navigateur.
 
-Bien que la documentation du front est décrite dans l'annexe, elle est également déployée sur le serveur et accessible à l’adresse : docs.skill-hive.fr.
+Bien que la documentation du front est décrite dans l'annexe, elle est également déployée sur le serveur et accessible à l’adresse : <a href="docs.skill-hive.fr">docs.skill-hive.fr</a>. Pour plus de détails voir [Documentation Front-End](#documentation-front-end).
+
 Ce paragraphe permet simplement de présenter brièvement la démarche et les outils utilisés pour le front-end, avant de passer à la documentation de l’API.
 
 ### 9.1 Architecture de documentation automatisée
