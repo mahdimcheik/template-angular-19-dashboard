@@ -2,7 +2,10 @@ import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
 import { UserMainService } from '../services/userMain.service';
 import { firstValueFrom } from 'rxjs';
-
+/***
+ * Guard qui empêche l'accès à une route si l'utilisateur n'est pas un admin.
+ * Utilisation : { path: 'admin', canActivate: [isAdminOnlyGuard], component: AdminComponent }
+ */
 export const isAdminOnlyGuard: CanActivateFn = async (route, state) => {
     var auth = inject(UserMainService);
     if (auth.userConnected().email) {

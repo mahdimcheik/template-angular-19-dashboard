@@ -2,7 +2,11 @@ import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
 import { UserMainService } from '../services/userMain.service';
 import { firstValueFrom } from 'rxjs';
-
+/***
+ * Guard qui empêche l'accès à une route si l'utilisateur est connecté.
+ * Si l'utilisateur n'est pas connecté, il peut accéder à la route.
+ * Utilisation : { path: 'login', canActivate: [canNotLoginGuard], component: LoginComponent }
+ */
 export const canNotLoginGuard: CanActivateFn = async (route, state) => {
     const authService = inject(UserMainService);
     if (authService.userConnected().email) {

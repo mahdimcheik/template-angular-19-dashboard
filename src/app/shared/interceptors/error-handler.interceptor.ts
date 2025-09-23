@@ -4,6 +4,12 @@ import { inject } from '@angular/core';
 import { UserMainService } from '../services/userMain.service';
 import { environment } from '../../../environments/environment';
 
+/**
+ * Interceptor qui gère les erreurs 401 (Unauthorized) en tentant de rafraîchir le token.
+ * Si le rafraîchissement échoue, l'utilisateur est déconnecté.
+ * Utilisation : dans app.module.ts, ajouter dans les providers :
+ */
+
 let isRefreshing = false;
 
 export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {

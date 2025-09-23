@@ -2,7 +2,13 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { UserMainService } from '../services/userMain.service';
 import { environment } from '../../../environments/environment';
-
+/**
+ * @obsolete Pour le developpement uniquement
+ * Intercepteur qui ajoute le token d'authentification aux requêtes API.
+ * @param req La requête HTTP
+ * @param next La fonction pour passer à la prochaine étape
+ * @returns La réponse de la requête
+ */
 export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(UserMainService);
     const token = authService.token();
