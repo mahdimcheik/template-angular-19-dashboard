@@ -44,7 +44,7 @@
 <h5 style="color: transparent;">divider</h5>
 <div style="page-break-after: always;"></div>
 
-- [📚 Dossier Projet – Application de gestion de cours particuliers](#-dossier-projet--application-de-gestion-de-cours-particuliers)
+- [📚 Skill Hive – Application de gestion de cours particuliers](#-skill-hive--application-de-gestion-de-cours-particuliers)
   - [1. Introduction](#1-introduction)
   - [2. Présentation générale](#2-présentation-générale)
   - [3. Fonctionnalités détaillées](#3-fonctionnalités-détaillées)
@@ -60,7 +60,7 @@
 
 <div style="page-break-after: always;"></div>
 
-# 📚 Dossier Projet – Application de gestion de cours particuliers
+# 📚 Skill Hive – Application de gestion de cours particuliers
 
 ## 1. Introduction
 
@@ -762,7 +762,19 @@ La figure suivante illustre plus en détail la partie réservation, en mettant e
 
 #### MCD
 
-Le MCD représente la structure conceptuelle de notre système de gestion de formations et réservations en ligne. Il illustre les entités principales et leurs relations métier (voir annexe).
+Le MCD représente la structure conceptuelle de notre système de gestion de formations et réservations en ligne. Il illustre les entités principales et leurs relations métier:
+
+- Professeur : il dispose d’un profil et peut créer plusieurs créneaux horaires (1,N). Cependant, il ne peut créer qu’un seul créneau par période donnée, et les créneaux ne doivent pas se chevaucher.
+- Élève : chaque élève est un utilisateur ayant également un profil.
+- Créneau : un créneau est proposé par le professeur (1,N) et peut être réservé une seule fois par un seul élève (0,1).
+- Réservation : une réservation est toujours liée à un seul créneau (1,1) et à un seul élève (1,1).
+- Commande : une réservation appartient à une seule commande (N,1), mais une commande peut contenir plusieurs réservations (1,N).
+
+Ainsi, la structure relationnelle permet de gérer :
+
+- la création des créneaux par le professeur,
+- la réservation unique d’un créneau par un élève,
+- et la centralisation des réservations dans une commande unique regroupant éventuellement plusieurs créneaux.
 
 #### MLD
 
@@ -1338,7 +1350,7 @@ Les commentaires XML constituent le socle de notre documentation technique. Chaq
 Cette approche garantit que chaque endpoint dispose d'une documentation complète incluant la description fonctionnelle, les paramètres d'entrée, les types de retour, et les codes de statut HTTP possibles avec leurs significations respectives.
 
 <div style="width: 100%;">
-  <img  src="doc.png"  width="450" style="display: block; margin: auto;"/>
+  <img  src="doc.png" style="display: block; margin: auto;"/>
   <i  style="width: 90%;display: block; margin: auto;">
 Un exempled d'endpoint qui permet de modifier le statut d’une notification (lue ou non lue). Deux paramètres d’entrée (via FromRoute) sont obligatoires : l’ID de la notification et la nouvelle valeur de type booléen. Et en vert, un exemple de retour.
 </i>
@@ -1472,11 +1484,11 @@ Au final, cette façon de travailler qui mélange l'autonomie du développement 
 
 ### Bilan
 
-Ce projet a été un vrai succès. J'ai réussi à créer une application complète et fonctionnelle qui répond parfaitement aux besoins du client et qui tient toutes les promesses faites au départ.
+Ce projet a été un vrai succès pour moi. J'ai réussi à créer une application complète et fonctionnelle qui répond parfaitement aux besoins du client et qui tient toutes les promesses faites au départ.
 
 L'application fonctionne de manière fluide et stable, avec toutes les fonctionnalités demandées : gestion des utilisateurs, système de réservation, paiements sécurisés, notifications en temps réel, et une interface intuitive. Le client peut maintenant gérer ses cours particuliers de façon moderne et efficace, ce qui était exactement l'objectif fixé au début.
 
-Sur le plan technique, j'ai mis en place une architecture solide et sécurisée. L'application respecte les bonnes pratiques de sécurité, protège les données personnelles des utilisateurs, et gère les paiements de manière conforme aux normes bancaires. Le système peut supporter de nombreux utilisateurs simultanés et s'adapte facilement aux évolutions futures.
+Sur le plan technique, j'ai mis en place une architecture solide et sécurisée et quand possible les bonnes pratiques de clean-code. L'application respecte les bonnes pratiques de sécurité, protège les données personnelles des utilisateurs, et gère les paiements de manière conforme aux normes bancaires. Le système peut supporter de nombreux utilisateurs simultanés et s'adapte facilement aux évolutions futures.
 
 Le déploiement automatique fonctionne parfaitement : chaque nouvelle version se met en ligne sans intervention manuelle, ce qui facilite grandement la maintenance et les mises à jour. L'application est accessible 24h/24 et offre une expérience utilisateur de qualité sur tous les appareils.
 
