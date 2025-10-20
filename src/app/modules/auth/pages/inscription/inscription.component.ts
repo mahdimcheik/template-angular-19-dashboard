@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { finalize, firstValueFrom, tap } from 'rxjs';
+import { catchError, finalize, firstValueFrom, tap } from 'rxjs';
 import { EnumGender, GenderDropDown } from '../../../../shared/models/user';
 import { UserCreateDTO } from '../../../../shared/services/userMain.service';
 import { ageValidator, passwordStrengthValidator, passwordValidator } from '../../../../shared/validators/confirmPasswordValidator';
@@ -228,7 +228,7 @@ export class InscriptionComponent {
             console.error(err);
             this.messageService.add({
                 summary: 'Erreur',
-                detail: (err as any).error.message,
+                detail: '' + ((err as any).error?.message || "Une erreur est survenue lors de l'inscription"),
                 severity: 'error'
             });
         }
