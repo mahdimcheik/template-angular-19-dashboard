@@ -322,13 +322,15 @@
                                             [class.lg:col-span-2]="field.fullWidth || field.type === 'textarea'"
                                             [class.lg:col-span-1]="!field.fullWidth && field.type !== 'textarea'"
                                         >
-                                            <!-- Field Label -->
-                                            <label [for]="field.id" class="block text-sm font-medium configurable-form-field-label">
-                                                <span class="configurable-form-field-label-text">{{ field.label }}</span>
-                                                @if (field.required) {
-                                                    <span class="text-red-500 ml-1 configurable-form-field-required">*</span>
-                                                }
-                                            </label>
+                                            <!-- Field Label , except for checkboxes -->
+                                            @if (field.type !== 'checkbox') {
+                                                <label [for]="field.id" class="block text-sm font-medium configurable-form-field-label">
+                                                    <span class="configurable-form-field-label-text">{{ field.label }}</span>
+                                                    @if (field.required) {
+                                                        <span class="text-red-500 ml-1 configurable-form-field-required">*</span>
+                                                    }
+                                                </label>
+                                            }
 
                                             <!-- Input Container -->
                                             <div class="relative configurable-form-input-container">

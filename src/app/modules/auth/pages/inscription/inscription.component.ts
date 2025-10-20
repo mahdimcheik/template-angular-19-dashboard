@@ -170,6 +170,7 @@ export class InscriptionComponent {
                         id: 'dataProcessingConsent',
                         name: 'dataProcessingConsent',
                         type: 'checkbox',
+
                         label: "J'accepte que mes données personnelles soient traitées conformément au RGPD pour la création et la gestion de mon compte, ainsi que pour la fourniture des services de la plateforme.",
                         required: true,
                         fullWidth: true,

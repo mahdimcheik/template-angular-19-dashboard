@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { UserMainService } from '../../../../shared/services/userMain.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { catchError, finalize } from 'rxjs';
+import { catchError, finalize, firstValueFrom, of } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { CommonModule } from '@angular/common';
@@ -47,12 +47,16 @@ export class ForgotPasswordComponent {
         ]
     };
 
-    submit(e: FormGroup) {
+    async submit(e: FormGroup) {
         const email = e.value.email;
-        this.authService.forgotPassword({ email }).subscribe(() => {
+        try {
+            await firstValueFrom(this.authService.forgotPassword({ email }));
+
             this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Un email vous a été envoyé pour réinitialiser votre mot de passe' });
             this.router.navigate(['/auth/login']);
-        });
+        } catch (error) {
+            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la demande de réinitialisation du mot de passe' });
+        }
     }
 
     cancel() {
