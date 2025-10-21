@@ -1,0 +1,66 @@
+sequenceDiagram
+    participant U as Utilisateur
+    participant F as Frontend Angular
+    participant B as Backend API
+    participant D as Base de données
+    participant E as Service Email
+
+    Note over U,E: Processus d'inscription complet
+
+    U->>F: Remplit le formulaire d'inscription
+    F->>F: Validation côté client (temps réel)
+    
+    alt Formulaire valide
+        U->>F: Soumet le formulaire
+        F->>B: POST /auth/register
+        Note right of F: {email, password, firstName, lastName}
+        
+        B->>B: Validation des données serveur
+        Note right of B: Format email, force mot de passe, etc.
+        
+        alt Données valides
+            B->>D: Vérification unicité email
+            
+            alt Email déjà existant
+                D-->>B: Email trouvé
+                B-->>F: Erreur - Compte existant
+                F-->>U: "Un compte existe déjà avec cet email"
+            else Email disponible
+                D-->>B: Email disponible
+                B->>B: Hachage mot de passe
+                B->>D: Création utilisateur (EmailConfirmed=false)
+                D-->>B: Utilisateur créé avec ID
+                
+                B->>B: Génération token de validation
+                B->>E: Envoi email de confirmation
+                Note right of E: Lien avec token de validation
+                
+                E-->>B: Email envoyé
+                B-->>F: Succès 201 - Compte créé
+                F-->>U: "Vérifiez votre email pour activer votre compte"
+                
+                Note over U,E: Compte créé mais non activé
+                
+                U->>U: Consulte sa boîte email
+                U->>U: Clique sur le lien de validation
+                U->>B: GET /auth/confirm-email?token=xxx
+                
+                B->>B: Validation du token
+                alt Token valide
+                    B->>D: Mise à jour EmailConfirmed=true
+                    D-->>B: Compte activé
+                    B->>B: Génération JWT + Refresh Token
+                    B-->>U: Redirection + Connexion automatique
+                    Note over U: Compte pleinement fonctionnel
+                else Token invalide/expiré
+                    B-->>U: Erreur - Token invalide
+                    Note over U: Doit refaire une demande
+                end
+            end
+        else Données invalides
+            B-->>F: Erreur 400 - Données invalides
+            F-->>U: Messages d'erreur spécifiques
+        end
+    else Formulaire invalide
+        F-->>U: Messages d'erreur de validation
+    end

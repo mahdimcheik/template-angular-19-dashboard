@@ -1,0 +1,59 @@
+sequenceDiagram
+    participant U as Utilisateur
+    participant F as Frontend Angular
+    participant B as Backend API
+    participant D as Base de données
+
+    Note over U,D: Processus de connexion
+
+    U->>F: Saisit email + mot de passe
+    F->>F: Validation côté client
+    
+    alt Formulaire valide
+        U->>F: Clique "Se connecter"
+        F->>B: POST /auth/login
+        Note right of F: {email, password}
+        
+        B->>D: Recherche utilisateur par email
+        
+        alt Utilisateur trouvé
+            D-->>B: Données utilisateur
+            B->>B: Vérification mot de passe (BCrypt)
+            
+            alt Mot de passe correct
+                B->>B: Vérification EmailConfirmed=true
+                
+                alt Compte activé
+                    B->>B: Génération JWT Access Token
+                    B->>B: Génération Refresh Token
+                    
+                    B->>B: Stockage Refresh Token en cookie
+                    Note right of B: HttpOnly, Secure, SameSite=Strict
+                    
+                    B-->>F: Réponse 200 + Access Token
+                    Note right of B: {token: "jwt...", user: {...}}
+                    
+                    F->>F: Stockage Access Token (mémoire)
+                    F-->>U: Redirection vers Dashboard
+                    
+                    Note over U: Utilisateur connecté
+                    
+                else Compte non activé
+                    B-->>F: Erreur 401 - Compte non confirmé
+                    F-->>U: "Veuillez confirmer votre email"
+                end
+                
+            else Mot de passe incorrect
+                B-->>F: Erreur 401 - Identifiants invalides
+                F-->>U: "Email ou mot de passe incorrect"
+            end
+            
+        else Utilisateur non trouvé
+            D-->>B: Aucun résultat
+            B-->>F: Erreur 401 - Identifiants invalides
+            F-->>U: "Email ou mot de passe incorrect"
+        end
+        
+    else Formulaire invalide
+        F-->>U: Messages d'erreur de validation
+    end
