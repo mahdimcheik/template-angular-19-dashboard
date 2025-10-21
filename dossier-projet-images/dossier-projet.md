@@ -102,6 +102,7 @@ Ces contraintes nuisent à la fluidité de l’organisation, augmentent le risqu
 Il est donc nécessaire de mettre en place une application centralisée, offrant une vision claire du planning, une réservation simple, un paiement sécurisé et un historique consultable à tout moment, afin d’optimiser le temps du professeur et de faciliter la vie des élèves.
 
 ---
+<div style="page-break-after: always;"></div>
 
 ## 2. Présentation générale
 
@@ -242,6 +243,8 @@ Pour plus de confort, j'ai mis en place deux modes d’affichage :
 | Élève      | Réserver et suivre les cours    |
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ## 3. Fonctionnalités détaillées
 
@@ -619,6 +622,8 @@ Visuellement, la différence est nette : dans l’interface, l’utilisateur voi
 
 Cette approche répond aux bonnes pratiques de sécurité (notamment celles recommandées par l’OWASP), en minimisant l’impact potentiel d’une fuite de données et en renforçant la confidentialité des étudiants.
 
+<div style="page-break-after: always;"></div>
+
 ## 4. Architecture technique
 
 ### 4.1 Technologies utilisées
@@ -756,6 +761,8 @@ La figure suivante illustre plus en détail la partie réservation, en mettant e
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 ## 5. Conception de la base de données
 
 ### Modèle de données
@@ -832,6 +839,9 @@ Les entités liées à la logique de réservation sont illustrées dans le diagr
 **Curus** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
 
 ---
+
+<div style="page-break-after: always;"></div>
+
 
 ## 6. Sécurité
 
@@ -935,6 +945,8 @@ L'utilisation d'**Entity Framework Core** comme ORM fournit une protection nativ
 Cette architecture de sécurité multicouche garantit une protection robuste des données utilisateur et des transactions financières, tout en maintenant une expérience utilisateur fluide et conforme aux réglementations en vigueur.
 
 ---
+<div style="page-break-after: always;"></div>
+
 
 ## 7. Déploiement
 
@@ -1141,6 +1153,8 @@ docker compose -f /root/skillhive/frontend/docker-compose.yml up -d --force-recr
 Cette architecture de déploiement offre une solution scalable et sécurisée, permettant une mise en production rapide et fiable tout en maintenant une séparation claire entre les environnements de développement, test et production.
 
 ---
+<div style="page-break-after: always;"></div>
+
 
 ## 8. Tests et assurance qualité
 
@@ -1307,6 +1321,8 @@ Plusieurs assertions sont ensuite effectuées pour garantir que :
 - l’objet User retourné n’est pas nul,
 
 - et que l’email de l’utilisateur retourné correspond bien à celui utilisé pour la connexion.
+<div style="page-break-after: always;"></div>
+
 
 ## 9. Documentation
 
@@ -1466,6 +1482,9 @@ En production, l'accès à la documentation peut être restreint pour des raison
  }
 ```
 
+<div style="page-break-after: always;"></div>
+
+
 ## 10. Gestion de projet
 
 Pour gérer ce projet, j'ai mélangé deux façons de travailler : d'un côté, j'étais seul pour développer l'application, et de l'autre, j'ai utilisé des méthodes que j'avais apprises au travail avec mes collègues. Comme j'étais le seul développeur, j'ai adapté les principes Scrum que je connaissais déjà, grâce à mon expérience professionnelle avec Jira et le travail en équipe.
@@ -1479,8 +1498,11 @@ Pour gérer tous ces changements, j'ai mis en place une méthode simple : avant 
 Au final, cette façon de travailler qui mélange l'autonomie du développement en solo et la rigueur des méthodes que j'avais apprises en équipe m'a permis de livrer une application qui fonctionne et qui répond aux besoins du client, même avec tous les changements demandés en cours de route. Utiliser Trello comme base de mon organisation, combiné avec une communication régulière avec le client et une documentation de toutes mes décisions techniques, ça a été la clé du succès de ce projet.
 
 ---
+<div style="page-break-after: always;"></div>
+
 
 ## 11. Conclusion
+
 
 ### Bilan
 
@@ -1503,6 +1525,9 @@ J'ai identifié plusieurs petits bugs à corriger et des améliorations de style
 Il serait aussi intéressant d'ajouter la possibilité de se connecter avec son compte Google, Microsoft ou GitHub. Cela faciliterait encore plus l'inscription et la connexion pour les utilisateurs qui n'auraient plus besoin de créer un nouveau mot de passe.
 
 Pour renforcer la qualité, je prévois de mettre en place des tests automatiques supplémentaires qui simulent de vrais utilisateurs naviguant dans l'application (ce qu'on appelle des tests "end-to-end") et d'augmenter la couverture des tests existants pour couvrir encore plus de situations possibles.
+
+<div style="page-break-after: always;"></div>
+
 
 ## 12 Annexes
 
