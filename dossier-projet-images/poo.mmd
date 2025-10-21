@@ -1,0 +1,253 @@
+classDiagram
+    %% Interfaces
+    class IArchivable {
+        <<interface>>
+        +DateTimeOffset? ArchivedAt
+    }
+    
+    class IUpdateable {
+        <<interface>>
+        +DateTimeOffset? UpdatedAt
+    }
+    
+    class ICreatable {
+        <<interface>>
+        +DateTimeOffset CreatedAt
+    }
+    
+    %% Abstract Base Classes
+    class BaseModel {
+        <<abstract>>
+        +Guid Id
+        +DateTimeOffset CreatedAt
+        +DateTimeOffset? UpdatedAt
+        +DateTimeOffset? ArchivedAt
+    }
+    
+    class BaseModelOption {
+        +string Name
+        +string Color
+        +string? Icon
+    }
+    
+    %% Identity Framework Classes
+    class IdentityUser~Guid~ {
+        <<Identity>>
+        +string Email
+        +string UserName
+        +string PhoneNumber
+    }
+    
+    class IdentityRole~Guid~ {
+        <<Identity>>
+        +string Name
+    }
+    
+    class IdentityUserRole~Guid~ {
+        <<Identity>>
+        +Guid UserId
+        +Guid RoleId
+    }
+    
+    %% Main Domain Models
+    class UserApp {
+        +string FirstName
+        +string LastName
+        +DateTimeOffset DateOfBirth
+        +bool DataProcessingConsent
+        +bool PrivacyPolicyConsent
+        +string? Title
+        +string? Description
+        +Guid GenderId
+        +Guid StatusId
+        +Gender? Gender
+        +StatusAccount? Status
+        +ICollection~Address~ Adresses
+        +ICollection~Formation~ Formations
+        +ICollection~Experience~ Experiences
+        +ICollection~Booking~ BookingsForStudent
+        +ICollection~Order~ OrdersForStudent
+        +ICollection~Cursus~ TeacherCursuses
+        +ICollection~Language~ Languages
+        +ICollection~ProgrammingLanguage~ ProgrammingLanguages
+        +ICollection~IdentityUserRole~ UserRoles
+    }
+    
+    class RoleApp {
+        +DateTimeOffset? ArchivedAt
+        +DateTimeOffset CreatedAt
+        +DateTimeOffset? UpdatedAt
+        +string? Color
+        +ICollection~IdentityUserRole~ UserRoles
+    }
+    
+    class Address {
+        +string Street
+        +string City
+        +string State
+        +string Country
+        +string ZipCode
+        +string? AdditionalInfo
+        +float? Longitude
+        +float? Latitude
+        +Guid UserId
+        +UserApp User
+    }
+    
+    class Booking {
+        +string Title
+        +string Description
+        +Guid SlotId
+        +Slot Slot
+        +Guid OrderId
+        +Order Order
+        +Guid StudentId
+        +UserApp Student
+    }
+    
+    class Order {
+        +string OrderNumber
+        +DateTimeOffset OrderDate
+        +decimal TotalAmount
+        +int ReductionPercentage
+        +int ReductionAmount
+        +Guid StudentId
+        +UserApp Student
+        +ICollection~Booking~ Bookings
+    }
+    
+    class Slot {
+        +DateTimeOffset DateFrom
+        +DateTimeOffset DateTo
+        +Guid TeacherId
+        +UserApp Teacher
+        +Guid TypeId
+        +TypeSlot Type
+        +Booking? Booking
+    }
+    
+    class TypeSlot {
+        +string Name
+        +string Color
+        +string? Icon
+    }
+    
+    class Experience {
+        +string Title
+        +string Description
+        +string Institution
+        +DateTimeOffset DateFrom
+        +DateTimeOffset? DateTo
+        +Guid UserId
+        +UserApp? User
+    }
+    
+    class Formation {
+        +string Title
+        +string Description
+        +string Institution
+        +DateTimeOffset DateFrom
+        +DateTimeOffset? DateTo
+        +Guid UserId
+        +UserApp? User
+    }
+    
+    class Cursus {
+        +string? Description
+        +string? ImgUrl
+        +Guid LevelId
+        +LevelCursus? Level
+        +Guid TeacherId
+        +UserApp? Teacher
+        +ICollection~CategoryCursus~ Categories
+    }
+    
+    class CategoryCursus {
+        +Collection~Cursus~ Cursuses
+    }
+    
+    class LevelCursus {
+    }
+    
+    class Gender {
+    }
+    
+    class StatusAccount {
+    }
+    
+    class Language {
+        +ICollection~UserApp~? Users
+    }
+    
+    class ProgrammingLanguage {
+        +string? Description
+        +ICollection~UserApp~? Users
+    }
+    
+    class RefreshToken {
+        +Guid Id
+        +string? Token
+        +DateTimeOffset ExpirationDate
+        +Guid? UserId
+        +UserApp? User
+    }
+    
+    %% Inheritance Relationships
+    BaseModel ..|> IUpdateable : implements
+    BaseModel ..|> ICreatable : implements
+    BaseModel ..|> IArchivable : implements
+    
+    BaseModelOption --|> BaseModel : extends
+    
+    UserApp --|> IdentityUser~Guid~ : extends
+    UserApp ..|> IArchivable : implements
+    UserApp ..|> IUpdateable : implements
+    UserApp ..|> ICreatable : implements
+    
+    RoleApp --|> IdentityRole~Guid~ : extends
+    RoleApp ..|> IArchivable : implements
+    RoleApp ..|> IUpdateable : implements
+    RoleApp ..|> ICreatable : implements
+    
+    Address --|> BaseModel : extends
+    Booking --|> BaseModel : extends
+    Order --|> BaseModel : extends
+    Slot --|> BaseModel : extends
+    TypeSlot --|> BaseModel : extends
+    Experience --|> BaseModel : extends
+    Formation --|> BaseModel : extends
+    
+    CategoryCursus --|> BaseModelOption : extends
+    Cursus --|> BaseModelOption : extends
+    LevelCursus --|> BaseModelOption : extends
+    Gender --|> BaseModelOption : extends
+    StatusAccount --|> BaseModelOption : extends
+    Language --|> BaseModelOption : extends
+    ProgrammingLanguage --|> BaseModelOption : extends
+    
+    %% Association Relationships
+    UserApp "1" --> "*" Address : has
+    UserApp "1" --> "*" Formation : has
+    UserApp "1" --> "*" Experience : has
+    UserApp "1" --> "*" Booking : books as student
+    UserApp "1" --> "*" Order : places
+    UserApp "1" --> "*" Cursus : teaches
+    UserApp "1" --> "1" Gender : has
+    UserApp "1" --> "1" StatusAccount : has
+    UserApp "*" --> "*" Language : knows
+    UserApp "*" --> "*" ProgrammingLanguage : knows
+    UserApp "1" --> "*" IdentityUserRole~Guid~ : has
+    UserApp "1" --> "*" Slot : teaches
+    UserApp "1" <-- "0..1" RefreshToken : authenticates
+    
+    RoleApp "1" --> "*" IdentityUserRole~Guid~ : defines
+    
+    Slot "1" --> "1" TypeSlot : has type
+    Slot "1" --> "0..1" Booking : may have
+    
+    Booking "1" --> "1" Order : belongs to
+    
+    Order "1" --> "*" Booking : contains
+    
+    Cursus "1" --> "1" LevelCursus : has level
+    Cursus "*" --> "*" CategoryCursus : belongs to

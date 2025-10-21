@@ -44,7 +44,7 @@
 <h5 style="color: transparent;">divider</h5>
 <div style="page-break-after: always;"></div>
 
-- [📚 Skill Hive – Application de gestion de cours particuliers](#-skill-hive--application-de-gestion-de-cours-particuliers)
+- [Skill Hive – Application de gestion de cours particuliers](#skill-hive--application-de-gestion-de-cours-particuliers)
   - [1. Introduction](#1-introduction)
   - [2. Présentation générale](#2-présentation-générale)
   - [3. Fonctionnalités détaillées](#3-fonctionnalités-détaillées)
@@ -55,12 +55,13 @@
   - [8. Tests et assurance qualité](#8-tests-et-assurance-qualité)
   - [9. Documentation](#9-documentation)
   - [10. Gestion de projet](#10-gestion-de-projet)
-  - [11. Conclusion](#11-conclusion)
+  - [11. Veille technologique et résolution de problèmes](#11-veille-technologique-et-résolution-de-problèmes)
+  - [12. Conclusion](#12-conclusion)
   - [12 Annexes](#12-annexes)
 
 <div style="page-break-after: always;"></div>
 
-# 📚 Skill Hive – Application de gestion de cours particuliers
+# Skill Hive – Application de gestion de cours particuliers
 
 ## 1. Introduction
 
@@ -1500,8 +1501,17 @@ Au final, cette façon de travailler qui mélange l'autonomie du développement 
 ---
 <div style="page-break-after: always;"></div>
 
+## 11. Veille technologique et résolution de problèmes
 
-## 11. Conclusion
+Tout au long de ce projet, la veille technologique a joué un rôle essentiel pour rester à jour avec les dernières innovations et résoudre les défis techniques rencontrés. J'ai suivi régulièrement les communautés Angular et .NET, notamment via les blogs officiels de Microsoft, la documentation Angular, et les forums comme Stack Overflow et GitHub Discussions. Cette veille m'a permis d'adopter Angular 19 dès sa sortie, en tirant parti de ses nouvelles fonctionnalités comme les signals et l'amélioration des performances. De même, l'utilisation de .NET 8.0 avec ses optimisations natives et ses nouvelles capacités de déploiement a considérablement amélioré les performances de l'application.
+
+La résolution de problèmes a été particulièrement enrichissante, notamment lors de l'intégration complexe entre Stripe et le système de réservation temporaire. Le défi principal était de gérer la synchronisation entre les créneaux réservés temporairement (15 minutes) et les webhooks Stripe, tout en évitant les conflits de concurrence. J'ai résolu cette problématique en implémentant un système de jobs en arrière-plan avec Hangfire (grace aux tutoriels de Nick Chapsas), couplé à des mécanismes de verrouillage au niveau base de données. Un autre défi majeur concernait l'optimisation des performances avec des tests de charge sur 10 000 utilisateurs simultanés, résolu grâce à l'implémentation d'index PostgreSQL optimisés et l'utilisation de requêtes LINQ efficaces avec Entity Framework Core. Ces expériences m'ont permis de développer une approche méthodique de résolution de problèmes : identifier la cause racine, prototyper des solutions, tester en conditions réelles, puis documenter la solution pour éviter les régressions futures.
+
+---
+<div style="page-break-after: always;"></div>
+
+
+## 12. Conclusion
 
 
 ### Bilan
