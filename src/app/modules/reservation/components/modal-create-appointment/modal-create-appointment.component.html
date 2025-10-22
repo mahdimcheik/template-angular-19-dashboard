@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" [header]="isCreatingModal() ? 'Créer un créneau' : appointment().extendedProps?.['slot']?.['studentId'] ? 'Supprimer une réservation' : 'Editer un créneau'" [modal]="true">
+<p-dialog [(visible)]="visible" [style]="{ width: '450px' }" [header]="isCreatingModal() ? 'Créer un créneau' : appointment().extendedProps?.['slot']?.['studentId'] ? 'Consultation' : 'Editer un créneau'" [modal]="true">
     <ng-template #content>
         <p-fluid>
             @if (appointment().extendedProps?.['slot']?.['studentId']) {

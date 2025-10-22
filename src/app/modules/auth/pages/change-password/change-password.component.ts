@@ -50,6 +50,7 @@ export class ChangePasswordComponent implements OnInit {
                         label: 'Mot de passe',
                         type: 'password',
                         required: true,
+                        fullWidth: true,
                         placeholder: 'Mot de passe',
                         order: 1
                     },
@@ -59,6 +60,7 @@ export class ChangePasswordComponent implements OnInit {
                         label: 'Confirmer votre mot de passe',
                         type: 'password',
                         required: true,
+                        fullWidth: true,
                         placeholder: 'Confirmer votre mot de passe',
                         order: 2
                     }
