@@ -161,7 +161,6 @@ Une fois connecté, l’eleve accède au tableau de bord. Par défaut, le menu p
 
 ##### Notifications
 
-Page par défaut du dashboard : Notifications
 La page de notifications est la page d’accueil du dashboard, permettant à l’utilisateur de voir en un coup d’œil l’activité récente. Elle présente :
 
 - Toutes les notifications, classées par ordre chronologique afin de ne manquer aucun événement important.

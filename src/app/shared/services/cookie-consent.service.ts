@@ -20,7 +20,7 @@ export interface ConsentDecision {
     providedIn: 'root'
 })
 export class CookieConsentService {
-    private readonly CONSENT_KEY = 'gdpr-cookie-consent';
+    private readonly CONSENT_KEY = 'grdp-cookie-consent';
     private readonly CONSENT_VERSION = '1.0';
     private readonly CONSENT_EXPIRY_DAYS = 365;
 
