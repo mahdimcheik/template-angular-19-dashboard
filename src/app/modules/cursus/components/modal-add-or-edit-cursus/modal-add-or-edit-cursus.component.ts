@@ -90,6 +90,7 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 type: 'text',
                                 placeholder: 'Nom du cursus',
                                 value: cursus.name ?? '',
+                                fullWidth: true,
                                 required: true,
                                 validation: [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
                             },
