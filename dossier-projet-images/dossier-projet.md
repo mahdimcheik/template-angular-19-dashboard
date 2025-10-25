@@ -150,7 +150,7 @@ La page d’accueil, accessible à tous, présente brièvement le principe de fo
 
 #### Espace de travail
 
-Une fois connecté, l’eleve accède au tableau de bord. Par défaut, le menu principal est affiché à gauche et permet de naviguer entre les différentes sections.
+Une fois connecté, l’élève accède au tableau de bord. Par défaut, le menu principal est affiché à gauche et permet de naviguer entre les différentes sections.
 
 1.  Notifications/Activités
 1.  Calendrier interactif
@@ -306,7 +306,7 @@ Une fois la réservation payée, l’élève peut consulter la notification asso
 
 Ce système n’a pas vocation à devenir une application de messagerie complète : il est conçu pour des échanges ponctuels et exceptionnels, par exemple pour préciser le sujet de la séance, signaler un changement de disponibilité ou permettre au professeur de laisser des commentaires et suivis après le cours.
 
-Plus de détails techniques dans la prtie paiement.
+Plus de détails techniques dans la section paiement.
 
 ### 3. Paiement sécurisé
 
@@ -836,7 +836,7 @@ Les entités liées à la logique de réservation sont illustrées dans le diagr
 
 **ORDER (Commande)** : Regroupe une ou plusieurs réservations pour le processus de paiement. Gère le cycle de vie commercial avec statuts, méthodes de paiement et TVA.
 
-**Curus** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
+**Cursus** : Représente les parcours de formation structurés par niveaux et catégories, permettant une organisation pédagogique cohérente.
 
 ---
 
@@ -903,14 +903,13 @@ L'utilisation d'**Entity Framework Core** comme ORM fournit une protection nativ
 
 #### Gestion des mots de passe
 
-- **Hachage BCrypt** : Les mots de passe sont hachés avec l'algorithme BCrypt (work factor 12) avant stockage
+- **Hachage BCrypt** : Les mots de passe sont hachés avec l'algorithme BCrypt avant stockage
 - **Salt unique** : Chaque mot de passe dispose d'un salt généré aléatoirement
 - **Politique de mots de passe** : Validation de la complexité (8 caractères minimum, majuscules, minuscules, chiffres, caractères spéciaux)
 
 #### Chiffrement des communications
 
 - **HTTPS obligatoire** : Toutes les communications sont chiffrées via TLS 1.3
-- **HSTS (HTTP Strict Transport Security)** : Headers configurés pour forcer l'utilisation d'HTTPS
 - **Certificats SSL** : Utilisation de certificats Let's Encrypt avec renouvellement automatique
 
 ### 6.4 Conformité RGPD
