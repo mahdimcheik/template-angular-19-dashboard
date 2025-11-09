@@ -75,15 +75,6 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                         description: 'Détails du cours',
                         fields: [
                             {
-                                id: 'description',
-                                name: 'description',
-                                label: 'Description',
-                                type: 'textarea',
-                                placeholder: 'Description du cursus',
-                                value: cursus.description ?? '',
-                                required: true
-                            },
-                            {
                                 id: 'name',
                                 name: 'name',
                                 label: 'Nom',
@@ -94,6 +85,16 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 required: true,
                                 validation: [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
                             },
+                            {
+                                id: 'description',
+                                name: 'description',
+                                label: 'Description',
+                                type: 'textarea',
+                                placeholder: 'Description du cursus',
+                                value: cursus.description ?? '',
+                                required: true
+                            },
+
                             {
                                 id: 'level',
                                 name: 'level',
@@ -150,6 +151,7 @@ export class ModalAddOrEditCursusComponent implements OnInit {
                                 placeholder: 'Nom du cursus',
                                 value: '',
                                 required: true,
+                                fullWidth: true,
                                 order: 1,
                                 validation: [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
                             },
