@@ -4,7 +4,7 @@
             <section class="flex flex-col w-full mb-0"></section>
             <form [formGroup]="userForm" (ngSubmit)="userForm.valid && submit()" #form="ngForm">
                 <div class="card flex flex-col gap-4 w-full">
-                    <h2 class="font-semibold text-xxl">{{ !slotDetailed().studentId ? 'Réserver ce créneau' : 'Supprimer cette réservation' }}</h2>
+                    <h2 class="font-semibold text-xxl">{{ !slotDetailed().studentId ? 'Réserver ce créneau' : 'Consulter cette réservation' }}</h2>
                     <h3 class="font-semibold text-xl">Le {{ appointment().start?.toString() | date: 'd MMMM' }}</h3>
                     <div class="flex flex-col md:flex-row gap-6">
                         <div class="flex flex-wrap gap-2 w-full justify-between">

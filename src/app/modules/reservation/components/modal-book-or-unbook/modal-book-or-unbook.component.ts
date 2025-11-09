@@ -45,7 +45,7 @@ export class ModalBookOrUnbookComponent implements OnInit {
         if (this.appointment().extendedProps?.['slot']?.studentId === null) {
             return 'Réservation';
         }
-        return new Date(this.appointment().extendedProps?.['slot']?.startAt) < new Date() ? 'Détails' : 'Suppression';
+        return new Date(this.appointment().extendedProps?.['slot']?.startAt) < new Date() ? 'Détails' : 'Consultation';
     });
 
     fb = inject(FormBuilder);
