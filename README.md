@@ -115,21 +115,18 @@ graph TD
     E --> F[🛑 Arrêt du pipeline]
     
     D -->|✅ Succès| G[🔧 Tests d'Intégration]
-    G --> H[🐳 Testcontainers PostgreSQL]
-    H --> I[🌐 Tests API complets]
-    I --> J{✅ Intégration OK?}
+    G --> J{✅ Intégration OK?}
     
     J -->|❌ Échec| E
     J -->|✅ Succès| K[📦 Build Images Docker]
     
     K --> L{🎯 Quelle branche?}
     
-    L -->|develop/test| M[🧪 Déploiement TEST]
-    M --> N[test-api.skill-hive.fr]
+    L -->|test| M[🧪 Déploiement TEST]
+    M --> N[test.skill-hive.fr]
     
-    L -->|main/master| R[🚀 Déploiement PROD]
-    R --> S[🌍 skill-hive.fr]
-    
+    L -->|main| R[🚀 Déploiement PROD]
+    R --> S[🌍 skill-hive.fr]   
    
     
     style A fill:#e1f5fe
@@ -138,7 +135,55 @@ graph TD
     style G fill:#fff3e0
     style K fill:#e8f5e8
     style M fill:#fff8e1
-    style Q fill:#ffebee
-    style U fill:#f1f8e9
+
+```
+```mermaid
+sequenceDiagram
+    participant U as Utilisateur
+    participant F as Frontend Angular
+    participant B as Backend API
+    participant D as Base de données
+
+    Note over U,D: Processus de connexion
+
+    U->>F: Saisit email + mot de passe
+    F->>F: Validation côté client
+    
+    alt Formulaire valide
+        U->>F: Clique "Se connecter"
+        F->>B: POST /auth/login
+        Note right of F: {email, password}
+        
+        B->>D: Recherche utilisateur par email
+        
+        alt Utilisateur trouvé
+            D-->>B: Données utilisateur
+            B->>B: Vérification mot de passe
+            
+    
+                
+                
+                    B->>B: Génération JWT Access Token
+                    B->>B: Génération Refresh Token
+                    
+                    B->>B: Stockage Refresh Token en cookie
+                    Note right of B: HttpOnly, Secure, SameSite=Strict
+                    
+                    B-->>F: Réponse 200 + Access Token
+                    Note right of B: {token: "jwt...", user: {...}}
+                    
+                    F->>F: Stockage Access Token (mémoire)
+                    F-->>U: Redirection vers Dashboard
+                    
+                    Note over U: Utilisateur connecté   
+        else Utilisateur non trouvé
+            D-->>B: Aucun résultat
+            B-->>F: Erreur 401 - Identifiants invalides
+            F-->>U: "Email ou mot de passe incorrect"
+        end
+        
+    else Formulaire invalide
+        F-->>U: Messages d'erreur de validation
+    end
 
 ```

@@ -18,12 +18,11 @@ sequenceDiagram
         
         alt Utilisateur trouvé
             D-->>B: Données utilisateur
-            B->>B: Vérification mot de passe (BCrypt)
+            B->>B: Vérification mot de passe
             
-            alt Mot de passe correct
-                B->>B: Vérification EmailConfirmed=true
+    
                 
-                alt Compte activé
+                
                     B->>B: Génération JWT Access Token
                     B->>B: Génération Refresh Token
                     
@@ -36,18 +35,7 @@ sequenceDiagram
                     F->>F: Stockage Access Token (mémoire)
                     F-->>U: Redirection vers Dashboard
                     
-                    Note over U: Utilisateur connecté
-                    
-                else Compte non activé
-                    B-->>F: Erreur 401 - Compte non confirmé
-                    F-->>U: "Veuillez confirmer votre email"
-                end
-                
-            else Mot de passe incorrect
-                B-->>F: Erreur 401 - Identifiants invalides
-                F-->>U: "Email ou mot de passe incorrect"
-            end
-            
+                    Note over U: Utilisateur connecté   
         else Utilisateur non trouvé
             D-->>B: Aucun résultat
             B-->>F: Erreur 401 - Identifiants invalides

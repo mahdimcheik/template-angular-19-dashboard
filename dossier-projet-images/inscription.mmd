@@ -1,0 +1,29 @@
+graph TD
+    A[🔄 Push sur main/master] --> B[🏗️ Build & Compilation]
+    B --> C[🧪 Tests Unitaires]
+    C --> D{✅ Tests OK?}
+    
+    D -->|❌ Échec| E[📧 Notification d'échec]
+    E --> F[🛑 Arrêt du pipeline]
+    
+    D -->|✅ Succès| G[🔧 Tests d'Intégration]
+    G --> J{✅ Intégration OK?}
+    
+    J -->|❌ Échec| E
+    J -->|✅ Succès| K[📦 Build Images Docker]
+    
+    K --> L{🎯 Quelle branche?}
+    
+    L -->|test| M[🧪 Déploiement TEST]
+    M --> N[test.skill-hive.fr]
+    
+    L -->|main| R[🚀 Déploiement PROD]
+    R --> S[🌍 skill-hive.fr]   
+   
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#fff3e0
+    style G fill:#fff3e0
+    style K fill:#e8f5e8
+    style M fill:#fff8e1
