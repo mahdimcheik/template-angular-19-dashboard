@@ -118,10 +118,10 @@ export class SignalRService {
 
         this.hubConnection.on('Notification', (notification) => {
             this.notificationService.getNotificationsCount().subscribe();
-            if (this.router.url === '/dashboard') {
+            // if (this.router.url === '/dashboard') {
                 this.notificationService.getNotificationsByUserId({ perPage: 10, offset: 0 }).subscribe();
-            }
-            this.showNotif();
+            // }
+            // this.showNotif();
         });
 
         this.hubConnection.on('Email', (notification) => {});
